@@ -1,13 +1,15 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// prisma/schema.prisma
+// Este arquivo é usado para definir o modelo de dados e a configuração do Prisma. 
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
+// Configuração do cliente Prisma que vai interagir com o banco de dados.
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
 }
 
-datasource db {
+// Configuração da fonte de dados, indicando o tipo de banco de dados e a URL de conexão.
+datasource db { 
   provider = "postgresql"
+  // url: esta definida no prisma.config.ts 
 }
+

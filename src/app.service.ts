@@ -19,6 +19,6 @@ export class AppService {
   }
 
   getPort(): number {
-    return this.configService.get<number>('PORT', 3002);
+    return this.configService.get<number>('PORT', 3001);
   }
 }

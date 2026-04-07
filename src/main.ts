@@ -12,6 +12,6 @@ async function bootstrap() {
   app.enableCors({
     origin: '*', // Permite solicitações de qualquer origem. Em produção, é recomendado restringir isso a domínios específicos.
   });
-  await app.listen(process.env.PORT ?? 3002);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

@@ -3,32 +3,42 @@
 // Módulo: é uma classe decorada com `@Module` que organiza os componentes da aplicação.
 // O módulo raiz da aplicação, onde os controladores, serviços e outros módulos são registrados.
 
-import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
-import { OrganizatiosnController } from './modules/organizatiosn/organizatiosn.controller';
-import { MembershipsModule } from './modules/memberships/memberships.module';
-import { ChatModule } from './modules/chat/chat.module';
+import { TenantMiddleware } from './common/middleware/tenant.middleware';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Torna o módulo disponível em toda a app
+      // ConfigModule: é um módulo que carrega as variáveis de ambiente do arquivo .env e as torna acessíveis em toda a aplicação.
+      isGlobal: true, // Torna o módulo disponível em toda a app, se false
       envFilePath: '.env', // Caminho para o arquivo .env
+      validate: (config) => {
+        // Validação forte (recomendado)
+        if (!config.JWT_SECRET) throw new Error('JWT_SECRET is missing');
+        if (!config.DATABASE_URL) throw new Error('DATABASE_URL is missing');
+        return config;
+      },
     }),
     PrismaModule,
     AuthModule,
     UsersModule,
     OrganizationsModule,
-    MembershipsModule,
-    ChatModule,
   ], // Módulos de banco de dados, autenticação, etc.
-  controllers: [AppController, OrganizatiosnController], // Controladores que lidam com as rotas e solicitações HTTP.
+  controllers: [AppController], // Controladores que lidam com as rotas e solicitações HTTP.
   providers: [AppService], // Serviços que contêm a lógica de negócios e são injetados nos controladores.
 })
-export class AppModule {}
+export class AppModule {
+  // O método `configure` é usado para aplicar middlewares a rotas específicas ou globalmente.
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(TenantMiddleware) // Aplica o TenantMiddleware
+      .forRoutes({ path: '*', method: RequestMethod.ALL }); // Aplica a todas as rotas e métodos HTTP
+  }
+}

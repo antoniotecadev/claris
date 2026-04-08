@@ -1,31 +1,27 @@
 // src/common/middleware/tenant.middleware.ts
 
-// Middleware: é uma função que tem acesso ao objecto de solicitação (req), 
-// resposta (res) e à próxima função de middleware no ciclo de solicitação-resposta da aplicação. 
-// O TenantMiddleware é responsável por extrair o ID da organização do header da requisição e garantir que ele esteja presente para rotas específicas, como as relacionadas ao dashboard.
+// Middleware: é uma função que tem acesso ao objecto de solicitação (req),
+// resposta (res) e à próxima função de middleware no ciclo de solicitação-resposta da aplicação.
+// O TenantMiddleware é responsável por extrair o organizationId do token JWT (injetado em req.user pelo JwtStrategy) e adicioná-lo a req.organizationId para que os controladores possam usar essa informação para filtrar dados por organização.
+// Se a rota for protegida (ex: /dashboard) e o token não contiver o organizationId, ele lança uma ForbiddenException.
 
-import {
-  Injectable,
-  NestMiddleware,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, NestMiddleware, ForbiddenException } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
 @Injectable()
 export class TenantMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    // O ID da organização deve vir no Header para chamadas de API
-    // ou ser extraído do JWT pelo Membro B mais tarde
-    const organizationId = req.headers['x-organization-id'];
+    const user = req['user'] as { organizationId?: string } | undefined; // Injetado pelo Passport/JWT Strategy
 
-    if (!organizationId && req.path.includes('/dashboard')) {
-      throw new BadRequestException(
-        'Organization ID is required for this route',
+    // Se a rota for protegida e o user não tiver o organizationId no token
+    if (user && user.organizationId) {
+      req['organizationId'] = user.organizationId;
+    } else if (req.path.includes('/dashboard')) {
+      throw new ForbiddenException(
+        'Acesso negado: Nenhuma igreja selecionada.',
       );
     }
 
-    // Injetamos o ID no objecto da request para que os controllers o usem
-    req['organizationId'] = organizationId;
-    next();
+    next(); // Continua para o próximo middleware ou controlador
   }
 }

@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: church-saas-db
-    restart: unless-stopped\l\dt
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}

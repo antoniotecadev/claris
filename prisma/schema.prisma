@@ -13,6 +13,7 @@ datasource db {
   // url: esta definida no prisma.config.ts 
 }
 
+// User: representa os usuários do sistema, com campos para email, senha, nome de exibição, avatar, autenticação 2FA e relacionamentos com organizações e mensagens.
 model User {
   id            String       @id @default(cuid())
   email         String       @unique
@@ -28,6 +29,7 @@ model User {
   messages      Message[]
 }
 
+// Organization: representa as organizações (igrejas) no sistema, com campos para nome, slug, logo e relacionamentos com membros, eventos e mensagens.
 model Organization {
   id          String       @id @default(cuid())
   name        String
@@ -39,6 +41,7 @@ model Organization {
   messages    Message[]
 }
 
+// Membership: representa a associação de um usuário a uma organização, com campos para o papel do membro e a data de adesão. Inclui relacionamentos com User e Organization.
 model Membership {
   id             String       @id @default(cuid())
   userId         String
@@ -51,6 +54,7 @@ model Membership {
   @@unique([userId, organizationId])
 }
 
+// Role: enumeração para os diferentes papéis que um membro pode ter dentro de uma organização, como SUPER_ADMIN, PASTOR, LEADER e MEMBER.
 enum Role {
   SUPER_ADMIN
   PASTOR
@@ -58,6 +62,7 @@ enum Role {
   MEMBER
 }
 
+// Event: representa os eventos organizados pelas igrejas, com campos para título, descrição, data e relacionamentos com a organização.
 model Event {
   id             String       @id @default(cuid())
   organizationId String
@@ -68,6 +73,7 @@ model Event {
   organization   Organization @relation(fields: [organizationId], references: [id])
 }
 
+// Message: representa as mensagens enviadas pelos usuários, com campos para o conteúdo, data de criação e relacionamentos com o remetente e a organização.
 model Message {
   id             String       @id @default(cuid())
   senderId       String

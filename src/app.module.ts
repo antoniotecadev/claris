@@ -11,6 +11,9 @@ import { PrismaModule } from './modules/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
+import { OrganizatiosnController } from './modules/organizatiosn/organizatiosn.controller';
+import { MembershipsModule } from './modules/memberships/memberships.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
@@ -22,8 +25,10 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
     AuthModule,
     UsersModule,
     OrganizationsModule,
+    MembershipsModule,
+    ChatModule,
   ], // Módulos de banco de dados, autenticação, etc.
-  controllers: [AppController], // Controladores que lidam com as rotas e solicitações HTTP.
+  controllers: [AppController, OrganizatiosnController], // Controladores que lidam com as rotas e solicitações HTTP.
   providers: [AppService], // Serviços que contêm a lógica de negócios e são injetados nos controladores.
 })
 export class AppModule {}

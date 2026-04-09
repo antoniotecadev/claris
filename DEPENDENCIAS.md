@@ -62,6 +62,15 @@ Para "hashear" as senhas dos usuários (nunca salve senhas em texto puro!).
 ### `@prisma/client`
 O ORM para interagir com o banco de dados.
 
+### `@prisma/cli`
+A CLI do Prisma, usada para gerenciar migrações e seeders.
+
+### `@prisma/adapter-pg`
+Adaptador para PostgreSQL, necessário para usar o Prisma com este banco de dados específico.
+
+### `tsx`
+Permite executar scripts TypeScript diretamente, como o script de seed do Prisma, sem precisar compilar manualmente.
+
 ---
 
 ## 📊 Tabela Resumo Rápida
@@ -84,6 +93,9 @@ O ORM para interagir com o banco de dados.
 | `passport-local` | Auth | Estratégia de autenticação local |
 | `bcrypt` | Segurança | Hash de senhas |
 | `@prisma/client` | Database | ORM para banco de dados |
+| `@prisma/cli` | Database | CLI do Prisma |
+| `@prisma/adapter-pg` | Database | Adaptador para PostgreSQL |
+| `tsx` | Database | Executar scripts TypeScript diretamente |
 
 ---
 

@@ -11,16 +11,10 @@ import { Request, Response, NextFunction } from 'express';
 @Injectable()
 export class TenantMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    const user = req['user'] as { organizationId?: string } | undefined; // Injetado pelo Passport/JWT Strategy
 
-    // Se a rota for protegida e o user não tiver o organizationId no token
-    if (user && user.organizationId) {
-      req['organizationId'] = user.organizationId;
-    } else if (req.path.includes('/dashboard')) {
-      throw new ForbiddenException(
-        'Acesso negado: Nenhuma igreja selecionada.',
-      );
-    }
+    console.log('--- MIDDLEWARE ACIONADO ---');
+    console.log('Caminho da rota:', req.path);
+    console.log('Método HTTP:', req.method);
 
     next(); // Continua para o próximo middleware ou controlador
   }

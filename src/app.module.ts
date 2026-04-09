@@ -26,10 +26,10 @@ import { TenantMiddleware } from './common/middleware/tenant.middleware';
         return config;
       },
     }),
-    PrismaModule,
-    AuthModule,
-    UsersModule,
-    OrganizationsModule,
+    PrismaModule, // Banco de dados
+    AuthModule, // Login/JWT
+    UsersModule, // Gerenciamento de usuários
+    OrganizationsModule, // Multi-tenancy (Igrejas)
   ], // Módulos de banco de dados, autenticação, etc.
   controllers: [AppController], // Controladores que lidam com as rotas e solicitações HTTP.
   providers: [AppService], // Serviços que contêm a lógica de negócios e são injetados nos controladores.

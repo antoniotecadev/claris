@@ -17,8 +17,4 @@ export class AppService {
       version: '1.0.0',
     };
   }
-
-  getPort(): number {
-    return this.configService.get<number>('PORT', 3001);
-  }
 }

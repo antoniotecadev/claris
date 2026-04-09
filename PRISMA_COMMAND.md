@@ -6,6 +6,8 @@ npx prisma db push: empurra as alterações diretamente (sem criar migração - 
 npx prisma generate: só gera o client (sem migrar)
 npx prisma migrate deploy: usado em produção
 npx prisma db pull: puxa o estado actual do banco de dados para o schema.prisma (útil quando o banco é actualizado por outros meios)
+npx prisma db seed: executa o script de seed definido no prisma.config.ts
+npx prisma studio: abre a interface gráfica para explorar o banco de dados
 
 dev: serve para desenvolvimento, aplicando migrações e gerando o client
 deploy: usado em produção, apenas aplicando migrações já criadas (sem criar novas migrações)

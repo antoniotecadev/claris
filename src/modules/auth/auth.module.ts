@@ -8,6 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthService } from './auth.service';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [AuthController], // Controlador que lida com as rotas de autenticação (login, registro, etc.)
-  providers: [JwtStrategy], // Registra a estratégia JWT para autenticação
+  providers: [JwtStrategy, AuthService], // Registra a estratégia JWT para autenticação
   exports: [JwtModule], // Exportas para que outros módulos usem o JWT
 })
 export class AuthModule {}

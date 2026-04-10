@@ -10,6 +10,7 @@ import { AuthController } from './auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { PrismaModule } from '../prisma/prisma.module';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { PrismaModule } from '../prisma/prisma.module';
     PrismaModule, // Importa o módulo Prisma para acessar o banco de dados
   ],
   controllers: [AuthController], // Controlador que lida com as rotas de autenticação (login, registro, etc.)
-  providers: [JwtStrategy, AuthService], // Registra a estratégia JWT para autenticação
+  providers: [JwtStrategy, GoogleStrategy, AuthService], // Registra a estratégia JWT para autenticação
   exports: [JwtModule], // Exportas para que outros módulos usem o JWT
 })
 export class AuthModule {}

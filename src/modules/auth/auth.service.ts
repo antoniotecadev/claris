@@ -11,22 +11,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async getToken() {
-    // Pega o ID da org que foi criada no seed!
-    const payload = {
-      sub: 'cmnrm4bdf0002nryvm273qi39', // ID do usuário (sub é um campo padrão em JWT para identificar o sujeito)
-      displayName: 'Admin Teste', // Nome do usuário para exibir no frontend
-      email: 'admin@teste.com',
-      organizationId: 'cmnrm4bck0000nryv30yiqrn2',
-      role: 'PASTOR',
-    };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
-  }
-
   // No AuthService (escrito pelo Membro B)
-  async validateUser(loginDto: LoginDto): Promise<any> {
+  async loginWithEmailAndPassword(
+    loginDto: LoginDto,
+  ): Promise<JwtPayload | null> {
     const { email, password } = loginDto;
     // 1. O B procura o user no Prisma (usando o teu PrismaService)
     // 2. O B valida a senha com bcrypt
@@ -40,6 +28,44 @@ export class AuthService {
       email: 'john.doe@example.com',
       organizationId: 'org-123',
       role: 'PASTOR',
+    };
+  }
+
+  // auth.service.ts
+
+  async loginWithGoogle(googleUser: any): Promise<JwtPayload | null> {
+    // Verifica se o usuário já existe no banco de dados usando o email do Google
+    let user = await this.prisma.user.findUnique({
+      where: { email: googleUser.email },
+    });
+
+    // Se o usuário não existir, cria um novo registro no banco de dados
+    if (!user) {
+      user = await this.prisma.user.create({
+        data: {
+          email: googleUser.email,
+          displayName: googleUser.displayName,
+          avatarUrl: googleUser.avatarUrl,
+          googleId: googleUser.googleId,
+        },
+      });
+    }
+
+    // Busca a associação do usuário com uma organização (membership)
+    const membership = await this.prisma.membership.findFirst({
+      where: { userId: user.id },
+    });
+
+    if (!membership) {
+      return null; // Retorna null se o usuário não tiver uma associação com uma organização
+    }
+
+    return {
+      sub: user.id,
+      displayName: user.displayName,
+      email: user.email,
+      organizationId: membership.organizationId,
+      role: membership.role,
     };
   }
 

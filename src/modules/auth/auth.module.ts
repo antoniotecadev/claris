@@ -9,6 +9,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthService } from './auth.service';
         signOptions: { expiresIn: '1d' }, // Define a expiração do token para 1 dia
       }),
     }),
+    PrismaModule, // Importa o módulo Prisma para acessar o banco de dados
   ],
   controllers: [AuthController], // Controlador que lida com as rotas de autenticação (login, registro, etc.)
   providers: [JwtStrategy, AuthService], // Registra a estratégia JWT para autenticação

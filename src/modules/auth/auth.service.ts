@@ -1,15 +1,21 @@
-import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+  ) {}
 
   async getToken() {
     // Pega o ID da org que foi criada no seed!
     const payload = {
       sub: 'cmnrm4bdf0002nryvm273qi39', // ID do usuário (sub é um campo padrão em JWT para identificar o sujeito)
+      displayName: 'Admin Teste', // Nome do usuário para exibir no frontend
       email: 'admin@teste.com',
       organizationId: 'cmnrm4bck0000nryv30yiqrn2',
       role: 'PASTOR',
@@ -20,22 +26,24 @@ export class AuthService {
   }
 
   // No AuthService (escrito pelo Membro B)
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(loginDto: LoginDto): Promise<any> {
+    const { email, password } = loginDto;
     // 1. O B procura o user no Prisma (usando o teu PrismaService)
     // 2. O B valida a senha com bcrypt
     // 3. O B precisa de saber em qual igreja o user está a entrar.
     // Ele busca o primeiro membership encontrado.
     // 4. ELE MONTA O OBJETO QUE TE PASSA:
 
-    return this.login({
-      sub: '', // ID do usuário (sub é um campo padrão em JWT para identificar o sujeito)
-      email: '',
-      organizationId: '',
-      role: '',
-    });
+    return {
+      sub: '123', // ID do usuário (sub é um campo padrão em JWT para identificar o sujeito)
+      displayName: 'John Doe', // Nome do usuário para exibir no frontend
+      email: 'john.doe@example.com',
+      organizationId: 'org-123',
+      role: 'PASTOR',
+    };
   }
 
-  private async login(user: JwtPayload) {
+  async login(user: JwtPayload) {
     return {
       access_token: this.jwtService.sign(user),
     };

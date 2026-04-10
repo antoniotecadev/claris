@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module'; // Onde os controladores e serviços são definidos.
+import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 // Ponto de entrada da aplicação,
@@ -11,8 +12,21 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api'); // Todas as rotas terão prefixo /api
   app.enableCors({
-    origin: '*', // Permite solicitações de qualquer origem. Em produção, é recomendado restringir isso a domínios específicos.
+    origin: 'http://localhost:3000', // Permite solicitações do frontend local
+    credentials: true, // Permite envio de cookies e credenciais
   });
+
+  app.useGlobalPipes(
+    // Aactiva a validação automática de todos os dados que chegam na API (body, query, params, etc.)
+    new ValidationPipe({
+      whitelist: true, // Remove propriedades que não estão definidas nos DTOs (Data Transfer Objects)
+      forbidNonWhitelisted: true, // Retorna um erro se houver propriedades não definidas nos DTOs
+      transform: true, // Transforma os dados de entrada para os tipos definidos nos DTOs (por exemplo, string para número)
+      transformOptions: {
+        enableImplicitConversion: true, // Permite conversão implícita de tipos, como string para número, sem precisar usar @Type() nos DTOs
+      },
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Church SaaS API')

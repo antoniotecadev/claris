@@ -22,11 +22,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  // O método validate é chamado automaticamente pelo Passport após verificar o token. 
+  // O método validate é chamado automaticamente pelo Passport após verificar o token.
   // Ele recebe o payload do token e deve retornar as informações do usuário que serão injetadas em req.user.
   async validate(payload: JwtPayload) {
     return {
       userId: payload.sub,
+      displayName: payload.displayName,
       email: payload.email,
       organizationId: payload.organizationId,
       role: payload.role,

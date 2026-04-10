@@ -10,7 +10,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api'); // Todas as rotas terão prefixo /api
+  app.setGlobalPrefix('/v1/api'); // Todas as rotas terão prefixo /v1/api
   app.enableCors({
     origin: 'http://localhost:3000', // Permite solicitações do frontend local
     credentials: true, // Permite envio de cookies e credenciais

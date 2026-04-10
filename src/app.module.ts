@@ -39,6 +39,6 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(TenantMiddleware) // Aplica o TenantMiddleware
-      .forRoutes({ path: '*', method: RequestMethod.ALL }); // Aplica a todas as rotas e métodos HTTP
+      .forRoutes({ path: '*path', method: RequestMethod.ALL }); // Aplica a todas as rotas e métodos HTTP
   }
 }

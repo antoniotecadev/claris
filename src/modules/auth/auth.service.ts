@@ -1,8 +1,15 @@
+import * as qrcode from 'qrcode';
+import * as speakeasy from 'speakeasy';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
-import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import {
+  Injectable,
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { compare } from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -11,29 +18,78 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  // No AuthService (escrito pelo Membro B)
-  async loginWithEmailAndPassword(
-    loginDto: LoginDto,
-  ): Promise<JwtPayload | null> {
+  async loginWithEmailAndPassword(loginDto: LoginDto): Promise<any | null> {
     const { email, password } = loginDto;
-    // 1. O B procura o user no Prisma (usando o teu PrismaService)
-    // 2. O B valida a senha com bcrypt
-    // 3. O B precisa de saber em qual igreja o user está a entrar.
-    // Ele busca o primeiro membership encontrado.
-    // 4. ELE MONTA O OBJETO QUE TE PASSA:
+
+    // 1. procura o user no Prisma (usando o teu PrismaService)
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        displayName: true,
+        twofa_enabled: true,
+        passwordHash: true,
+        memberships: {
+          select: {
+            role: true,
+            organizationId: true,
+          },
+        },
+      },
+    });
+
+    // 2. Se o user não existir ou não tiver senha (ex: login só com Google), retorna erro de credenciais inválidas
+    if (!user || !user.passwordHash) {
+      throw new UnauthorizedException('Credenciais inválidas');
+    }
+    // 3. valida a senha com bcrypt
+    const isPasswordValid = await compare(password, user.passwordHash!);
+
+    // 4. Se a senha for inválida, retorna erro de credenciais inválidas
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Credenciais inválidas');
+    }
+
+    // 5. Se o usuário tem 2FA activado
+    if (user?.twofa_enabled) {
+      const tempToken = await this.getTempToken(user.id); // Gerar um token temporário para 2FA
+      return {
+        success: true,
+        require2FA: true,
+        tempToken,
+        message: 'Código de verificação de dois factores necessário',
+      };
+    }
+
+    // 6. Se a senha for válida e 2FA não estiver activado, gera o token JWT final e retorna as informações do usuário
+    return this.generateFinalLoginResponse({
+      userId: user.id,
+      displayName: user.displayName,
+      email: user.email,
+      organizationId: user.memberships[0].organizationId, // Assumindo que o usuário tem pelo menos uma associação
+      role: user.memberships[0].role, // Assumindo que o usuário tem pelo menos uma associação
+    });
+  }
+
+  // Método auxiliar - Gera a resposta final de login
+  private async generateFinalLoginResponse(user: JwtPayload) {
+    const token = await this.sign(user);
 
     return {
-      sub: '123', // ID do usuário (sub é um campo padrão em JWT para identificar o sujeito)
-      displayName: 'John Doe', // Nome do usuário para exibir no frontend
-      email: 'john.doe@example.com',
-      organizationId: 'org-123',
-      role: 'PASTOR',
+      success: true,
+      user: {
+        ...user,
+        token: {
+          ...token,
+          expiresIn: 24 * 60 * 60,
+          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        },
+      },
     };
   }
 
-  // auth.service.ts
-
-  async loginWithGoogle(googleUser: any): Promise<JwtPayload | null> {
+  async loginWithGoogle(googleUser: any): Promise<any | null> {
     // Verifica se o usuário já existe no banco de dados usando o email do Google
     let user = await this.prisma.user.findUnique({
       where: { email: googleUser.email },
@@ -57,26 +113,202 @@ export class AuthService {
     });
 
     if (!membership) {
-      return null; // Retorna null se o usuário não tiver uma associação com uma organização
+      throw new BadRequestException(
+        'Usuário não está associado a nenhuma organização',
+      );
     }
 
-    return {
-      sub: user.id,
+    // Gerar o token JWT usando o AuthService
+    const token = await this.sign({
+      userId: user.id,
       displayName: user.displayName,
       email: user.email,
       organizationId: membership.organizationId,
       role: membership.role,
+    });
+
+    return token;
+  }
+
+  async generate2FASecret(userId: string, email: string) {
+    // 1. Gera um segredo 2FA usando speakeasy
+    const secret = speakeasy.generateSecret({
+      name: `ChurchSaas (${email})`, // vai aparecer no app autenticador
+      length: 20, // comprimento do segredo ex: 20 caracteres, o padrão é 32, mas 20 é suficiente para segurança e mais fácil de armazenar
+    });
+
+    // 2. Guarda o segredo no banco de dados (Prisma) associado ao usuário
+    // base32 é o formato mais comum para armazenar o segredo
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { twofa_secret: secret.base32 },
+    });
+
+    // 3. Gera QR Code com a URL otpauth (que é usada pelos apps autenticadores como Google Authenticator ou Authy)
+    // otpauth_url é a URL que os apps autenticadores usam para configurar a conta
+    // ! indica que estamos certos de que otpauth_url não é undefined
+    const qrCodeUrl = await qrcode.toDataURL(secret.otpauth_url!);
+
+    return {
+      secret: secret.base32,
+      qrCodeUrl, // URL do QR Code para o frontend exibir e o usuário escanear com o app autenticador
     };
   }
 
-  async login(user: JwtPayload) {
+  async enable2FA(userId: string, code: string) {
+    // 1. Busca o usuário no banco de dados para obter o segredo 2FA armazenado
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    // 2. Se o usuário não tiver um segredo 2FA gerado, retorna erro indicando que o segredo deve ser gerado primeiro
+    if (!user?.twofa_secret) {
+      throw new BadRequestException('Primeiro gere o segredo 2FA');
+    }
+
+    // 3. Verifica o código TOTP usando o segredo armazenado
+    const isValid = speakeasy.totp.verify({
+      secret: user.twofa_secret,
+      encoding: 'base32',
+      token: code, // código fornecido pelo usuário para verificação
+      window: 2, // permite uma janela de tempo para compensar possíveis atrasos (2 passos de 30s = 1 minuto)
+    });
+
+    // 4. Se o código for inválido, retorna erro indicando que o código é inválido
+    if (!isValid) {
+      throw new BadRequestException('Código inválido');
+    }
+
+    // 5. Se o código for válido, actualiza o usuário no banco de dados para marcar o 2FA como activado
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { twofa_enabled: true },
+    });
+
+    return { success: true, message: '2FA activado com sucesso' };
+  }
+
+  async verify2FACodeAndLogin(tempToken: string, code: string) {
+    // 1. Verifica o token temporário para garantir que é válido e extrair o userId
+    const payload = this.jwtService.verify(tempToken);
+
+    // 2. Verifica se o token é do tipo correto (2fa_pending)
+    if (payload.type !== '2fa_pending') {
+      throw new UnauthorizedException('Token inválido');
+    }
+
+    // 3. Busca o usuário no banco de dados usando o userId do payload
+    const user = await this.prisma.user.findUnique({
+      where: { id: payload.userId },
+    });
+
+    // 4. Se o usuário não existir, retorna erro de usuário não encontrado
+    if (!user) throw new UnauthorizedException('Usuário não encontrado');
+
+    // 5. Valida o código 2FA
+    await this.verify2FACode(user.id, code);
+
+    return this.generateFinalLoginResponse({
+      userId: user.id,
+      displayName: user.displayName,
+      email: user.email,
+      organizationId: payload.organizationId,
+      role: payload.role,
+    });
+  }
+
+  private async verify2FACode(userId: string, code: string) {
+    // 1. Busca o usuário no banco de dados para obter o segredo 2FA e verificar se o 2FA está activado
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    // 2. Se o usuário não tiver 2FA activado ou não tiver segredo, retorna erro indicando que o 2FA não está activado
+    if (!user?.twofa_enabled || !user.twofa_secret) {
+      throw new BadRequestException('2FA não está activado');
+    }
+
+    // 3. Verifica o código TOTP usando o segredo armazenado
+    const isValid = speakeasy.totp.verify({
+      secret: user.twofa_secret,
+      encoding: 'base32',
+      token: code,
+      window: 2, // permite 2 códigos antes e depois (tolerância de tempo)
+    });
+
+    // 4. Se o código for inválido, retorna erro indicando que o código é inválido
+    if (!isValid) {
+      throw new UnauthorizedException('Código 2FA inválido');
+    }
+
+    return true;
+  }
+
+  async disable2FA(userId: string, code: string, password?: string) {
+    // 1. Busca o usuário no banco de dados para obter o segredo 2FA, verificar se o 2FA está activado e obter a senha hash para validação opcional da senha
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        twofa_enabled: true,
+        twofa_secret: true,
+        passwordHash: true,
+      },
+    });
+
+    // 2. Se o usuário não tiver 2FA activado ou não tiver segredo, retorna erro indicando que o 2FA não está activado
+    if (!user?.twofa_enabled) {
+      throw new BadRequestException('2FA não está activado');
+    }
+
+    // 3. Verifica o código TOTP usando o segredo armazenado
+    const isCodeValid = speakeasy.totp.verify({
+      secret: user.twofa_secret!,
+      encoding: 'base32',
+      token: code,
+      window: 2,
+    });
+
+    // 4. Se o código for inválido, retorna erro indicando que o código é inválido
+    if (!isCodeValid) {
+      throw new UnauthorizedException('Código 2FA inválido');
+    }
+
+    // 5. Se o usuário tiver uma senha (login com email/senha), valida a senha fornecida para confirmar a identidade do usuário antes de desactivar o 2FA
+    if (password) {
+      const isPasswordValid = await compare(password, user.passwordHash!);
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Senha incorreta');
+      }
+    }
+
+    // 6. Se o código (e opcionalmente a senha) forem válidos, actualiza o usuário no banco de dados para desactivar o 2FA e remover o segredo
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        twofa_enabled: false,
+        twofa_secret: null,
+      },
+    });
+
+    // 7. Retorna uma resposta indicando que o 2FA foi desactivado com sucesso
+    return { success: true, message: '2FA desativado com sucesso' };
+  }
+
+  private async sign(user: JwtPayload) {
+    const token = this.jwtService.sign(user);
     return {
-      access_token: this.jwtService.sign(user),
+      access_token: token,
     };
+  }
+
+  private async getTempToken(userId: string) {
+    // Gera um token JWT temporário para 2FA, com um tipo (2fa_pending) específico e curta duração
+    const tempToken = this.jwtService.sign(
+      { userId, type: '2fa_pending' },
+      { expiresIn: '10m' }, // Token temporário dura 10 minutos
+    );
+    return tempToken;
   }
 
   // Usar apenas para validar o token fora do controle de autenticação, como em um guard
-  async validateToken(token: string) {
+  private async validateToken(token: string) {
     try {
       const decoded = this.jwtService.verify(token);
       return decoded; // Retorna os dados decodificados do token, como userId, email, etc.

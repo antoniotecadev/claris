@@ -11,6 +11,9 @@ import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { Enable2FADto } from './dto/2fa.dto';
+import type { JwtPayload } from './interfaces/jwt-payload.interface';
+import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 
 @Controller('auth') // Define a rota base para este controlador, ou seja, todas as rotas aqui serão prefixadas com /auth
 export class AuthController {
@@ -18,33 +21,9 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Res() res: any) {
-    // O método login recebe as credenciais do usuário (email e senha) no corpo da requisição, chama o AuthService para validar as credenciais e gerar um token JWT, e retorna a resposta com o token e as informações do usuário.
-    const user = await this.authService.loginWithEmailAndPassword(loginDto);
-
-    // Se as credenciais forem inválidas, retornar um erro (401 Unauthorized)
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    // Gerar o token JWT usando o AuthService
-    const token = await this.authService.login(user);
-
-    // Se token for inválido, retornar um erro (500 Internal Server Error)
-    if (!token) {
-      return res.status(500).json({ message: 'Could not generate token' });
-    }
-
-    return res.json({
-      success: true,
-      user: {
-        ...user,
-        token: {
-          ...token,
-          expiresIn: 24 * 60 * 60,
-          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
-        },
-      },
-    });
+    // O método login recebe as credenciais do usuário (email e senha) no corpo da requisição.
+    const result = await this.authService.loginWithEmailAndPassword(loginDto);
+    return res.status(200).json({ result });
   }
 
   // Inicia o login com Google
@@ -59,29 +38,48 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleCallback(@Req() req: any, @Res() res: any) {
     try {
-      const user = await this.authService.loginWithGoogle(req.user);
-
-      // Se as credenciais forem inválidas, retornar um erro (401 Unauthorized)
-      if (!user) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-
-      // Gerar o token JWT usando o AuthService
-      const token = await this.authService.login(user);
+      // O Passport coloca as informações do usuário autenticado no req.user
+      const token = await this.authService.loginWithGoogle(req.user);
 
       // Redireciona para o frontend com token (ou retorna JSON se for API pura)
       return res.redirect(
-        `${process.env.FRONTEND_URL}/auth/callback?token=${token.access_token}&displayName=${encodeURIComponent(user.displayName)}&email=${encodeURIComponent(user.email)}`,
+        `${process.env.FRONTEND_URL}/auth/callback?token=${token.access_token}`,
       );
-    } catch (error) {
-      return res.redirect(`${process.env.FRONTEND_URL}/login?error=failed`);
+    } catch (error: any) {
+      console.error('Erro no callback do Google:', error);
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/auth/login?error=failed&message=${encodeURIComponent(error.message)}`,
+      );
     }
   }
 
-  @Get('profile')
+  // Gerar QR Code para activar 2FA
+  @Post('2fa/enable')
   @UseGuards(JwtAuthGuard)
-  async profile(@Req() req: any) {
-    // Token validado automaticamente pelo guard
-    return req.user;
+  async enable2FA(@CurrentUser() user: JwtPayload) {
+    return this.authService.generate2FASecret(user.userId, user.email);
+  }
+
+  // Confirmar e activar o 2FA
+  @Post('2fa/confirm')
+  @UseGuards(JwtAuthGuard)
+  async confirm2FA(@CurrentUser() user: JwtPayload, @Body() dto: Enable2FADto) {
+    return this.authService.enable2FA(user.userId, dto.code);
+  }
+
+  // Desactivar 2FA
+  @Post('2fa/disable')
+  @UseGuards(JwtAuthGuard)
+  async disable2FA(
+    @CurrentUser() user: JwtPayload,
+    @Body() dto: { code: string },
+  ) {
+    return this.authService.disable2FA(user.userId, dto.code);
+  }
+
+  // Verificar código 2FA durante o login
+  @Post('2fa/verify')
+  async verify2FALogin(@Body() body: { tempToken: string; code: string }) {
+    return this.authService.verify2FACodeAndLogin(body.tempToken, body.code);
   }
 }

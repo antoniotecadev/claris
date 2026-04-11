@@ -52,6 +52,15 @@ Esta é uma estratégia de autenticação para o Passport que permite a autentic
 ### `passport-local` (Estratégia local)
 Esta é uma estratégia de autenticação para o Passport que permite a autenticação usando um nome de usuário e senha. É comumente usada para autenticação tradicional em aplicações web.
 
+### `passport-google-oauth20` (Estratégia Google OAuth 2.0)
+Esta é uma estratégia de autenticação para o Passport que permite a autenticação usando a conta do Google. É útil para permitir que os usuários façam login usando suas credenciais do Google, proporcionando uma experiência de login mais rápida e conveniente.
+
+### `speakeasy` (Autenticação de dois factores)
+Esta biblioteca é usada para implementar autenticação de dois factores (2FA) em aplicações NestJS. Ela suporta a geração de códigos TOTP (Time-based One-Time Password) e HOTP (HMAC-based One-Time Password), que são comumente usados para 2FA.
+
+### `qrcode` (Gerar QR Codes)
+Esta biblioteca é usada para gerar QR Codes, que podem ser usados para facilitar a configuração de autenticação de dois factores (2FA) com aplicativos autenticadores como Google Authenticator ou Authy.
+
 ### `bcrypt`
 Para "hashear" as senhas dos usuários (nunca salve senhas em texto puro!).
 

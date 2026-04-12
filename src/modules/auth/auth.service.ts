@@ -1,3 +1,5 @@
+// src/modules/auth/auth.service.ts
+
 import * as qrcode from 'qrcode';
 import * as speakeasy from 'speakeasy';
 import { JwtService } from '@nestjs/jwt';
@@ -30,12 +32,6 @@ export class AuthService {
         displayName: true,
         twofa_enabled: true,
         passwordHash: true,
-        memberships: {
-          select: {
-            role: true,
-            organizationId: true,
-          },
-        },
       },
     });
 
@@ -62,13 +58,11 @@ export class AuthService {
       };
     }
 
-    // 6. Se a senha for válida e 2FA não estiver activado, gera o token JWT final e retorna as informações do usuário
-    return this.generateFinalLoginResponse({
+    // 6. Se a senha for válida e 2FA não estiver activado, devolve as igrejas para seleção no frontend.
+    return this.buildOrganizationSelectionResponse({
       userId: user.id,
-      displayName: user.displayName,
       email: user.email,
-      organizationId: user.memberships[0].organizationId, // Assumindo que o usuário tem pelo menos uma associação
-      role: user.memberships[0].role, // Assumindo que o usuário tem pelo menos uma associação
+      displayName: user.displayName,
     });
   }
 
@@ -107,27 +101,13 @@ export class AuthService {
       });
     }
 
-    // Busca a associação do usuário com uma organização (membership)
-    const membership = await this.prisma.membership.findFirst({
-      where: { userId: user.id },
-    });
-
-    if (!membership) {
-      throw new BadRequestException(
-        'Usuário não está associado a nenhuma organização',
-      );
-    }
-
-    // Gerar o token JWT usando o AuthService
-    const token = await this.sign({
+    // Login Google segue o mesmo fluxo do login por senha:
+    // primeiro seleciona a organização, depois emite o JWT final.
+    return this.buildOrganizationSelectionResponse({
       userId: user.id,
-      displayName: user.displayName,
       email: user.email,
-      organizationId: membership.organizationId,
-      role: membership.role,
+      displayName: user.displayName,
     });
-
-    return token;
   }
 
   async generate2FASecret(userId: string, email: string) {
@@ -206,12 +186,90 @@ export class AuthService {
     // 5. Valida o código 2FA
     await this.verify2FACode(user.id, code);
 
+    return this.buildOrganizationSelectionResponse({
+      userId: user.id,
+      email: user.email,
+      displayName: user.displayName,
+    });
+  }
+
+  async selectOrganizationAndLogin(
+    selectionToken: string,
+    organizationId: string,
+  ) {
+
+    // 1. Verifica o token de seleção para garantir que é válido e extrair o userId
+    const payload = this.jwtService.verify(selectionToken);
+
+    // 2. Verifica se o token é do tipo correto (organization_selection_pending)
+    if (payload.type !== 'organization_selection_pending') {
+      throw new UnauthorizedException('Token de seleção inválido');
+    }
+
+    // 3. Busca o usuário no banco de dados usando o userId do payload
+    const membership = await this.prisma.membership.findFirst({
+      where: {
+        userId: payload.userId,
+        organizationId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            displayName: true,
+          },
+        },
+      },
+    });
+
+    // 4. Se não encontrar uma associação válida entre o usuário e a organização, retorna erro de acesso negado
+    if (!membership) {
+      throw new UnauthorizedException(
+        'Usuário não pertence a esta organização',
+      );
+    }
+
+    // 5. Se a associação for válida, gera um token JWT final com o organizationId e retorna os dados do usuário e da organização para o frontend.
     return this.generateFinalLoginResponse({
+      userId: membership.user.id,
+      displayName: membership.user.displayName,
+      email: membership.user.email,
+      organizationId: membership.organizationId,
+      role: membership.role,
+    });
+  }
+
+  async getOrganizationOptions(selectionToken: string) {
+
+    // 1. Verifica o token de seleção para garantir que é válido e extrair o userId
+    const payload = this.jwtService.verify(selectionToken);
+
+    // 2. Verifica se o token é do tipo correto (organization_selection_pending)
+    if (payload.type !== 'organization_selection_pending') {
+      throw new UnauthorizedException('Token de seleção inválido');
+    }
+
+    // 3. Busca o usuário no banco de dados usando o userId do payload
+    const user = await this.prisma.user.findUnique({
+      where: { id: payload.userId },
+      select: {
+        id: true,
+        email: true,
+        displayName: true,
+      },
+    });
+
+    // 4. Se o usuário não existir, retorna erro de usuário não encontrado
+    if (!user) {
+      throw new UnauthorizedException('Usuário não encontrado');
+    }
+
+    // 5. Retorna as opções de organizações associadas ao usuário para o frontend exibir na tela de seleção de organização.
+    return this.buildOrganizationSelectionResponse({
       userId: user.id,
       displayName: user.displayName,
       email: user.email,
-      organizationId: payload.organizationId,
-      role: payload.role,
     });
   }
 
@@ -305,6 +363,66 @@ export class AuthService {
       { expiresIn: '10m' }, // Token temporário dura 10 minutos
     );
     return tempToken;
+  }
+
+  private async getOrganizationSelectionToken(userId: string) {
+
+    // Gera um token JWT para a seleção de organização, com um tipo específico (organization_selection_pending) e curta duração
+    return this.jwtService.sign(
+      {
+        userId,
+        type: 'organization_selection_pending',
+      },
+      { expiresIn: '30m' },
+    );
+  }
+
+  private async buildOrganizationSelectionResponse(user: {
+    userId: string;
+    email: string;
+    displayName: string;
+  }) {
+
+    // 1. Busca as organizações associadas ao usuário para que o frontend possa exibir as opções de seleção de organização
+    const memberships = await this.prisma.membership.findMany({
+      where: { userId: user.userId },
+      include: {
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            logoUrl: true,
+          },
+        },
+      },
+      orderBy: { joinedAt: 'asc' },
+    });
+
+    // 2. Se o usuário não estiver associado a nenhuma organização, retorna um erro indicando que o usuário precisa ser associado a pelo menos uma organização para fazer login
+    if (!memberships.length) {
+      throw new BadRequestException(
+        'Usuário não está associado a nenhuma organização',
+      );
+    }
+
+    // 3. Se o usuário tiver associações com organizações, gera um token de seleção de organização e retorna os dados do usuário e as opções de organizações para o frontend exibir na tela de seleção de organização.
+    const selectionToken = await this.getOrganizationSelectionToken(user.userId);
+
+    // 4. O frontend vai usar esse token para fazer a chamada de seleção de organização depois que o usuário escolher a organização na tela de seleção. O token de seleção é necessário para garantir que apenas usuários autenticados possam acessar a rota de seleção de organização e para identificar qual usuário está fazendo a seleção. O token de seleção tem um tipo específico (organization_selection_pending) para que o backend possa validar que é um token válido para essa etapa do processo de login.
+    return {
+      success: true,
+      requireOrganizationSelection: true, // indica ao frontend que é necessário mostrar a tela de seleção de organização ex: frontend pode usar isso para decidir se redireciona para a tela de seleção de organização ou para a tela principal da aplicação
+      selectionToken,
+      user,
+      organizations: memberships.map((membership) => ({
+        organizationId: membership.organization.id,
+        name: membership.organization.name,
+        slug: membership.organization.slug,
+        logoUrl: membership.organization.logoUrl,
+        role: membership.role, // opcional: pode ser útil para o frontend saber o papel do usuário em cada organização para exibir opções diferentes ou destacar a organização atual, etc.
+      })),
+    };
   }
 
   // Usar apenas para validar o token fora do controle de autenticação, como em um guard

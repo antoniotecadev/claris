@@ -1,5 +1,6 @@
 import Image from "next/image";
 import igreja from "@/assets/images/unnamed.png"
+import Conf from "./conf";
 
 export default function Hero() {
     return (
@@ -26,6 +27,8 @@ export default function Hero() {
                     <Image src={igreja} alt="Igreja"  className="rotate-2 rounded-2xl" />
                 </div>
             </div>
+        <Conf />
         </section>
+
     )
 }

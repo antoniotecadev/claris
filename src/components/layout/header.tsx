@@ -30,15 +30,15 @@ function NavLink({ href, children, className }: NavLinkProps) {
 export default function Header() {
     return (
         <>
-            <header className=' bg-white text-black py-4 border-b-[1px] border-zinc-200  shadow-2xl'>
+            <header className=' bg-white text-black py-4 border-b-[1px] border-zinc-200  shadow-2xl '>
                 <nav className='flex justify-between items-center container mx-auto' >
 
                     <Image src={icon} alt='Logo' width={50} />
 
                     <div className='flex gap-6'>
-                        <NavLink href='#'>Funcionalidades</NavLink>
-                        <NavLink href='#'>Preços</NavLink>
-                        <NavLink href='#'>Sobre</NavLink>
+                        <NavLink href='#first'>Funcionalidades</NavLink>
+                        <NavLink href='#second'>Preços</NavLink>
+                        <NavLink href='#third'>Sobre</NavLink>
                     </div>
                     <div>
                         <button id="button">

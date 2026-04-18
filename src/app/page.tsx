@@ -2,6 +2,7 @@ import Conf from "@/components/layout/conf";
 import Header from "../components/layout/header";
 import Hero from "../components/layout/hero";
 import Fun from "@/components/layout/fetuares";
+import Prices from "@/components/layout/price";
 
 
 
@@ -15,6 +16,7 @@ export default function LandingPage()
             <Hero/>
           </section>
           <Fun />
+		  <Prices />
         </div>
     </div>
   )

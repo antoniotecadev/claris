@@ -37,7 +37,7 @@ export default function Header() {
 
                     <div className='flex gap-6'>
                         <NavLink href='#first'>Funcionalidades</NavLink>
-                        <NavLink href='#second'>Preços</NavLink>
+                        <NavLink href='#preco'>Preços</NavLink>
                         <NavLink href='#third'>Sobre</NavLink>
                     </div>
                     <div>

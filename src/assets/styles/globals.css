@@ -1,130 +1,163 @@
 @import "tailwindcss";
 
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
 
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #ffffff;
+	--foreground: #171717;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+	:root {
+		--background: #0a0a0a;
+		--foreground: #ededed;
+	}
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	background-color: white;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 
 #button {
-  padding: 12.5px 30px;
-  border: 0;
-  border-radius: 10px;
-  background: linear-gradient(to top, #2B3EA2 0%, #4557BB 100%);
-  color: #ffffff;
-  font-weight: Bold;
-  transition: all 0.5s;
-  -webkit-transition: all 0.5s;
-  cursor: pointer;
+	padding: 12.5px 30px;
+	border: 0;
+	border-radius: 10px;
+	background: linear-gradient(to top, #2B3EA2 0%, #4557BB 100%);
+	color: #ffffff;
+	font-weight: Bold;
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	cursor: pointer;
 }
 
-#button:hover {
-  background: linear-gradient(to top, #2B3EA2 0%, #4557BB 100%);
-  box-shadow: 0 0 20px #6fc5ff50;
-  transform: scale(1.1);
+.bg-bt {
+	font-weight: Bold;
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	cursor: pointer;
+	border-radius: 10px;
+	background: linear-gradient(to top, #2B3EA2 0%, #4557BB 100%);
 }
 
-#button:active {
-  /*background-color: #3d94cf;*/
-  background: linear-gradient(to top, #2B3EA2 0%, #4557BB 100%);
-  transition: all 0.30s;
-  -webkit-transition: all 0.25s;
-  box-shadow: none;
-  transform: scale(0.98);
+.bg-bt2
+{
+	border: 0;
+	border-radius: 10px;
+	background-color: #E6E8EA;
+	color: #191C1E;
+	font-weight: Bold;
+	cursor: pointer;
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+}
+
+.bg-bt:hover {
+	background: linear-gradient(to top, #2B3EA2 0%, #4557BB 100%);
+	box-shadow: 0 0 20px #6fc5ff50;
+	transform: scale(1.1);
+}
+
+.bg-bt:active {
+	/*background-color: #3d94cf;*/
+	background: linear-gradient(to top, #2B3EA2 0%, #4557BB 100%);
+	transition: all 0.30s;
+	-webkit-transition: all 0.25s;
+	box-shadow: none;
+	transform: scale(0.98);
 }
 
 
 #button1 {
-  padding: 12.5px 30px;
-  border: 0;
-  border-radius: 10px;
-  background-color: #E6E8EA;
-  color: #191C1E;
-  font-weight: Bold;
-  cursor: pointer;
-  transition: all 0.5s;
-  -webkit-transition: all 0.5s;
+	padding: 12.5px 30px;
+	border: 0;
+	border-radius: 10px;
+	background-color: #E6E8EA;
+	color: #191C1E;
+	font-weight: Bold;
+	cursor: pointer;
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
 }
 
 
 .cards {
-  display: flex;
-  padding: 40px;
-  gap: 15px;
+	display: flex;
+	padding: 40px;
+	gap: 15px;
 }
 
 .cards .red {
-  background-color: #2B3EA2;
+	background-color: #2B3EA2;
 }
 
 .cards .blue {
-  background-color: #2B3EA2;
+	background-color: #2B3EA2;
 }
 
 .cards .green {
-  background-color: #2B3EA2;
+	background-color: #2B3EA2;
 }
 
 .cards .card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-  height: 400px;
-  width: 384px;
-  border-radius: 10px;
-  color: white;
-  cursor: pointer;
-  transition: 400ms transform, 400ms box-shadow, 400ms background-color;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+	height: 400px;
+	width: 384px;
+	border-radius: 10px;
+	color: white;
+	cursor: pointer;
+	transition: 400ms transform, 400ms box-shadow, 400ms background-color;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .cards .card p.tip {
-  font-size: 1em;
-  font-weight: 700;
+	font-size: 1em;
+	font-weight: 700;
 }
 
 .cards .card p.second-text {
-  font-size: 0.7em;
+	font-size: 0.7em;
 }
 
 .cards .card:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #333;
+	transform: scale(1.1);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+	background-color: rgba(255, 255, 255, 0.1);
+	color: #333;
 }
 
-.cards:hover > .card:not(:hover) {
-  filter: blur(10px);
-  transform: scale(0.9);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+.cards:hover>.card:not(:hover) {
+	filter: blur(10px);
+	transform: scale(0.9);
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 
+.my-fade {
+	animation: fade 0.2ms ease-in-out;
+}
+
+@keyframes fade {
+	from {
+		margin-top: -4rem;
+	}
+
+	to {
+		margin-top: 0;
+	}
+}

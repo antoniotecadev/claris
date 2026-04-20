@@ -44,7 +44,7 @@ export default function Fun() {
                     <h1 className="text-[#191C1E] font-bold text-4xl">
                         Built for Ministry
                     </h1>
-                    <div className="flex gap-6">
+                    <div className="flex item justify-center flex-col flex-wrap sm:flex sm:flex-row gap-6">
                         <Card
                             title="Gestão de Membros"
                             description="Centralize os dados da sua congregação com perfis detalhados e visão relacional completa."

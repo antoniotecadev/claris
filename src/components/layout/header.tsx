@@ -20,8 +20,8 @@ function NavLink({ href, children, className }: NavLinkProps) {
 			className={`
         text-[#475569]
         border-b-2 border-transparent
-        hover:text-[#4F46E5]
-        hover:border-[#4F46E5]
+        hover:text-[#4F46E5] hover:font-bold
+        hover:border-[#FBBF24]
         transition-all duration-300
     
         ${className}

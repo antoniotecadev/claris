@@ -1,8 +1,9 @@
 import { LucideIcon } from "lucide-react";
 import Image from 'next/image'
-import { Users, Calendar, MessageSquare, LayoutDashboard, Bell, Building2 } from "lucide-react";
+import { Users, Calendar, MessageSquare, LayoutDashboard, Heart, Building2 } from "lucide-react";
 import Simple from "./Simple";
 import Sister from "@/assets/images/sisters.png"
+import Rnascer from "@/assets/images/renascer.png"
 
 interface FunctCard {
 	title: string;
@@ -39,38 +40,48 @@ export default function Fun() {
 	return (
 		<div className="bg-white">
 			<div className="m-auto container">
-				<div className="flex flex-col justify-center items-center py-20 space-y-5">
-					<h5 className="text-[#1A365D] tracking-wide font-bold  text-4xl">
-						Ferramentas desenhadas para o serviço
-					</h5>
-					<div className="w-50 h-1 bg-amber-300"></div>
-					<div className="flex flex-wrap sm:flex sm:flex-row gap-6">
-						<div className="w-[70%] border-gray-400 border-solid rounded-2xl bg-[#F1F5F9] gap-2 justify-between flex p-6">
-							<div className="flex flex-col w-[50%] gap-2">
-								<div className="flex items-center justify-center w-12 h-12 bg-[#BDD6FF] rounded-2xl">
-									<Users size={24} className="text-[#1A365D]" />
+				<div className="flex flex-col">
+					<div className="flex flex-col justify-center items-center py-20 space-y-6">
+						<h5 className="text-[#1A365D] tracking-wide font-bold  text-4xl">
+							Ferramentas desenhadas para o serviço
+						</h5>
+						<div className="w-50 h-1 bg-amber-300"></div>
+						<div className="flex flex-wrap w-full justify-between sm:flex sm:flex-row gap-2">
+							<div className="w-[70%] h-93.5 border-gray-400 border-solid rounded-2xl bg-[#F1F5F9] gap-2 justify-between flex p-6 ">
+								<div className="flex flex-col w-[50%] gap-2 space-y-4">
+									<div className="flex items-center justify-center w-12 h-12 bg-[#BDD6FF] rounded-2xl">
+										<Users size={24} className="text-[#1A365D]" />
+									</div>
+									<p className=" text-[#1A365D] text-2xl">Gestão de membros</p>
+									<p className="text-[#475569] text-[20px]">Uma visão 360º da sua congregação.
+										Acompanhe jornadas espirituais, participação
+										em grupos e batismos com cuidado pastoral.</p>
 								</div>
-								<p className=" text-[#1A365D]">Gestão de membros</p>
-								<p className="text-[#475569] text-[12px]">Uma visão 360º da sua congregação.
-									Acompanhe jornadas espirituais, participação
-									em grupos e batismos com cuidado pastoral.</p>
+								<div>
+									<Image src={Sister} alt="Sisters" className="h-full w-full rounded-2xl" />
+								</div>
 							</div>
-							<div>
-								<Image src={Sister} alt="Sisters" className="h-full w-full rounded-2xl" />
+							<div className="bg-[#1A365D] h-112	 w-[29%] p-10 flex flex-col space-y-4 rounded-2xl">
+								<div className="flex items-center justify-center w-12 h-12 bg-[#DBEAFE] rounded-2xl">
+									<Calendar className="text-[#f5bf63]" />
+								</div>
+								<p className="text-white text-2xl">Calendário</p>
+								<p className="text-[#DBEAFE] text-[20px]">Sincronize eventos de todos os
+									departamentos em um único lugar
+									sagrado.
+								</p>
+								<Image src={Rnascer} alt="Reviver" className="w-100 h-50" />
 							</div>
-						</div>
-						<div className="bg-[#1A365D] w-[24%] p-3 flex flex-col">
-							<div className="flex items-center justify-center w-12 h-12 bg-[#DBEAFE] rounded-2xl">
-								<Calendar size={24} className="text-[#FFDEA5]" />
-							</div>
-							<p className="text-white">Calendário</p>
-							<p className="text-[#DBEAFE] text-[9px]">Sincronize eventos de todos os
-								departamentos em um único lugar
-								sagrado.
-							</p>
 						</div>
 					</div>
+					<div className="flex gap-2 justify-between items-center">
+						<div className="w-[30%] flex flex-col gap-5 bg-[#F3F3F3]">
+							<div className="bg-[#FFDEA5] p-3 w-15 flex items-center justify-center">
+								<Heart size={24} className="text-[#5D4201]" />
+							</div>
+						</div>
 
+					</div>
 
 				</div>
 			</div>

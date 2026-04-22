@@ -3,7 +3,7 @@ export default function Conf() {
         <>
             <div className="bg-[#E2E8F0]">
                 <div className="container m-auto bg-[#E2E8F0]">
-                    <nav className="flex flex-col items-center justify-center space-y-10 p-10 gap-2">
+                    <nav className="flex flex-col items-center justify-center space-y-20 p-10 gap-2">
                         <h3 className="text-[#1A365D] text-1xl  uppercase tracking-wide">
                             Confiado por congregações modernas
                         </h3>

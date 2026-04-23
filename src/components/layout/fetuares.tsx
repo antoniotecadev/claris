@@ -4,6 +4,8 @@ import { Users, Calendar, MessageSquare, LayoutDashboard, Heart, Building2 } fro
 import Simple from "./Simple";
 import Sister from "@/assets/images/sisters.png"
 import Rnascer from "@/assets/images/renascer.png"
+import BackG from "@/assets/images/Background.png"
+import Esp from "@/assets/images/Container.png"
 
 interface FunctCard {
 	title: string;
@@ -74,10 +76,30 @@ export default function Fun() {
 							</div>
 						</div>
 					</div>
-					<div className="flex gap-2 justify-between items-center">
-						<div className="w-[30%] flex flex-col gap-5 bg-[#F3F3F3]">
-							<div className="bg-[#FFDEA5] p-3 w-15 flex items-center justify-center">
+					<div className="flex gap-6 justify-between items-center">
+						<div className="w-[30%] flex flex-col gap-5 h-112 bg-[#F3F3F3] p-15 rounded-2xl ">
+							<div className="bg-[#FFDEA5] p-3 w-15 flex items-center justify-center rounded-2xl">
 								<Heart size={24} className="text-[#5D4201]" />
+							</div>
+							<p className="text-2xl text-[#1A365D]">Doações e Dízimos</p>
+							<p className="text-[20px] text-[#475569] ">Gestão financeira transparente e
+								doações recorrentes seguras via
+								aplicativo para sustentar a obra.</p>
+							<Image src={BackG} alt="Back" className="h-35" />
+						</div>
+						<div className="flex  w-[70%] bg-[#F1F5F9] h-112  p-10 gap-2 items-center justify-center rounded-2xl">
+							<div className="w-[50%] space-y-8 flex flex-col">
+								<div className="bg-[#BDD6FF] w-10 p-2">
+									<MessageSquare size={24} className="text-[#1A365D]" />
+								</div>
+								<p className="text-2xl text-[#1A365D]">Comunicação Viva</p>
+								<p className="text-[20px] text-[#475569] ">Conecte pequenos grupos e lideranças
+									instantaneamente em um ambiente seguro.</p>
+								<p className="italic text-[#94A3B8] text-[15px]">"Como o ferro com o ferro se afia, assim o homem afia o
+									rosto do seu amigo." — Provérbios 27:17</p>
+							</div>
+							<div className="flex justify-center items-center">
+								<Image src={Esp} alt="container" className="w-100 h-60"/>
 							</div>
 						</div>
 

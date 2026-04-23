@@ -1,70 +1,80 @@
+import { Users, Calendar, Check } from "lucide-react";
+
 export default function Prices() {
 	return (
 		<div className="bg-white">
 			<div className="m-auto container">
 				<div className="flex flex-col p-10 justify-center items-center gap-6">
-					
-					<h1 className="text-[#191C1E] font-bold tracking-wide text-2xl">
-						Preços pensados com simplicidade e graça.
+
+					<h1 className="text-[#1A365D] font-bold tracking-wide text-4xl">
+						Planos que acompanham seu Crescimento
 					</h1>
 
-					<h2 className="text-[#464555]">
+					<h2 className="text-[#475569] text-[20px]">
 						Um plano para cada momento da sua congregação.
 					</h2>
+					<div className="flex justify-between  w-full">
+						<div className="flex gap-4 justify-between w-full">
+							<div className="bg-[#F3F3F3] flex flex-col gap-4 rounded-2xl space-y-3 p-10" >
+								<p className="text-[#1A365D]  font-bold text-[20px]">Seed</p>
+								<p className="text-[#1A365D] font-bold text-[40px] ">R$ 149 <span className="text-[#64748B] text-[24px]">/mês</span></p>
+								<div className="flex flex-col gap-3 space-y-2">
+									<div className="flex gap-3 justify-center items-center">
+										<Check size={22} className="text-amber-500 font-bold" />
+										<p className="text-[#475569] text-[24px]">Até 100 Membros</p>
+									</div>
+									<div className="flex gap-3 justify-center items-center">
+										<Check size={22} className="text-amber-500 font-bold" />
+										<p className="text-[#475569] text-[24px]">Gestão de Eventos</p>
+									</div>
+									<div className="flex gap-3 justify-center items-center">
+										<Check size={22} className="text-amber-500 font-bold" />
+										<p className="text-[#475569] text-[24px]">Suporte via Chat</p>
+									</div>
 
-					<div className="cards">
-						
-						<div className="card red">
-							<h3 className="text-xl font-bold">Seed</h3>
-							<p className="text-3xl font-bold mt-2">R$0<span className="text-sm">/mês</span></p>
+								</div>
+							</div>
 
-							<ul className="mt-4 text-sm space-y-2">
-								<li>Até 50 membros</li>
-								<li>Calendário básico</li>
-								<li>1 administrador</li>
-							</ul>
+							<div className="bg-[#002045] flex flex-col gap-4 rounded-2xl space-y-3 p-10 h-100" >
+								<p className="text-white  font-bold text-[20px]">Growth</p>
+								<p className="text-white font-bold text-[40px] ">R$ 149 <span className="text-[#64748B] text-[24px]">/mês</span></p>
+								<div className="flex flex-col gap-3 space-y-2">
+									<div className="flex gap-3 justify-center items-center">
+										<Check size={22} className="text-amber-500 font-bold" />
+										<p className="text-white text-[24px]">Membros Ilimitados</p>
+									</div>
+									<div className="flex gap-3 justify-center items-center">
+										<Check size={22} className="text-amber-500 font-bold" />
+										<p className="text-white text-[24px]">Múltiplos Campus</p>
+									</div>
+									<div className="flex gap-3 justify-center items-center">
+										<Check size={22} className="text-amber-500 font-bold" />
+										<p className="text-white text-[24px]">Relatórios Financeiros</p>
+									</div>
 
-							<button className="mt-6 bg-white text-[#2B3EA2] px-4 py-2 rounded">
-								Start for Free
-							</button>
+								</div>
+							</div>
+
+							<div className="bg-[#F3F3F3] flex flex-col gap-4 rounded-2xl space-y-3 p-10" >
+								<p className="text-[#1A365D]  font-bold text-[20px]">Seed</p>
+								<p className="text-[#1A365D] font-bold text-[40px] ">R$ 149 <span className="text-[#64748B] text-[24px]">/mês</span></p>
+								<div className="flex flex-col gap-3 space-y-2">
+									<div className="flex gap-3 justify-center items-center">
+										<Check size={22} className="text-amber-500 font-bold" />
+										<p className="text-[#475569] text-[24px]">Até 100 Membros</p>
+									</div>
+									<div className="flex gap-3 justify-center items-center">
+										<Check size={22} className="text-amber-500 font-bold" />
+										<p className="text-[#475569] text-[24px]">Gestão de Eventos</p>
+									</div>
+									<div className="flex gap-3 justify-center items-center">
+										<Check size={22} className="text-amber-500 font-bold" />
+										<p className="text-[#475569] text-[24px]">Suporte via Chat</p>
+									</div>
+
+								</div>
+							</div>
 						</div>
-
-						<div className="card blue">
-							<span className="text-xs bg-white text-[#2B3EA2] px-3 py-1 rounded-full mb-2">
-								MOST POPULAR
-							</span>
-
-							<h3 className="text-xl font-bold">Growth</h3>
-							<p className="text-3xl font-bold mt-2">R$149<span className="text-sm">/mês</span></p>
-
-							<ul className="mt-4 text-sm space-y-2">
-								<li>Membros ilimitados</li>
-								<li>Gestão financeira</li>
-								<li>Chat em tempo real</li>
-								<li>Suporte prioritário</li>
-							</ul>
-
-							<button className="mt-6 bg-white text-[#2B3EA2] px-4 py-2 rounded cursor-pointer">
-								Get Growth
-							</button>
-						</div>
-
-						<div className="card green">
-							<h3 className="text-xl font-bold">Sanctuary</h3>
-							<p className="text-3xl font-bold mt-2">R$299<span className="text-sm">/mês</span></p>
-
-							<ul className="mt-4 text-sm space-y-2">
-								<li>Tudo no Growth</li>
-								<li>App customizado</li>
-								<li>Relatórios avançados</li>
-								<li>Gerente de sucesso</li>
-							</ul>
-
-							<button className="mt-6 bg-white text-[#2B3EA2] px-4 py-2 rounded">
-								Contact Sales
-							</button>
-						</div>
-
 					</div>
 				</div>
 			</div>

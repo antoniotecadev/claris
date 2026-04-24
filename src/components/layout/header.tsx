@@ -52,15 +52,15 @@ export default function Header() {
 					</div>
 
 					<div className='flex flex-col'>
-						<button className='hidden sm:flex' id="button">
+						<button className="px-10 py-3 text-[#261900] rounded-xl bg-[#FFDEA5] ">
 							Começar
 						</button>
 					</div>
 				</nav>
 			</header>
-	
 
-			
+
+
 		</>
 	)
 }

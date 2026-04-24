@@ -7,7 +7,7 @@ export default function Footer() {
                     
                     {/* Logo + descrição */}
                     <div>
-                        <h2 className="text-[#2B3EA2] font-bold text-lg">
+                        <h2 className="text-[#1A365D] font-bold text-lg">
                             Claris
                         </h2>
                         <p className="text-gray-500 mt-3 text-sm leading-relaxed">
@@ -32,7 +32,7 @@ export default function Footer() {
 
                     {/* Social */}
                     <div>
-                        <h3 className="font-semibold text-gray-700 mb-3">
+                        <h3 className="font-semibold text-[#1A365D] mb-3">
                             Redes
                         </h3>
                         <ul className="space-y-2 text-sm text-gray-500">
@@ -45,7 +45,7 @@ export default function Footer() {
 
                     {/* Legal */}
                     <div>
-                        <h3 className="font-semibold text-gray-700 mb-3">
+                        <h3 className="font-semibold text-[#1A365D] mb-3">
                             Legal
                         </h3>
                         <ul className="space-y-2 text-sm text-gray-500">

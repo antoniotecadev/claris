@@ -7,35 +7,7 @@ import Rnascer from "@/assets/images/renascer.png"
 import BackG from "@/assets/images/Background.png"
 import Esp from "@/assets/images/Container.png"
 
-interface FunctCard {
-	title: string;
-	description: string;
-	icon: LucideIcon;
-	iconBgColor: string;
 
-}
-
-
-
-function Card({ title, description, icon: Icon, iconBgColor = "[bg-[#EEF2FF]" }: FunctCard) {
-	return (
-		<div className="w-full max-w-[320px] bg-white p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50 flex flex-col items-start transition-all hover:scale-[1.02]">
-
-			{/* Ícone Dinâmico */}
-			<div className={`w-12 h-12 mb-6 flex items-center justify-center rounded-xl ${iconBgColor} text-[#5C00CA]`}>
-				<Icon size={24} />
-			</div>
-
-			<h3 className="text-[#191C1E] font-bold text-xl mb-3">
-				{title}
-			</h3>
-
-			<p className="text-gray-500 text-sm leading-relaxed text-left">
-				{description}
-			</p>
-		</div>
-	);
-}
 
 export default function Fun() {
 
@@ -49,7 +21,7 @@ export default function Fun() {
 						</h5>
 						<div className="w-50 h-1 bg-amber-300"></div>
 						<div className="flex flex-wrap w-full justify-between sm:flex sm:flex-row gap-2">
-							<div className="w-[70%] h-93.5 border-gray-400 border-solid rounded-2xl bg-[#F1F5F9] gap-2 justify-between flex p-6 ">
+							<div className="w-[70%] h-93.5 border-gray-400 border-solid rounded-2xl bg-[#F1F5F9] gap-2 justify-between flex p-13 ">
 								<div className="flex flex-col w-[50%] gap-2 space-y-4">
 									<div className="flex items-center justify-center w-12 h-12 bg-[#BDD6FF] rounded-2xl">
 										<Users size={24} className="text-[#1A365D]" />

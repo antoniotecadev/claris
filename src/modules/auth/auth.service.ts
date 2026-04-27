@@ -59,7 +59,7 @@ export class AuthService {
     }
 
     // 6. Se a senha for válida e 2FA não estiver activado, devolve as igrejas para seleção no frontend.
-    return this.buildOrganizationSelectionResponse({
+    return await this.buildOrganizationSelectionResponse({
       userId: user.id,
       email: user.email,
       displayName: user.displayName,
@@ -76,7 +76,7 @@ export class AuthService {
         ...user,
         token: {
           ...token,
-          expiresIn: 24 * 60 * 60,
+          expiresIn: 24 * 60 * 60, // 24 horas em segundos
           expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
         },
       },
@@ -103,7 +103,7 @@ export class AuthService {
 
     // Login Google segue o mesmo fluxo do login por senha:
     // primeiro seleciona a organização, depois emite o JWT final.
-    return this.buildOrganizationSelectionResponse({
+    return await this.buildOrganizationSelectionResponse({
       userId: user.id,
       email: user.email,
       displayName: user.displayName,
@@ -231,7 +231,7 @@ export class AuthService {
     }
 
     // 5. Se a associação for válida, gera um token JWT final com o organizationId e retorna os dados do usuário e da organização para o frontend.
-    return this.generateFinalLoginResponse({
+    return await this.generateFinalLoginResponse({
       userId: membership.user.id,
       displayName: membership.user.displayName,
       email: membership.user.email,
@@ -266,7 +266,7 @@ export class AuthService {
     }
 
     // 5. Retorna as opções de organizações associadas ao usuário para o frontend exibir na tela de seleção de organização.
-    return this.buildOrganizationSelectionResponse({
+    return await this.buildOrganizationSelectionResponse({
       userId: user.id,
       displayName: user.displayName,
       email: user.email,

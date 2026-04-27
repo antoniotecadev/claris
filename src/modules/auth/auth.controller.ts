@@ -24,10 +24,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto, @Res() res: any) {
+  async login(@Body() loginDto: LoginDto) {
     // O método login recebe as credenciais do usuário (email e senha) no corpo da requisição.
-    const result = await this.authService.loginWithEmailAndPassword(loginDto);
-    return res.status(200).json({ ...result });
+    return await this.authService.loginWithEmailAndPassword(loginDto);
   }
 
   // Inicia o login com Google
@@ -61,14 +60,14 @@ export class AuthController {
   @Post('2fa/enable')
   @UseGuards(JwtAuthGuard)
   async enable2FA(@CurrentUser() user: JwtPayload) {
-    return this.authService.generate2FASecret(user.userId, user.email);
+    return await this.authService.generate2FASecret(user.userId, user.email);
   }
 
   // Confirmar e activar o 2FA
   @Post('2fa/confirm')
   @UseGuards(JwtAuthGuard)
   async confirm2FA(@CurrentUser() user: JwtPayload, @Body() dto: Enable2FADto) {
-    return this.authService.enable2FA(user.userId, dto.code);
+    return await this.authService.enable2FA(user.userId, dto.code);
   }
 
   // Desactivar 2FA
@@ -78,18 +77,18 @@ export class AuthController {
     @CurrentUser() user: JwtPayload,
     @Body() dto: { code: string },
   ) {
-    return this.authService.disable2FA(user.userId, dto.code);
+    return await this.authService.disable2FA(user.userId, dto.code);
   }
 
   // Verificar código 2FA durante o login
   @Post('2fa/verify')
   async verify2FALogin(@Body() body: { tempToken: string; code: string }) {
-    return this.authService.verify2FACodeAndLogin(body.tempToken, body.code);
+    return await this.authService.verify2FACodeAndLogin(body.tempToken, body.code);
   }
 
   @Post('organization/select')
   async selectOrganization(@Body() dto: SelectOrganizationDto) {
-    return this.authService.selectOrganizationAndLogin(
+    return await this.authService.selectOrganizationAndLogin(
       dto.selectionToken,
       dto.organizationId,
     );
@@ -97,6 +96,6 @@ export class AuthController {
 
   @Post('organization/options')
   async getOrganizationOptions(@Body() dto: SelectionTokenDto) {
-    return this.authService.getOrganizationOptions(dto.selectionToken);
+    return await this.authService.getOrganizationOptions(dto.selectionToken);
   }
 }

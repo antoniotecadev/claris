@@ -17,7 +17,7 @@ export class UsersService {
     // 1. Garantimos que estamos no contexto de uma organização (tenant)
     this.assertTenantContext(organizationId);
 
-    // 2. Verificamos se o usuário é membro da organização ativa e buscamos seu perfil
+    // 2. Verificamos se o usuário é membro da organização activa e buscamos seu perfil
     const membership = await this.prisma.membership.findFirst({
       where: {
         userId: currentUser.userId,

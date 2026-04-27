@@ -16,9 +16,11 @@ export class MembershipsService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	async listMembers(organizationId: string | undefined) {
+
+        // 1. Garantimos que estamos no contexto de uma organização (tenant)
 		this.assertOrganizationId(organizationId);
 
-        // 1. Listar os membros da organização activa, ordenados por data de entrada (joinedAt)
+        // 2. Listar os membros da organização activa, ordenados por data de entrada (joinedAt)
 		const memberships = await this.prisma.membership.findMany({
 			where: { organizationId },
 			orderBy: { joinedAt: 'asc' },
@@ -36,13 +38,14 @@ export class MembershipsService {
 			},
 		});
 
-        // 2. Retornar a lista de membros com suas informações e o total de membros
+        // 3. Retornar a lista de membros com suas informações e o total de membros
 		return {
 			success: true,
 			total: memberships.length,
 			members: memberships.map((membership) => ({
 				id: membership.id,
 				role: membership.role,
+                status: membership.status,
 				joinedAt: membership.joinedAt,
 				user: membership.user,
 			})),

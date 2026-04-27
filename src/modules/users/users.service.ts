@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { MembershipStatus } from 'generated/prisma/browser';
 import { ListMembersQueryDto } from './dto/list-members-query.dto';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
@@ -22,6 +23,7 @@ export class UsersService {
       where: {
         userId: currentUser.userId,
         organizationId,
+        status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] },
       },
       include: {
         organization: {
@@ -46,7 +48,7 @@ export class UsersService {
 
     // 3. Se não for membro, retornamos um erro de acesso negado
     if (!membership) {
-      throw new ForbiddenException('Usuário não pertence à organização ativa');
+      throw new ForbiddenException('Usuário não pertence à organização activa');
     }
 
     // 4. Retornamos o perfil do usuário junto com seu papel e informações da organização
@@ -103,6 +105,7 @@ export class UsersService {
     // 2. Construímos a cláusula WHERE para filtrar membros da organização, e opcionalmente por nome/email
     const whereClause = {
       organizationId,
+      status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] },
       ...(query.q
         ? {
             user: {
@@ -156,6 +159,7 @@ export class UsersService {
       where: {
         organizationId,
         userId: memberId,
+        status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] },
       },
       include: {
         user: {
@@ -209,12 +213,12 @@ export class UsersService {
 
   private async assertMembership(userId: string, organizationId: string) {
     const membership = await this.prisma.membership.findFirst({
-      where: { userId, organizationId },
+      where: { userId, organizationId, status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] } },
       select: { id: true },
     });
 
     if (!membership) {
-      throw new ForbiddenException('Usuário não pertence à organização ativa');
+      throw new ForbiddenException('Usuário não pertence à organização activa');
     }
   }
 

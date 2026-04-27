@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { MembershipStatus } from 'generated/prisma/enums';
 import {
   Injectable,
   BadRequestException,
@@ -197,7 +198,6 @@ export class AuthService {
     selectionToken: string,
     organizationId: string,
   ) {
-
     // 1. Verifica o token de seleção para garantir que é válido e extrair o userId
     const payload = this.jwtService.verify(selectionToken);
 
@@ -211,6 +211,9 @@ export class AuthService {
       where: {
         userId: payload.userId,
         organizationId,
+        status: {
+          in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED],
+        },
       },
       include: {
         user: {
@@ -241,7 +244,6 @@ export class AuthService {
   }
 
   async getOrganizationOptions(selectionToken: string) {
-
     // 1. Verifica o token de seleção para garantir que é válido e extrair o userId
     const payload = this.jwtService.verify(selectionToken);
 
@@ -366,7 +368,6 @@ export class AuthService {
   }
 
   private async getOrganizationSelectionToken(userId: string) {
-
     // Gera um token JWT para a seleção de organização, com um tipo específico (organization_selection_pending) e curta duração
     return this.jwtService.sign(
       {
@@ -382,10 +383,9 @@ export class AuthService {
     email: string;
     displayName: string;
   }) {
-
     // 1. Busca as organizações associadas ao usuário para que o frontend possa exibir as opções de seleção de organização
     const memberships = await this.prisma.membership.findMany({
-      where: { userId: user.userId },
+      where: { userId: user.userId, status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] } },
       include: {
         organization: {
           select: {
@@ -407,7 +407,9 @@ export class AuthService {
     }
 
     // 3. Se o usuário tiver associações com organizações, gera um token de seleção de organização e retorna os dados do usuário e as opções de organizações para o frontend exibir na tela de seleção de organização.
-    const selectionToken = await this.getOrganizationSelectionToken(user.userId);
+    const selectionToken = await this.getOrganizationSelectionToken(
+      user.userId,
+    );
 
     // 4. O frontend vai usar esse token para fazer a chamada de seleção de organização depois que o usuário escolher a organização na tela de seleção. O token de seleção é necessário para garantir que apenas usuários autenticados possam acessar a rota de seleção de organização e para identificar qual usuário está fazendo a seleção. O token de seleção tem um tipo específico (organization_selection_pending) para que o backend possa validar que é um token válido para essa etapa do processo de login.
     return {

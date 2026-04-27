@@ -11,6 +11,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
+import { MembershipsModule } from './modules/memberships/memberships.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 
 @Module({
@@ -30,6 +31,7 @@ import { TenantMiddleware } from './common/middleware/tenant.middleware';
     AuthModule, // Login/JWT
     UsersModule, // Gerenciamento de usuários
     OrganizationsModule, // Multi-tenancy (Igrejas)
+    MembershipsModule, // Gestão de membros por organização
   ], // Módulos de banco de dados, autenticação, etc.
   controllers: [AppController], // Controladores que lidam com as rotas e solicitações HTTP.
   providers: [AppService], // Serviços que contêm a lógica de negócios e são injetados nos controladores.

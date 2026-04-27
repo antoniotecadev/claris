@@ -17,7 +17,7 @@ export default function Prices() {
 						<div className="flex gap-4 justify-between w-full items-center">
 							<div className="bg-[#F3F3F3] flex flex-col gap-4 rounded-2xl  h-120 space-y-3 p-5 w-120" >
 								<p className="text-[#1A365D]  font-bold text-[20px]">Seed</p>
-								<p className="text-[#1A365D] font-bold text-[40px] ">R$ 149 <span className="text-[#64748B] text-[24px]">/mês</span></p>
+								<p className="text-[#1A365D] font-bold text-[40px] ">149 000 kz <span className="text-[#64748B] text-[24px]">/mês</span></p>
 								<div className="flex flex-col gap-3 space-y-2 p-2">
 									<div className="flex gap-3 ">
 										<Check size={22} className="text-amber-500 font-bold" />
@@ -41,7 +41,7 @@ export default function Prices() {
 
 							<div className="bg-[#002045] flex flex-col gap-4 rounded-2xl space-y-3 p-10 h-130 w-150" >
 								<p className="text-white  font-bold text-[20px]">Growth</p>
-								<p className="text-white font-bold text-[40px] ">R$ 149 <span className="text-[#64748B] text-[24px]">/mês</span></p>
+								<p className="text-white font-bold text-[40px] ">149 000 kz <span className="text-[#64748B] text-[24px]">/mês</span></p>
 								<div className="flex flex-col gap-3 space-y-2">
 									<div className="flex gap-3 ">
 										<Check size={22} className="text-amber-500 font-bold" />
@@ -66,7 +66,7 @@ export default function Prices() {
 
 							<div className="bg-[#F3F3F3] flex flex-col gap-4 rounded-2xl   h-120 space-y-3 p-5 w-120" >
 								<p className="text-[#1A365D]  font-bold text-[20px]">Seed</p>
-								<p className="text-[#1A365D] font-bold text-[40px] ">R$ 149 <span className="text-[#64748B] text-[24px]">/mês</span></p>
+								<p className="text-[#1A365D] font-bold text-[40px] ">149 000 kz <span className="text-[#64748B] text-[24px]">/mês</span></p>
 								<div className="flex flex-col gap-3 space-y-2 p-2">
 									<div className="flex gap-3 ">
 										<Check size={22} className="text-amber-500 font-bold" />

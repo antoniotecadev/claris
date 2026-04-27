@@ -50,8 +50,7 @@ body {
 	background: linear-gradient(to top, #2B3EA2 0%, #4557BB 100%);
 }
 
-.bg-bt2
-{
+.bg-bt2 {
 	border: 0;
 	border-radius: 10px;
 	background-color: #E6E8EA;
@@ -91,23 +90,7 @@ body {
 }
 
 
-.cards {
-	display: flex;
-	padding: 40px;
-	gap: 15px;
-}
 
-.cards .red {
-	background-color: #2B3EA2;
-}
-
-.cards .blue {
-	background-color: #2B3EA2;
-}
-
-.cards .green {
-	background-color: #2B3EA2;
-}
 
 .cards .card {
 	display: flex;
@@ -146,4 +129,29 @@ body {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+.side {
+	background-image: url('../images/Section (1).png');
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+}
 
+.gradientes {
+	background: linear-gradient(to right,
+			#c4c7cc 0%,
+			#d8d2c8 50%,
+			#e8dccb 100%);
+}
+
+.gradientes1 {
+	background: linear-gradient(to left, #EEF2F7 100%, #EEF2F7 0%);
+}
+
+.gradientes2 {
+	background: linear-gradient(to left, #FFF4E0 100%, #FFF4E0 0%);
+}
+
+.gradientes3 {
+	background: linear-gradient(to left, #FFF4E0 100%);
+}

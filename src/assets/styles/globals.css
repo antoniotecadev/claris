@@ -144,14 +144,3 @@ body {
 			#e8dccb 100%);
 }
 
-.gradientes1 {
-	background: linear-gradient(to left, #EEF2F7 100%, #EEF2F7 0%);
-}
-
-.gradientes2 {
-	background: linear-gradient(to left, #FFF4E0 100%, #FFF4E0 0%);
-}
-
-.gradientes3 {
-	background: linear-gradient(to left, #FFF4E0 100%);
-}

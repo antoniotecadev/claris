@@ -20,6 +20,7 @@ export default function Hero() {
 			>
 				<div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 justify-between items-start  px-6 mb-4">
 					<div className="flex flex-col  justify-center space-y-12">
+						<p className="text-center text-[#FDE68A] sm:hidden italic ">"Pois Deus não é Deus de desordem, mas de paz."</p>
 						<div><span className="px-2 py-1 bg-[#FFDEA5] text-[#5D4201] tracking-wide rounded-2xl ">Tecnológia com propósito</span></div>
 						<p className="text-white text-3xl wrap-break-word sm:text-5xl xl:text-6xl font-bold">
 							Modernize sua administração <br /><span className="text-[#FFDEA5] font-bold">com graça.</span>
@@ -30,7 +31,7 @@ export default function Hero() {
 							para a igreja moderna.
 						</p>
 						<div className="flex gap-2">
-							<button className="px-10 py-3 text-[#261900] rounded-xl bg-[#FFDEA5] ">
+							<button className="px-10 py-3 text-[#261900] rounded-xl bg-[#FFDEA5] hover:cursor-pointer">
 								Começar
 							</button>
 							<button className="px-6 py-2 rounded-xl bg-[#a2c6f1]  text-gray-800">

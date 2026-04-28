@@ -52,7 +52,7 @@ export default function Header() {
 					</div>
 
 					<div className='flex flex-col'>
-						<button className="px-10 py-3 text-[#261900] rounded-xl bg-[#FFDEA5] ">
+						<button className="hidden px-10 py-3 text-[#261900] smrounded-xl bg-[#FFDEA5] sm:flex">
 							Começar
 						</button>
 					</div>

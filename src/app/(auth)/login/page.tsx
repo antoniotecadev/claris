@@ -7,8 +7,8 @@ export default function Login() {
 	return (
 		<div >
 			<div >
-				<div>
-					<div className="container m-auto  flex flex-col justify-center items-center h-screen">
+				<div className="bg-[#E5E5E5]">
+					<div className="container m-auto  flex flex-col justify-center items-center h-screen ">
 						<section className="  flex  sm:w-7xl h-283.25 ">
 							<div className="side w-[50%] h-full flex justify-between flex-col  p-5">
 								<div className="flex gap-2 p-5  items-center">
@@ -25,7 +25,7 @@ export default function Login() {
 								<div className="flex justify-around text-white">
 								</div>
 							</div>
-							<div className="w-full h-full flex flex-col justify-center items-center gradientes relative">
+							<div className="w-full h-full flex flex-col justify-center items-center gradientes">
 								<div className="w-94 h-181 flex flex-col ">
 									<p className="text-3xl text-black font-serif italic mb-4">BEM VINDO DE VOLTA</p>
 									<p className="text-[#43474E] mb-10">Insira os seus dados para aceder ao portal do Claris.</p>
@@ -56,14 +56,18 @@ export default function Login() {
 									</form>
 
 								</div>
-								<div className="flex justify-around p-3  absolute top-270  tracking-wide w-full items-end-safe gap-6 text-[#74777F]">
-									<p>PRIVACIDADE</p>
-									<p>TERMOS</p>
-									<p>SUPORTE</p>
-									<p>CONTACTOS</p>
-								</div>
 							</div>
 						</section>
+						<div className="flex justify-around p-3  sm:w-7xl  bg-white tracking-wide w-full  text-[#74777F] items-center h-27.25">
+							<p className="text-[#002045] italic">CLARIS</p>
+							<div className="flex gap-4">
+								<p>PRIVACIDADE</p>
+								<p>TERMOS</p>
+								<p>SUPORTE</p>
+								<p>CONTACTOS</p>
+							</div>
+							<p>© 2024 CLARIS ORGANIZATION</p>
+						</div>
 
 					</div>
 				</div>

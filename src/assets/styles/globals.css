@@ -137,6 +137,13 @@ body {
 	background-size: cover;
 }
 
+.side2 {
+    background-image: url('../images/visual.png'); /* Note the leading slash */
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 60%;
+}
+
 .gradientes {
 	background: linear-gradient(to right,
 			#c4c7cc 0%,

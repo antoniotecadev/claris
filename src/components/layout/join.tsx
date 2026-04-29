@@ -1,13 +1,25 @@
 export default function Join() {
 	return (
-		<div className="bg-white ">
-			<div className="m-auto container">
-				<div className="flex items-center flex-col justify-center bg-[#1A365D] rounded-2xl p-20 space-y-8">
-					<h1 className="text-4xl font-bold text-white">Junte-se ao futuro do ministério hoje</h1>
-					<h2 className="text-[20px] text-white">Experimente o santuário digital que ajuda a sua igreja a prosperar na era moderna.</h2>
-					<button className="bg-white text-[#002045] p-5 font-bold rounded-2xl">Comece o seu teste gratuito</button>
+		<div className="bg-white py-16">
+			<div className="container mx-auto px-4">
+
+				<div className="bg-[#1A365D] rounded-2xl p-8 md:p-16 lg:p-20 flex flex-col items-center text-center space-y-6">
+
+					<h1 className="text-white font-bold text-2xl md:text-4xl lg:text-5xl">
+						Junte-se ao futuro do ministério hoje
+					</h1>
+
+					<p className="text-white text-base md:text-lg lg:text-xl max-w-2xl">
+						Experimente o santuário digital que ajuda a sua igreja a prosperar na era moderna.
+					</p>
+
+					<button className="bg-white text-[#002045] px-6 py-3 md:px-8 md:py-4 font-bold rounded-xl hover:opacity-90 transition">
+						Comece o seu teste gratuito
+					</button>
+
 				</div>
+
 			</div>
 		</div>
-	)
+	);
 }

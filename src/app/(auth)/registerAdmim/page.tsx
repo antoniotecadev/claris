@@ -24,9 +24,9 @@ export default function Login() {
 						<div className="flex justify-around text-white">
 						</div>
 					</div>
-					<div className="w-full  h-full flex flex-col justify-center items-center gradientes">
+					<div className="w-full  h-full flex flex-col py-20 items-center gradientes">
 						<div className="w-159 h-181 flex flex-col">
-							<p className="text-3xl text-black font-serif italic mb-4">Comece sua jornada de gestão.</p>
+							<p className="text-[36px] text-[#002045] font-serif italic mb-4">Comece sua jornada de gestão.</p>
 							<p className="text-[#43474E] mb-12">Crie uma conta administrativa para gerenciar a presença digital da sua igreja.</p>
 							<div className="flex gap-3 mb-6">
 								<p className="bg-[#FFDEA5] text-[#1A1C1C] px-4 rounded-2xl"> 1</p>
@@ -37,17 +37,17 @@ export default function Login() {
 									<div className="flex justify-between gap-4 ">
 										<div className="flex flex-col w-[50%]">
 											<label htmlFor="fullNmae" className="mb-1 text-[#43474E]">Nome completo</label>
-											<input type="text" id="fullNmae" placeholder="ex. Delson Pedro" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4" />
+											<input type="text" required id="fullNmae" placeholder="ex. Delson Pedro" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4" />
 											<label htmlFor="pass" className="mb-1 text-[#43474E]">Senha</label>
-											<input type="password" id="pss" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
+											<input type="password" required id="pss" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
 											<label htmlFor="passC" className="mb-1 text-[#43474E]">Confirmar senha</label>
-											<input type="password" id="pssC" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-10" />
+											<input type="password" required id="pssC" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-10" />
 										</div>
 										<div className="flex flex-col w-[50%]">
 											<label htmlFor="fullNmae" className="mb-1 text-[#43474E]">E-mail</label>
-											<input type="text" id="fullNmae" placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-1" />
+											<input type="email" required id="fullNmae" placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-1" />
 											<label htmlFor="tel" className="mb-1 text-[#43474E]">Telefone</label>
-											<input type="password" id="tel" placeholder="9xx xxx xxx" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
+											<input type="text" required id="tel" placeholder="9xx xxx xxx" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
 											<label htmlFor="photo" className="mb-1 text-[#43474E]">Foto</label>
 											<input type="file" accept="image/png" id="photo" placeholder="9xx xxx xxx" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-11" />
 										</div>
@@ -59,18 +59,18 @@ export default function Login() {
 									<div className="flex justify-between gap-4 ">
 										<div className="flex flex-col w-[50%]" >
 											<label htmlFor="fullNmae" className="mb-1 text-[#43474E]">Nome da igreja</label>
-											<input type="text" id="fullNmae" placeholder="ex. Jesus Cristo" className=" text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
-											<label htmlFor="local" className="mb-1 text-[#43474E]">Localização</label>
-											<input type="text" id="local" placeholder="município, bairro .." className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
+											<input type="text" required id="fullNmae" placeholder="ex. Jesus Cristo" className=" text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
+											<label htmlFor="local"  className="mb-1 text-[#43474E]">Localização</label>
+											<input type="text" required id="local" placeholder="município, bairro .." className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
 										</div>
 										<div className="flex flex-col w-[50%] ">
 											<label htmlFor="fullNmae" className="mb-1 text-[#43474E]">E-mail</label>
-											<input type="text" id="fullNmae" placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4" />
+											<input type="text" required id="fullNmae" placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4" />
 											<label htmlFor="photo" className="mb-1 text-[#43474E]">Logo</label>
 											<input type="file" accept="image/png" id="photo" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-11" />
 										</div>
 									</div>
-									<button className="bg-[#002045] flex justify-center items-center gap-4 text-white h-14 rounded-2xl mb-10 hover:cursor-pointer">
+									<button type="submit" className="bg-[#002045] flex justify-center items-center gap-4 text-white h-14 rounded-2xl mb-10 hover:cursor-pointer">
 										<p>CRIAR CONTA</p>
 										<ArrowRight size={20} />
 									</button>

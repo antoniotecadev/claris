@@ -39,40 +39,37 @@ export default function Login() {
 								<form action="" className="flex flex-col  w-full">
 									<div className="flex flex-col justify-between gap-4 ">
 										<div className="flex flex-col">
-											<label htmlFor="fullNmae" className="mb-1 text-[#43474E]">Nome completo</label>
-											<input type="text" id="fullNmae" placeholder="ex. Delson Pedro" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4" />
-											<label htmlFor="fullNmae" className="mb-1 text-[#43474E]">E-mail</label>
-											<input type="text" id="fullNmae" placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-1" />
-											<label htmlFor="pass" className="mb-1 text-[#43474E]">Senha</label>
-											<input type="password" id="pss" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
+											<label htmlFor="fullNmae" className="mb-1 text-[#43474E] f">Nome completo</label>
+											<input type="text" id="fullNmae" placeholder="ex. Delson Pedro" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-3" />
+											<div className="flex gap-5 mb-3">
+												<div className="flex flex-col w-[50%]">
+													<label htmlFor="email" className="mb-1 text-[#43474E]">E-mail</label>
+													<input type="text" id="email" placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-1" />
+												</div>
+												<div className="flex flex-col w-[50%]">
+													<label htmlFor="data" className="mb-1 text-[#43474E]">Data de Nascimento</label>
+													<input type="date" id="data" placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-1" />
+												</div>
+											</div>
+											<div className="flex gap-5 mb-3">
+												<div className="flex flex-col w-[50%]">
+													<label htmlFor="tel" className="mb-1 text-[#43474E]">Telefone</label>
+													<input type="text" id="tel" placeholder="9xx xxx xxx" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
+												</div>
+												<div className="flex flex-col w-[50%]">
+													<label htmlFor="photo" className="mb-1 text-[#43474E]">Foto</label>
+													<input type="file" accept="image/png" id="photo" placeholder="9xx xxx xxx" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
+												</div>
+											</div>
+											<div className="flex flex-col ">
+												<label htmlFor="pass" className="mb-1 text-[#43474E]">Senha</label>
+												<input type="password" id="pss" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-2" />
+												<p className="text-[#74777F] text-[11px] mb-2">Deve ter pelo menos 8 caracteres e incluir um símbolo especial</p>
+											</div>
 											<label htmlFor="passC" className="mb-1 text-[#43474E]">Confirmar senha</label>
 											<input type="password" id="pssC" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-10" />
 										</div>
-										<div className="flex flex-col ">
 
-											<label htmlFor="tel" className="mb-1 text-[#43474E]">Telefone</label>
-											<input type="password" id="tel" placeholder="9xx xxx xxx" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
-											<label htmlFor="photo" className="mb-1 text-[#43474E]">Foto</label>
-											<input type="file" accept="image/png" id="photo" placeholder="9xx xxx xxx" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-11" />
-										</div>
-									</div>
-									<div className="flex gap-3 mb-6">
-										<p className="bg-[#FFDEA5] text-[#1A1C1C] px-4 rounded-2xl">2</p>
-										<p className="text-[#002045]">Dados da igreja</p>
-									</div>
-									<div className="flex justify-between gap-4 ">
-										<div className="flex flex-col w-[50%]" >
-											<label htmlFor="fullNmae" className="mb-1 text-[#43474E]">Nome da igreja</label>
-											<input type="text" id="fullNmae" placeholder="ex. Jesus Cristo" className=" text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
-											<label htmlFor="local" className="mb-1 text-[#43474E]">Localização</label>
-											<input type="text" id="local" placeholder="município, bairro .." className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
-										</div>
-										<div className="flex flex-col w-[50%] ">
-											<label htmlFor="fullNmae" className="mb-1 text-[#43474E]">E-mail</label>
-											<input type="text" id="fullNmae" placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4" />
-											<label htmlFor="photo" className="mb-1 text-[#43474E]">Logo</label>
-											<input type="file" accept="image/png" id="photo" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-11" />
-										</div>
 									</div>
 									<button className="bg-[#002045] flex justify-center items-center gap-4 text-white h-14 rounded-2xl mb-10 hover:cursor-pointer">
 										<p>CRIAR CONTA</p>

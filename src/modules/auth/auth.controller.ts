@@ -5,7 +5,6 @@ import {
   Get,
   Post,
   Body,
-  Res,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -16,8 +15,6 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Enable2FADto } from './dto/2fa.dto';
 import type { JwtPayload } from './interfaces/jwt-payload.interface';
 import { CurrentUser } from 'src/common/decorator/current-user.decorator';
-import { SelectOrganizationDto } from './dto/select-organization.dto';
-import { SelectionTokenDto } from './dto/selection-token.dto';
 
 @Controller('auth') // Define a rota base para este controlador, ou seja, todas as rotas aqui serão prefixadas com /auth
 export class AuthController {
@@ -39,35 +36,23 @@ export class AuthController {
   // Callback do Google
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleCallback(@Req() req: any, @Res() res: any) {
-    try {
-      // O Passport coloca as informações do usuário autenticado no req.user
-      const result = await this.authService.loginWithGoogle(req.user);
-
-      // Redireciona para a tela de seleção de organização no frontend.
-      return res.redirect(
-        `${process.env.FRONTEND_URL}/auth/select-organization?selectionToken=${result.selectionToken}`,
-      );
-    } catch (error: any) {
-      console.error('Erro no callback do Google:', error);
-      return res.redirect(
-        `${process.env.FRONTEND_URL}/auth/login?error=failed&message=${encodeURIComponent(error.message)}`,
-      );
-    }
+  async googleCallback(@Req() req: any) {
+    // O Passport coloca as informações do usuário autenticado no req.user
+    return await this.authService.loginWithGoogle(req.user);
   }
 
   // Gerar QR Code para activar 2FA
   @Post('2fa/enable')
   @UseGuards(JwtAuthGuard)
   async enable2FA(@CurrentUser() user: JwtPayload) {
-    return await this.authService.generate2FASecret(user.userId, user.email);
+    return await this.authService.generate2FASecret(user.id, user.email);
   }
 
   // Confirmar e activar o 2FA
   @Post('2fa/confirm')
   @UseGuards(JwtAuthGuard)
   async confirm2FA(@CurrentUser() user: JwtPayload, @Body() dto: Enable2FADto) {
-    return await this.authService.enable2FA(user.userId, dto.code);
+    return await this.authService.enable2FA(user.id, dto.code);
   }
 
   // Desactivar 2FA
@@ -77,25 +62,12 @@ export class AuthController {
     @CurrentUser() user: JwtPayload,
     @Body() dto: { code: string },
   ) {
-    return await this.authService.disable2FA(user.userId, dto.code);
+    return await this.authService.disable2FA(user.id, dto.code);
   }
 
   // Verificar código 2FA durante o login
   @Post('2fa/verify')
   async verify2FALogin(@Body() body: { tempToken: string; code: string }) {
     return await this.authService.verify2FACodeAndLogin(body.tempToken, body.code);
-  }
-
-  @Post('organization/select')
-  async selectOrganization(@Body() dto: SelectOrganizationDto) {
-    return await this.authService.selectOrganizationAndLogin(
-      dto.selectionToken,
-      dto.organizationId,
-    );
-  }
-
-  @Post('organization/options')
-  async getOrganizationOptions(@Body() dto: SelectionTokenDto) {
-    return await this.authService.getOrganizationOptions(dto.selectionToken);
   }
 }

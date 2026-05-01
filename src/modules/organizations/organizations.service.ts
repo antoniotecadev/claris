@@ -10,6 +10,7 @@ import { Role } from 'generated/prisma/enums';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
+import type { UserPayload } from '../auth/interfaces/user-payload.interface';
 
 @Injectable()
 export class OrganizationsService {
@@ -48,7 +49,7 @@ export class OrganizationsService {
 
       await tx.membership.create({
         data: {
-          userId: user.userId,
+          userId: user.id,
           organizationId: organization.id,
           role: Role.SUPER_ADMIN,
         },
@@ -57,9 +58,8 @@ export class OrganizationsService {
       // Criamos um novo token JWT com o organizationId do tenant recém-criado
       // satisdfies: é uma forma de garantir que o objecto criado corresponde à interface JwtPayload, ajudando o TypeScript a inferir os tipos corretamente.
       const activeTenant = {
-        userId: user.userId,
+        id: user.id,
         email: user.email,
-        displayName: user.displayName,
         organizationId: organization.id,
         role: Role.SUPER_ADMIN,
       } satisfies JwtPayload;
@@ -80,7 +80,7 @@ export class OrganizationsService {
 
     const membership = await this.prisma.membership.findFirst({
       where: {
-        userId: user.userId,
+        userId: user.id,
         organizationId,
       },
     });
@@ -90,9 +90,8 @@ export class OrganizationsService {
     }
 
     const activeTenant = {
-      userId: user.userId,
+      id: user.id,
       email: user.email,
-      displayName: user.displayName,
       organizationId,
       role: membership.role,
     } satisfies JwtPayload;

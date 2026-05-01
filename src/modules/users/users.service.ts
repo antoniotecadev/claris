@@ -21,7 +21,7 @@ export class UsersService {
     // 2. Verificamos se o usuário é membro da organização activa e buscamos seu perfil
     const membership = await this.prisma.membership.findFirst({
       where: {
-        userId: currentUser.userId,
+        userId: currentUser.id,
         organizationId,
         status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] },
       },
@@ -72,11 +72,11 @@ export class UsersService {
     this.assertTenantContext(organizationId);
 
     // 2. Verificamos se o usuário é membro da organização activa
-    await this.assertMembership(currentUser.userId, organizationId!);
+    await this.assertMembership(currentUser.id, organizationId!);
 
     // 3. Actualizamos o perfil do usuário com os dados fornecidos, se existirem
     const updatedUser = await this.prisma.user.update({
-      where: { id: currentUser.userId },
+      where: { id: currentUser.id },
       data: {
         ...(dto.displayName !== undefined ? { displayName: dto.displayName } : {}),
         ...(dto.avatarUrl !== undefined ? { avatarUrl: dto.avatarUrl } : {}),
@@ -197,11 +197,11 @@ export class UsersService {
     this.assertTenantContext(organizationId);
 
     // 2. Verificamos se o usuário é membro da organização activa
-    await this.assertMembership(currentUser.userId, organizationId!);
+    await this.assertMembership(currentUser.id, organizationId!);
 
     // 3. Actualizamos o campo lastSeen do usuário para a data/hora atual
     await this.prisma.user.update({
-      where: { id: currentUser.userId },
+      where: { id: currentUser.id },
       data: { lastSeen: new Date() },
     });
 

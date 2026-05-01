@@ -58,7 +58,7 @@ export class MembershipsService {
 		dto: InviteMemberDto,
 	) {
         // 1. Verificar se o usuário tem permissão para gerir membros na organização activa
-		await this.assertCanManageMembers(currentUser.userId, organizationId);
+		await this.assertCanManageMembers(currentUser.id, organizationId);
 
         // 2. Verificar se o email do membro a ser convidado corresponde a um usuário existente
 		const user = await this.prisma.user.findUnique({
@@ -125,7 +125,7 @@ export class MembershipsService {
 		dto: UpdateMemberRoleDto,
 	) {
         // 1. Verificar se o usuário tem permissão para gerir membros na organização activa
-		await this.assertCanManageMembers(currentUser.userId, organizationId);
+		await this.assertCanManageMembers(currentUser.id, organizationId);
 
         // 2. Verificar se o membro cuja função será actualizada pertence à organização activa
 		const membership = await this.prisma.membership.findUnique({
@@ -188,11 +188,11 @@ export class MembershipsService {
 		memberId: string,
 	) {
         // 1. Verificar se o usuário tem permissão para gerir membros na organização activa
-		await this.assertCanManageMembers(currentUser.userId, organizationId);
+		await this.assertCanManageMembers(currentUser.id, organizationId);
 
 
         // 2. Verificar se o membro a ser removido é o próprio usuário, e se for, retornamos um erro de bad request para evitar que um usuário remova a si mesmo
-		if (currentUser.userId === memberId) {
+		if (currentUser.id === memberId) {
 			throw new BadRequestException('Não é permitido remover o próprio membro');
 		}
 

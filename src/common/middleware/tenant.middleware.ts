@@ -29,9 +29,7 @@ export class TenantMiddleware implements NestMiddleware {
       try {
         const payload = this.jwtService.verify<JwtPayload>(token);
 
-        if (payload.organizationId) {
-          (req as any).organizationId = payload.organizationId;
-        }
+        console.log('TenantMiddleware: Payload decodificado do JWT:', payload);
 
       } catch {
         // Token inválido ou expirado: o guard da rota protegida vai tratar isso.

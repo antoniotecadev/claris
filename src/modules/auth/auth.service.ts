@@ -1,11 +1,10 @@
-// src/modules/auth/auth.service.ts
-
 import * as qrcode from 'qrcode';
 import * as speakeasy from 'speakeasy';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { UserPayload } from './interfaces/user-payload.interface';
 import { MembershipStatus } from 'generated/prisma/enums';
 import {
   Injectable,
@@ -24,7 +23,6 @@ export class AuthService {
   async loginWithEmailAndPassword(loginDto: LoginDto): Promise<any | null> {
     const { email, password } = loginDto;
 
-    // 1. procura o user no Prisma (usando o teu PrismaService)
     const user = await this.prisma.user.findUnique({
       where: { email },
       select: {
@@ -36,19 +34,16 @@ export class AuthService {
       },
     });
 
-    // 2. Se o user não existir ou não tiver senha (ex: login só com Google), retorna erro de credenciais inválidas
     if (!user || !user.passwordHash) {
       throw new UnauthorizedException('Credenciais inválidas');
     }
-    // 3. valida a senha com bcrypt
+
     const isPasswordValid = await compare(password, user.passwordHash!);
 
-    // 4. Se a senha for inválida, retorna erro de credenciais inválidas
     if (!isPasswordValid) {
       throw new UnauthorizedException('Credenciais inválidas');
     }
 
-    // 5. Se o usuário tem 2FA activado
     if (user?.twofa_enabled) {
       const tempToken = await this.getTempToken(user.id); // Gerar um token temporário para 2FA
       return {
@@ -59,34 +54,14 @@ export class AuthService {
       };
     }
 
-    // 6. Se a senha for válida e 2FA não estiver activado, devolve o token e as igrejas do usuário.
     return await this.buildLoginResponse(user);
   }
 
-  // Método auxiliar - Gera a resposta final de login
-  private async generateFinalLoginResponse(user: JwtPayload) {
-    const token = await this.sign(user);
-
-    return {
-      success: true,
-      user: {
-        ...user,
-        token: {
-          ...token,
-          expiresIn: 24 * 60 * 60, // 24 horas em segundos
-          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
-        },
-      },
-    };
-  }
-
   async loginWithGoogle(googleUser: any): Promise<any | null> {
-    // Verifica se o usuário já existe no banco de dados usando o email do Google
     let user = await this.prisma.user.findUnique({
       where: { email: googleUser.email },
     });
 
-    // Se o usuário não existir, cria um novo registro no banco de dados
     if (!user) {
       user = await this.prisma.user.create({
         data: {
@@ -98,20 +73,15 @@ export class AuthService {
       });
     }
 
-    // Login Google segue o mesmo fluxo do login por senha:
-    // emite o JWT e devolve as organizações do usuário.
     return await this.buildLoginResponse(user);
   }
 
   async generate2FASecret(userId: string, email: string) {
-    // 1. Gera um segredo 2FA usando speakeasy
     const secret = speakeasy.generateSecret({
       name: `ChurchSaas (${email})`, // vai aparecer no app autenticador
       length: 20, // comprimento do segredo ex: 20 caracteres, o padrão é 32, mas 20 é suficiente para segurança e mais fácil de armazenar
     });
 
-    // 2. Guarda o segredo no banco de dados (Prisma) associado ao usuário
-    // base32 é o formato mais comum para armazenar o segredo
     await this.prisma.user.update({
       where: { id: userId },
       data: { twofa_secret: secret.base32 },
@@ -266,7 +236,6 @@ export class AuthService {
   }
 
   private async getTempToken(userId: string) {
-    // Gera um token JWT temporário para 2FA, com um tipo (2fa_pending) específico e curta duração
     const tempToken = this.jwtService.sign(
       { userId, type: '2fa_pending' },
       { expiresIn: '10m' }, // Token temporário dura 10 minutos
@@ -274,8 +243,7 @@ export class AuthService {
     return tempToken;
   }
 
-  private async buildLoginResponse(user: JwtPayload) {
-    // 1. Busca as organizações associadas ao usuário para que o frontend possa exibir as opções
+  private async buildLoginResponse(user: UserPayload) {
     const memberships = await this.prisma.membership.findMany({
       where: {
         userId: user.id,
@@ -294,20 +262,13 @@ export class AuthService {
       orderBy: { joinedAt: 'asc' },
     });
 
-    // 2. Se o usuário não estiver associado a nenhuma organização, retorna um erro indicando que o usuário precisa ser associado a pelo menos uma organização para fazer login
     if (!memberships.length) {
       throw new BadRequestException(
         'Usuário não está associado a nenhuma organização',
       );
     }
 
-    // 3. Emite o token JWT e devolve os dados do usuário e as organizações associadas.
-    const loginPayload: JwtPayload = {
-      id: user.id,
-      email: user.email,
-    };
-
-    const baseResponse = await this.generateFinalLoginResponse(loginPayload);
+    const baseResponse = await this.generateFinalLoginResponse(user);
 
     return {
       ...baseResponse,
@@ -318,6 +279,31 @@ export class AuthService {
         logoUrl: membership.organization.logoUrl,
         role: membership.role,
       })),
+    };
+  }
+
+  private async generateFinalLoginResponse(user: UserPayload) {
+    const loginPayload: JwtPayload = {
+      id: user.id,
+      email: user.email,
+    };
+
+    const token = await this.sign(loginPayload);
+
+    return {
+      success: true,
+      user: {
+        ...{
+          id: user.id,
+          email: user.email,
+          displayName: user.displayName,
+        },
+        token: {
+          ...token,
+          expiresIn: 24 * 60 * 60, // 24 horas em segundos
+          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        },
+      },
     };
   }
 }

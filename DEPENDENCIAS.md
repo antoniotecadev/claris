@@ -58,6 +58,9 @@ Esta é uma estratégia de autenticação para o Passport que permite a autentic
 ### `speakeasy` (Autenticação de dois factores)
 Esta biblioteca é usada para implementar autenticação de dois factores (2FA) em aplicações NestJS. Ela suporta a geração de códigos TOTP (Time-based One-Time Password) e HOTP (HMAC-based One-Time Password), que são comumente usados para 2FA.
 
+### `resend` (Envio de emails)
+Esta biblioteca é usada para enviar emails através do serviço Resend, que é uma plataforma de envio de emails transacionais. Ela é útil para enviar códigos de verificação, notificações e outros tipos de emails a partir da aplicação NestJS.
+
 ### `qrcode` (Gerar QR Codes)
 Esta biblioteca é usada para gerar QR Codes, que podem ser usados para facilitar a configuração de autenticação de dois factores (2FA) com aplicativos autenticadores como Google Authenticator ou Authy.
 

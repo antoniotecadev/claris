@@ -28,6 +28,7 @@ model User {
   createdAt     DateTime     @default(now())
   memberships   Membership[]
   messages      Message[]
+  emailLoginCodes EmailLoginCode[]
 }
 
 // Organization: representa as organizações (igrejas) no sistema, com campos para nome, slug, logo e relacionamentos com membros, eventos e mensagens.
@@ -92,4 +93,17 @@ model Message {
   createdAt      DateTime     @default(now())
   sender         User         @relation(fields: [senderId], references: [id])
   organization   Organization @relation(fields: [organizationId], references: [id])
+}
+
+// EmailLoginCode: representa um codigo de login enviado por email, com expiracao e uso unico.
+model EmailLoginCode {
+  id        String   @id @default(cuid())
+  userId    String
+  codeHash  String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }

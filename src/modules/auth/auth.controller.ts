@@ -1,5 +1,3 @@
-// src/modules/auth/auth.controller.ts
-
 import {
   Controller,
   Get,
@@ -12,6 +10,8 @@ import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { VerifyEmailCodeDto } from './dto/verify-email-code.dto';
+import { RegisterDto } from './dto/register.dto';
+import { VerifySignupEmailDto } from './dto/verify-signup-email.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +20,11 @@ export class AuthController {
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
     return await this.authService.loginWithEmailAndPassword(loginDto);
+  }
+
+  @Post('register')
+  async register(@Body() dto: RegisterDto) {
+    return await this.authService.registerWithEmail(dto);
   }
 
   @Get('google')
@@ -37,5 +42,10 @@ export class AuthController {
   @Post('email/verify')
   async verifyEmailLogin(@Body() dto: VerifyEmailCodeDto) {
     return await this.authService.verifyEmailCodeAndLogin(dto);
+  }
+
+  @Post('email/confirm')
+  async confirmEmail(@Body() dto: VerifySignupEmailDto) {
+    return await this.authService.verifySignupEmail(dto);
   }
 }

@@ -14,21 +14,23 @@ datasource db {
   // url: esta definida no prisma.config.ts 
 }
 
-// User: representa os usuários do sistema, com campos para email, senha, nome de exibição, avatar, autenticação 2FA e relacionamentos com organizações e mensagens.
+// User: representa os usuários do sistema, com campos para email, senha, nome de exibição, genero, data de nascimento, avatar e relacionamentos com organizações e mensagens.
 model User {
   id            String       @id @default(cuid())
   email         String       @unique
   passwordHash  String?
   displayName   String
+  gender        String?
+  birthDate     DateTime?
   avatarUrl     String?
+  emailVerified Boolean      @default(false)
   googleId      String?      @unique
-  twofa_secret  String?
-  twofa_enabled Boolean      @default(false)
   lastSeen      DateTime?
   createdAt     DateTime     @default(now())
   memberships   Membership[]
   messages      Message[]
   emailLoginCodes EmailLoginCode[]
+  emailVerificationCodes EmailVerificationCode[]
 }
 
 // Organization: representa as organizações (igrejas) no sistema, com campos para nome, slug, logo e relacionamentos com membros, eventos e mensagens.
@@ -97,6 +99,19 @@ model Message {
 
 // EmailLoginCode: representa um codigo de login enviado por email, com expiracao e uso unico.
 model EmailLoginCode {
+  id        String   @id @default(cuid())
+  userId    String
+  codeHash  String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+// EmailVerificationCode: representa um código de verificacao de email.
+model EmailVerificationCode {
   id        String   @id @default(cuid())
   userId    String
   codeHash  String

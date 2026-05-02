@@ -2,7 +2,7 @@ import { IsDateString, IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl, MaxLeng
 
 export class RegisterDto {
   @IsEmail({}, { message: 'Email inválido' })
-  @IsNotEmpty({ message: 'Email e obrigatório' })
+  @IsNotEmpty({ message: 'Email é obrigatório' })
   email: string;
 
   @IsString()

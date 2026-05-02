@@ -118,7 +118,7 @@ export class AuthService {
     }
 
     if (!user.emailVerified) {
-      throw new UnauthorizedException('Email nao verificado');
+      throw new UnauthorizedException('Email não verificado');
     }
 
     const emailCode = await this.prisma.emailLoginCode.findFirst({

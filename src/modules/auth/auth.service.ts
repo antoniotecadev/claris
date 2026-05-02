@@ -131,6 +131,25 @@ export class AuthService {
       throw new Error('RESEND_API_KEY is not defined');
     }
 
+    const lastCode = await this.prisma.emailLoginCode.findFirst({
+      where: { userId: user.id },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (lastCode) {
+      const elapsedMs = Date.now() - lastCode.createdAt.getTime();
+      const cooldownMs = 5 * 60 * 1000;
+      if (elapsedMs < cooldownMs) {
+        const waitSeconds = Math.ceil((cooldownMs - elapsedMs) / 1000);
+        throw new BadRequestException({
+          message: `Aguarde ${waitSeconds}s para reenviar o codigo`,
+          waitSeconds,
+          statusCode: 400,
+          error: 'Bad Request',
+        });
+      }
+    }
+
     const code = this.generateEmailCode();
     const codeHash = await hash(code, 10);
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);

@@ -6,11 +6,11 @@ import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 
+@UseGuards(JwtAuthGuard)
 @Controller('organizations')
 export class OrganizationsController {
   constructor(private readonly organizationService: OrganizationsService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   createOrganization(
     @Body() dto: CreateOrganizationDto,
@@ -19,25 +19,21 @@ export class OrganizationsController {
     return this.organizationService.createOrganization(dto, user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('current')
   getCurrentOrganization(@Req() req: any) {
     return this.organizationService.getCurrentOrganization(req.organizationId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('my')
   listMyOrganizations(@CurrentUser() user: JwtPayload) {
     return this.organizationService.listMyOrganizations(user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('stats')
   getStats(@Req() req: any) {
     return this.organizationService.getStats(req.organizationId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('switch/:organizationId')
   switchOrganization(
     @CurrentUser() user: JwtPayload,

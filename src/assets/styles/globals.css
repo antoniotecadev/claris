@@ -137,6 +137,14 @@ body {
 	background-size: cover;
 }
 
+.side1 {
+	background-image: url('../images/Section\ -\ Left\ Side_\ Inspiring\ Imagery.png');
+	background-repeat: no-repeat;
+	width: 50%;
+	height: 100%;
+	background-size: cover;
+}
+
 .side2 {
     background-image: url('../images/visual.png'); /* Note the leading slash */
     background-repeat: no-repeat;

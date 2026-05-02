@@ -20,9 +20,9 @@ export async function loginAction(prevState: any, formData: FormData) {
 
     const data = res.data?.result ?? res.data;
 
-    if (data?.require2FA) {
-      redirectUrl = `/auth/2fa?tempToken=${data.tempToken}`;
-    } else if (data?.requireOrganizationSelection) {
+    if (data?.requireEmailCode) {
+      redirectUrl = `/codeAuth`;
+    } else if (data?.requireEmailCode) {
       redirectUrl = `/select-organization?selectionToken=${data.selectionToken}`;
     } else {
       return { success: false, error: "Resposta inesperada do servidor." };

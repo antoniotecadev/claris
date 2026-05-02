@@ -13,7 +13,7 @@ export class AppService {
   getHello(): object {
     return {
       message: 'Hello World!',
-      name: 'Church SaaS Backend',
+      name: 'Claris Backend',
       version: '1.0.0',
     };
   }

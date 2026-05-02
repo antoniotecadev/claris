@@ -17,6 +17,7 @@ import { VerifyEmailCodeDto } from './dto/verify-email-code.dto';
 @Injectable()
 export class AuthService {
   private readonly resend = new Resend(process.env.RESEND_API_KEY ?? '');
+  private readonly resendFrom = process.env.RESEND_FROM ?? 'claris@resend.dev';
 
   constructor(
     private prisma: PrismaService,
@@ -25,13 +26,6 @@ export class AuthService {
 
   async loginWithEmailAndPassword(loginDto: LoginDto): Promise<any | null> {
     const { email, password } = loginDto;
-
-    console.log(
-      'AuthService initialized with Resend API Key:',
-      process.env.RESEND_API_KEY,
-    );
-
-    console.log('AuthService initialized with Resend FROM:', process.env.RESEND_FROM);
 
     const user = await this.prisma.user.findUnique({
       where: { email },
@@ -155,17 +149,31 @@ export class AuthService {
     });
 
     await this.resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: 'antoniojosebuaioteca@gmail.com',
-      subject: 'Seu codigo de acesso',
-      html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.5;">
-          <p>Seu codigo de acesso e:</p>
-          <h2 style="letter-spacing: 2px;">${code}</h2>
-          <p>Este codigo expira em 5 minutos.</p>
-        </div>
-      `,
+      from: this.resendFrom,
+      to: user.email,
+      subject: 'Seu código de acesso',
+      html: this.buildLoginEmailHtml(user.displayName, code),
     });
+  }
+
+  private buildLoginEmailHtml(displayName: string, code: string) {
+    const safeName = displayName?.trim() || 'olá';
+
+    return `
+      <div style="background:#f5f6f8;padding:24px 12px;">
+        <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:12px;padding:24px 24px 20px;box-shadow:0 6px 18px rgba(20,20,20,0.06);font-family:Arial, sans-serif;">
+          <div style="margin-bottom:16px;">
+            <div style="font-size:14px;color:#6b7280;">Claris</div>
+            <div style="font-size:20px;font-weight:700;color:#111827;margin-top:6px;">Código de acesso</div>
+          </div>
+          <div style="font-size:14px;color:#374151;margin-bottom:16px;">Olá ${safeName}, use o código abaixo para entrar na sua conta.</div>
+          <div style="background:#f9fafb;border:1px dashed #d1d5db;border-radius:10px;padding:14px;text-align:center;margin-bottom:16px;">
+            <div style="font-size:24px;letter-spacing:6px;font-weight:700;color:#111827;">${code}</div>
+          </div>
+          <div style="font-size:12px;color:#6b7280;">Este código expira em 5 minutos. Se não foi você, ignore este email.</div>
+        </div>
+      </div>
+    `;
   }
 
   private async buildLoginResponse(user: UserPayload) {

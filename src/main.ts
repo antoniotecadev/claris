@@ -29,7 +29,7 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Church SaaS API')
+    .setTitle('Claris API')
     .setDescription('Documentação da API para os Membros B, C e D')
     .setVersion('1.0')
     .addBearerAuth(

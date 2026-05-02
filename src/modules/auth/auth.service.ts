@@ -195,16 +195,11 @@ export class AuthService {
       orderBy: { joinedAt: 'asc' },
     });
 
-    if (!memberships.length) {
-      throw new BadRequestException(
-        'Usuário não está associado a nenhuma organização',
-      );
-    }
-
     const baseResponse = await this.generateFinalLoginResponse(user);
 
     return {
       ...baseResponse,
+      organizationLength: memberships.length,
       organizations: memberships.map((membership) => ({
         organizationId: membership.organization.id,
         name: membership.organization.name,

@@ -4,6 +4,9 @@ import Google from "@/assets/images/SVG.png"
 import { ArrowRight } from "lucide-react";
 
 export default function Login() {
+	  const loginWithGoogle = () => {
+    window.location.href = "http://localhost:3001/auth/google";
+  };
 
 	return (
 		<div className="bg-[#E5E5E5]">
@@ -40,21 +43,25 @@ export default function Login() {
 									<div className="flex flex-col justify-between gap-4 ">
 										<div className="flex flex-col">
 											<label htmlFor="fullNmae" className="mb-1 text-[#43474E] f">Nome completo</label>
-											<input type="text" id="fullNmae" placeholder="ex. Delson Pedro" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-3" />
+											<input type="text" id="fullNmae" required placeholder="ex. Delson Pedro" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-3" />
 											<div className="flex gap-5 mb-3">
 												<div className="flex flex-col w-[50%]">
 													<label htmlFor="email" className="mb-1 text-[#43474E]">E-mail</label>
-													<input type="text" id="email" placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-1" />
+													<input type="text" id="email" required placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-1" />
 												</div>
 												<div className="flex flex-col w-[50%]">
-													<label htmlFor="data" className="mb-1 text-[#43474E]">Data de Nascimento</label>
-													<input type="date" id="data" placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-1" />
+													<label htmlFor="data"  className="mb-1 text-[#43474E]">Data de Nascimento</label>
+													<input type="date" id="data" required placeholder="ex. delsonpedro@church.com" className="text-[#6B7280]  bg-white rounded-2xl h-13.5 p-4 mb-1" />
 												</div>
 											</div>
 											<div className="flex gap-5 mb-3">
 												<div className="flex flex-col w-[50%]">
-													<label htmlFor="tel" className="mb-1 text-[#43474E]">Telefone</label>
-													<input type="text" id="tel" placeholder="9xx xxx xxx" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1" />
+													<label htmlFor="tel" className="mb-1 text-[#43474E]">Sexo</label>
+													<select name="sexo" required id="sexo" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-1">
+														<option value="" disabled>seleciona sexo</option>
+														<option value="masculino">Masculino</option>
+														<option value="feminino">Feminino</option>
+													</select>
 												</div>
 												<div className="flex flex-col w-[50%]">
 													<label htmlFor="photo" className="mb-1 text-[#43474E]">Foto</label>
@@ -63,15 +70,15 @@ export default function Login() {
 											</div>
 											<div className="flex flex-col ">
 												<label htmlFor="pass" className="mb-1 text-[#43474E]">Senha</label>
-												<input type="password" id="pss" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-2" />
+												<input type="password" id="pss" required placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-2" />
 												<p className="text-[#74777F] text-[11px] mb-2">Deve ter pelo menos 8 caracteres e incluir um símbolo especial</p>
 											</div>
 											<label htmlFor="passC" className="mb-1 text-[#43474E]">Confirmar senha</label>
-											<input type="password" id="pssC" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-10" />
+											<input type="password" required id="pssC" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-10" />
 										</div>
 
 									</div>
-									<button className="bg-[#002045] flex justify-center items-center gap-4 text-white h-14 rounded-2xl mb-10 hover:cursor-pointer">
+									<button  type="submit" className="bg-[#002045] flex justify-center items-center gap-4 text-white h-14 rounded-2xl mb-10 hover:cursor-pointer">
 										<p>CRIAR CONTA</p>
 										<ArrowRight size={20} />
 									</button>

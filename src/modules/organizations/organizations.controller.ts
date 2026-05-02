@@ -26,6 +26,12 @@ export class OrganizationsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('my')
+  listMyOrganizations(@CurrentUser() user: JwtPayload) {
+    return this.organizationService.listMyOrganizations(user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('stats')
   getStats(@Req() req: any) {
     return this.organizationService.getStats(req.organizationId);

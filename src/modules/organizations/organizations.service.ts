@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Role } from 'generated/prisma/enums';
+import { MembershipStatus, Role } from 'generated/prisma/enums';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
@@ -126,6 +126,38 @@ export class OrganizationsService {
     return {
       success: true,
       organization,
+    };
+  }
+
+  async listMyOrganizations(userId: string) {
+    const memberships = await this.prisma.membership.findMany({
+      where: {
+        userId,
+        status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] },
+      },
+      include: {
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            logoUrl: true,
+          },
+        },
+      },
+      orderBy: { joinedAt: 'asc' },
+    });
+
+    return {
+      success: true,
+      organizationLength: memberships.length,
+      organizations: memberships.map((membership) => ({
+        organizationId: membership.organization.id,
+        name: membership.organization.name,
+        slug: membership.organization.slug,
+        logoUrl: membership.organization.logoUrl,
+        role: membership.role,
+      })),
     };
   }
 

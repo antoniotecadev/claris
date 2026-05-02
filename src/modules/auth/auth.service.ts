@@ -5,7 +5,6 @@ import { LoginDto } from './dto/login.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { UserPayload } from './interfaces/user-payload.interface';
-import { MembershipStatus } from 'generated/prisma/enums';
 import {
   Injectable,
   BadRequestException,
@@ -177,37 +176,7 @@ export class AuthService {
   }
 
   private async buildLoginResponse(user: UserPayload) {
-    const memberships = await this.prisma.membership.findMany({
-      where: {
-        userId: user.id,
-        status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] },
-      },
-      include: {
-        organization: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-            logoUrl: true,
-          },
-        },
-      },
-      orderBy: { joinedAt: 'asc' },
-    });
-
-    const baseResponse = await this.generateFinalLoginResponse(user);
-
-    return {
-      ...baseResponse,
-      organizationLength: memberships.length,
-      organizations: memberships.map((membership) => ({
-        organizationId: membership.organization.id,
-        name: membership.organization.name,
-        slug: membership.organization.slug,
-        logoUrl: membership.organization.logoUrl,
-        role: membership.role,
-      })),
-    };
+    return this.generateFinalLoginResponse(user);
   }
 
   private async generateFinalLoginResponse(user: UserPayload) {

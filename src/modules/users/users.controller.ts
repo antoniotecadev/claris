@@ -21,31 +21,43 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('me')
-  getMyProfile(@CurrentUser() user: JwtPayload, @Req() req: any) {
-    return this.usersService.getMe(user, req.organizationId);
+  getMyProfile(
+    @CurrentUser() user: JwtPayload,
+    @Param('organizationId') organizationId: string,
+  ) {
+    return this.usersService.getMe(user, organizationId);
   }
 
   @Patch('me')
   updateMyProfile(
     @CurrentUser() user: JwtPayload,
-    @Req() req: any,
+    @Param('organizationId') organizationId: string,
     @Body() dto: UpdateProfileDto,
   ) {
-    return this.usersService.updateMe(user, req.organizationId, dto);
+    return this.usersService.updateMe(user, organizationId, dto);
   }
 
   @Patch('me/online')
-  touchOnline(@CurrentUser() user: JwtPayload, @Req() req: any) {
-    return this.usersService.touchOnline(user, req.organizationId);
+  touchOnline(
+    @CurrentUser() user: JwtPayload,
+    @Param('organizationId') organizationId: string,
+  ) {
+    return this.usersService.touchOnline(user, organizationId);
   }
 
   @Get('members')
-  listMembers(@Req() req: any, @Query() query: ListMembersQueryDto) {
-    return this.usersService.listMembers(req.organizationId, query);
+  listMembers(
+    @Param('organizationId') organizationId: string,
+    @Query() query: ListMembersQueryDto,
+  ) {
+    return this.usersService.listMembers(organizationId, query);
   }
 
   @Get('members/:memberId')
-  getMemberById(@Req() req: any, @Param('memberId') memberId: string) {
-    return this.usersService.getMemberById(req.organizationId, memberId);
+  getMemberById(
+    @Param('organizationId') organizationId: string,
+    @Param('memberId') memberId: string,
+  ) {
+    return this.usersService.getMemberById(organizationId, memberId);
   }
 }

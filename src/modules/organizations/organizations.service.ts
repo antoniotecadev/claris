@@ -10,7 +10,6 @@ import { MembershipStatus, Role } from 'generated/prisma/enums';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
-import type { UserPayload } from '../auth/interfaces/user-payload.interface';
 
 @Injectable()
 export class OrganizationsService {
@@ -19,10 +18,7 @@ export class OrganizationsService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async createOrganization(
-    dto: CreateOrganizationDto,
-    user: JwtPayload,
-  ) {
+  async createOrganization(dto: CreateOrganizationDto, user: JwtPayload) {
     const slug = this.buildSlug(dto.slug ?? dto.name);
 
     if (!slug) {
@@ -37,7 +33,7 @@ export class OrganizationsService {
       throw new ConflictException('Já existe uma organização com este slug');
     }
 
-    // Transação para garantir que a organização e a associação do usuário sejam criadas atomicaamente
+    // Transação para garantir que a organização e a associação do usuário sejam criadas atomicamente
     return this.prisma.$transaction(async (tx) => {
       const organization = await tx.organization.create({
         data: {
@@ -55,22 +51,9 @@ export class OrganizationsService {
         },
       });
 
-      // Criamos um novo token JWT com o organizationId do tenant recém-criado
-      // satisdfies: é uma forma de garantir que o objecto criado corresponde à interface JwtPayload, ajudando o TypeScript a inferir os tipos corretamente.
-      const activeTenant = {
-        id: user.id,
-        email: user.email,
-        organizationId: organization.id,
-        role: Role.SUPER_ADMIN,
-      } satisfies JwtPayload;
-
       return {
         success: true,
         organization,
-        user: {
-          ...activeTenant,
-          token: this.createToken(activeTenant),
-        },
       };
     });
   }
@@ -83,25 +66,26 @@ export class OrganizationsService {
         userId: user.id,
         organizationId,
       },
+      include: {
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            logoUrl: true,
+            createdAt: true,
+          },
+        },
+      },
     });
 
     if (!membership) {
       throw new ForbiddenException('Usuário não pertence a esta organização');
     }
 
-    const activeTenant = {
-      id: user.id,
-      email: user.email,
-      organizationId,
-      role: membership.role,
-    } satisfies JwtPayload;
-
     return {
       success: true,
-      user: {
-        ...activeTenant,
-        token: this.createToken(activeTenant),
-      },
+      organization: membership.organization,
     };
   }
 
@@ -142,6 +126,7 @@ export class OrganizationsService {
             name: true,
             slug: true,
             logoUrl: true,
+            createdAt: true,
           },
         },
       },
@@ -157,6 +142,7 @@ export class OrganizationsService {
         slug: membership.organization.slug,
         logoUrl: membership.organization.logoUrl,
         role: membership.role,
+        createdAt: membership.organization.createdAt,
       })),
     };
   }

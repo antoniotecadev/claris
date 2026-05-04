@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { Param } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { OrganizationsService } from './organizations.service';
@@ -19,19 +19,9 @@ export class OrganizationsController {
     return this.organizationService.createOrganization(dto, user);
   }
 
-  @Get('current')
-  getCurrentOrganization(@Req() req: any) {
-    return this.organizationService.getCurrentOrganization(req.organizationId);
-  }
-
   @Get('my')
   listMyOrganizations(@CurrentUser() user: JwtPayload) {
     return this.organizationService.listMyOrganizations(user.id);
-  }
-
-  @Get('stats')
-  getStats(@Req() req: any) {
-    return this.organizationService.getStats(req.organizationId);
   }
 
   @Post('switch/:organizationId')
@@ -40,5 +30,15 @@ export class OrganizationsController {
     @Param('organizationId') organizationId: string,
   ) {
     return this.organizationService.switchOrganization(user, organizationId);
+  }
+
+  @Get('current')
+  getCurrentOrganization(@Param('organizationId') organizationId: string) {
+    return this.organizationService.getCurrentOrganization(organizationId);
+  }
+
+  @Get('stats')
+  getStats(@Param('organizationId') organizationId: string) {
+    return this.organizationService.getStats(organizationId);
   }
 }

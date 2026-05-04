@@ -10,14 +10,14 @@ import { VerifySignupEmailDto } from './dto/verify-signup-email.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('login')
-  async login(@Body() loginDto: LoginDto) {
-    return await this.authService.loginWithEmailAndPassword(loginDto);
-  }
-
   @Post('register')
   async register(@Body() dto: RegisterDto) {
     return await this.authService.registerWithEmail(dto);
+  }
+
+  @Post('login')
+  async login(@Body() loginDto: LoginDto) {
+    return await this.authService.loginWithEmailAndPassword(loginDto);
   }
 
   @Get('google')
@@ -32,12 +32,12 @@ export class AuthController {
     return await this.authService.loginWithGoogle(req.user);
   }
 
-  @Post('email/verify')
+  @Post('email/verify-login')
   async verifyEmailLogin(@Body() dto: VerifyEmailCodeDto) {
     return await this.authService.verifyEmailCodeAndLogin(dto);
   }
 
-  @Post('email/confirm')
+  @Post('email/verify-signup')
   async confirmEmail(@Body() dto: VerifySignupEmailDto) {
     return await this.authService.verifySignupEmail(dto);
   }

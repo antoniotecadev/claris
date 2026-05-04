@@ -51,7 +51,6 @@ export class AuthService {
     }
 
     if (!user.emailVerified) {
-      await this.sendVerificationEmail(user);
       return {
         success: true,
         requireEmailVerification: true,
@@ -339,6 +338,33 @@ export class AuthService {
       subject: 'Confirme o seu email',
       html: this.buildVerificationEmailHtml(user.displayName, code),
     });
+  }
+
+  async resendVerificationEmail(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        displayName: true,
+        emailVerified: true,
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('Email não encontrado');
+    }
+
+    if (user.emailVerified) {
+      throw new BadRequestException('Email já verificado');
+    }
+
+    await this.sendVerificationEmail(user);
+
+    return {
+      success: true,
+      message: 'Código de verificação reenviado para o email',
+    };
   }
 
   private buildVerificationEmailHtml(displayName: string, code: string) {

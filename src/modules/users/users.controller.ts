@@ -44,20 +44,4 @@ export class UsersController {
   ) {
     return this.usersService.touchOnline(user, organizationId);
   }
-
-  @Get('members')
-  listMembers(
-    @Param('organizationId') organizationId: string,
-    @Query() query: ListMembersQueryDto,
-  ) {
-    return this.usersService.listMembers(organizationId, query);
-  }
-
-  @Get('members/:memberId')
-  getMemberById(
-    @Param('organizationId') organizationId: string,
-    @Param('memberId') memberId: string,
-  ) {
-    return this.usersService.getMemberById(organizationId, memberId);
-  }
 }

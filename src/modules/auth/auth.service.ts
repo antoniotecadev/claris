@@ -312,6 +312,7 @@ export class AuthService {
           waitSeconds,
           statusCode: 400,
           error: 'Bad Request',
+          requeredEmailVerification: true,
         });
       }
     }

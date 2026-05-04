@@ -15,7 +15,7 @@ import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { InviteMemberDto } from './dto/invite-member.dto';
 import { UpdateMemberRoleDto } from './dto/update-member-role.dto';
 
-@Controller('memberships')
+@Controller('organizations/:organizationId/memberships')
 @UseGuards(JwtAuthGuard)
 export class MembershipsController {
   constructor(private readonly membershipsService: MembershipsService) {}
@@ -32,6 +32,16 @@ export class MembershipsController {
     @Body() dto: InviteMemberDto,
   ) {
     return this.membershipsService.inviteMember(user, organizationId, dto);
+  }
+
+  @Post(':memberId/:toEmail/accept-invite')
+  acceptInvite(
+    @CurrentUser() user: JwtPayload,
+    @Param('organizationId') organizationId: string,
+    @Param('memberId') memberId: string,
+    @Param('toEmail') toEmail: string,
+  ) {
+    return this.membershipsService.acceptInvite(user, organizationId, memberId, toEmail);
   }
 
   @Patch(':memberId/role')

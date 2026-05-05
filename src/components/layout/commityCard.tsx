@@ -23,7 +23,7 @@ export default function CommunityCard({
   className = '',
 }: CommunityCardProps) {
   return (
-    <div className="bg-white w-148 h-63.5 rounded-lg shadow-md  cursor-pointer flex" onClick={onClick}>
+    <div className="bg-white w-[50%] h-63.5 rounded-lg shadow-md  cursor-pointer flex" onClick={onClick}>
       <div className="w-73.75 ">
         {logoUrl ? (
           <img src={logoUrl} alt={`${name} logo`} className="w-full h-full object-cover rounded-lg" />
@@ -33,7 +33,7 @@ export default function CommunityCard({
           </div>
         )}
       </div>
-      <div className="w-73.75  flex flex-col p-8 justify-between">
+      <div className="w-[50%]  flex flex-col p-8 justify-between">
         <div className="flex flex-col">
           <p className="text-sm text-[#1A1C1C] uppercase tracking-wide text-[10px]">{responsable}</p>
           <h3 className="text-lg font-bold text-[#002045] text-[24px]">{name}</h3>

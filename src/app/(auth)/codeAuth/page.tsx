@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import { use, useActionState, useRef, useState } from "react";
+import { use, useActionState, useRef, useState, useEffect } from "react";
 import Logo from "@/assets/images/lobo-SE.png"
 import { useSearchParams } from "next/navigation";
 import { sendCodeAction } from "@/utils/actionSendCode";
@@ -17,6 +17,21 @@ export default function CodeAuth() {
 	const [error, setError] = useState<string | undefined>(undefined);
 	const [digits, setDigits] = useState<string[]>(Array(6).fill(""));
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+	const [countdown, setCountdown] = useState(180);
+
+	useEffect(() => {
+		if (countdown <= 0) return;
+		const timer = setInterval(() => {
+			setCountdown((prev) => prev - 1);
+		}, 1000);
+		return () => clearInterval(timer);
+	}, [countdown]);
+
+	const formatCountdown = () => {
+		const m = Math.floor(countdown / 60).toString().padStart(2, "0");
+		const s = (countdown % 60).toString().padStart(2, "0");
+		return `${m}:${s}`;
+	};
 
 	const getCode = () => digits.join("");
 
@@ -65,6 +80,12 @@ export default function CodeAuth() {
 			setError(result.error);
 		}
 		setPending(false);
+	};
+
+	const handleResend = () => {
+		if (countdown > 0) return;
+		setCountdown(180);
+		// lógica de reenvio aqui
 	};
 
 	return (
@@ -118,8 +139,12 @@ export default function CodeAuth() {
 								pending ? "Verificando..." : "Verificar Código"
 							}
 						</button>
-						<button className="w-full h-14 text-center bg-white text-[#002045] rounded-2xl mb-4">
-							Reenviar Código
+						<button
+							onClick={handleResend}
+							disabled={countdown > 0}
+							className="w-full h-14 text-center bg-white text-[#002045] rounded-2xl mb-4 disabled:opacity-50"
+						>
+							{countdown > 0 ? `Reenviar Código (${formatCountdown()})` : "Reenviar Código"}
 						</button>
 						{error && (
 							<p className="text-sm text-red-600 font-medium flex items-center gap-2 mb-16 text-center px-2">
@@ -136,8 +161,3 @@ export default function CodeAuth() {
 		</div>
 	);
 }
-
-
-
-
-

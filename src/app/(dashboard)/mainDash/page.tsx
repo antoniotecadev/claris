@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Search, Bell, Settings } from "lucide-react";
 import CommunityCard from '@/components/layout/commityCard';
 import heroImg from "@/assets/images/create.png";
+import CommunityJoin from '@/components/layout/commityJoin';
 
 interface NavLinkProps {
 	href: string;
@@ -82,11 +83,10 @@ export default function MainDash() {
 							<p className='text-[#002045]  w-40 mr-1'>MINHAS IGREJAS</p>
 							<div className='h-px bg-zinc-400 w-full'></div>
 						</div>
-						<div className='flex overflow-scroll gap-8 py-3'>
+						<div className='flex gap-8 py-10 justify-between'>
 							<CommunityCard name='Igreja Batista' description='Uma comunidade de fé e amor' logoUrl={null} membersCount={120} responsable='Pastor João' onClick={() => { }} />
 							<CommunityCard name='Igreja Católica' description='Uma comunidade de fé e amor' logoUrl={null} membersCount={120} responsable='Pastor João' onClick={() => { }} />
-							<CommunityCard name='Igreja Adventista' description='Uma comunidade de fé e amor' logoUrl={null} membersCount={120} responsable='Pastor João' onClick={() => { }} />
-							<CommunityCard name='Igreja Presbiteriana' description='Uma comunidade de fé e amor' logoUrl={null} membersCount={120} responsable='Pastor João' onClick={() => { }} />
+
 						</div>
 						<section
 							style={{
@@ -97,25 +97,34 @@ export default function MainDash() {
 				    rgba(26, 54, 93, 0.60) 100%
                 ), url(${heroImg.src})`
 							}}
-							className="bg-white bg-center bg-cover mt-10 mb-10 rounded-2xl flex flex-col justify-between p-20"
+							className="bg-white bg-center bg-cover mt-10 mb-10 rounded-2xl flex flex-col  p-20"
 						>
 							<div className='flex flex-col'>
-							<p className='text-white text-4xl italic'>Manifesta a tua visão</p>
-							<p className='text-[#DBEAFE] w-120 mt-4 '>
-								Crie a sua igreja e comece hoje a construir uma comunidade de fé vibrante
-								e acolhedora, capacitada com ferramentas que organizam, conectam e fortalecem a comunhão.
-								‘Pois onde dois ou três estiverem reunidos em meu nome, ali estou no meio deles.
-								(Mateus 18:20)
-							</p>
+								<p className='text-white text-4xl italic'>Manifesta a tua visão</p>
+								<p className='text-[#DBEAFE] w-120 mt-4 '>
+									Crie a sua igreja e comece hoje a construir uma comunidade de fé vibrante
+									e acolhedora, capacitada com ferramentas que organizam, conectam e fortalecem a comunhão.
+									‘Pois onde dois ou três estiverem reunidos em meu nome, ali estou no meio deles.
+									(Mateus 18:20)
+								</p>
 							</div>
 							<button className='bg-[#FFDEA5] text-[#261900]  w-60  rounded-2xl px-4 py-3 mt-12 cursor-pointer'>Criar Igreja</button>
 						</section>
-						<div className='flex justify-between items-center'>
-							<p className='text-[#002045]  w-40 mr-1'>DESCUBRIR IGREJAS</p>
-							<div className='h-px bg-zinc-400 w-full'></div>
+
+						<div className='flex justify-between items-center mt-10'>
+							<div className='flex flex-col'>
+								<p className='text-[#002045] text-[30px]'>Explorar novas igrejas</p>
+								<p className='text-[#475F83] text-[24px]'>Congregações perto de si ou alinhadas com a sua jornada.</p>
+							</div>
+							<p className='text-[#002045] text-[24px] cursor-pointer'>ver todas recomendações</p>
+
 						</div>
-						<div className='flex overflow-scroll gap-8 py-3'>
-							
+						<div className='flex gap-8'>
+							<CommunityJoin name='Igreja Batista' local='Lisboa, Portugal' logoUrl={null} membersCount={120} onClick={() => { }} />
+							<CommunityJoin name='Igreja Católica' local='Lisboa, Portugal' logoUrl={null} membersCount={120} onClick={() => { }} />
+							<CommunityJoin name='Igreja Adventista' local='Lisboa, Portugal' logoUrl={null} membersCount={120} onClick={() => { }} />
+							<CommunityJoin name='Igreja Católica' local='Lisboa, Portugal' logoUrl={null} membersCount={120} onClick={() => { }} />
+							<CommunityJoin name='Igreja Adventista' local='Lisboa, Portugal' logoUrl={null} membersCount={120} onClick={() => { }} />
 						</div>
 
 					</nav>

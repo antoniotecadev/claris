@@ -4,7 +4,6 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { VerifyEmailCodeDto } from './dto/verify-email-code.dto';
 import { RegisterDto } from './dto/register.dto';
-import { VerifySignupEmailDto } from './dto/verify-signup-email.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -37,13 +36,4 @@ export class AuthController {
     return await this.authService.verifyEmailCodeAndLogin(dto);
   }
 
-  @Post('email/verify-signup')
-  async confirmEmail(@Body() dto: VerifySignupEmailDto) {
-    return await this.authService.verifySignupEmail(dto);
-  }
-
-  @Post('email/resend-code')
-  async resendVerificationEmail(@Body() dto: { email: string }) {
-    return await this.authService.resendVerificationEmail(dto.email);
-  }
 }

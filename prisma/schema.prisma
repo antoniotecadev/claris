@@ -23,14 +23,12 @@ model User {
   gender        String?
   birthDate     DateTime?
   avatarUrl     String?
-  emailVerified Boolean      @default(false)
   googleId      String?      @unique
   lastSeen      DateTime?
   createdAt     DateTime     @default(now())
   memberships   Membership[]
   messages      Message[]
   emailLoginCodes EmailLoginCode[]
-  emailVerificationCodes EmailVerificationCode[]
 }
 
 // Organization: representa as organizações (igrejas) no sistema, com campos para nome, slug, logo e relacionamentos com membros, eventos e mensagens.
@@ -110,15 +108,3 @@ model EmailLoginCode {
   @@index([userId])
 }
 
-// EmailVerificationCode: representa um código de verificacao de email.
-model EmailVerificationCode {
-  id        String   @id @default(cuid())
-  userId    String
-  codeHash  String
-  expiresAt DateTime
-  usedAt    DateTime?
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-
-  @@index([userId])
-}

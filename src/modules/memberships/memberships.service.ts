@@ -143,6 +143,118 @@ export class MembershipsService {
     };
   }
 
+  async requestToJoinOrganization(
+    currentUser: JwtPayload,
+    organizationId: string | undefined,
+  ) {
+    this.assertOrganizationId(organizationId);
+
+    const requester = await this.prisma.user.findUnique({
+      where: { id: currentUser.id },
+      select: {
+        email: true,
+        displayName: true,
+      },
+    });
+
+    const currentUserName = requester?.displayName ?? 'membro';
+    const currentUserEmail = requester?.email ?? currentUser.email;
+
+    const existingMembership = await this.prisma.membership.findUnique({
+      where: {
+        userId_organizationId: {
+          userId: currentUser.id,
+          organizationId: organizationId!,
+        },
+      },
+    });
+
+    if (existingMembership) {
+      if (existingMembership.status === MembershipStatus.ACCEPTED) {
+        throw new BadRequestException('Já pertence a esta organização');
+      }
+
+      if (existingMembership.status === MembershipStatus.PENDING) {
+        throw new BadRequestException('Já existe uma solicitação pendente');
+      }
+
+      if (existingMembership.status === MembershipStatus.DECLINED) {
+        const updatedMembership = await this.prisma.membership.update({
+          where: {
+            userId_organizationId: {
+              userId: currentUser.id,
+              organizationId: organizationId!,
+            },
+          },
+          data: { status: MembershipStatus.PENDING },
+        });
+
+        return {
+          success: true,
+          member: updatedMembership,
+        };
+      }
+    }
+
+    const membership = await this.prisma.membership.create({
+      data: {
+        userId: currentUser.id,
+        organizationId: organizationId!,
+        role: Role.MEMBER,
+        status: MembershipStatus.PENDING,
+      },
+    });
+
+    const adminMemberships = await this.prisma.membership.findMany({
+      where: {
+        organizationId: organizationId!,
+        status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] },
+        role: { in: [Role.SUPER_ADMIN, Role.PASTOR] },
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+          },
+        },
+        organization: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    const adminEmails = adminMemberships
+      .map((admin) => admin.user.email)
+      .filter((email) => Boolean(email));
+
+    if (adminEmails.length) {
+      await this.resend.emails.send({
+        from: this.resendFrom,
+        to: adminEmails,
+        subject: `Nova solicitação para ${adminMemberships[0].organization.name}`,
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
+            <div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+              <h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px; text-align: center;">Nova solicitacao</h1>
+              <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">O membro <strong>${currentUserName}</strong> (${currentUserEmail}) solicitou entrada na igreja <strong style="color: #2563eb;">${adminMemberships[0].organization.name}</strong>.</p>
+              <div style="text-align: center; margin: 40px 0;">
+                <a href="${process.env.FRONTEND_URL}/organizations/${organizationId}/members" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Ver solicitacoes</a>
+              </div>
+              <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-top: 20px;">Atenciosamente,<br/><strong>Equipe Claris</strong></p>
+            </div>
+          </div>
+        `,
+      });
+    }
+
+    return {
+      success: true,
+      member: membership,
+    };
+  }
+
   async acceptInvite(
     currentUser: JwtPayload,
     organizationId: string | undefined,
@@ -232,6 +344,154 @@ export class MembershipsService {
       </div>
     </div>
     `,
+    });
+
+    return {
+      success: true,
+      member: updatedMembership,
+    };
+  }
+
+  async approveJoinRequest(
+    currentUser: JwtPayload,
+    organizationId: string | undefined,
+    memberId: string,
+  ) {
+    await this.assertCanManageMembers(currentUser.id, organizationId);
+
+    const membership = await this.prisma.membership.findUnique({
+      where: {
+        userId_organizationId: {
+          userId: memberId,
+          organizationId: organizationId!,
+        },
+      },
+    });
+
+    if (!membership) {
+      throw new NotFoundException('Solicitação não encontrada');
+    }
+
+    if (membership.status !== MembershipStatus.PENDING) {
+      throw new BadRequestException('Solicitação não está pendente');
+    }
+
+    const updatedMembership = await this.prisma.membership.update({
+      where: {
+        userId_organizationId: {
+          userId: memberId,
+          organizationId: organizationId!,
+        },
+      },
+      data: { status: MembershipStatus.ACCEPTED },
+      include: {
+        organization: {
+          select: {
+            name: true,
+          },
+        },
+        user: {
+          select: {
+            email: true,
+            displayName: true,
+          },
+        },
+      },
+    });
+
+    await this.resend.emails.send({
+      from: this.resendFrom,
+      to: updatedMembership.user.email,
+      subject: `Solicitação aprovada - ${updatedMembership.organization.name}`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
+          <div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+            <h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px; text-align: center;">Solicitação aprovada!</h1>
+
+            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Olá <strong>${updatedMembership.user.displayName}</strong>,</p>
+
+            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">A sua solicitação para entrar na igreja <strong style="color: #2563eb;">${updatedMembership.organization.name}</strong> foi aprovada.</p>
+
+            <div style="text-align: center; margin: 40px 0;">
+              <a href="${process.env.FRONTEND_URL}/organizations/${organizationId}" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Acessar Igreja</a>
+            </div>
+
+            <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-top: 20px;">Atenciosamente,<br/><strong>Equipe Claris</strong></p>
+          </div>
+        </div>
+      `,
+    });
+
+    return {
+      success: true,
+      member: updatedMembership,
+    };
+  }
+
+  async rejectJoinRequest(
+    currentUser: JwtPayload,
+    organizationId: string | undefined,
+    memberId: string,
+  ) {
+    await this.assertCanManageMembers(currentUser.id, organizationId);
+
+    const membership = await this.prisma.membership.findUnique({
+      where: {
+        userId_organizationId: {
+          userId: memberId,
+          organizationId: organizationId!,
+        },
+      },
+    });
+
+    if (!membership) {
+      throw new NotFoundException('Solicitação não encontrada');
+    }
+
+    if (membership.status !== MembershipStatus.PENDING) {
+      throw new BadRequestException('Solicitação não está pendente');
+    }
+
+    const updatedMembership = await this.prisma.membership.update({
+      where: {
+        userId_organizationId: {
+          userId: memberId,
+          organizationId: organizationId!,
+        },
+      },
+      data: { status: MembershipStatus.DECLINED },
+      include: {
+        organization: {
+          select: {
+            name: true,
+          },
+        },
+        user: {
+          select: {
+            email: true,
+            displayName: true,
+          },
+        },
+      },
+    });
+
+    await this.resend.emails.send({
+      from: this.resendFrom,
+      to: updatedMembership.user.email,
+      subject: `Solicitação rejeitada - ${updatedMembership.organization.name}`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
+          <div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+            <h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px; text-align: center;">Solicitação rejeitada</h1>
+
+            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Olá <strong>${updatedMembership.user.displayName}</strong>,</p>
+
+            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">A sua solicitação para entrar na igreja <strong style="color: #2563eb;">${updatedMembership.organization.name}</strong> foi rejeitada.</p>
+
+            <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-top: 20px;">Atenciosamente,<br/><strong>Equipe Claris</strong></p>
+          </div>
+        </div>
+      `,
     });
 
     return {

@@ -34,6 +34,14 @@ export class MembershipsController {
     return this.membershipsService.inviteMember(user, organizationId, dto);
   }
 
+  @Post('request')
+  requestToJoin(
+    @CurrentUser() user: JwtPayload,
+    @Param('organizationId') organizationId: string,
+  ) {
+    return this.membershipsService.requestToJoinOrganization(user, organizationId);
+  }
+
   @Post(':memberId/:toEmail/accept-invite')
   acceptInvite(
     @CurrentUser() user: JwtPayload,
@@ -42,6 +50,24 @@ export class MembershipsController {
     @Param('toEmail') toEmail: string,
   ) {
     return this.membershipsService.acceptInvite(user, organizationId, memberId, toEmail);
+  }
+
+  @Post(':memberId/approve')
+  approveRequest(
+    @CurrentUser() user: JwtPayload,
+    @Param('organizationId') organizationId: string,
+    @Param('memberId') memberId: string,
+  ) {
+    return this.membershipsService.approveJoinRequest(user, organizationId, memberId);
+  }
+
+  @Post(':memberId/reject')
+  rejectRequest(
+    @CurrentUser() user: JwtPayload,
+    @Param('organizationId') organizationId: string,
+    @Param('memberId') memberId: string,
+  ) {
+    return this.membershipsService.rejectJoinRequest(user, organizationId, memberId);
   }
 
   @Patch(':memberId/role')

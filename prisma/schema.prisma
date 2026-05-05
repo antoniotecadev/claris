@@ -31,9 +31,18 @@ model User {
   emailLoginCodes EmailLoginCode[]
 }
 
+// Church: representa igrejas padrão que podem ter várias organizações.
+model Church {
+  id            String         @id @default(cuid())
+  name          String
+  createdAt     DateTime       @default(now())
+  organizations Organization[]
+}
+
 // Organization: representa as organizações (igrejas) no sistema, com campos para nome, slug, logo e relacionamentos com membros, eventos e mensagens.
 model Organization {
   id          String       @id @default(cuid())
+  churchId    String
   name        String
   slug        String       @unique
   logoUrl     String?
@@ -41,6 +50,7 @@ model Organization {
   memberships Membership[]
   events      Event[]
   messages    Message[]
+  church      Church       @relation(fields: [churchId], references: [id])
 }
 
 // Membership: representa a associação de um usuário a uma organização, com campos para o papel do membro e a data de adesão. Inclui relacionamentos com User e Organization.

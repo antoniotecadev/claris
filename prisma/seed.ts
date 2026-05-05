@@ -23,13 +23,43 @@ async function main() {
   await prisma.message.deleteMany();
   await prisma.user.deleteMany();
   await prisma.organization.deleteMany();
+  await prisma.church.deleteMany();
 
   const saltRounds = 10; // Número de rounds para o bcrypt gerar o hash da senha
   const passwordHash = await bcrypt.hash('password123', saltRounds);
 
-  // 2. Criar Organizações (Igrejas)
+  // 2. Criar Igrejas Padrão
+  const church1 = await prisma.church.create({
+    data: {
+      name: 'Bom Deus',
+    },
+  });
+
+  const church2 = await prisma.church.create({
+    data: {
+      name: 'Jeová',
+    },
+  });
+
+  const churches = await prisma.church.createMany({
+    data: [
+      { name: 'Assembleia de Deus' },
+      { name: 'Universal do Reino de Deus' },
+      { name: 'Metodista Unida de Angola' },
+      { name: 'Evangélica Congregacional de Angola' },
+      { name: 'Baptista de Angola' },
+      { name: 'Católica Romana' },
+      { name: 'Evangélica Reformada de Angola' },
+      { name: 'Adventista do Sétimo Dia - Angola' },
+      { name: 'Pentecostal Nova Aliança' },
+      { name: 'Jesus Cristo dos Santos dos Últimos Dias' },
+    ],
+  });
+
+  // 3. Criar Organizações associadas às Igrejas
   const org1 = await prisma.organization.create({
     data: {
+      churchId: church1.id,
       name: 'Igreja Central de Luanda',
       slug: 'igreja-central',
       logoUrl: 'https://placehold.co/200x200?text=ICL',
@@ -38,13 +68,14 @@ async function main() {
 
   const org2 = await prisma.organization.create({
     data: {
+      churchId: church2.id,
       name: 'Igreja da Graça',
       slug: 'igreja-graca',
       logoUrl: 'https://placehold.co/200x200?text=IDG',
     },
   });
 
-  // 3. Criar Utilizadores e Atribuir Memberships
+  // 4. Criar Utilizadores e Atribuir Memberships
   // Utilizador 1: Pastor na Igreja Central
   await prisma.user.create({
     data: {
@@ -90,7 +121,7 @@ async function main() {
     },
   });
 
-  // 4. Criar Eventos para testar o Multi-tenancy
+  // 5. Criar Eventos para testar o Multi-tenancy
   await prisma.event.create({
     data: {
       title: 'Culto de Domingo - Central',

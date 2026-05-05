@@ -25,6 +25,15 @@ export class OrganizationsService {
       throw new BadRequestException('Nome ou slug inválido');
     }
 
+    const church = await this.prisma.church.findUnique({
+      where: { id: dto.churchId },
+      select: { id: true },
+    });
+
+    if (!church) {
+      throw new BadRequestException('Igreja não encontrada');
+    }
+
     const existingOrganization = await this.prisma.organization.findUnique({
       where: { slug },
     });
@@ -37,6 +46,7 @@ export class OrganizationsService {
     return this.prisma.$transaction(async (tx) => {
       const organization = await tx.organization.create({
         data: {
+          churchId: dto.churchId,
           name: dto.name,
           slug,
           logoUrl: dto.logoUrl,

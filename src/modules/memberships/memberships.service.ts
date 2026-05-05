@@ -123,7 +123,7 @@ export class MembershipsService {
 					
 					<p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Olá <strong>${user.displayName}</strong>,</p>
 					
-					<p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Você foi convidado para se juntar à organização <strong style="color: #2563eb;">${membership.organization.name}</strong> com a função de <strong style="color: #2563eb;">${membership.role}</strong>.</p>
+					<p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Você foi convidado para se juntar à Igreja <strong style="color: #2563eb;">${membership.organization.name}</strong> com a função de <strong style="color: #2563eb;">${membership.role}</strong>.</p>
 					
 					<div style="text-align: center; margin: 40px 0;">
 						<a href="${process.env.FRONTEND_URL}/accept-invite?orgId=${membership.organizationId}" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; transition: background-color 0.3s;">Aceitar Convite</a>
@@ -181,7 +181,7 @@ export class MembershipsService {
     }
 
     if (membership.status === MembershipStatus.ACCEPTED) {
-      throw new BadRequestException('Este convite já foi aceito');
+      throw new BadRequestException('Este convite já foi aceite');
     }
 
     const updatedMembership = await this.prisma.membership.update({
@@ -216,26 +216,22 @@ export class MembershipsService {
       to: toEmail,
       subject: `Convite Aceite - ${updatedMembership.organization.name}`,
       html: `
-		<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
-			<div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
-				<h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px; text-align: center;">Convite Aceito!</h1>
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
+      <div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+        <h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px; text-align: center;">Convite Aceite!</h1>
 				
-				<p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Olá <strong>${updatedMembership.user.displayName}</strong>,</p>
+        <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Olá,</p>
 				
-				<p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">O convite para se juntar à organização <strong style="color: #2563eb;">${updatedMembership.organization.name}</strong> foi aceite.</p>
+        <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">O membro <strong>${updatedMembership.user.displayName}</strong> aceitou o seu convite para a igreja <strong style="color: #2563eb;">${updatedMembership.organization.name}</strong>.</p>
 				
-				<p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Você pode agora acessar a organização e começar a colaborar com sua equipe.</p>
+        <div style="text-align: center; margin: 40px 0;">
+          <a href="${process.env.FRONTEND_URL}/organizations/${updatedMembership.organizationId}" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; transition: background-color 0.3s;">Acessar Igreja</a>
+        </div>
 				
-				<div style="text-align: center; margin: 40px 0;">
-					<a href="${process.env.FRONTEND_URL}/organizations/${updatedMembership.organizationId}" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; transition: background-color 0.3s;">Acessar Organização</a>
-				</div>
-				
-				<p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">Se você não esperava este convite, pode ignorar este email.</p>
-				
-				<p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-top: 20px;">Atenciosamente,<br/><strong>Equipe Claris</strong></p>
-			</div>
-		</div>
-	  `,
+        <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-top: 20px;">Atenciosamente,<br/><strong>Equipe Claris</strong></p>
+      </div>
+    </div>
+    `,
     });
 
     return {

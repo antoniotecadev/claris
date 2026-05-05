@@ -65,7 +65,7 @@ export class MembershipsService {
     });
 
     if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('Membro não encontrado');
     }
 
     const existingMembership = await this.prisma.membership.findUnique({
@@ -79,12 +79,12 @@ export class MembershipsService {
 
     if (existingMembership) {
       if (existingMembership.status === MembershipStatus.ACCEPTED) {
-        throw new BadRequestException('Usuário já pertence a esta organização');
+        throw new BadRequestException('Membro já pertence a esta organização');
       }
 
       if (existingMembership.status === MembershipStatus.PENDING) {
         throw new BadRequestException(
-          'Já existe um convite pendente para este usuário',
+          'Já existe um convite pendente para este membro',
         );
       }
     }
@@ -617,7 +617,7 @@ export class MembershipsService {
     });
 
     if (!membership) {
-      throw new ForbiddenException('Usuário não pertence à organização activa');
+      throw new ForbiddenException('Membro não pertence à organização activa');
     }
 
     const allowedRoles: Role[] = [Role.SUPER_ADMIN, Role.PASTOR];

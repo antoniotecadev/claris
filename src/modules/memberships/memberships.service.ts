@@ -255,6 +255,70 @@ export class MembershipsService {
     };
   }
 
+  async listMyInvites(
+    currentUser: JwtPayload,
+    organizationId: string | undefined,
+  ) {
+    this.assertOrganizationId(organizationId);
+
+    const invites = await this.prisma.membership.findMany({
+      where: {
+        organizationId,
+        userId: currentUser.id,
+        status: MembershipStatus.PENDING,
+      },
+      include: {
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            logoUrl: true,
+          },
+        },
+      },
+      orderBy: { joinedAt: 'desc' },
+    });
+
+    return {
+      success: true,
+      total: invites.length,
+      invites,
+    };
+  }
+
+  async listJoinRequests(
+    currentUser: JwtPayload,
+    organizationId: string | undefined,
+  ) {
+    this.assertOrganizationId(organizationId);
+
+    const requests = await this.prisma.membership.findMany({
+      where: {
+        organizationId,
+        userId: currentUser.id,
+        status: MembershipStatus.PENDING,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            displayName: true,
+            avatarUrl: true,
+          },
+        },
+      },
+      orderBy: { joinedAt: 'desc' },
+    });
+
+    return {
+      success: true,
+      total: requests.length,
+      requests,
+    };
+  }
+
   async acceptInvite(
     currentUser: JwtPayload,
     organizationId: string | undefined,

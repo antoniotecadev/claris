@@ -42,6 +42,22 @@ export class MembershipsController {
     return this.membershipsService.requestToJoinOrganization(user, organizationId);
   }
 
+  @Get('invites')
+  listMyInvites(
+    @CurrentUser() user: JwtPayload,
+    @Param('organizationId') organizationId: string,
+  ) {
+    return this.membershipsService.listMyInvites(user, organizationId);
+  }
+
+  @Get('requests')
+  listJoinRequests(
+    @CurrentUser() user: JwtPayload,
+    @Param('organizationId') organizationId: string,
+  ) {
+    return this.membershipsService.listJoinRequests(user, organizationId);
+  }
+
   @Post(':memberId/:toEmail/accept-invite')
   acceptInvite(
     @CurrentUser() user: JwtPayload,

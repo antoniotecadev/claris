@@ -6,6 +6,9 @@ import { Search, Bell, Settings } from "lucide-react";
 import CommunityCard from '@/components/layout/commityCard';
 import heroImg from "@/assets/images/create.png";
 import CommunityJoin from '@/components/layout/commityJoin';
+import { useEffect, useState } from 'react';
+import { getMyOrganizations } from '@/utils/actionMain';
+import type { OrganizationRef } from '@/types/auth.types';
 
 interface NavLinkProps {
 	href: string;
@@ -34,6 +37,36 @@ function NavLink({ href, children, className }: NavLinkProps) {
 }
 
 export default function MainDash() {
+	const [orgs, setOrgs] = useState<OrganizationRef[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		let mounted = true;
+		getMyOrganizations()
+			.then((data) => {
+				if (!mounted) return;
+				if (!data) {
+					setOrgs([]);
+				} else if (Array.isArray(data)) {
+					setOrgs(data as OrganizationRef[]);
+				} else if (data.organizations) {
+					setOrgs(data.organizations as OrganizationRef[]);
+				} else {
+					setOrgs([]);
+				}
+			})
+			.catch((err) => {
+				console.error(err);
+				if (mounted) setError(err instanceof Error ? err.message : String(err));
+			})
+			.finally(() => mounted && setLoading(false));
+
+		return () => {
+			mounted = false;
+		};
+	}, []);
+
 	return (
 		<div className="bg-white   ">
 			<div className="container m-auto   ">
@@ -84,8 +117,20 @@ export default function MainDash() {
 							<div className='h-px bg-zinc-400 w-full'></div>
 						</div>
 						<div className='flex gap-8 py-10 justify-between'>
-							<CommunityCard name='Igreja Batista' description='Uma comunidade de fé e amor' logoUrl={null} membersCount={120} responsable='Pastor João' onClick={() => { }} />
-							<CommunityCard name='Igreja Católica' description='Uma comunidade de fé e amor' logoUrl={null} membersCount={120} responsable='Pastor João' onClick={() => { }} />
+							{loading && <p>Carregando igrejas...</p>}
+							{error && <p className='text-red-600'>{error}</p>}
+							{!loading && !orgs.length && <p>Não pertence a nenhuma igreja ainda.</p>}
+							{!loading && orgs.map((org) => (
+								<CommunityCard
+									key={org.organizationId}
+									name={org.name}
+									description={org.slug}
+									logoUrl={org.logoUrl}
+									membersCount={0}
+									responsable={org.role}
+									onClick={() => { window.location.href = `/dashboard?org=${org.organizationId}` }}
+								/>
+							))}
 
 						</div>
 						<section

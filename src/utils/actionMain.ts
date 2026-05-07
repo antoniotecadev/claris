@@ -31,3 +31,14 @@ export async function selectOrganization(selectionToken: string, organizationId:
     return null;
   }
 }
+
+export async function getMyOrganizations() {
+  try {
+    const res = await api.get<any>("/organizations/my");
+    // backend likely returns an array of organizations
+    return res?.organizations ?? res;
+  } catch (error: unknown) {
+    console.error("Erro ao buscar minhas organizações:", error instanceof Error ? error.message : error);
+    return null;
+  }
+}

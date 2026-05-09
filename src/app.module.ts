@@ -12,10 +12,7 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
 import { MembershipsModule } from './modules/memberships/memberships.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { ChurchModule } from './modules/church/church.module';
-import { EventModule } from './modules/event/event.module';
-import { ChatModule } from './modules/chat/chat.module';
-import { ApiOrganizationsModule } from './api/organizations/organizations.module';
-import { ApiUsersModule } from './api/user/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [

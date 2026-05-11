@@ -42,5 +42,5 @@ export async function registerAction(prevState: any, formData: FormData) {
     return { success: false, error: error.message || "Erro ao criar conta." };
   }
 
-  redirect("/login");
+  redirect("/mainDash");
 }

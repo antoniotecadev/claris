@@ -9,11 +9,21 @@ import CommunityJoin from '@/components/layout/commityJoin';
 import { useEffect, useState } from 'react';
 import { getMyOrganizations } from '@/utils/actionMain';
 import type { OrganizationRef } from '@/types/auth.types';
+import { int } from 'zod';
+import { api } from '@/lib/api';
 
 interface NavLinkProps {
 	href: string;
 	children: React.ReactNode;
 	className?: string;
+}
+
+interface Church {
+	id: string;
+	name: string;
+	location: string;
+	logoUrl: string | null;
+	membersCount: number;
 }
 
 function NavLink({ href, children, className }: NavLinkProps) {
@@ -36,13 +46,31 @@ function NavLink({ href, children, className }: NavLinkProps) {
 	)
 }
 
+
+
 export default function MainDash() {
 	const [orgs, setOrgs] = useState<OrganizationRef[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const [churches, setChurches] = useState<Church[]>([]);
 
 	useEffect(() => {
 		let mounted = true;
+
+		const fetchChurches = async () => {
+			try {
+				const data = await api.get<{ churches: Church[] }>("/church");
+
+				setChurches(data.churches.slice(0, 5));
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		fetchChurches();
+
+
+
 		getMyOrganizations()
 			.then((data) => {
 				if (!mounted) return;
@@ -66,6 +94,23 @@ export default function MainDash() {
 			mounted = false;
 		};
 	}, []);
+
+	const requestToJoin = async (organizationId: string) => {
+		try {
+			const response = await api.post(
+				`/organizations/${organizationId}/memberships/request`,
+				{}
+			);
+
+			console.log(response);
+
+			alert("Pedido enviado com sucesso");
+		} catch (error) {
+			if (error instanceof Error) {
+				alert(error.message);
+			}
+		}
+	};
 
 	return (
 		<div className="bg-white   ">
@@ -165,11 +210,16 @@ export default function MainDash() {
 
 						</div>
 						<div className='flex gap-8'>
-							<CommunityJoin name='Igreja Batista' local='Lisboa, Portugal' logoUrl={null} membersCount={120} onClick={() => { }} />
-							<CommunityJoin name='Igreja Católica' local='Lisboa, Portugal' logoUrl={null} membersCount={120} onClick={() => { }} />
-							<CommunityJoin name='Igreja Adventista' local='Lisboa, Portugal' logoUrl={null} membersCount={120} onClick={() => { }} />
-							<CommunityJoin name='Igreja Católica' local='Lisboa, Portugal' logoUrl={null} membersCount={120} onClick={() => { }} />
-							<CommunityJoin name='Igreja Adventista' local='Lisboa, Portugal' logoUrl={null} membersCount={120} onClick={() => { }} />
+							{churches.map((church) => (
+								<CommunityJoin
+									key={church.id}
+									name={church.name}
+									local="Lisboa, Portugal"
+									logoUrl={null}
+									membersCount={120}
+									onClick={() => requestToJoin(church.id)}
+								/>
+							))}
 						</div>
 
 					</nav>

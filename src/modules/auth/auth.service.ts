@@ -1,8 +1,26 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto'
 import { compare, hash } from 'bcrypt'
+
+interface UserPayload{
+	id: string | undefined,
+	email: string | undefined,
+	displayName: string | undefined,
+	gender?: string | null,
+	birthDate?: Date | null,
+	avatarUrl?: string | null ;
+	role?: string;
+};
+
+interface JwtPayload{
+	id: string;
+	email: string;
+	organizationId?: string;
+	role?: string
+}
 
 @Injectable()
 export class AuthService {
@@ -11,13 +29,40 @@ export class AuthService {
 		private jwtService: JwtService,
 	){}
 
-	private async generateToken(userId: string, email: string)
+	async registerWithEmail(registerDto: RegisterDto) : Promise<any | null>
 	{
-		const payload = { sub: userId, email: email };
-		return {
-			access_token: this.jwtService.sign(payload),
-		};
+		const exist = await this.prisma.user.findUnique({
+			where: { email: registerDto.email },
+			select: {id : true},
+		});
+
+		if (exist)
+			throw new ConflictException('Este email já existe');
+		
+		const passwordHash = await hash(registerDto.password!, 10);
+
+		const user = await this.prisma.user.create({
+			data: {
+				email: registerDto.email!,
+				displayName: registerDto.displayName!,
+				passwordHash,
+				gender: registerDto.gender,
+				birthDate: registerDto.BirthDate,
+				avatarUrl: registerDto.avatarUrl,
+			},
+			select: {
+				id: true,
+				email: true,
+				displayName: true,
+				gender: true,
+				birthDate: true,
+				avatarUrl: true,
+			},
+		});
+
+		return this.generateFinalLoginResponse(user);
 	}
+
 	async loginWithEmailAndPassword(loginDto: LoginDto) : Promise<any | null>
 	{
 		const { email, password } = loginDto;
@@ -44,5 +89,40 @@ export class AuthService {
 			email: user.email,
 		};
 	}
-}
 
+	private async sign(user: JwtPayload)
+	{
+		const token = this.jwtService.sign(user);
+		return{
+			access_token: token,
+		};
+	}
+
+	private async generateFinalLoginResponse(user: UserPayload){
+		const loginPayload: JwtPayload = {
+			id: user.id!,
+			email: user.email!,
+		};
+
+		const token = await this.sign(loginPayload);
+		
+		return {
+			sucess: true,
+			user: {
+				...{
+					id: user.id,
+					email: user.email,
+					diplayName: user.displayName,
+					avatarUrl: user.avatarUrl,
+					gender: user.gender,
+					birthDate: user.birthDate,
+				},
+				token: {
+					...token,
+					expiresIn: 24 * 60 * 60,
+					expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+				},
+			},
+		};
+	}
+}

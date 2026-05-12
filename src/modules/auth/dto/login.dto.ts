@@ -8,4 +8,5 @@ export class LoginDto{
 	@IsString()
 	@IsNotEmpty({ message: 'A senha é obrigatória' })
 	@MinLength(6, { message: '' })
+	password: string | undefined
 }

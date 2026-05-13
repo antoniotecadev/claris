@@ -112,4 +112,23 @@ export class AuthService {
 		};
 	}
 
+	async loginWithGoogle(googleUser: any): Promise<any | null>
+	{
+		let user = await this.prisma.user.findUnique({
+			where: { email: googleUser.email },
+		});
+
+		if (!user)
+		{
+			user = await this.prisma.user.create({
+				data: {
+					email: googleUser.email,
+					displayName: googleUser.displayName,
+					avatarUrl: googleUser.avatarUrl,
+					googleId: googleUser.googleId,
+				},
+			});
+		}
+		return await this.generateFinalLoginResponse(user)
+	}
 }

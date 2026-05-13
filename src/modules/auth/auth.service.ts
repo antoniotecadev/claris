@@ -3,24 +3,10 @@ import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto'
+import { JwtPayload } from './interfaces/jwt-payload.interface'
+import { UserPayload } from './interfaces/user-payload.interface';
 import { compare, hash } from 'bcrypt'
 
-interface UserPayload{
-	id: string | undefined,
-	email: string | undefined,
-	displayName: string | undefined,
-	gender?: string | null,
-	birthDate?: Date | null,
-	avatarUrl?: string | null ;
-	role?: string;
-};
-
-interface JwtPayload{
-	id: string;
-	email: string;
-	organizationId?: string;
-	role?: string
-}
 
 @Injectable()
 export class AuthService {
@@ -63,41 +49,6 @@ export class AuthService {
 		return this.generateFinalLoginResponse(user);
 	}
 
-	async loginWithEmailAndPassword(loginDto: LoginDto) : Promise<any | null>
-	{
-		const { email, password } = loginDto;
-
-		const user = await this.prisma.user.findUnique({
-			where: {email},
-			select: {
-				id: true,
-				email: true,
-				displayName: true,
-				passwordHash: true,
-			},
-		});
-		
-		if (!user || !user.passwordHash)
-			throw new UnauthorizedException('Credenciais inválidas');
-		
-		const isvalidPW = await compare(password!, user.passwordHash);
-
-		if (!isvalidPW)
-			throw new UnauthorizedException('Credenciais inválidas');
-		return{
-			success: true,
-			email: user.email,
-		};
-	}
-
-	private async sign(user: JwtPayload)
-	{
-		const token = this.jwtService.sign(user);
-		return{
-			access_token: token,
-		};
-	}
-
 	private async generateFinalLoginResponse(user: UserPayload){
 		const loginPayload: JwtPayload = {
 			id: user.id!,
@@ -125,4 +76,40 @@ export class AuthService {
 			},
 		};
 	}
+
+	private async sign(user: JwtPayload)
+	{
+		const token = this.jwtService.sign(user);
+		return{
+			access_token: token,
+		};
+	}
+
+	async loginWithEmailAndPassword(loginDto: LoginDto) : Promise<any | null>
+	{
+		const { email, password } = loginDto;
+
+		const user = await this.prisma.user.findUnique({
+			where: {email},
+			select: {
+				id: true,
+				email: true,
+				displayName: true,
+				passwordHash: true,
+			},
+		});
+		
+		if (!user || !user.passwordHash)
+			throw new UnauthorizedException('Credenciais inválidas');
+		
+		const isvalidPW = await compare(password!, user.passwordHash);
+
+		if (!isvalidPW)
+			throw new UnauthorizedException('Credenciais inválidas');
+		return{
+			success: true,
+			email: user.email,
+		};
+	}
+
 }

@@ -20,8 +20,13 @@ export type LoginResponse = {
 	requireEmailCode?: boolean;
 	requireEmailVerification?: boolean;
 	requireOrganizationSelection?: boolean;
-	email?: string;
 	selectionToken?: string;
+	id: string,
+	email: string,
+	displayName: string,
+	avatarUrl: string,
+	gender: string,
+	birthDate: string,
 	user?: {
 		token?: TokenPayload;
 	};

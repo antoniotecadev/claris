@@ -39,6 +39,7 @@ export async function registerAction(prevState: any, formData: FormData) {
     }
 
   } catch (error: any) {
+	console.error("Erro ao registrar usuário:", error);
     return { success: false, error: error.message || "Erro ao criar conta." };
   }
 

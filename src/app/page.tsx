@@ -17,9 +17,9 @@ export default function LandingPage() {
 	return (
 		<div className="h-screen flex flex-col ">
 			<Header />
-			{
+{/* 			{
 				isAuthenticated ? user?.displayName : "Loading..." 
-			}
+			} */}
 			<div className="flex-1 flex flex-col overflow-auto">
 				<section id="first" >
 					<Hero />

@@ -51,7 +51,7 @@ export default function Header() {
 					</div>
 
 					<div className='flex flex-col'>
-						<button className="hidden px-10 py-3 text-[#261900] smrounded-xl bg-[#FFDEA5] sm:flex">
+						<button className="hidden px-10 py-3 text-[#261900] rounded-2xl  smrounded-xl bg-[#FFDEA5] sm:flex" onClick={() => window.location.href = '/login'}>
 							Começar
 						</button>
 					</div>

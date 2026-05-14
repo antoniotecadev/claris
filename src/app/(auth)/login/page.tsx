@@ -41,7 +41,25 @@ export default function Login() {
 								<div className="w-94 h-181 flex flex-col ">
 									<p className="text-3xl text-black font-serif italic mb-4">BEM VINDO DE VOLTA</p>
 									<p className="text-[#43474E] mb-10">Insira os seus dados para aceder ao portal do Claris.</p>
-									<a href="http://localhost:3001/v1/api/auth/google" className="p-4 bg-white text-black flex gap-2 hover:cursor-pointer items-center justify-center rounded-2xl mb-10">
+									<a
+										href="http://localhost:3001/v1/api/auth/google"
+										className="
+											p-4
+											bg-white
+											text-black
+											flex gap-2
+											items-center justify-center
+											rounded-2xl
+											mb-10
+											border border-gray-200
+											transition-all duration-300
+											hover:bg-gray-50
+											hover:shadow-md
+											hover:-translate-y-0.5
+											hover:cursor-pointer
+											active:scale-[0.98]
+										"
+									>
 										<Image src={Google} alt="Google" className="w-5 h-5" />
 										<p>Continue with Google</p>
 									</a>
@@ -65,13 +83,35 @@ export default function Login() {
 												</p>
 											</div>
 										)}
-										<button type="submit" disabled={pending} className="bg-[#002045] flex justify-center items-center gap-2 text-white h-14 rounded-2xl mb-10 hover:cursor-pointer">
+										<button
+											type="submit"
+											disabled={pending}
+											className="
+													bg-[#002045]
+													flex justify-center items-center gap-2
+													text-white
+													h-14
+													rounded-2xl
+													mb-10
+													transition-all duration-300
+													hover:bg-[#003066]
+													hover:shadow-lg
+													hover:-translate-y-0.5
+													hover:cursor-pointer
+													active:scale-[0.98]
+													disabled:opacity-60
+													disabled:hover:translate-y-0
+													disabled:hover:shadow-none
+												"
+										>
 											<p >ENTRAR</p>
 											<ArrowRight size={20} />
 										</button>
 
 										<div className="w-full h-px bg-gray-400 mb-10"></div>
-										<p className="text-[#43474E] text-center mb-12 ">Primeira vez aqui ?<span className="text-[#002045] hover:cursor-pointer">Criar conta.</span> </p>
+										<p className="text-[#43474E] text-center mb-12 ">Primeira vez aqui ?<span className="text-[#002045] hover:cursor-pointer" onClick={() => window.location.href = '/registerUser'}>
+											Criar conta.
+										</span> </p>
 									</form>
 
 								</div>

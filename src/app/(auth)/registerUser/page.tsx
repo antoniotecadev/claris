@@ -5,12 +5,25 @@ import Logo from "@/assets/images/lobo-SE.png";
 import Google from "@/assets/images/SVG.png";
 import { ArrowRight } from "lucide-react";
 import { registerAction } from "@/utils/actionsRegister";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 
 export default function RegisterUser() {
 	const initialState = {
 		error: undefined,
 		success: false,
+	};
+
+	const [fields, setFields] = useState({
+		displayName: "",
+		email: "",
+		gender: "",
+		birthDate: "",
+		password: "",
+		confirmPassword: "",
+	});
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+		setFields(prev => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
 	const [state, formAction, pending] = useActionState(registerAction, initialState);
@@ -43,9 +56,23 @@ export default function RegisterUser() {
 							<p className="text-[#43474E] text-[16px] mb-12">
 								Entre no Santuário Digital. O seu caminho começa aqui.
 							</p>
-							<a
-								href="http://localhost:3001/v1/api/auth/google"
-								className="p-4 bg-white text-black flex gap-2 hover:cursor-pointer items-center justify-center rounded-2xl mb-10"
+							<a href="http://localhost:3001/v1/api/auth/google"
+								className="
+									p-4
+									bg-white
+									text-black
+									flex gap-2
+									items-center justify-center
+									rounded-2xl
+									mb-10
+									border border-gray-200
+									transition-all duration-300
+									hover:bg-gray-50
+									hover:shadow-md
+									hover:-translate-y-0.5
+									hover:cursor-pointer
+									active:scale-[0.98]
+								"
 							>
 								<Image src={Google} alt="Google" className="w-5 h-5" />
 								<p>Sign up with Google</p>
@@ -65,6 +92,8 @@ export default function RegisterUser() {
 									type="text"
 									id="displayName"
 									name="displayName"
+									value={fields.displayName}
+									onChange={handleChange}
 									required
 									placeholder="ex. Delson Pedro"
 									className="text-[#6B7280] bg-white rounded-2xl h-13.5 p-4 mb-4"
@@ -75,6 +104,8 @@ export default function RegisterUser() {
 										type="email"
 										id="email"
 										name="email"
+										value={fields.email}
+										onChange={handleChange}
 										required
 										placeholder="ex. delson@church.com"
 										className="text-[#6B7280] bg-white rounded-2xl h-13.5 p-4"
@@ -86,12 +117,15 @@ export default function RegisterUser() {
 										<select
 											id="gender"
 											name="gender"
+											value={fields.gender}
+											onChange={handleChange}
 											className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4"
 										>
-											<option value="">Selecione o género</option>
+											<option value="" disabled hidden>
+												Selecione o género
+											</option>
 											<option value="masculino">Masculino</option>
 											<option value="feminino">Feminino</option>
-											<option value="outro">Prefiro não dizer</option>
 										</select>
 									</div>
 
@@ -101,6 +135,8 @@ export default function RegisterUser() {
 											type="date"
 											id="birthDate"
 											name="birthDate"
+											value={fields.birthDate}
+											onChange={handleChange}
 											className="text-[#6B7280] bg-white rounded-2xl h-13.5 p-4"
 										/>
 									</div>
@@ -146,7 +182,11 @@ export default function RegisterUser() {
 								<button
 									type="submit"
 									disabled={pending}
-									className="bg-[#002045] flex justify-center items-center gap-4 text-white h-14 rounded-2xl mb-10 hover:cursor-pointer disabled:opacity-60"
+									className="bg-[#002045] flex justify-center items-center gap-4 text-white h-14 rounded-2xl mb-10
+											transition-all duration-300  hover:bg-[#003066]
+											hover:-translate-y-0.5 hover:shadow-lg
+											active:scale-[0.98 hover:cursor-pointer disabled:opacity-60
+											disabled:hover:translate-y-0  disabled:hover:shadow-none "
 								>
 									<p>{pending ? "A criar conta..." : "CRIAR CONTA"}</p>
 									<ArrowRight size={20} />

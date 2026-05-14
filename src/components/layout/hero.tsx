@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import igreja from "@/assets/images/unnamed.png";
 import Conf from "./conf";
@@ -31,7 +32,7 @@ export default function Hero() {
 							para a igreja moderna.
 						</p>
 						<div className="flex gap-2">
-							<button className="px-10 py-3 text-[#261900] rounded-xl bg-[#FFDEA5] hover:cursor-pointer">
+							<button className="px-10 py-3 text-[#261900] rounded-xl bg-[#FFDEA5] hover:cursor-pointer" onClick={() => window.location.href = '/login'}>
 								Começar
 							</button>
 							<button className="px-6 py-2 rounded-xl bg-[#a2c6f1]  text-gray-800">

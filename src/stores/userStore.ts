@@ -1,59 +1,37 @@
 import { api } from '@/lib/api';
 import { LoginResponse } from '@/types/auth.types'
+import { int } from 'zod';
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware';
 
-type User = {
+interface user
+{
 	id: string;
-	email: string;
 	displayName: string;
-	avatarUrl?: string | null;
-	gender?: string | null;
-	birthDate?: string | null;
-};
+	email: string;
+	avatarUrl?: string;
+}
 
-type UserStore = {
-	user: User | null;
-	loading: boolean;
-	isAuthenticated: boolean;
-	setUser: (user: User | null) => void;
-	updateUser: () => Promise<void>;
+interface userStore
+{
+	user: user | null;
+	authorized: boolean;
+	setUser: (user: user | null) => void;
 	logout: () => void;
-};
+}
 
-export const useUserStore = create<UserStore>((set) => ({
-	user: null,
-	loading: false,
-	isAuthenticated: false,
 
-	setUser: (user) =>
-		set({
-			user,
-			isAuthenticated: !!user,
-		}),
-
-	updateUser: async () => {
-		try {
-			set({ loading: true });
-
-			const response = await api.get<User>("/me");
-
-			set({
-				user: response.data,
-				isAuthenticated: true,
-			});
-		} catch (error) {
-			set({
-				user: null,
-				isAuthenticated: false,
-			});
-		} finally {
-			set({ loading: false });
-		}
-	},
-
-	logout: () =>
-		set({
+export const useUserStore = create<userStore>()
+(
+	persist(
+		(set) => ({
 			user: null,
-			isAuthenticated: false,
+			authorized: false,
+			setUser: (user : user | null) => set({ user, authorized: true }),
+			logout: () => set({ user: null, authorized: false }),
 		}),
-}));
+		{
+			name: 'auth-storage',
+		}
+	)
+)

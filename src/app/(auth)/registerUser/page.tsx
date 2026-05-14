@@ -1,11 +1,12 @@
-// app/(auth)/registerUser/page.tsx
 "use client";
 import Image from "next/image";
 import Logo from "@/assets/images/lobo-SE.png";
 import Google from "@/assets/images/SVG.png";
 import { ArrowRight } from "lucide-react";
 import { registerAction } from "@/utils/actionsRegister";
-import { useActionState, useState } from "react";
+import { use, useActionState, useEffect, useState } from "react";
+import { useUserStore } from "@/stores/userStore";
+import { useRouter } from 'next/navigation'
 
 export default function RegisterUser() {
 	const initialState = {
@@ -26,7 +27,17 @@ export default function RegisterUser() {
 		setFields(prev => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
+	const setUser = useUserStore((state) => state.setUser);
+	const router = useRouter()
+
 	const [state, formAction, pending] = useActionState(registerAction, initialState);
+	useEffect(() =>{
+		
+		if(state.success && state.user) {
+			setUser(state.user);
+			router.push('/mainDash')
+		}	
+	}, [state]);
 
 	return (
 		<div className="bg-[#E5E5E5]">
@@ -199,6 +210,7 @@ export default function RegisterUser() {
 										<a href="/login" className="text-[#002045]">Entrar</a>
 									</p>
 									<div className="w-35 h-px bg-gray-400" />
+
 								</div>
 							</form>
 						</div>

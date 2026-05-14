@@ -32,11 +32,16 @@ export async function registerAction(prevState: any, formData: FormData) {
       ...(birthDate && { birthDate }),
     });
 
-    // Registo faz login automático — guarda o token no cookie
     const accessToken = data?.user?.token?.access_token;
     if (accessToken) {
       await setAuthToken(accessToken);
     }
+	return { success: true , user : {
+		id: data.user.id,
+		displayName: data.user.displayName,
+		email: data.user.email,
+		avatarUrl: data.user.avatarUrl,
+	}};
 
   } catch (error: any) {
 	console.error("Erro ao registrar usuário:", error);

@@ -17,7 +17,6 @@ export async function loginAction(_prevState: unknown, formData: FormData): Prom
 	try {
 		const res = await api.post<{ result?: LoginResponse } & LoginResponse>("/auth/login", { email, password });
 		const data = res?.result ?? res;
-		console.log("Resposta do login -> ", data);
 
 		if (data?.user?.token?.access_token) {
 			await setAuthToken(data.user.token.access_token);
@@ -50,7 +49,6 @@ export async function loginAction(_prevState: unknown, formData: FormData): Prom
 		return { success: false, error: errorMessage };
 	}
 
-	// ← redirect FORA do try/catch
 	if (!redirectUrl) {
 		return { success: false, error: "URL de redirecionamento não determinado." };
 	}

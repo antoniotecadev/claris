@@ -18,9 +18,8 @@ interface OrganizationRef {
   role: string;
 }
 
-// fetch corre no servidor — sem useEffect, sem loading state
+
 export default async function DashboardPage() {
-  // Ambos os fetches correm em paralelo no servidor
   const [orgsData, churches] = await Promise.allSettled([
     api.get<any>("/users/me/organizations"),
     api.get<Church[]>("/churches"),
@@ -35,8 +34,7 @@ export default async function DashboardPage() {
     churches.status === "fulfilled"
       ? (churches.value ?? []).slice(0, 5)
       : [];
-
-  // Passa os dados prontos para o client component
+	  
   return (
     <MainDashClient
       organizations={organizations}

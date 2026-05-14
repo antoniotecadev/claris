@@ -7,6 +7,8 @@ import { Search, Bell, Settings } from "lucide-react";
 import CommunityCard from "@/components/layout/commityCard";
 import CommunityJoin from "@/components/layout/commityJoin";
 import { api } from "@/lib/api";
+import { use } from "react";
+import { useUserStore } from "@/stores/userStore";
 
 interface OrganizationRef {
   organizationId: string;
@@ -42,7 +44,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 
 export default function MainDashClient({ organizations, churches }: Props) {
 
-  // Única lógica client-side: ação de pedido para juntar à igreja
+  const user = useUserStore((state) => state.user);
   async function requestToJoin(organizationId: string) {
     try {
       await api.post(`/organizations/${organizationId}/memberships/request`, {});

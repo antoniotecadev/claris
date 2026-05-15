@@ -27,7 +27,7 @@ export default function RegisterUser() {
 		setFields(prev => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
-	const setUser = useUserStore((state) => state.setUser);
+	const setUser = useUserStore((state: { setUser: any; }) => state.setUser);
 	const router = useRouter()
 
 	const [state, formAction, pending] = useActionState(registerAction, initialState);

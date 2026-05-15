@@ -7,8 +7,9 @@ import { Search, Bell, Settings } from "lucide-react";
 import CommunityCard from "@/components/layout/commityCard";
 import CommunityJoin from "@/components/layout/commityJoin";
 import { api } from "@/lib/api";
-import { use } from "react";
+import { use, useState } from "react";
 import { useUserStore } from "@/stores/userStore";
+import SettingsPanel from "@/components/layout/setting";
 
 interface OrganizationRef {
   organizationId: string;
@@ -44,7 +45,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 
 export default function MainDashClient({ organizations, churches }: Props) {
 
-  const user = useUserStore((state) => state.user);
+  const user = useUserStore((state: { user: any; }) => state.user);
   async function requestToJoin(organizationId: string) {
     try {
       await api.post(`/organizations/${organizationId}/memberships/request`, {});
@@ -53,6 +54,8 @@ export default function MainDashClient({ organizations, churches }: Props) {
       alert(error instanceof Error ? error.message : "Erro ao enviar pedido.");
     }
   }
+
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
     <div className="bg-white">
@@ -82,13 +85,20 @@ export default function MainDashClient({ organizations, churches }: Props) {
             <div className="flex items-center justify-center">
               <Bell size={14} className="text-[#1E3A8A] w-6 h-7" />
             </div>
-            <div className="flex items-center justify-center">
+            <button
+              onClick={() => setSettingsOpen(true)}
+              className="flex items-center justify-center"
+            >
+              <Settings size={14} className="text-[#1E3A8A] w-6 h-7 cursor-pointer hover:text-[#D97706] transition-colors" />
+            </button>
+            {/*<div className="flex items-center justify-center">
               <Settings size={14} className="text-[#1E3A8A] w-6 h-7" />
-            </div>
+            </div>*/}
             <div className="flex items-center justify-center">
               <div className="w-8 h-8 bg-[#1E3A8A] rounded-2xl" />
             </div>
           </div>
+          <SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
         </header>
 
         <nav className="flex flex-col mt-10">

@@ -24,7 +24,7 @@ interface userStore
 export const useUserStore = create<userStore>()
 (
 	persist(
-		(set) => ({
+		(set: (arg0: { user: user | null; authorized: boolean; }) => any) => ({
 			user: null,
 			authorized: false,
 			setUser: (user : user | null) => set({ user, authorized: true }),

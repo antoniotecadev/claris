@@ -5,6 +5,9 @@ import Google from "@/assets/images/SVG.png"
 import { ArrowRight } from "lucide-react";
 import { loginAction } from "@/utils/actionsLogin";
 import { useActionState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Login() {
 
@@ -15,6 +18,13 @@ export default function Login() {
 	};
 
 	const [state, formAction, pending] = useActionState(loginAction, initialState)
+	const router = useRouter();
+
+	useEffect(() => {
+		if (state?.success && state?.redirectUrl) {
+			router.push(state.redirectUrl);
+		}
+	}, [state, router]);
 
 	return (
 		<div >
@@ -109,8 +119,8 @@ export default function Login() {
 										</button>
 
 										<div className="w-full h-px bg-gray-400 mb-10"></div>
-										<p className="text-[#43474E] text-center mb-12 ">Primeira vez aqui ?<span className="text-[#002045] hover:cursor-pointer" onClick={() => window.location.href = '/registerUser'}>
-											Criar conta.
+										<p className="text-[#43474E] text-center mb-12 ">Primeira vez aqui ?<span className="text-[#002045] hover:cursor-pointer">
+											<Link href={"/registerUser"}>Criar conta</Link>
 										</span> </p>
 									</form>
 

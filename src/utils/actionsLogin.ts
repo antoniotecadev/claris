@@ -15,6 +15,7 @@ export async function loginAction(_prevState: unknown, formData: FormData): Prom
 	let redirectUrl: string | null = null;
 
 	try {
+	
 		const res = await api.post<{ result?: LoginResponse } & LoginResponse>("/auth/login", { email, password });
 		const data = res?.result ?? res;
 
@@ -52,5 +53,6 @@ export async function loginAction(_prevState: unknown, formData: FormData): Prom
 	if (!redirectUrl) {
 		return { success: false, error: "URL de redirecionamento não determinado." };
 	}
-	redirect(redirectUrl);
+
+	return { success: true, redirectUrl };
 }

@@ -1,6 +1,7 @@
 export type ActionResult = {
 	success: boolean;
 	error?: string;
+	redirectUrl?: string;
 };
 
 export type TokenPayload = {

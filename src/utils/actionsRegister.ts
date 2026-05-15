@@ -4,49 +4,49 @@ import { api } from "@/lib/api";
 import { setAuthToken } from "@/lib/auth-cookies";
 
 export async function registerAction(prevState: any, formData: FormData) {
-  const displayName = formData.get('displayName') as string;
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
-  const confirmPassword = formData.get('confirmPassword') as string;
-  const gender = formData.get('gender') as string;
-  const birthDate = formData.get('birthDate') as string;
+	const displayName = formData.get('displayName') as string;
+	const email = formData.get('email') as string;
+	const password = formData.get('password') as string;
+	const confirmPassword = formData.get('confirmPassword') as string;
+	const gender = formData.get('gender') as string;
+	const birthDate = formData.get('birthDate') as string;
 
-  if (!displayName || !email || !password) {
-    return { success: false, error: "Preencha todos os campos obrigatórios." };
-  }
+	if (!displayName || !email || !password) {
+		return { success: false, error: "Preencha todos os campos obrigatórios." };
+	}
 
-  if (password !== confirmPassword) {
-    return { success: false, error: "As senhas não coincidem." };
-  }
+	if (password !== confirmPassword) {
+		return { success: false, error: "As senhas não coincidem." };
+	}
 
-  if (password.length < 6) {
-    return { success: false, error: "A senha deve ter no mínimo 6 caracteres." };
-  }
+	if (password.length < 6) {
+		return { success: false, error: "A senha deve ter no mínimo 6 caracteres." };
+	}
 
-  try {
-    const data = await api.post<any>("/auth/register", {
-      displayName,
-      email,
-      password,
-      ...(gender && { gender }),
-      ...(birthDate && { birthDate }),
-    });
+	try {
+		const data = await api.post<any>("/auth/register", {
+			displayName,
+			email,
+			password,
+			...(gender && { gender }),
+			...(birthDate && { birthDate }),
+		});
 
-    const accessToken = data?.user?.token?.access_token;
-    if (accessToken) {
-      await setAuthToken(accessToken);
-    }
-	return { success: true , user : {
-		id: data.user.id,
-		displayName: data.user.displayName,
-		email: data.user.email,
-		avatarUrl: data.user.avatarUrl,
-	}};
+		const accessToken = data?.user?.token?.access_token;
+		if (accessToken) {
+			await setAuthToken(accessToken);
+		}
+		return {
+			success: true, user: {
+				id: data.user.id,
+				displayName: data.user.displayName,
+				email: data.user.email,
+				avatarUrl: data.user.avatarUrl,
+			}
+		};
 
-  } catch (error: any) {
-	console.error("Erro ao registrar usuário:", error);
-    return { success: false, error: error.message || "Erro ao criar conta." };
-  }
-
-  redirect("/mainDash");
+	} catch (error: any) {
+		console.error("Erro ao registrar usuário:", error);
+		return { success: false, error: error.message || "Erro ao criar conta." };
+	}
 }

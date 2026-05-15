@@ -59,6 +59,7 @@ export default function MainDashClient({ organizations, churches }: Props) {
 
   return (
     <div className="bg-white">
+		<SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
       <div className="container m-auto">
         {/* Header */}
         <header className="flex gap-4 justify-between py-3 border-b border-zinc-200">
@@ -98,7 +99,7 @@ export default function MainDashClient({ organizations, churches }: Props) {
               <div className="w-8 h-8 bg-[#1E3A8A] rounded-2xl" />
             </div>
           </div>
-          <SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
+          
         </header>
 
         <nav className="flex flex-col mt-10">

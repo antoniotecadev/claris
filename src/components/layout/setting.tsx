@@ -163,14 +163,6 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
           </button>
         </div>
       </aside>
-
-      <style jsx>{`
-        @keyframes slide-in {
-          from { transform: translateX(100%); opacity: 0; }
-          to   { transform: translateX(0);    opacity: 1; }
-        }
-        .animate-slide-in { animation: slide-in 0.25s ease-out; }
-      `}</style>
     </>
   );
 }

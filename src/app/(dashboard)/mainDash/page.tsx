@@ -10,6 +10,7 @@ import { api } from "@/lib/api";
 import { use, useState } from "react";
 import { useUserStore } from "@/stores/userStore";
 import SettingsPanel from "@/components/layout/setting";
+import { DialogDemo } from "@/components/layout/createChurchDialogo";
 
 interface OrganizationRef {
   organizationId: string;
@@ -157,10 +158,12 @@ export default function MainDashClient({ organizations = [], churches = [] }: Pr
             }}
             className="bg-center bg-cover mt-10 mb-10 rounded-2xl flex flex-col p-20"
           >
+			
             <p className="text-white text-4xl italic">Manifesta a tua visão</p>
             <p className="text-[#DBEAFE] w-120 mt-4">
               Crie a sua igreja e comece hoje a construir uma comunidade de fé vibrante e acolhedora.
             </p>
+			<DialogDemo />
             <button className="bg-[#FFDEA5] text-[#261900] w-60 rounded-2xl px-4 py-3 mt-12 cursor-pointer">
               Criar Igreja
             </button>

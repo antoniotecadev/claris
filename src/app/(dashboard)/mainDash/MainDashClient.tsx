@@ -88,7 +88,7 @@ export default function MainDashClient({ organizations, churches }: Props) {
             </div>
             <button
               onClick={() => setSettingsOpen(true)}
-              className="flex items-center justify-center"
+              className="flex items-center justify-center hover:cursor-pointer "
             >
               <Settings size={14} className="text-[#1E3A8A] w-6 h-7 cursor-pointer hover:text-[#D97706] transition-colors" />
             </button>

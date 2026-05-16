@@ -49,7 +49,8 @@ export class AuthService {
 		return this.generateFinalLoginResponse(user);
 	}
 
-	private async generateFinalLoginResponse(user: UserPayload){
+	private async generateFinalLoginResponse(user: UserPayload)
+	{
 		const loginPayload: JwtPayload = {
 			id: user.id!,
 			email: user.email!,

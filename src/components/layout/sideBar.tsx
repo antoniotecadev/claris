@@ -14,7 +14,7 @@ import {
 
 export default function Sidebar() {
 	return (
-		<aside className="flex flex-col justify-between w-[256px] h-screen bg-[#e7ebf1] p-4">
+		<aside className="fixed top-0 left-0 flex flex-col justify-between w-[256px] h-screen bg-[#e7ebf1] p-4">
 			<div>
 				{/* Logo */}
 				<div className="flex items-center gap-4 mb-4">

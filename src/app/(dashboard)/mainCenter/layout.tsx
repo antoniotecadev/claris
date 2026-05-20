@@ -10,7 +10,7 @@ export default function DashboardLayout({
     <div className="flex min-h-screen">
       <Sidebar />
 
-      <main className="flex-1 p-6 bg-white">
+      <main className="flex-1 p-6  ml-64 bg-[#F9F9F9]">
         {children}
       </main>
     </div>

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-const PUBLIC_ROUTES = ["/", "/login", "/registerAdmim", "/registerUser", "/codeAuth"];
+const PUBLIC_ROUTES = ["/", "/login", "/registerAdmim", "/registerUser", "/codeAuth", "/mainCenter"];
 const API_PREFIX = "/api";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 	console.log("Pathname: ", pathname);
 	const isPublicRoute = PUBLIC_ROUTES.some(
@@ -35,5 +35,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: '/:path*',
+	matcher: [
+		'/((?!api|_next/static|_next/image|favicon.ico|assets|.*\\.(?:png|jpg|jpeg|gif|svg|webp)$).*)',
+	],
 }

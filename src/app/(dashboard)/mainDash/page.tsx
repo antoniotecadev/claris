@@ -164,9 +164,9 @@ export default function MainDashClient({ organizations = [], churches = [] }: Pr
               Crie a sua igreja e comece hoje a construir uma comunidade de fé vibrante e acolhedora.
             </p>
 			<DialogDemo />
-            <button className="bg-[#FFDEA5] text-[#261900] w-60 rounded-2xl px-4 py-3 mt-12 cursor-pointer">
+            {/* <button className="bg-[#FFDEA5] text-[#261900] w-60 rounded-2xl px-4 py-3 mt-12 cursor-pointer">
               Criar Igreja
-            </button>
+            </button> */}
           </section>
 
           {/* Explorar igrejas */}

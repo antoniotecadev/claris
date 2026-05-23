@@ -161,7 +161,7 @@ export default function MainDashClient({ organizations, churches }: Props) {
             <p className="text-[#DBEAFE] w-120 mt-4">
               Crie a sua igreja e comece hoje a construir uma comunidade de fé vibrante e acolhedora.
             </p>
-            <button className="bg-[#FFDEA5] text-[#261900] w-60 rounded-2xl px-4 py-3 mt-12 cursor-pointer">
+            <button className="bg-[#f15518] text-[#261900] w-60 rounded-2xl px-4 py-3 mt-12 cursor-pointer">
               Criar Igreja
             </button>
           </section>

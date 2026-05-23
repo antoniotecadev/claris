@@ -18,7 +18,7 @@ export function DialogDemo() {
     <Dialog>
       <form>
         <DialogTrigger asChild className="bg-[#FFDEA5] text-[#261900] w-60 rounded-2xl px-9 py-6 mt-12 hover:cursor-pointer">
-          <Button variant="outline" >Open Dialog</Button>
+          <Button variant="outline" >Criar igreja</Button>
         </DialogTrigger>
         <DialogContent className="w-full sm:max-w-7xl md:max-w-6xl lg:max-w-7xl max-h-[90vh] p-8 overflow-auto">
           <DialogHeader>

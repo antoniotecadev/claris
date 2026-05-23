@@ -17,16 +17,13 @@ export default function Sidebar() {
 		<aside className="fixed top-0 left-0 flex flex-col justify-between w-[256px] h-screen bg-[#e7ebf1] p-4">
 			<div>
 				{/* Logo */}
-				<div className="flex items-center gap-4 mb-4">
+				<div className="flex items-center gap-4 mb-10">
 					<Image src={icon} alt="Administrador" width={32} height={32} />
 					<p className="text-[#1E3A8A] text-[20px] font-bold">
 						Claris
 					</p>
 				</div>
-
-				<p className="text-[#475F83] text-[14px] mb-6">
-					Administrador
-				</p>
+				<div className="h-px bg-[#1E3A8A] w-full mb-5"/>
 
 				{/* Menu */}
 				<nav className="flex flex-col gap-3 text-[#43474E]">
@@ -34,15 +31,15 @@ export default function Sidebar() {
 						href="/dashboard/ministerios"
 						className="hover:bg-white rounded-2xl flex items-center px-6 h-11 gap-3 hover:text-[#002045]"
 					>
-						<Users size={24} />
-						<p>Ministérios</p>
+						<Users size={20} />
+						<p >Ministérios</p>
 					</Link>
 
 					<Link
 						href="/dashboard/comunicados"
 						className="hover:bg-white rounded-2xl flex items-center px-6 h-11 gap-3 hover:text-[#002045]"
 					>
-						<Megaphone size={24} />
+						<Megaphone size={20} />
 						<p>Comunicados</p>
 					</Link>
 
@@ -50,7 +47,7 @@ export default function Sidebar() {
 						href="/dashboard/convidados"
 						className="hover:bg-white rounded-2xl flex items-center px-6 h-11 gap-3 hover:text-[#002045]"
 					>
-						<UserPlus size={24} />
+						<UserPlus size={20} />
 						<p>Convidados</p>
 					</Link>
 
@@ -58,7 +55,7 @@ export default function Sidebar() {
 						href="/dashboard/eventos"
 						className="hover:bg-white rounded-2xl flex items-center px-6 h-11 gap-3 hover:text-[#002045]"
 					>
-						<Calendar size={24} />
+						<Calendar size={20} />
 						<p>Eventos</p>
 					</Link>
 				</nav>

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-
 const PUBLIC_ROUTES = ["/", "/login", "/registerAdmim", "/registerUser", "/codeAuth"];
 const API_PREFIX = "/api";
 
 export function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
+	console.log("Pathname: ", pathname);
 	const isPublicRoute = PUBLIC_ROUTES.some(
 		(route) => pathname === route || pathname.startsWith(`${route}/`)
 	);
@@ -14,6 +14,9 @@ export function middleware(request: NextRequest) {
 	}
 
 	const token = request.cookies.get("auth_token")?.value;
+
+	console.log("Token: ", token);
+	console.log("Is Public Route: ", isPublicRoute);
 
 	if (!token && !isPublicRoute) {
 		return NextResponse.redirect(new URL("/login", request.url));
@@ -32,5 +35,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-};
+	matcher: '/:path*',
+}

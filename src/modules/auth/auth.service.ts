@@ -248,6 +248,8 @@ export class AuthService {
           avatarUrl: user.avatarUrl,
           gender: user.gender,
           birthDate: user.birthDate,
+          lastSeen: user.lastSeen,
+          createdAt: user.createdAt,
         },
         token: {
           ...token,

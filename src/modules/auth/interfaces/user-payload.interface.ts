@@ -8,4 +8,6 @@ export interface UserPayload {
   avatarUrl?: string | null; 
   organizationId?: string; 
   role?: string; 
+  lastSeen?: Date | null;
+  createdAt?: Date | null;
 }

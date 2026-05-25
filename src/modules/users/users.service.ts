@@ -13,50 +13,28 @@ import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async getMe(currentUser: JwtPayload, organizationId?: string) {
-
-    this.assertTenantContext(organizationId);
-
-    const membership = await this.prisma.membership.findFirst({
-      where: {
-        userId: currentUser.id,
-        organizationId,
-        status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] },
-      },
-      include: {
-        organization: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-          },
-        },
-        user: {
-          select: {
-            id: true,
-            email: true,
-            displayName: true,
-            gender: true,
-            birthDate: true,
-            avatarUrl: true,
-            lastSeen: true,
-            createdAt: true,
-          },
-        },
+  async getMe(currentUser: JwtPayload) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: currentUser.id },
+      select: {
+        id: true,
+        email: true,
+        displayName: true,
+        gender: true,
+        birthDate: true,
+        avatarUrl: true,
+        lastSeen: true,
+        createdAt: true,
       },
     });
 
-    if (!membership) {
-      throw new ForbiddenException('Usuário não pertence à organização activa');
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
     }
 
     return {
       success: true,
-      profile: {
-        ...membership.user,
-        role: membership.role,
-        organization: membership.organization,
-      },
+      profile: user,
     };
   }
 

@@ -45,6 +45,8 @@ model Organization {
   churchId    String
   name        String
   slug        String       @unique
+  address     String?
+  description String?
   logoUrl     String?
   createdAt   DateTime     @default(now())
   memberships Membership[]

@@ -49,6 +49,8 @@ export class OrganizationsService {
           churchId: dto.churchId,
           name: dto.name,
           slug,
+          address: dto.address,
+          description: dto.description,
           logoUrl: dto.logoUrl,
         },
       });

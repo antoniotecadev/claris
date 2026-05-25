@@ -14,5 +14,13 @@ export class CreateOrganizationDto {
 
   @IsOptional()
   @IsString()
+  address?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsString()
   logoUrl?: string;
 }

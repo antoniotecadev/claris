@@ -16,7 +16,7 @@ export function proxy(request: NextRequest) {
 	const token = request.cookies.get("auth_token")?.value;
 
 	console.log("Token: ", token);
-	console.log("Is Public Route: ", isPublicRoute);
+	console.log("Is Public Route2: ", isPublicRoute);
 
 	if (!token && !isPublicRoute) {
 		return NextResponse.redirect(new URL("/login", request.url));

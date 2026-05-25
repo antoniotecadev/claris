@@ -16,14 +16,14 @@ export function proxy(request: NextRequest) {
 	const token = request.cookies.get("auth_token")?.value;
 
 	console.log("Token: ", token);
-	console.log("Is Public Route: ", isPublicRoute);
+	console.log("Is Public Route1: ", isPublicRoute);
 
 	if (!token && !isPublicRoute) {
 		return NextResponse.redirect(new URL("/login", request.url));
 	}
 
 	if (token && ["/login", "/codeAuth", "/select-organization"].includes(pathname)) {
-		return NextResponse.redirect(new URL("/mainDash", request.url));
+		return NextResponse.redirect(new URL("/login", request.url));
 	}
 
 	const requestHeaders = new Headers(request.headers);

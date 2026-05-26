@@ -1,7 +1,7 @@
 export default function Footer() {
     return (
-        <footer className="bg-white ">
-            <div className="container mx-auto px-6 pt-12 pb-6"> {/* Ajustei o padding bottom */}
+        <footer className="bg-white">
+            <div className="container mx-auto px-4 md:px-6 pt-8 md:pt-12 pb-4 md:pb-6">
                 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
                     

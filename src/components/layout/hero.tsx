@@ -17,30 +17,30 @@ export default function Hero() {
 				    rgba(26, 54, 93, 0.60) 100%
                 ), url(${heroImg.src})`
 				}}
-				className="bg-white bg-center bg-cover  flex flex-col justify-center py-20"
+				className="bg-white bg-center bg-cover flex flex-col justify-center py-12 md:py-20 lg:py-28 min-h-screen md:min-h-auto"
 			>
-				<div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 justify-between items-start  px-6 mb-4">
-					<div className="flex flex-col  justify-center space-y-12">
-						<p className="text-center text-[#FDE68A] sm:hidden italic ">"Pois Deus não é Deus de desordem, mas de paz."</p>
-						<div><span className="px-2 py-1 bg-[#FFDEA5] text-[#5D4201] tracking-wide rounded-2xl ">Tecnológia com propósito</span></div>
-						<p className="text-white text-3xl wrap-break-word sm:text-5xl xl:text-6xl font-bold">
+				<div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 justify-between items-center px-4 md:px-6 lg:px-0">
+					<div className="flex flex-col justify-center space-y-6 md:space-y-8">
+						<p className="text-center lg:text-left text-xs md:text-sm text-[#FDE68A] italic">"Pois Deus não é Deus de desordem, mas de paz."</p>
+						<div><span className="inline-block px-3 md:px-4 py-1.5 md:py-2 bg-[#FFDEA5] text-[#5D4201] text-xs md:text-sm tracking-wide rounded-full md:rounded-2xl font-semibold">Tecnologia com propósito</span></div>
+						<p className="text-white text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
 							Modernize sua administração <br /><span className="text-[#FFDEA5] font-bold">com graça.</span>
 						</p>
-						<p className="text-[#DBEAFE] sm:text-xl sm:w-100">
+						<p className="text-[#DBEAFE] text-sm md:text-base lg:text-lg max-w-xl">
 							Simplifique o ministério para focar no que realmente
 							importa: as pessoas. Uma plataforma completa desenhada
 							para a igreja moderna.
 						</p>
-						<div className="flex gap-2">
-							<button className="px-10 py-3 text-[#261900] rounded-xl bg-[#FFDEA5] hover:cursor-pointer" onClick={() => window.location.href = '/login'}>
-								Começar
-							</button>
-							<button className="px-6 py-2 rounded-xl bg-[#a2c6f1]  text-gray-800">
-								Ver demostração
-							</button>
+					<div className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2">
+						<button className="px-6 md:px-10 py-3 md:py-3 text-[#261900] text-sm md:text-base rounded-lg md:rounded-xl bg-[#FFDEA5] font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50 order-first sm:order-0" onClick={() => window.location.href = '/login'}>
+							Começar
+						</button>
+						<button className="px-6 md:px-8 py-3 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl bg-[#a2c6f1] text-gray-800 font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#a2c6f1]/50">
+							Ver demonstração
+						</button>
 
-						</div>
-						<p className="italic text-[#BFDBFE] sm:w-100">"Lâmpada para os meus pés é tua palavra, e luz para o meu caminho." — Salmos 119:105</p>
+					</div>
+						<p className="italic text-[#BFDBFE] text-xs md:text-sm max-w-lg">"Lâmpada para os meus pés é tua palavra, e luz para o meu caminho." — Salmos 119:105</p>
 					</div>
 				</div>
 

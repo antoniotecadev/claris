@@ -1,5 +1,4 @@
-import Sidebar from "@/components/layout/sideBar";
-
+import HeaderWithDialog from "@/components/layout/headerWithDialog";
 
 export default function DashboardLayout({
   children,
@@ -7,10 +6,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
+    <div className="min-h-screen bg-gray-50">
+      {/* Top Navigation Bar */}
+      <HeaderWithDialog />
 
-      <main className="flex-1 p-6  ml-64 bg-[#F9F9F9]">
+      <main className="max-w-7xl mx-auto">
         {children}
       </main>
     </div>

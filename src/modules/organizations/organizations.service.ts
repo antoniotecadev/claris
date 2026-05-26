@@ -10,15 +10,21 @@ import { MembershipStatus, Role } from 'generated/prisma/enums';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class OrganizationsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
+    private cloudinaryService: CloudinaryService,
   ) {}
 
-  async createOrganization(dto: CreateOrganizationDto, user: JwtPayload) {
+  async createOrganization(
+    dto: CreateOrganizationDto,
+    file: Express.Multer.File,
+    user: JwtPayload,
+  ) {
     const slug = this.buildSlug(dto.slug ?? dto.name);
 
     if (!slug) {
@@ -42,7 +48,14 @@ export class OrganizationsService {
       throw new ConflictException('Já existe uma organização com este slug');
     }
 
-    // Transação para garantir que a organização e a associação do usuário sejam criadas atomicamente
+    let logoUrl: string | null = null;
+
+    if (file) {
+      const uploaded: any = await this.cloudinaryService.uploadFile(file);
+
+      logoUrl = uploaded.secure_url;
+    }
+
     return this.prisma.$transaction(async (tx) => {
       const organization = await tx.organization.create({
         data: {
@@ -51,7 +64,7 @@ export class OrganizationsService {
           slug,
           address: dto.address,
           description: dto.description,
-          logoUrl: dto.logoUrl,
+          logoUrl,
         },
       });
 

@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import OrganizatioSelect, { ChurchOption } from "@/components/layout/OrganizatioSelect"
-import { api } from "@/lib/api"
+import { getAuthToken } from "@/lib/auth-cookies"
 
 type DialogDemoProps = {
 	churches?: ChurchOption[]
@@ -30,7 +30,6 @@ export function DialogDemo({
 	onSuccess,
 }: DialogDemoProps) {
 	const [open, setOpen] = useState(false)
-	const [logoPreview, setLogoPreview] = useState<string | null>(null)
 	const [submitting, setSubmitting] = useState(false)
 
 	// Campos controlados
@@ -39,13 +38,12 @@ export function DialogDemo({
 	const [address, setAddress] = useState("")
 	const [churchId, setChurchId] = useState("")
 	const [description, setDescription] = useState("")
-	const [logoUrl, setLogoUrl] = useState("")
+	const [logoUrl, setLogoUrl] = useState<File | null>(null)
 
 	const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (file) {
-			setLogoPreview(URL.createObjectURL(file))
-			// Se quiser upload real, faça aqui e salve a URL retornada em setLogoUrl(url)
+			setLogoUrl(file)
 		}
 	}
 
@@ -60,8 +58,7 @@ export function DialogDemo({
 		setAddress("")
 		setChurchId("")
 		setDescription("")
-		setLogoUrl("")
-		setLogoPreview(null)
+		setLogoUrl(null)
 	}
 
 	const handleSubmit = async () => {
@@ -73,14 +70,31 @@ export function DialogDemo({
 
 		setSubmitting(true)
 		try {
-			await api.post("/organizations", {
-				name: name.trim(),
-				slug: slug.trim() || undefined,
-				churchId: churchId.trim(),
-				address: address.trim() || undefined,
-				description: description.trim() || undefined,
-				logoUrl: logoUrl.trim() || undefined,
+			const formData = new FormData()
+			formData.append('name', name.trim())
+			formData.append('slug', slug.trim())
+			formData.append('churchId', churchId.trim())
+			formData.append('address', address.trim())
+			formData.append('description', description.trim())
+
+			if (logoUrl) {
+				formData.append('logoUrl', logoUrl) // mesmo nome do FileInterceptor
+			}
+
+			const token = await getAuthToken();
+
+			const response = await fetch("http://localhost:3001/v1/api/organizations", {
+				method: "POST",
+				body: formData,
+				headers: {
+					Authorization: `Bearer ${token}`
+				},
 			})
+			if (!response.ok) {
+				const errorText = await response.text()
+				throw new Error(errorText || "Erro ao criar organização")
+			}
+
 			resetForm()
 			setOpen(false)
 			onSuccess?.()  // ← notifica o pai para atualizar a lista
@@ -101,7 +115,6 @@ export function DialogDemo({
 				<Button variant="outline">Criar Igreja</Button>
 			</DialogTrigger>
 
-			{/* ✅ form removido daqui — botão usa onClick diretamente */}
 			<DialogContent className="w-full sm:max-w-2xl md:max-w-3xl lg:max-w-3xl max-h-[90vh] p-6 overflow-auto">
 				<DialogHeader>
 					<DialogTitle>Criar Igreja</DialogTitle>
@@ -161,23 +174,13 @@ export function DialogDemo({
 							onChange={handleLogoChange}
 							className="mt-2"
 						/>
-						{logoPreview && (
+						{logoUrl && (
 							<img
-								src={logoPreview}
+								src={URL.createObjectURL(logoUrl)}
 								alt="preview"
 								className="mt-2 h-20 w-20 object-cover rounded"
 							/>
 						)}
-					</div>
-
-					<div className="flex flex-col">
-						<Label htmlFor="logoUrl" className="mb-2">URL do logo (opcional)</Label>
-						<Input
-							id="logoUrl"
-							placeholder="https://..."
-							value={logoUrl}
-							onChange={(e) => setLogoUrl(e.target.value)}
-						/>
 					</div>
 
 					<div className="md:col-span-2">
@@ -202,7 +205,7 @@ export function DialogDemo({
 						onClick={(e) => {
 							e.preventDefault()
 							e.stopPropagation()
-							console.log("clicou salvar", { name, churchId }) // ← ver no console
+							console.log("clicou salvar", { name, churchId })
 							handleSubmit()
 						}}
 					>

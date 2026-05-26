@@ -69,9 +69,6 @@ export default function MainDashClient() {
 		try {
 			const res = await api.get<{ churches: ChurchOption[] }>("/church");
 			setChurchOptions(res.churches ?? []);
-			const res2 = await api.get<{ organizations: OrganizationRef[] }>("/organizations/my");
-			setOrganizations(res2.organizations ?? []);
-			console.log(res2.organizations);
 		} finally {
 			setLoadingChurches(false);
 		}
@@ -83,6 +80,7 @@ export default function MainDashClient() {
 		try {
 			const res = await api.get<{ organizations: OrganizationRef[] }>("/organizations/my");
 			setOrganizations(res.organizations ?? []);
+			console.log(res.organizations);
 		} finally {
 			setLoadingChurches(false);
 		}
@@ -157,16 +155,19 @@ export default function MainDashClient() {
 					</div>
 
 					{/* Minhas igrejas */}
-					<div className="flex mt-10 items-center justify-center">
-						<p className="text-[#002045] w-40 mr-1">MINHAS IGREJAS</p>
-						<div className="h-px bg-zinc-400 w-full" />
+					<div className="flex mt-10 items-center justify-start">
+						<p className="text-[#002045] font-semibold mr-4">MINHAS IGREJAS</p>
+						<div className="h-px bg-zinc-300 flex-1" />
 					</div>
 
-					<div className="flex gap-8 py-10 justify-between">
-						{organizations.length === 0 ? (
-							<p className="text-[#475F83]">Não pertence a nenhuma igreja ainda.</p>
-						) : (
-							organizations.map((org) => (
+					{organizations.length === 0 ? (
+						<div className="py-16 flex flex-col items-center justify-center">
+							<p className="text-[#475F83] text-lg">Não pertence a nenhuma igreja ainda.</p>
+							<p className="text-[#9CA3AF] text-sm mt-2">Crie uma nova ou explore as disponíveis.</p>
+						</div>
+					) : (
+						<div className="py-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+							{organizations.map((org) => (
 								<CommunityCard
 									key={org.organizationId}
 									name={org.name}
@@ -178,9 +179,9 @@ export default function MainDashClient() {
 										window.location.href = `/dashboard?org=${org.organizationId}`;
 									}}
 								/>
-							))
-						)}
-					</div>
+							))}
+						</div>
+					)}
 
 					{/* Banner criar igreja */}
 					<section

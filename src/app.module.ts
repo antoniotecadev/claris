@@ -13,9 +13,8 @@ import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
 import { MembershipsModule } from './modules/memberships/memberships.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
-import { ChurchService } from './modules/church/church.service';
-import { ChurchController } from './modules/church/church.controller';
 import { ChurchModule } from './modules/church/church.module';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 
 @Module({
   imports: [

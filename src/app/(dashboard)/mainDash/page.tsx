@@ -70,6 +70,13 @@ export default function MainDashClient() {
 	}
 
 	const [settingsOpen, setSettingsOpen] = useState(false);
+	const userOrganizationIds = new Set(
+		organizations.map((organization) => organization.organizationId ?? organization.id),
+	);
+	const availableChurches = churches.filter((church) => {
+		const churchId = church.organizationId ?? church.id;
+		return !userOrganizationIds.has(churchId);
+	});
 
 	const loadChurches = async () => {
 		if (loadingChurches || churchOptions.length > 0) return;
@@ -213,9 +220,9 @@ export default function MainDashClient() {
 					</section>
 
 					{/* Explorar igrejas */}
-					<div className="flex justify-between items-center mt-10">
+					<div className="flex justify-between items-center my-10">
 						<div className="flex flex-col">
-							<p className="text-[#002045] text-[30px]">Explorar novas igrejas ({organizationLength})</p>
+							<p className="text-[#002045] text-[30px]">Explorar novas igrejas ({availableChurches.length})</p>
 							<p className="text-[#475F83] text-[24px]">
 								Congregações perto de si ou alinhadas com a sua jornada.
 							</p>
@@ -224,10 +231,10 @@ export default function MainDashClient() {
 					</div>
 
 					<div className="flex gap-8 pb-10">
-						{churches.length === 0 ? (
+						{availableChurches.length === 0 ? (
 							<p className="text-[#475F83]">Nenhuma igreja disponível.</p>
 						) : (
-							churches.map((church) => (
+							availableChurches.map((church) => (
 								<CommunityJoin
 									key={church.id}
 									name={church.name}

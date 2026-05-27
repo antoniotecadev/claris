@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import icon from "@/assets/images/logo.png"
+import LanguageSelector from './LanguageSelector';
 
 
 
@@ -43,7 +44,6 @@ export default function Header() {
 				<nav className='flex justify-between items-center container mx-auto px-4 md:px-6 lg:px-0' >
 					<div className='flex justify-center items-center gap-2 md:gap-4'>
 						<Image src={icon} alt='Logo' width={40} className="md:w-12" />
-						<h1 className="hidden sm:block text-lg md:text-2xl font-bold text-[#1A365D]">CLARIS</h1>
 					</div>
 
 					<div className='hidden md:flex gap-4 lg:gap-6'>
@@ -51,11 +51,18 @@ export default function Header() {
 						<NavLink href='#third'>Sobre</NavLink>
 					</div>
 
-				<div className='flex flex-col'>
-					<button className="px-4 md:px-10 py-2 md:py-3 text-[#261900] rounded-lg md:rounded-2xl bg-[#FFDEA5] text-sm md:text-base font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50" onClick={() => window.location.href = '/login'}>
-						Começar
-					</button>
-				</div>
+					<div className='flex gap-2'>
+						<button className="px-2 md:px-6 py-2 md:py-2 text-[#261900] rounded-lg md:rounded-2xl bg-[#FFDEA5] text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50" onClick={() => window.location.href = '/login'}>
+							Começar
+						</button>
+						<LanguageSelector
+							currentLocale="pt"
+							onLocaleChange={(locale) => {
+								// ex: router.push(`/${locale}`)
+								console.log("Idioma selecionado:", locale);
+							}}
+						/>
+					</div>
 				</nav>
 			</header>
 

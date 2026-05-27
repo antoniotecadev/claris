@@ -31,15 +31,6 @@ export default function Hero() {
 							importa: as pessoas. Uma plataforma completa desenhada
 							para a igreja moderna.
 						</p>
-					<div className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2">
-						<button className="px-6 md:px-10 py-3 md:py-3 text-[#261900] text-sm md:text-base rounded-lg md:rounded-xl bg-[#FFDEA5] font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50 order-first sm:order-0" onClick={() => window.location.href = '/login'}>
-							Começar
-						</button>
-						<button className="px-6 md:px-8 py-3 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl bg-[#a2c6f1] text-gray-800 font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#a2c6f1]/50">
-							Ver demonstração
-						</button>
-
-					</div>
 						<p className="italic text-[#BFDBFE] text-xs md:text-sm max-w-lg">"Lâmpada para os meus pés é tua palavra, e luz para o meu caminho." — Salmos 119:105</p>
 					</div>
 				</div>

@@ -43,12 +43,14 @@ export default function Header() {
 			<header className='bg-white text-black py-3 md:py-4 border-b-2 border-zinc-200 shadow-lg sticky top-0 z-40'>
 				<nav className='flex justify-between items-center container mx-auto px-4 md:px-6 lg:px-0' >
 					<div className='flex justify-center items-center gap-2 md:gap-4'>
-						<Image src={icon} alt='Logo' width={40} className="md:w-12" />
+						<Link href="#inicio" aria-label="Ir para o início">
+							<Image src={icon} alt='Logo' width={40} className="md:w-12" />
+						</Link>
 					</div>
 
 					<div className='hidden md:flex gap-4 lg:gap-6'>
-						<NavLink href='#first'>Funcionalidades</NavLink>
-						<NavLink href='#third'>Sobre</NavLink>
+						<NavLink href='#funcionalidades'>Funcionalidades</NavLink>
+						<NavLink href='#sobre'>Sobre</NavLink>
 					</div>
 
 					<div className='flex gap-2'>

@@ -10,11 +10,11 @@ export default function Conf() {
 					</h3>
 
 					<div className="flex flex-wrap justify-center gap-4 md:gap-8 text-[#1A365D] text-sm md:text-base font-semibold text-center">
-						<h6>GRACE HILL</h6>
-						<h6>VINE &amp; BRANCH</h6>
-						<h6>THE WELL</h6>
-						<h6>MERCY CITY</h6>
-						<h6>LEGACY CHRCH</h6>
+						<h6>Monte da Graça</h6>
+						<h6>VIDEIRA &amp; RAMO</h6>
+						<h6>O POÇO</h6>
+						<h6>CIDADE DA MISERICÓRDIA</h6>
+						<h6>IGREJA LEGADO</h6>
 					</div>
 
 				</nav>

@@ -1,7 +1,3 @@
-// src/modules/auth/auth.module.ts
-
-// AuthModule: é o módulo principal de autenticação que agrupa o serviço de autenticação (AuthService) e o controlador de autenticação (AuthController).
-// Ele é responsável por lidar com a lógica de autenticação, como login, registro e geração de tokens JWT.
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';

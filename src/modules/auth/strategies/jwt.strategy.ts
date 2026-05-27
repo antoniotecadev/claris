@@ -1,5 +1,3 @@
-// src/modules/auth/strategies/jwt.strategy.ts
-
 // JwtStrategy: implementa a estratégia de autenticação JWT usando Passport.
 // Ele extrai o token do header da requisição, verifica sua validade e retorna as informações do usuário (ID, email, organização e papel) para serem usadas em req.user.
 import { ExtractJwt, Strategy } from 'passport-jwt';

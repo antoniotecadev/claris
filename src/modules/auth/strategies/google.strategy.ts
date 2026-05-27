@@ -1,5 +1,3 @@
-// src/modules/auth/strategies/google.strategy.ts
-
 // GoogleStrategy: implementa a estratégia de autenticação usando o Passport com o provedor Google OAuth 2.0.
 // Ele extrai as informações do perfil do usuário do Google e as retorna para serem usadas em req.user.
 import { Injectable } from '@nestjs/common';

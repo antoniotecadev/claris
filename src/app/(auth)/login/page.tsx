@@ -29,6 +29,7 @@ export default function Login() {
 	return (
 
 		<div className="bg-[#E5E5E5]">
+			
 			<div className="container m-auto  flex flex-col justify-center items-center h-screen ">
 				<section className="  flex  w-200 h-150 ">
 					<div className="side w-[50%] h-full flex justify-between flex-col  p-5">

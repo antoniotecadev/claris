@@ -110,7 +110,7 @@ export function DialogDemo({
 		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogTrigger
 				asChild
-				className="bg-[#FFDEA5] text-[#261900] w-56 rounded-2xl px-6 py-4 mt-8 hover:cursor-pointer"
+				className="bg-[#FFDEA5] dark:bg-[#1E3A8A] dark:text-white text-[#261900] w-56 rounded-2xl px-6 py-4 mt-8 hover:cursor-pointer"
 			>
 				<Button variant="outline">Criar Igreja</Button>
 			</DialogTrigger>
@@ -200,7 +200,7 @@ export function DialogDemo({
 					</DialogClose>
 					<Button
 						type="button"
-						className="bg-[#1E3A8A]"
+						className="bg-[#1E3A8A] dark:text-white"
 						disabled={submitting}
 						onClick={(e) => {
 							e.preventDefault()

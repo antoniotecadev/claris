@@ -89,7 +89,7 @@ export default function DashboardPage() {
 	};
 
 	return (
-		<div className="flex flex-col w-full h-full bg-gray-50 p-6 gap-6">
+		<div className="flex flex-col w-full h-full bg-gray-50 p-6 gap-6  dark:bg-neutral-800">
 			{/* Hero Section */}
 			<div className="w-full h-64 bg-linear-to-r from-[#1E3A8A] to-[#002045] rounded-2xl p-8 text-white shadow-lg">
 				<div className="flex flex-col justify-between h-full">

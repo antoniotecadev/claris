@@ -93,7 +93,8 @@ export default function MainDashClient() {
 		loadOrganizations();
 	}, []);
 	return (
-		<div className="bg-white">
+		
+		<div className="bg-white dark:bg-neutral-800">
 			<SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
 			<div className="container m-auto">
 				{/* Header */}
@@ -101,19 +102,19 @@ export default function MainDashClient() {
 					<div className="items-center justify-center flex gap-9">
 						<div className="flex justify-center items-center gap-2">
 							<Image src={icon} alt="Logo" width={30} />
-							<h1 className="text-2xl text-[#1E3A8A]">CLARIS</h1>
+							<h1 className="text-2xl text-[#1E3A8A] dark:text-white	">CLARIS</h1>
 						</div>
 
 					</div>
 					<div className="flex justify-between gap-3">
 						<div className="flex items-center justify-center">
-							<Bell size={14} className="text-[#1E3A8A] w-6 h-7" />
+							<Bell size={14} className="text-[#1E3A8A] dark:text-white w-6 h-7" />
 						</div>
 						<button
 							onClick={() => setSettingsOpen(true)}
 							className="flex items-center justify-center hover:cursor-pointer "
 						>
-							<Settings size={14} className="text-[#1E3A8A] w-6 h-7 cursor-pointer hover:text-[#D97706] transition-colors" />
+							<Settings size={14} className="text-[#1E3A8A] dark:text-white w-6 h-7 cursor-pointer hover:text-[#D97706] transition-colors" />
 						</button>
 						<div className="flex items-center justify-center">
 							<ModeToggle />
@@ -132,13 +133,13 @@ export default function MainDashClient() {
 				</header>
 
 				<nav className="flex flex-col mt-10">
-					<p className="text-[#1A1C1C] tracking-wide text-[12px]">BEM VINDO DE VOLTA</p>
-					<p className="text-[#002045] text-[72px] font-bold">
+					<p className="text-[#1A1C1C] dark:text-white tracking-wide text-[12px]">BEM VINDO DE VOLTA</p>
+					<p className="text-[#002045] dark:text-white text-[72px] font-bold">
 						Escolhe a sua Igreja
 					</p>
 
 					<div className="flex items-center justify-between">
-						<p className="text-[#475F83] text-[20px] w-120">
+						<p className="text-[#475F83] dark:text-white text-[20px] w-120">
 							Reconecte-se com o seu lar espiritual ou explore novas comunidades de fé e devoção.
 						</p>
 						<div className="flex bg-[#F3F3F3] rounded-2xl p-1 text-[#74777F] items-center justify-center">
@@ -155,13 +156,13 @@ export default function MainDashClient() {
 
 					{/* Minhas igrejas */}
 					<div className="flex mt-10 items-center justify-start">
-						<p className="text-[#002045] font-semibold mr-4">MINHAS IGREJAS</p>
+						<p className="text-[#002045] dark:text-white font-semibold mr-4">MINHAS IGREJAS</p>
 						<div className="h-px bg-zinc-300 flex-1" />
 					</div>
 
 					{organizations.length === 0 ? (
 						<div className="py-16 flex flex-col items-center justify-center">
-							<p className="text-[#475F83] text-lg">Não pertence a nenhuma igreja ainda.</p>
+							<p className="text-[#475F83] dark:text-white text-lg">Não pertence a nenhuma igreja ainda.</p>
 							<p className="text-[#9CA3AF] text-sm mt-2">Crie uma nova ou explore as disponíveis.</p>
 						</div>
 					) : (
@@ -205,12 +206,12 @@ export default function MainDashClient() {
 					{/* Explorar igrejas */}
 					<div className="flex justify-between items-center mt-10">
 						<div className="flex flex-col">
-							<p className="text-[#002045] text-[30px]">Explorar novas igrejas</p>
-							<p className="text-[#475F83] text-[24px]">
+							<p className="text-[#002045] dark:text-white text-[30px] ">Explorar novas igrejas</p>
+							<p className="text-[#475F83] dark:text-white text-[24px]">
 								Congregações perto de si ou alinhadas com a sua jornada.
 							</p>
 						</div>
-						<p className="text-[#002045] text-[24px] cursor-pointer">ver todas recomendações</p>
+						<p className="text-[#002045] dark:text-white text-[24px] cursor-pointer">ver todas recomendações</p>
 					</div>
 
 					{/* <div className="flex gap-8 pb-10">

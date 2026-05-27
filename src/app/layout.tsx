@@ -3,6 +3,7 @@ import { Inter, Geist } from "next/font/google";
 import "@/assets/styles/globals.css";
 import Header from "@/components/layout/header";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/layout/theme-provider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -27,7 +28,9 @@ export default function RootLayout({
 			className={cn("h-full", "antialiased", inter.variable, "font-sans", geist.variable)}
 		>
 			<body className="min-h-full flex flex-col">
+				<ThemeProvider>
 				{children}
+				</ThemeProvider>
 				
 			</body>
 		</html>

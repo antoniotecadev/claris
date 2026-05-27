@@ -1,5 +1,3 @@
-// src/app.module.ts
-
 // Módulo: é uma classe decorada com `@Module` que organiza os componentes da aplicação.
 // O módulo raiz da aplicação, onde os controladores, serviços e outros módulos são registrados.
 
@@ -14,14 +12,13 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
 import { MembershipsModule } from './modules/memberships/memberships.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { ChurchModule } from './modules/church/church.module';
-import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       // ConfigModule: é um módulo que carrega as variáveis de ambiente do arquivo .env e as torna acessíveis em toda a aplicação.
-      isGlobal: true, // Torna o módulo disponível em toda a app, se false
-      envFilePath: '.env', // Caminho para o arquivo .env
+      isGlobal: true,
+      envFilePath: '.env',
       validate: (config) => {
         // Validação forte (recomendado)
         if (!config.JWT_SECRET) throw new Error('JWT_SECRET is missing');
@@ -34,7 +31,7 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
     UsersModule, // Gerenciamento de usuários
     OrganizationsModule, // Multi-tenancy (Igrejas)
     MembershipsModule, ChurchModule, // Gestão de membros por organização
-  ], // Módulos de banco de dados, autenticação, etc.
+  ], 
   controllers: [AppController], // Controladores que lidam com as rotas e solicitações HTTP.
   providers: [AppService], // Serviços que contêm a lógica de negócios e são injetados nos controladores.
 })

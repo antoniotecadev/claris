@@ -111,6 +111,7 @@ export default function MainDashClient() {
 		setLoadingChurches(true);
 		try {
 			const res = await api.get<{ organizations: OrganizationRef[] }>("/organizations/my");
+			console.log("My Organizations:", res.organizations);
 			setOrganizations(res.organizations ?? []);
 			const res2 = await api.get<{ organizations: OrganizationRef[]; organizationLength?: number }>("/organizations");
 			const orgs = res2.organizations ?? [];
@@ -199,7 +200,7 @@ export default function MainDashClient() {
 								<CommunityCard
 									key={org.organizationId}
 									name={org.name}
-									description={org.slug}
+									description={org.description}
 									logoUrl={org.logoUrl}
 									membersCount={0}
 									responsable={org.role}

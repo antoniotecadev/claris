@@ -65,10 +65,7 @@ export default function CommunityCard({
 					</p>
 
 					{/* Footer */}
-					<div className="flex justify-between items-center pt-2 border-t border-white/20">
-						<span className="text-xs text-gray-200">
-							{membersCount} {membersCount === 1 ? 'membro' : 'membros'}
-						</span>
+					<div className="flex justify-end items-end pt-2 border-t border-white/20">
 						<button 
 							className="flex items-center gap-1 text-white font-medium text-xs bg-[#1E3A8A]/80 hover:bg-[#1E3A8A] px-2 py-1 rounded-md transition-all duration-200 backdrop-blur-sm"
 							onClick={onClick}

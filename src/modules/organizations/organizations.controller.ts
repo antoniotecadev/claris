@@ -21,6 +21,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class OrganizationsController {
   constructor(private readonly organizationService: OrganizationsService) {}
 
+  @Get()
+  listAllOrganizations() {
+    return this.organizationService.listAllOrganizations();
+  }
+
   @Post()
   @UseInterceptors(FileInterceptor('logoUrl'))
   createOrganization(

@@ -20,6 +20,36 @@ export class OrganizationsService {
     private cloudinaryService: CloudinaryService,
   ) {}
 
+  async listAllOrganizations() {
+    const organizations = await this.prisma.organization.findMany({
+      select: {
+        id: true,
+        churchId: true,
+        name: true,
+        slug: true,
+        address: true,
+        description: true,
+        logoUrl: true,
+        createdAt: true,
+        church: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return {
+      success: true,
+      organizationLength: organizations.length,
+      organizations,
+    };
+  }
+
   async createOrganization(
     dto: CreateOrganizationDto,
     file: Express.Multer.File,

@@ -30,24 +30,24 @@ export default function Login() {
 
 		<div className="bg-[#E5E5E5]">
 			<div className="container m-auto  flex flex-col justify-center items-center h-screen ">
-				<section className="  flex  w-7xl h-200 ">
+				<section className="  flex  w-200 h-150 ">
 					<div className="side w-[50%] h-full flex justify-between flex-col  p-5">
 						<div className="flex gap-2 p-5  items-center">
-							<Image src={Logo} alt="" className="w-20 h-full" />
-							<p className="text-white text-4xl">CLARIS</p>
+							<Image src={Logo} alt="" className="w-8 h-10" />
+							<p className="text-white text-2xl">CLARIS</p>
 						</div>
 						<div className="flex flex-col gap-3 items-center justify-center">
-							<p className="text-[#FFDEA5] tracking-wide text-[30px]">Escrituras para hoje</p>
-							<p className="italic text-white   text-[50px] text-center font-serif">“A tua palavra é lâmpada para os meus pés
+							<p className="text-[#FFDEA5] tracking-wide text-[12px]">Escrituras para hoje</p>
+							<p className="italic text-white   text-[20px] text-center font-serif">“A tua palavra é lâmpada para os meus pés
 								e luz para o meu caminho.”
 							</p>
-							<p className="text-[#86A0CD] text-[24px]">— Salmos 119:105</p>
+							<p className="text-[#86A0CD] text-[18px]">— Salmos 119:105</p>
 						</div>
 						<div className="flex justify-around text-white">
 						</div>
 					</div>
-					<div className="w-full h-full flex flex-col justify-center items-center gradientes">
-						<div className="w-94 h-181 flex flex-col ">
+					<div className="w-[50%] h-full flex flex-col justify-center items-center gradientes">
+						<div className="w-94 h-150 flex flex-col ">
 							<p className="text-3xl text-black font-serif italic mb-4">BEM VINDO DE VOLTA</p>
 							<p className="text-[#43474E] mb-10">Insira os seus dados para aceder ao portal do Claris.</p>
 							<a

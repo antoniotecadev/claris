@@ -37,6 +37,9 @@ export class OrganizationsService {
             name: true,
           },
         },
+        _count: {
+          select: { memberships: true },
+        },
       },
       orderBy: {
         createdAt: 'desc',
@@ -46,7 +49,18 @@ export class OrganizationsService {
     return {
       success: true,
       organizationLength: organizations.length,
-      organizations,
+      organizations: organizations.map((org) => ({
+        id: org.id,
+        churchId: org.churchId,
+        name: org.name,
+        slug: org.slug,
+        address: org.address,
+        description: org.description,
+        logoUrl: org.logoUrl,
+        createdAt: org.createdAt,
+        church: org.church,
+        memberCount: org._count.memberships,
+      })),
     };
   }
 

@@ -1,7 +1,7 @@
 "use client";
 import CreateEventCard from "@/components/layout/createEvent";
 import EventCard from "@/components/layout/EventCard";
-import MembersInvitesCard from "@/components/layout/InviteAccept";
+// import MembersInvitesCard from "@/components/layout/InviteAccept";
 import { Users, Mail, Calendar, MapPin, Phone, Mail as MailIcon, Trash2, PhoneIcon, Clock, Users as UsersIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";

@@ -12,6 +12,8 @@ import { useUserStore } from "@/stores/userStore";
 import SettingsPanel from "@/components/layout/setting";
 import { DialogDemo } from "@/components/layout/createChurchDialogo";
 import type { ChurchOption } from "@/components/layout/OrganizatioSelect";
+import { ModeToggle } from "@/components/layout/ModeToggle";
+import LanguageSelector from "@/components/layout/LanguageSelector";
 
 interface OrganizationRef {
 	organizationId: string;
@@ -101,21 +103,9 @@ export default function MainDashClient() {
 							<Image src={icon} alt="Logo" width={30} />
 							<h1 className="text-2xl text-[#1E3A8A]">CLARIS</h1>
 						</div>
-						<div className="hidden sm:flex gap-6">
-							<NavLink href="#first">Descobrir</NavLink>
-							<NavLink href="#preco">Minha igreja</NavLink>
-							<NavLink href="#third">Comunidade</NavLink>
-						</div>
+
 					</div>
 					<div className="flex justify-between gap-3">
-						<div className="flex bg-[#F3F3F3] rounded-2xl p-2 text-[#74777F]">
-							<Search size={14} className="w-6 p-1 h-6 bg-[#F3F3F3]" />
-							<input
-								type="text"
-								placeholder="encontrar a tua igreja..."
-								className="bg-[#F3F3F3] w-62.5 h-6 focus:outline-none"
-							/>
-						</div>
 						<div className="flex items-center justify-center">
 							<Bell size={14} className="text-[#1E3A8A] w-6 h-7" />
 						</div>
@@ -126,7 +116,16 @@ export default function MainDashClient() {
 							<Settings size={14} className="text-[#1E3A8A] w-6 h-7 cursor-pointer hover:text-[#D97706] transition-colors" />
 						</button>
 						<div className="flex items-center justify-center">
-							<div className="w-8 h-8 bg-[#1E3A8A] rounded-2xl" />
+							<ModeToggle />
+						</div>
+						<div className="flex items-center justify-center">
+							<LanguageSelector
+								currentLocale="pt"
+								onLocaleChange={(locale) => {
+									// ex: router.push(`/${locale}`)
+									console.log("Idioma selecionado:", locale);
+								}}
+							/>
 						</div>
 					</div>
 
@@ -135,7 +134,7 @@ export default function MainDashClient() {
 				<nav className="flex flex-col mt-10">
 					<p className="text-[#1A1C1C] tracking-wide text-[12px]">BEM VINDO DE VOLTA</p>
 					<p className="text-[#002045] text-[72px] font-bold">
-						Escolhe a sua<br />Igreja
+						Escolhe a sua Igreja
 					</p>
 
 					<div className="flex items-center justify-between">

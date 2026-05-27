@@ -16,6 +16,8 @@ import { ModeToggle } from "@/components/layout/ModeToggle";
 import LanguageSelector from "@/components/layout/LanguageSelector";
 
 interface OrganizationRef {
+	id: string;
+	churchId: string;
 	organizationId: string;
 	name: string;
 	slug: string;
@@ -23,6 +25,8 @@ interface OrganizationRef {
 	role: string;
 	description: string;
 	address: string;
+	memberCount: number;
+	createdAt: string | Date;
 }
 
 interface Church {
@@ -52,6 +56,8 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 export default function MainDashClient() {
 	const [organizations, setOrganizations] = useState<OrganizationRef[]>([]);
 	const [churchOptions, setChurchOptions] = useState<ChurchOption[]>([]);
+	const [churches, setChurches] = useState<OrganizationRef[]>([]);
+	const [organizationLength, setOrganizationLength] = useState(0);
 	const [loadingChurches, setLoadingChurches] = useState(false);
 	const user = useUserStore((state: { user: any; }) => state.user);
 	async function requestToJoin(organizationId: string) {
@@ -82,7 +88,11 @@ export default function MainDashClient() {
 		try {
 			const res = await api.get<{ organizations: OrganizationRef[] }>("/organizations/my");
 			setOrganizations(res.organizations ?? []);
-			console.log(res.organizations);
+			const res2 = await api.get<{ organizations: OrganizationRef[]; organizationLength?: number }>("/organizations");
+			const orgs = res2.organizations ?? [];
+			setChurches(orgs);
+			setOrganizationLength(res2.organizationLength ?? orgs.length);
+			console.log("Organizations:", orgs);
 		} finally {
 			setLoadingChurches(false);
 		}
@@ -205,7 +215,7 @@ export default function MainDashClient() {
 					{/* Explorar igrejas */}
 					<div className="flex justify-between items-center mt-10">
 						<div className="flex flex-col">
-							<p className="text-[#002045] text-[30px]">Explorar novas igrejas</p>
+							<p className="text-[#002045] text-[30px]">Explorar novas igrejas ({organizationLength})</p>
 							<p className="text-[#475F83] text-[24px]">
 								Congregações perto de si ou alinhadas com a sua jornada.
 							</p>
@@ -213,7 +223,7 @@ export default function MainDashClient() {
 						<p className="text-[#002045] text-[24px] cursor-pointer">ver todas recomendações</p>
 					</div>
 
-					{/* <div className="flex gap-8 pb-10">
+					<div className="flex gap-8 pb-10">
 						{churches.length === 0 ? (
 							<p className="text-[#475F83]">Nenhuma igreja disponível.</p>
 						) : (
@@ -221,14 +231,18 @@ export default function MainDashClient() {
 								<CommunityJoin
 									key={church.id}
 									name={church.name}
-									local="Lisboa, Portugal"
+									slug={church.slug}
+									address={church.address}
+									description={church.description}
 									logoUrl={church.logoUrl}
-									membersCount={church.membersCount}
+									createdAt={church.createdAt}
+									church={{ id: church.churchId ?? church.id, name: church.name }}
+									membersCount={church.memberCount}
 									onClick={() => requestToJoin(church.id)}
 								/>
 							))
 						)}
-					</div> */}
+					</div>
 				</nav>
 			</div>
 		</div>

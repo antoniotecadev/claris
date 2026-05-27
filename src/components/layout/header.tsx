@@ -54,9 +54,9 @@ export default function Header() {
 					</div>
 
 					<div className='flex gap-2'>
-						<button className="px-2 md:px-6 py-2 md:py-2 text-[#261900] rounded-lg md:rounded-2xl bg-[#FFDEA5] text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50" onClick={() => window.location.href = '/login'}>
+						<NavLink href='/login' className="px-2 md:px-6 py-2 md:py-2 text-[#261900] rounded-lg md:rounded-2xl bg-[#FFDEA5] text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50">
 							Começar
-						</button>
+						</NavLink>
 						<LanguageSelector
 							currentLocale="pt"
 							onLocaleChange={(locale) => {

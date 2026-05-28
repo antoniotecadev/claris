@@ -42,16 +42,7 @@ interface Props {
 	churches: Church[];
 }
 
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
-	return (
-		<Link
-			href={href}
-			className="text-[#475569] border-b-2 border-transparent hover:text-[#D97706] hover:font-bold hover:border-[#D97706] transition-all duration-300 text-center"
-		>
-			{children}
-		</Link>
-	);
-}
+
 
 export default function MainDashClient() {
 	const [organizations, setOrganizations] = useState<OrganizationRef[]>([]);
@@ -111,7 +102,6 @@ export default function MainDashClient() {
 		setLoadingChurches(true);
 		try {
 			const res = await api.get<{ organizations: OrganizationRef[] }>("/organizations/my");
-			console.log("My Organizations:", res.organizations);
 			setOrganizations(res.organizations ?? []);
 			const res2 = await api.get<{ organizations: OrganizationRef[]; organizationLength?: number }>("/organizations");
 			const orgs = res2.organizations ?? [];

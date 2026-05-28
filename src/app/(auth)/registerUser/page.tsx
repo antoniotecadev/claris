@@ -6,7 +6,6 @@ import Google from "@/assets/images/SVG.png";
 import { ArrowRight } from "lucide-react";
 import { registerAction } from "@/utils/actionsRegister";
 import { use, useActionState, useEffect, useState } from "react";
-import { useUserStore } from "@/stores/userStore";
 import { useRouter } from 'next/navigation'
 
 export default function RegisterUser() {

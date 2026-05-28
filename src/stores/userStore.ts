@@ -21,13 +21,12 @@ interface userStore
 }
 
 
-export const useUserStore = create<userStore>()
-(
+export const useUserStore = create<userStore>()(
 	persist(
-		(set: (arg0: { user: user | null; authorized: boolean; }) => any) => ({
+		(set) => ({
 			user: null,
 			authorized: false,
-			setUser: (user : user | null) => set({ user, authorized: true }),
+			setUser: (user: user | null) => set({ user, authorized: true }),
 			logout: () => set({ user: null, authorized: false }),
 		}),
 		{

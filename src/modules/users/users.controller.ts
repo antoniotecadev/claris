@@ -14,6 +14,7 @@ import { UsersService } from './users.service';
 import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('user')
 @UseGuards(JwtAuthGuard)
@@ -41,5 +42,13 @@ export class UsersController {
     @Param('organizationId') organizationId: string,
   ) {
     return this.usersService.touchOnline(user, organizationId);
+  }
+
+  @Patch('me/password')
+  changePassword(
+    @CurrentUser() user: JwtPayload,
+    @Body() dto: ChangePasswordDto,
+  ) {
+    return this.usersService.changePassword(user, dto);
   }
 }

@@ -1,7 +1,9 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -9,6 +11,8 @@ import { MembershipStatus } from 'generated/prisma/browser';
 import { ListMembersQueryDto } from './dto/list-members-query.dto';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { compare, hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -99,6 +103,41 @@ export class UsersService {
     return {
       success: true,
       lastSeen: new Date(),
+    };
+  }
+
+  async changePassword(currentUser: JwtPayload, dto: ChangePasswordDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: currentUser.id },
+      select: { id: true, passwordHash: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    if (!user.passwordHash) {
+      throw new BadRequestException('Senha não definida para esta conta');
+    }
+
+    const isValid = await compare(dto.currentPassword, user.passwordHash);
+
+    if (!isValid) {
+      throw new UnauthorizedException('Senha actual inválida');
+    }
+
+    const newPasswordHash = await hash(dto.newPassword, 10);
+
+    await this.prisma.user.update({
+      where: { id: currentUser.id },
+      data: {
+        passwordHash: newPasswordHash,
+        lastSeen: new Date(),
+      },
+    });
+
+    return {
+      success: true,
     };
   }
 

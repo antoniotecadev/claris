@@ -118,6 +118,9 @@ export class MembershipsService {
       html: `
 			<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
 				<div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: center; margin-bottom: 24px;">
+            <img src="https://res.cloudinary.com/cc42/image/upload/v1779967738/logo_auy2zy.png" alt="Claris" style="display: block; margin: 0 auto; max-width: 140px; height: auto;" />
+          </div>
 					<h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px; text-align: center;">Bem-vindo!</h1>
 					
 					<p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Olá <strong>${user.displayName}</strong>,</p>
@@ -236,6 +239,9 @@ export class MembershipsService {
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
             <div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+              <div style="text-align: center; margin-bottom: 24px;">
+                <img src="https://res.cloudinary.com/cc42/image/upload/v1779967738/logo_auy2zy.png" alt="Claris" style="display: block; margin: 0 auto; max-width: 140px; height: auto;" />
+              </div>
               <h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px; text-align: center;">Nova solicitacao</h1>
               <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">O membro <strong>${currentUserName}</strong> (${currentUserEmail}) solicitou entrada na igreja <strong style="color: #2563eb;">${adminMemberships[0].organization.name}</strong>.</p>
               <div style="text-align: center; margin: 40px 0;">
@@ -393,6 +399,9 @@ export class MembershipsService {
       html: `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
       <div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <img src="https://res.cloudinary.com/cc42/image/upload/v1779967738/logo_auy2zy.png" alt="Claris" style="display: block; margin: 0 auto; max-width: 140px; height: auto;" />
+        </div>
         <h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px; text-align: center;">Convite Aceite!</h1>
 				
         <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Olá,</p>
@@ -469,6 +478,9 @@ export class MembershipsService {
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
           <div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+            <div style="text-align: center; margin-bottom: 24px;">
+              <img src="https://res.cloudinary.com/cc42/image/upload/v1779967738/logo_auy2zy.png" alt="Claris" style="display: block; margin: 0 auto; max-width: 140px; height: auto;" />
+            </div>
             <h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px; text-align: center;">Solicitação aprovada!</h1>
 
             <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Olá <strong>${updatedMembership.user.displayName}</strong>,</p>
@@ -545,6 +557,9 @@ export class MembershipsService {
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
           <div style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+            <div style="text-align: center; margin-bottom: 24px;">
+              <img src="https://res.cloudinary.com/cc42/image/upload/v1779967738/logo_auy2zy.png" alt="Claris" style="display: block; margin: 0 auto; max-width: 140px; height: auto;" />
+            </div>
             <h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px; text-align: center;">Solicitação rejeitada</h1>
 
             <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Olá <strong>${updatedMembership.user.displayName}</strong>,</p>

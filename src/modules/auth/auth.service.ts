@@ -216,6 +216,9 @@ export class AuthService {
     return `
       <div style="background:#f5f6f8;padding:24px 12px;">
         <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:12px;padding:24px 24px 20px;box-shadow:0 6px 18px rgba(20,20,20,0.06);font-family:Arial, sans-serif;">
+          <div style="text-align:center;margin-bottom:16px;">
+            <img src="https://res.cloudinary.com/cc42/image/upload/v1779967738/logo_auy2zy.png" alt="Claris" style="display:block;margin:0 auto;max-width:120px;height:auto;" />
+          </div>
           <div style="margin-bottom:16px;">
             <div style="font-size:14px;color:#6b7280;">Claris</div>
             <div style="font-size:20px;font-weight:700;color:#111827;margin-top:6px;">Código de acesso</div>

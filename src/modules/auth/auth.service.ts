@@ -18,7 +18,7 @@ import { RegisterDto } from './dto/register.dto';
 @Injectable()
 export class AuthService {
   private readonly resend = new Resend(process.env.RESEND_API_KEY ?? '');
-  private readonly resendFrom = process.env.RESEND_FROM ?? 'claris@resend.dev';
+  private readonly resendFrom = process.env.RESEND_FROM ?? 'Claris <noreply@clariss.me>';
 
   constructor(
     private prisma: PrismaService,

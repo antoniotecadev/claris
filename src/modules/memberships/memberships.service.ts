@@ -16,7 +16,7 @@ export class MembershipsService {
   constructor(private readonly prisma: PrismaService) {}
 
   private readonly resend = new Resend(process.env.RESEND_API_KEY ?? '');
-  private readonly resendFrom = process.env.RESEND_FROM ?? 'claris@resend.dev';
+  private readonly resendFrom = process.env.RESEND_FROM ?? 'Claris <noreply@clariss.me>';
 
   async listMembers(organizationId: string | undefined) {
     this.assertOrganizationId(organizationId);

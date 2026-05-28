@@ -28,6 +28,7 @@ export class UsersService {
         birthDate: true,
         avatarUrl: true,
         lastSeen: true,
+        googleId: true,
         createdAt: true,
       },
     });

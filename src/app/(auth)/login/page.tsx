@@ -48,13 +48,13 @@ export default function Login() {
 						</div>
 					</div>
 					<div className="w-[50%] h-full flex flex-col justify-center items-center gradientes">
-						<div className="w-94 h-150 flex flex-col ">
-							<p className="text-3xl text-black font-serif italic mb-4">BEM VINDO DE VOLTA</p>
+						<div className="w-94 h-150 flex flex-col p-3">
+							<p className="text-xl text-black font-serif italic mb-4">BEM VINDO DE VOLTA</p>
 							<p className="text-[#43474E] mb-10">Insira os seus dados para aceder ao portal do Claris.</p>
 							<a
 								href="http://localhost:3001/v1/api/auth/google"
 								className="
-											p-4
+											p-2
 											bg-white
 											text-black
 											flex gap-2
@@ -70,22 +70,22 @@ export default function Login() {
 											active:scale-[0.98]
 										"
 							>
-								<Image src={Google} alt="Google" className="w-5 h-5" />
+								<Image src={Google} alt="Google" className="w-3 h-3" />
 								<p>Continue with Google</p>
 							</a>
 							<div className="flex gap-3 items-center justify-center mb-8">
-								<div className="w-31.5 h-px bg-gray-400"></div>
-								<p className="text-gray-500 text-[12px]">OR USE EMAIL</p>
-								<div className="w-31.5 h-px bg-gray-400"></div>
+								<div className="w-30 h-px bg-gray-400"></div>
+								<p className="text-gray-500 text-[10px]">OR USE EMAIL</p>
+								<div className="w-30 h-px bg-gray-400"></div>
 							</div>
 							<form action={formAction} className="flex flex-col">
-								<label htmlFor="email" className="text-[#43474E] mb-2.25">EMAIL ADDRESS</label>
-								<input type="email" name="email" required id="email" placeholder="ex pastor@claris.org " className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-6" />
-								<label htmlFor="pss" className="text-[#43474E] flex justify-between mb-2.25">
-									<p>SENHA</p>
-									<p className="text-[#002045] hover:cursor-pointer">Esqueceu sua senha?</p>
+								<label htmlFor="email" className="text-[#43474E] mb-2.25 text-[10px]">EMAIL ADDRESS</label>
+								<input type="email" name="email" required id="email" placeholder="pastor@claris.org " className="text-[#74777F] bg-white rounded-2xl h-10 p-2 mb-6" />
+								<label  className="text-[#43474E] flex justify-between mb-2.25">
+									<p className="text-[10px]">SENHA</p>
+									<p className="text-[#002045] hover:cursor-pointer text-[10px]">Esqueceu sua senha?</p>
 								</label>
-								<input type="password" id="pss" name="password" required placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-6" />
+								<input type="password" id="pss" name="password" required placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-10 p-2 mb-6" />
 								{state?.error && (
 									<div className="mb-3  ">
 										<p className="text-sm text-red-600 font-medium flex items-center gap-2">
@@ -100,9 +100,9 @@ export default function Login() {
 													bg-[#002045]
 													flex justify-center items-center gap-2
 													text-white
-													h-14
+													h-10
 													rounded-2xl
-													mb-10
+													mb-8
 													transition-all duration-300
 													hover:bg-[#003066]
 													hover:shadow-lg
@@ -114,11 +114,11 @@ export default function Login() {
 													disabled:hover:shadow-none
 												"
 								>
-									<p >ENTRAR</p>
-									<ArrowRight size={20} />
+									<p className="text-[10px]">ENTRAR</p>
+									<ArrowRight size={18} />
 								</button>
 
-								<div className="w-full h-px bg-gray-400 mb-10"></div>
+								<div className="w-full h-px bg-gray-400 mb-8"></div>
 								<p className="text-[#43474E] text-center mb-12 ">Primeira vez aqui ?<span className="text-[#002045] hover:cursor-pointer">
 									<Link href={"/registerUser"}>Criar conta</Link>
 								</span> </p>
@@ -127,14 +127,8 @@ export default function Login() {
 						</div>
 					</div>
 				</section>
-				<div className="flex justify-around p-3  sm:w-7xl  bg-white tracking-wide w-full  text-[#74777F] items-center h-27.25">
-					<p className="text-[#002045] italic">CLARIS</p>
-					<div className="flex gap-4">
-						<p>PRIVACIDADE</p>
-						<p>TERMOS</p>
-						<p>SUPORTE</p>
-						<p>CONTACTOS</p>
-					</div>
+				<div className="flex justify-around p-3 text-[10px]  w-200  bg-white tracking-wide   text-[#74777F] items-center h-20">
+					<p className="text-[#002045] italic ">CLARIS</p>
 					<p>© 2024 CLARIS ORGANIZATION</p>
 				</div>
 

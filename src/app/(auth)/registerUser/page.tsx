@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { registerAction } from "@/utils/actionsRegister";
 import { use, useActionState, useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
+import { useUserStore } from "@/stores/userStore";
 
 export default function RegisterUser() {
 	const initialState = {

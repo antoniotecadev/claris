@@ -45,8 +45,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
       // 2. limpar estado do frontend (Zustand)
       logout();
-
-      <Link href="/login" />
+      window.location.href = "/login";
     } catch (err) {
       console.error("Erro no logout", err);
     }
@@ -444,46 +443,6 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 </div>
               </div>
             </div>
-
-            {/* Força da password */}
-            {passwordFields.newPassword && (
-              <div className="flex flex-col gap-1">
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4].map((level) => {
-                    const strength = Math.min(
-                      Math.floor(passwordFields.newPassword.length / 3),
-                      4
-                    );
-                    return (
-                      <div
-                        key={level}
-                        className={`h-1 flex-1 rounded-full transition-colors ${level <= strength
-                            ? strength <= 1
-                              ? "bg-red-400"
-                              : strength <= 2
-                                ? "bg-yellow-400"
-                                : strength <= 3
-                                  ? "bg-blue-400"
-                                  : "bg-green-400"
-                            : "bg-zinc-200"
-                          }`}
-                      />
-                    );
-                  })}
-                </div>
-                <p className="text-xs text-[#475F83]">
-                  {passwordFields.newPassword.length < 4
-                    ? "Fraca"
-                    : passwordFields.newPassword.length < 7
-                      ? "Razoável"
-                      : passwordFields.newPassword.length < 10
-                        ? "Boa"
-                        : "Forte"}
-                </p>
-              </div>
-            )}
-
-
 
             {/* Feedback */}
             {passwordSuccess && (

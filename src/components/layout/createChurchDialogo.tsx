@@ -134,15 +134,7 @@ export function DialogDemo({
 						/>
 					</div>
 
-					<div className="flex flex-col">
-						<Label htmlFor="organization-slug" className="mb-2">Slug da organização</Label>
-						<Input
-							id="organization-slug"
-							placeholder="ex: igreja-vida"
-							value={slug}
-							onChange={(e) => setSlug(e.target.value)}
-						/>
-					</div>
+				
 
 					<div className="flex flex-col">
 						<Label htmlFor="church-address" className="mb-2">Endereço</Label>

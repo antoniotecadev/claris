@@ -84,30 +84,30 @@ export default function CodeAuth() {
 
 	const handleResend = () => {
 		if (countdown > 0) return;
-		setCountdown(180);
-		// lógica de reenvio aqui
+		setCountdown(300);
 	};
 
 	return (
 		<div className="bg-white flex w-screen justify-center items-center h-screen">
-			<div className="w-7xl h-256 flex ">
+			<div className="w-200 h-150 flex ">
 				<div className="side1 w-[30%] h-full flex justify-between flex-col p-5">
 					<div className="flex gap-2 p-5 items-center">
-						<Image src={Logo} alt="" className="w-20 h-full" />
-						<p className="text-white text-4xl">CLARIS</p>
+						<Image src={Logo} alt="" className="w-10 h-full" />
+						<p className="text-white text-14">CLARIS</p>
 					</div>
 					<div className="flex flex-col gap-3 p-5">
-						<p className="tracking-wide text-[#FFDEA5] text-[24px]">Momento de Reflexão</p>
-						<p className="text-white italic text-[36px]">
+						<p className="tracking-wide text-[#FFDEA5] text-[14px]">Momento de Reflexão</p>
+						<p className="text-white italic text-[18px]">
 							"A paz é o silêncio da alma em harmonia com o eterno."
 						</p>
 					</div>
+				
 				</div>
 
-				<div className="bg-[#F3F3F3] w-[50%] flex justify-center items-center">
-					<div className="flex w-md h-155 flex-col space-y-2">
-						<p className="text-[#1A1C1C] text-[40px] italic">Confirme sua Identidade</p>
-						<p className="text-[#43474E] mb-12">
+				<div className="bg-[#F3F3F3] w-[50%] flex justify-center items-center p-2" >
+					<div className="flex w-md h-150 flex-col space-y-2 mt-5">
+						<p className="text-[#1A1C1C] text-[24px] italic">Confirme sua Identidade</p>
+						<p className="text-[#43474E] mb-18">
 							Para garantir a segurança do seu Claris, enviamos um código de
 							verificação para o seu email.
 						</p>
@@ -124,14 +124,14 @@ export default function CodeAuth() {
 									onChange={(e) => handleChange(e.target.value, idx)}
 									onKeyDown={(e) => handleKeyDown(e, idx)}
 									onPaste={handlePaste}
-									className="w-12.5 h-20 bg-white rounded-2xl px-4 text-2xl text-center outline-none focus:ring-2 focus:ring-[#002045]"
+									className="w-10 h-15 bg-white rounded-2xl px-4 text-2xl text-center outline-none focus:ring-2 focus:ring-[#002045]"
 								/>
 							))}
 						</div>
 
 						<button
 							onClick={handleVerify}
-							
+
 							disabled={getCode().length < 6 || pending}
 							className="w-full h-14 text-center bg-[#002045] text-white rounded-2xl mb-4 disabled:opacity-50"
 						>

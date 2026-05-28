@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -50,5 +51,10 @@ export class UsersController {
     @Body() dto: ChangePasswordDto,
   ) {
     return this.usersService.changePassword(user, dto);
+  }
+
+  @Delete('me')
+  deleteMyAccount(@CurrentUser() user: JwtPayload) {
+    return this.usersService.deleteMyAccount(user);
   }
 }

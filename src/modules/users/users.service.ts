@@ -141,6 +141,36 @@ export class UsersService {
     };
   }
 
+  async deleteMyAccount(currentUser: JwtPayload) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: currentUser.id },
+      select: { id: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    await this.prisma.$transaction([
+      this.prisma.emailLoginCode.deleteMany({
+        where: { userId: currentUser.id },
+      }),
+      this.prisma.membership.deleteMany({
+        where: { userId: currentUser.id },
+      }),
+      this.prisma.message.deleteMany({
+        where: { senderId: currentUser.id },
+      }),
+      this.prisma.user.delete({
+        where: { id: currentUser.id },
+      }),
+    ]);
+
+    return {
+      success: true,
+    };
+  }
+
   private async assertMembership(userId: string, organizationId: string) {
     const membership = await this.prisma.membership.findFirst({
       where: { userId, organizationId, status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] } },

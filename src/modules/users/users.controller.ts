@@ -25,10 +25,9 @@ export class UsersController {
   @Patch('me')
   updateMyProfile(
     @CurrentUser() user: JwtPayload,
-    @Param('organizationId') organizationId: string,
     @Body() dto: UpdateProfileDto,
   ) {
-    return this.usersService.updateMe(user, organizationId, dto);
+    return this.usersService.updateMe(user, dto);
   }
 
   @Patch('me/online')

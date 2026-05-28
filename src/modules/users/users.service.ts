@@ -40,13 +40,8 @@ export class UsersService {
 
   async updateMe(
     currentUser: JwtPayload,
-    organizationId: string | undefined,
     dto: UpdateProfileDto,
   ) {
-
-    this.assertTenantContext(organizationId);
-
-    await this.assertMembership(currentUser.id, organizationId!);
 
     const updatedUser = await this.prisma.user.update({
       where: { id: currentUser.id },

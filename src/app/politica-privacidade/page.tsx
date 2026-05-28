@@ -26,8 +26,6 @@ export default function PoliticaPrivacidadePage() {
 							</h2>
 							<ul className="mt-2 list-disc pl-5 space-y-2">
 								<li>Dados de conta: nome, email, telefone e organização.</li>
-								<li>Dados de uso: páginas visitadas, ações e preferências.</li>
-								<li>Dados técnicos: IP, navegador, dispositivo e sistema.</li>
 							</ul>
 						</section>
 
@@ -71,7 +69,6 @@ export default function PoliticaPrivacidadePage() {
 							</h2>
 							<ul className="mt-2 list-disc pl-5 space-y-2">
 								<li>Acessar, corrigir ou excluir seus dados pessoais.</li>
-								<li>Solicitar portabilidade ou restrição de uso.</li>
 								<li>Revogar consentimentos a qualquer momento.</li>
 							</ul>
 						</section>

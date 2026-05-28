@@ -29,7 +29,7 @@ export default function Login() {
 	return (
 
 		<div className="bg-[#E5E5E5]">
-			
+
 			<div className="container m-auto  flex flex-col justify-center items-center h-screen ">
 				<section className="  flex  w-200 h-150 ">
 					<div className="side w-[50%] h-full flex justify-between flex-col  p-5">
@@ -81,7 +81,7 @@ export default function Login() {
 							<form action={formAction} className="flex flex-col">
 								<label htmlFor="email" className="text-[#43474E] mb-2.25 text-[10px]">EMAIL ADDRESS</label>
 								<input type="email" name="email" required id="email" placeholder="pastor@claris.org " className="text-[#74777F] bg-white rounded-2xl h-10 p-2 mb-6" />
-								<label  className="text-[#43474E] flex justify-between mb-2.25">
+								<label htmlFor="pss" className="text-[#43474E] flex justify-between mb-2.25">
 									<p className="text-[10px]">SENHA</p>
 									<p className="text-[#002045] hover:cursor-pointer text-[10px]">Esqueceu sua senha?</p>
 								</label>
@@ -127,8 +127,13 @@ export default function Login() {
 						</div>
 					</div>
 				</section>
-				<div className="flex justify-around p-3 text-[10px]  w-200  bg-white tracking-wide   text-[#74777F] items-center h-20">
-					<p className="text-[#002045] italic ">CLARIS</p>
+				<div className="flex justify-around p-3 text-[10px] w-200  bg-white tracking-wide   text-[#74777F] items-center h-27.25">
+					<p className="text-[#002045] italic">CLARIS</p>
+					<div className="flex gap-4">
+						<Link href={"/politica-privacidade"}>Política de Privacidade</Link>
+						<Link href={"/termos-condicoes"}>Termos de serviço</Link>
+						<Link href={"/contacto-suporte"}>CONTACTOS</Link>
+					</div>
 					<p>© 2024 CLARIS ORGANIZATION</p>
 				</div>
 

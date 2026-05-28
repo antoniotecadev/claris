@@ -42,17 +42,7 @@ export default function TermosCondicoesPage() {
 
 						<section>
 							<h2 className="text-xl md:text-2xl font-semibold text-[#1A365D]">
-								4. Pagamentos e planos
-							</h2>
-							<p className="mt-2">
-								Planos pagos podem ser cobrados conforme o plano escolhido. Taxas,
-								períodos e cancelamentos são apresentados no momento da contratação.
-							</p>
-						</section>
-
-						<section>
-							<h2 className="text-xl md:text-2xl font-semibold text-[#1A365D]">
-								5. Suspensão e encerramento
+								4. Suspensão e encerramento
 							</h2>
 							<p className="mt-2">
 								Podemos suspender ou encerrar contas em caso de violação destes
@@ -62,7 +52,7 @@ export default function TermosCondicoesPage() {
 
 						<section>
 							<h2 className="text-xl md:text-2xl font-semibold text-[#1A365D]">
-								6. Limitação de responsabilidade
+								5. Limitação de responsabilidade
 							</h2>
 							<p className="mt-2">
 								A Claris não se responsabiliza por perdas indiretas decorrentes do uso
@@ -72,7 +62,7 @@ export default function TermosCondicoesPage() {
 
 						<section>
 							<h2 className="text-xl md:text-2xl font-semibold text-[#1A365D]">
-								7. Contato
+								6. Contato
 							</h2>
 							<p className="mt-2">
 								Para dúvidas sobre estes termos, entre em contato com o suporte.

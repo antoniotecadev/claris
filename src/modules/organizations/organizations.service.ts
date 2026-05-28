@@ -216,10 +216,14 @@ export class OrganizationsService {
       organizationLength: memberships.length,
       organizations: memberships.map((membership) => ({
         organizationId: membership.organization.id,
+        churchId: membership.organization.churchId,
         name: membership.organization.name,
         slug: membership.organization.slug,
+        address: membership.organization.address,
+        description: membership.organization.description,
         logoUrl: membership.organization.logoUrl,
         role: membership.role,
+        church: membership.organization.church,
         createdAt: membership.organization.createdAt,
       })),
     };

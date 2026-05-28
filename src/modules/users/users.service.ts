@@ -8,10 +8,14 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { MembershipStatus } from 'generated/prisma/browser';
 import { ListMembersQueryDto } from './dto/list-members-query.dto';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private cloudinaryService: CloudinaryService,
+  ) {}
 
   async getMe(currentUser: JwtPayload) {
     const user = await this.prisma.user.findUnique({
@@ -41,13 +45,24 @@ export class UsersService {
   async updateMe(
     currentUser: JwtPayload,
     dto: UpdateProfileDto,
+    file?: Express.Multer.File,
   ) {
+    let avatarUrl = dto.avatarUrl;
+
+    if (file) {
+      const uploaded: any = await this.cloudinaryService.uploadFile(
+        file,
+        'claris/users',
+      );
+
+      avatarUrl = uploaded.secure_url;
+    }
 
     const updatedUser = await this.prisma.user.update({
       where: { id: currentUser.id },
       data: {
         ...(dto.displayName !== undefined ? { displayName: dto.displayName } : {}),
-        ...(dto.avatarUrl !== undefined ? { avatarUrl: dto.avatarUrl } : {}),
+        ...(avatarUrl !== undefined ? { avatarUrl } : {}),
         ...(dto.gender !== undefined ? { gender: dto.gender } : {}),
         ...(dto.birthDate !== undefined ? { birthDate: new Date(dto.birthDate) } : {}),
         lastSeen: new Date(),

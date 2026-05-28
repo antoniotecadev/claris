@@ -11,12 +11,12 @@ export class CloudinaryService {
     });
   }
 
-  async uploadFile(file: Express.Multer.File) {
+  async uploadFile(file: Express.Multer.File, folder = 'claris/organizations') {
     return new Promise((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(
           {
-            folder: 'claris/organizations',
+            folder,
           },
           (error, result) => {
             if (error) return reject(error);

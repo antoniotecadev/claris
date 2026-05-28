@@ -16,7 +16,7 @@ export class CloudinaryService {
       cloudinary.uploader
         .upload_stream(
           {
-            folder: 'organizations',
+            folder: 'claris/organizations',
           },
           (error, result) => {
             if (error) return reject(error);

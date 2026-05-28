@@ -32,8 +32,41 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   const user = useUserStore((state: any) => state.user);
   const setUser = useUserStore((state: any) => state.setUser);
   const logout = useUserStore((state: any) => state.logout);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deletingAccount, setDeletingAccount] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDeleteAccount = async () => {
+    try {
+      setDeletingAccount(true);
+
+      // eliminar conta
+      await api.delete("/user/me");
+
+      // apagar cookie httpOnly
+      await fetch("/api/logout", {
+        method: "POST",
+      });
+
+      // limpar Zustand
+      logout();
+
+      // redirect
+      window.location.href = "/login";
+    } catch (err) {
+      console.error(err);
+
+      alert(
+        err instanceof Error
+          ? err.message
+          : "Erro ao eliminar conta."
+      );
+    } finally {
+      setDeletingAccount(false);
+      setShowDeleteConfirm(false);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -238,8 +271,8 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
           <button
             onClick={() => setActiveTab("profile")}
             className={`py-3 px-4 text-sm font-medium border-b-2 transition-colors ${activeTab === "profile"
-                ? "border-[#002045] text-[#002045]"
-                : "border-transparent text-[#475F83] hover:text-[#002045]"
+              ? "border-[#002045] text-[#002045]"
+              : "border-transparent text-[#475F83] hover:text-[#002045]"
               }`}
           >
             Perfil
@@ -248,8 +281,8 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             <button
               onClick={() => setActiveTab("password")}
               className={`py-3 px-4 text-sm font-medium border-b-2 transition-colors ${activeTab === "password"
-                  ? "border-[#002045] text-[#002045]"
-                  : "border-transparent text-[#475F83] hover:text-[#002045]"
+                ? "border-[#002045] text-[#002045]"
+                : "border-transparent text-[#475F83] hover:text-[#002045]"
                 }`}
             >
               Password
@@ -476,7 +509,47 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             <LogOut size={16} />
             Terminar sessão
           </button>
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="w-full flex items-center justify-center gap-2 text-red-700 hover:bg-red-100 rounded-xl px-4 py-3 transition-colors text-sm font-medium mt-2"
+          >
+            Eliminar conta
+          </button>
         </div>
+
+
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+            <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+              <h2 className="text-lg font-semibold text-[#002045]">
+                Eliminar conta?
+              </h2>
+
+              <p className="text-sm text-[#475F83] mt-2">
+                Esta ação é permanente e não poderá ser desfeita.
+              </p>
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="flex-1 border border-zinc-200 rounded-xl py-3 text-sm font-medium hover:bg-zinc-50"
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={deletingAccount}
+                  className="flex-1 bg-red-600 text-white rounded-xl py-3 text-sm font-medium hover:bg-red-700 disabled:opacity-60"
+                >
+                  {deletingAccount
+                    ? "Eliminando..."
+                    : "Eliminar"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </aside>
     </>
   );

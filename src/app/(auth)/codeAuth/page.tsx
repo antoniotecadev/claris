@@ -124,7 +124,7 @@ export default function CodeAuth() {
 									onChange={(e) => handleChange(e.target.value, idx)}
 									onKeyDown={(e) => handleKeyDown(e, idx)}
 									onPaste={handlePaste}
-									className="w-10 h-15 bg-white rounded-2xl px-4 text-2xl text-center outline-none focus:ring-2 focus:ring-[#002045]"
+									className="w-10 h-15 bg-white rounded-2xl px-2 text-[24px] text-center outline-none focus:ring-2 focus:ring-[#002045]"
 								/>
 							))}
 						</div>

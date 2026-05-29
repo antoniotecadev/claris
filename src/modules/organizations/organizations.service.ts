@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { MembershipStatus, Role } from 'generated/prisma/enums';
+import { Role } from 'generated/prisma/enums';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
@@ -116,7 +116,7 @@ export class OrganizationsService {
         data: {
           userId: user.id,
           organizationId: organization.id,
-          role: Role.SUPER_ADMIN,
+          role: Role.ADMIN,
         },
       });
 
@@ -186,7 +186,6 @@ export class OrganizationsService {
     const memberships = await this.prisma.membership.findMany({
       where: {
         userId,
-        status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] },
       },
       include: {
         organization: {

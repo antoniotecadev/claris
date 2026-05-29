@@ -7,8 +7,6 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { MembershipStatus } from 'generated/prisma/browser';
-import { ListMembersQueryDto } from './dto/list-members-query.dto';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -173,7 +171,7 @@ export class UsersService {
 
   private async assertMembership(userId: string, organizationId: string) {
     const membership = await this.prisma.membership.findFirst({
-      where: { userId, organizationId, status: { in: [MembershipStatus.NORMAL, MembershipStatus.ACCEPTED] } },
+      where: { userId, organizationId },
       select: { id: true },
     });
 

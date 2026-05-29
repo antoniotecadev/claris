@@ -12,7 +12,6 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { MembershipsService } from './memberships.service';
 import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
-import { InviteMemberDto } from './dto/invite-member.dto';
 import { UpdateMemberRoleDto } from './dto/update-member-role.dto';
 
 @Controller('organizations/:organizationId/memberships')
@@ -23,67 +22,6 @@ export class MembershipsController {
   @Get()
   listMembers(@Param('organizationId') organizationId: string) {
     return this.membershipsService.listMembers(organizationId);
-  }
-
-  @Post('invite')
-  inviteMember(
-    @CurrentUser() user: JwtPayload,
-    @Param('organizationId') organizationId: string,
-    @Body() dto: InviteMemberDto,
-  ) {
-    return this.membershipsService.inviteMember(user, organizationId, dto);
-  }
-
-  @Post('request')
-  requestToJoin(
-    @CurrentUser() user: JwtPayload,
-    @Param('organizationId') organizationId: string,
-  ) {
-    return this.membershipsService.requestToJoinOrganization(user, organizationId);
-  }
-
-  @Get('invites')
-  listMyInvites(
-    @CurrentUser() user: JwtPayload,
-    @Param('organizationId') organizationId: string,
-  ) {
-    return this.membershipsService.listMyInvites(user, organizationId);
-  }
-
-  @Get('requests')
-  listJoinRequests(
-    @CurrentUser() user: JwtPayload,
-    @Param('organizationId') organizationId: string,
-  ) {
-    return this.membershipsService.listJoinRequests(user, organizationId);
-  }
-
-  @Post(':memberId/:toEmail/accept-invite')
-  acceptInvite(
-    @CurrentUser() user: JwtPayload,
-    @Param('organizationId') organizationId: string,
-    @Param('memberId') memberId: string,
-    @Param('toEmail') toEmail: string,
-  ) {
-    return this.membershipsService.acceptInvite(user, organizationId, memberId, toEmail);
-  }
-
-  @Post(':memberId/approve')
-  approveRequest(
-    @CurrentUser() user: JwtPayload,
-    @Param('organizationId') organizationId: string,
-    @Param('memberId') memberId: string,
-  ) {
-    return this.membershipsService.approveJoinRequest(user, organizationId, memberId);
-  }
-
-  @Post(':memberId/reject')
-  rejectRequest(
-    @CurrentUser() user: JwtPayload,
-    @Param('organizationId') organizationId: string,
-    @Param('memberId') memberId: string,
-  ) {
-    return this.membershipsService.rejectJoinRequest(user, organizationId, memberId);
   }
 
   @Patch(':memberId/role')

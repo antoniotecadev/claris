@@ -37,7 +37,7 @@ async function main() {
 
   const church2 = await prisma.church.create({
     data: {
-      name: 'Jeová',
+      name: 'Testemunha de Jeová',
     },
   });
 
@@ -85,7 +85,7 @@ async function main() {
       memberships: {
         create: {
           organizationId: org1.id,
-          role: Role.PASTOR,
+          role: Role.ADMIN,
         },
       },
     },
@@ -115,7 +115,7 @@ async function main() {
       memberships: {
         create: {
           organizationId: org2.id,
-          role: Role.PASTOR,
+          role: Role.ADMIN,
         },
       },
     },

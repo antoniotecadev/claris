@@ -390,6 +390,12 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <Save size={16} />
               {saving ? "A guardar..." : "Guardar alterações"}
             </button>
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="w-full flex items-center justify-center gap-2 text-red-700 hover:bg-red-100 rounded-xl px-4 py-3 transition-colors text-sm font-medium mt-2 border-solid border-red-700 border-2"
+            >
+              Eliminar conta
+            </button>
           </div>
 
         ) : (
@@ -509,17 +515,12 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             <LogOut size={16} />
             Terminar sessão
           </button>
-          <button
-            onClick={() => setShowDeleteConfirm(true)}
-            className="w-full flex items-center justify-center gap-2 text-red-700 hover:bg-red-100 rounded-xl px-4 py-3 transition-colors text-sm font-medium mt-2"
-          >
-            Eliminar conta
-          </button>
+        
         </div>
 
 
         {showDeleteConfirm && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
               <h2 className="text-lg font-semibold text-[#002045]">
                 Eliminar conta?

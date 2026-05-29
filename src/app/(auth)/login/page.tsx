@@ -122,9 +122,6 @@ export default function Login() {
 							<div className={`mb-5 transition-transform duration-200 ${focusedField === "password" ? "translate-x-0.5" : ""}`}>
 								<label htmlFor="pss" className="flex justify-between items-center mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
 									<span>SENHA</span>
-									<Link href="/forgot-password" className="text-[#002045] text-[0.7rem] font-medium no-underline tracking-normal transition-colors duration-200 hover:text-[#003066] hover:underline">
-										Esqueceu sua senha?
-									</Link>
 								</label>
 								<div className="relative">
 									<input

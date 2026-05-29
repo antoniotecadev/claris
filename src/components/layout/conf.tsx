@@ -1,4 +1,10 @@
+"use client";
+
+import { useMessages } from "@/i18n/messages";
+
 export default function Conf() {
+	const { t } = useMessages();
+
 	return (
 		<div className="bg-[#E2E8F0] py-12">
 			<div className="container mx-auto px-4">
@@ -6,7 +12,7 @@ export default function Conf() {
 				<nav className="flex flex-col items-center justify-center space-y-8">
 
 					<h3 className="text-[#1A365D] text-sm md:text-base uppercase tracking-wide text-center">
-						Confiado por congregações modernas
+						{t("trust.title")}
 					</h3>
 
 					<div className="flex flex-wrap justify-center gap-4 md:gap-8 text-[#1A365D] text-sm md:text-base font-semibold text-center">

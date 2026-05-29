@@ -8,8 +8,11 @@ import { useActionState } from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { addLocaleToPathname } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 export default function Login() {
+	const { locale, t } = useMessages();
 	const initialState = {
 		error: undefined,
 		success: false,
@@ -18,14 +21,18 @@ export default function Login() {
 
 	const [state, formAction, pending] = useActionState(loginAction, initialState);
 	const router = useRouter();
+	const registerHref = addLocaleToPathname("/registerUser", locale);
+	const privacyHref = addLocaleToPathname("/politica-privacidade", locale);
+	const termsHref = addLocaleToPathname("/termos-condicoes", locale);
+	const supportHref = addLocaleToPathname("/contacto-suporte", locale);
 	const [showPassword, setShowPassword] = useState(false);
 	const [focusedField, setFocusedField] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (state?.success && state?.redirectUrl) {
-			router.push(state.redirectUrl);
+			router.push(addLocaleToPathname(state.redirectUrl, locale));
 		}
-	}, [state, router]);
+	}, [state, router, locale]);
 
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
@@ -50,13 +57,12 @@ export default function Login() {
 					<div className="flex flex-col items-center gap-3.5 text-center relative z-10">
 						<div className="inline-flex items-center gap-1.5 bg-[rgba(255,222,165,0.2)] border border-[rgba(255,222,165,0.35)] backdrop-blur-sm px-3.5 py-1.5 rounded-full text-[#ffdea5] text-xs tracking-wide animate-pulse">
 							<Sparkles size={14} />
-							<span>Escrituras para hoje</span>
+							<span>{t("auth.login.scriptureLabel")}</span>
 						</div>
 						<p className="text-white text-xl leading-relaxed italic font-serif max-w-[340px]">
-							"A tua palavra é lâmpada para os meus pés
-							e luz para o meu caminho."
+							"{t("auth.login.scriptureText")}"
 						</p>
-						<p className="text-[#86a0cd] text-base">— Salmos 119:105</p>
+						<p className="text-[#86a0cd] text-base">{t("auth.login.scriptureSource")}</p>
 					</div>
 
 					{/* Decorative dots */}
@@ -74,10 +80,10 @@ export default function Login() {
 						{/* Heading */}
 						<div className="mb-7">
 							<p className="text-[1.65rem] font-bold text-gray-900 font-serif italic mb-1.5">
-								Bem-vindo de volta
+								{t("auth.login.welcomeTitle")}
 							</p>
 							<p className="text-gray-500 text-[0.9rem] leading-relaxed">
-								Insira os seus dados para aceder ao portal do Claris.
+								{t("auth.login.welcomeSubtitle")}
 							</p>
 						</div>
 
@@ -88,29 +94,32 @@ export default function Login() {
 							className="flex items-center justify-center gap-2.5 px-4 py-3 border border-black/[0.08] rounded-[14px] bg-white/85 backdrop-blur-sm text-gray-800 text-sm font-medium cursor-pointer transition-all duration-300 ease-out no-underline mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
 						>
 							<Image src={Google} alt="Google" width={18} height={18} />
-							<span>Continuar com Google</span>
+							<span>{t("auth.login.google")}</span>
 						</a>
 
 						{/* Divider */}
 						<div className="flex items-center gap-4 mb-5">
 							<div className="flex-1 h-px bg-[#c9c9c9]" />
-							<span className="text-[0.65rem] text-gray-400 tracking-widest font-medium whitespace-nowrap">OU USE EMAIL</span>
+							<span className="text-[0.65rem] text-gray-400 tracking-widest font-medium whitespace-nowrap">
+								{t("auth.login.divider")}
+							</span>
 							<div className="flex-1 h-px bg-[#c9c9c9]" />
 						</div>
 
 						{/* Form */}
 						<form action={formAction} className="flex flex-col">
+							<input type="hidden" name="locale" value={locale} />
 							{/* Email */}
 							<div className={`mb-5 transition-transform duration-200 ${focusedField === "email" ? "translate-x-0.5" : ""}`}>
 								<label htmlFor="email" className="flex justify-between items-center mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
-									EMAIL
+										{t("auth.login.emailLabel")}
 								</label>
 								<input
 									type="email"
 									name="email"
 									required
 									id="email"
-									placeholder="pastor@claris.org"
+										placeholder={t("auth.login.emailPlaceholder")}
 									className="w-full px-4 py-3 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 									onFocus={() => setFocusedField("email")}
 									onBlur={() => setFocusedField(null)}
@@ -121,9 +130,9 @@ export default function Login() {
 							{/* Password */}
 							<div className={`mb-5 transition-transform duration-200 ${focusedField === "password" ? "translate-x-0.5" : ""}`}>
 								<label htmlFor="pss" className="flex justify-between items-center mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
-									<span>SENHA</span>
+										<span>{t("auth.login.passwordLabel")}</span>
 									<Link href="/forgot-password" className="text-[#002045] text-[0.7rem] font-medium no-underline tracking-normal transition-colors duration-200 hover:text-[#003066] hover:underline">
-										Esqueceu sua senha?
+											{t("auth.login.forgot")}
 									</Link>
 								</label>
 								<div className="relative">
@@ -142,7 +151,7 @@ export default function Login() {
 										type="button"
 										onClick={() => setShowPassword(!showPassword)}
 										className="absolute right-3.5 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-400 p-1 flex items-center justify-center transition-colors duration-200 rounded-md hover:text-[#002045] hover:bg-[rgba(0,32,69,0.06)]"
-										aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+											aria-label={showPassword ? t("auth.login.passwordHide") : t("auth.login.passwordShow")}
 									>
 										{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
 									</button>
@@ -167,11 +176,11 @@ export default function Login() {
 								{pending ? (
 									<>
 										<Loader2 size={18} className="animate-spin" />
-										<span>A entrar...</span>
+											<span>{t("auth.login.submitting")}</span>
 									</>
 								) : (
 									<>
-										<span>ENTRAR</span>
+											<span>{t("auth.login.submit")}</span>
 										<ArrowRight size={18} />
 									</>
 								)}
@@ -180,9 +189,9 @@ export default function Login() {
 							{/* Bottom */}
 							<div className="w-full h-px bg-gray-300 mb-5" />
 							<p className="text-center text-gray-500 text-sm">
-								Primeira vez aqui?{" "}
-								<Link href="/registerUser" className="text-[#002045] font-semibold no-underline ml-1 transition-all duration-200 hover:text-[#003066] hover:underline">
-									Criar conta
+								{t("auth.login.firstTime")} {" "}
+								<Link href={registerHref} className="text-[#002045] font-semibold no-underline ml-1 transition-all duration-200 hover:text-[#003066] hover:underline">
+									{t("auth.login.createAccount")}
 								</Link>
 							</p>
 						</form>
@@ -194,9 +203,15 @@ export default function Login() {
 			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-[960px] px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
 				<p className="text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
 				<div className="flex gap-5">
-					<Link href="/politica-privacidade" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">Política de Privacidade</Link>
-					<Link href="/termos-condicoes" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">Termos de serviço</Link>
-					<Link href="/contacto-suporte" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">Contactos</Link>
+					<Link href={privacyHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+						{t("footer.privacy")}
+					</Link>
+					<Link href={termsHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+						{t("footer.terms")}
+					</Link>
+					<Link href={supportHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+						{t("footer.support")}
+					</Link>
 				</div>
 				<p className="text-gray-400 text-[0.72rem] tracking-wide">© 2024 CLARIS ORGANIZATION</p>
 			</footer>

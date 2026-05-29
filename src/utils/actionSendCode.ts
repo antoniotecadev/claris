@@ -2,10 +2,16 @@
 import { redirect } from "next/navigation";
 import { api } from "@/lib/api";
 import { setAuthToken } from "@/lib/auth-cookies";
+import { addLocaleToPathname, defaultLocale } from "@/i18n/routing";
 import type { ActionResult, VerifyCodeResponse } from "@/types/auth.types";
 
 
-export async function sendCodeAction(_prevState: unknown, code: string, email: string): Promise<ActionResult> {
+export async function sendCodeAction(
+	_prevState: unknown,
+	code: string,
+	email: string,
+	locale: string = defaultLocale,
+): Promise<ActionResult> {
 	if (!code || !email) {
 		return { success: false, error: "Código e email são obrigatórios." };
 	}
@@ -20,7 +26,7 @@ export async function sendCodeAction(_prevState: unknown, code: string, email: s
 		const accessToken = data?.user?.token?.access_token ?? data?.token?.access_token;
 		if (accessToken) {
 			await setAuthToken(accessToken);
-			redirecionarUrl = "/mainDash";
+			redirecionarUrl = addLocaleToPathname("/mainDash", locale);
 		
 		} else {
 			return { success: false, error: "Resposta inesperada do servidor." };

@@ -1,4 +1,8 @@
+"use client";
+
 import { ArrowRight, MapPin, Calendar, Users } from "lucide-react";
+import { getDateLocale } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 interface ChurchInfo {
   id: string;
@@ -30,8 +34,10 @@ export default function CommunityJoin({
   onClick,
   className = "",
 }: CommunityCardProps) {
+  const { locale, t } = useMessages();
+
   const formattedDate = createdAt
-    ? new Date(createdAt).toLocaleDateString("pt-PT", {
+    ? new Date(createdAt).toLocaleDateString(getDateLocale(locale), {
         day: "2-digit",
         month: "short",
         year: "numeric",
@@ -48,14 +54,14 @@ export default function CommunityJoin({
           {logoUrl ? (
             <img
               src={logoUrl}
-              alt={`Logotipo de ${name}`}
+              alt={t("community.logoAlt", { name })}
               className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-sm"
             />
           ) : (
             <div className="w-20 h-20 sm:w-24 sm:h-24 bg-[#002045]/5 rounded-xl flex flex-col items-center justify-center gap-1">
               <Users size={24} className="text-[#002045]/30" />
               <span className="text-[10px] text-gray-400 font-medium tracking-wide uppercase">
-                Comunidade
+                {t("community.communityLabel")}
               </span>
             </div>
           )}
@@ -101,8 +107,8 @@ export default function CommunityJoin({
             <span className="flex items-center gap-1.5">
               <Users size={12} className="shrink-0" />
               <span>
-                {membersCount + ' '}
-                {membersCount === 1 ? "membro" : "membros"}
+                {membersCount + " "}
+                {membersCount === 1 ? t("community.member") : t("community.members")}
               </span>
             </span>
           </div>
@@ -113,7 +119,7 @@ export default function CommunityJoin({
               onClick={onClick}
               className="inline-flex items-center gap-2 text-xs font-semibold text-[#002045] bg-[#002045]/5 hover:bg-[#002045]/10 px-4 py-2 rounded-full transition-colors duration-150"
             >
-              Pedir para participar
+              {t("community.requestJoin")}
               <ArrowRight
                 size={14}
                 className="group-hover:translate-x-0.5 transition-transform duration-150"

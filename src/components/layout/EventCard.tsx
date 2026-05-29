@@ -1,6 +1,8 @@
 "use client";
 
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
+import { getDateLocale } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 interface Event {
 	id: string;
@@ -23,15 +25,25 @@ interface EventCardProps {
 }
 
 export default function EventCard({ event, onEdit, onDelete, isSquare = false }: EventCardProps) {
+	const { locale, t } = useMessages();
 	// Format date to Portuguese locale
 	const formatDate = (dateString: string) => {
 		const date = new Date(dateString + "T00:00:00");
-		return date.toLocaleDateString("pt-PT", {
+		return date.toLocaleDateString(getDateLocale(locale), {
 			weekday: "long",
 			day: "numeric",
 			month: "long",
 		});
 	};
+
+	const categoryKeyMap: Record<string, string> = {
+		Culto: "culto",
+		Reunião: "reuniao",
+		Treinamento: "treinamento",
+		Social: "social",
+		Outro: "outro",
+	};
+	const categoryKey = categoryKeyMap[event.category] || "outro";
 
 	// Get category color
 	const getCategoryColor = (category: string) => {
@@ -62,7 +74,7 @@ export default function EventCard({ event, onEdit, onDelete, isSquare = false }:
 					{/* Header */}
 					<div>
 						<span className={`text-xs font-semibold px-2 py-1 rounded-full inline-block ${categoryColor.bg} ${categoryColor.text}`}>
-							{event.category}
+							{t(`events.categories.${categoryKey}`)}
 						</span>
 						<h3 className="text-sm font-bold text-gray-900 mt-2 line-clamp-2">{event.title}</h3>
 						<p className="text-xs text-gray-600 mt-1 line-clamp-1">{event.description}</p>
@@ -108,7 +120,7 @@ export default function EventCard({ event, onEdit, onDelete, isSquare = false }:
 									onClick={() => onEdit(event.id)}
 									className="flex-1 px-2 py-1 text-xs font-medium text-[#1E3A8A] bg-blue-50 hover:bg-blue-100 rounded transition-colors"
 								>
-									Editar
+									{t("events.actions.edit")}
 								</button>
 							)}
 							{onDelete && (
@@ -116,7 +128,7 @@ export default function EventCard({ event, onEdit, onDelete, isSquare = false }:
 									onClick={() => onDelete(event.id)}
 									className="flex-1 px-2 py-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded transition-colors"
 								>
-									Eliminar
+									{t("events.actions.delete")}
 								</button>
 							)}
 						</div>
@@ -140,7 +152,7 @@ export default function EventCard({ event, onEdit, onDelete, isSquare = false }:
 				{/* Category Badge */}
 				<div className="flex items-center gap-2">
 					<span className={`text-xs font-semibold px-3 py-1 rounded-full ${categoryColor.bg} ${categoryColor.text}`}>
-						{event.category}
+						{t(`events.categories.${categoryKey}`)}
 					</span>
 				</div>
 
@@ -170,11 +182,11 @@ export default function EventCard({ event, onEdit, onDelete, isSquare = false }:
 						<div className="flex items-center gap-2">
 							<Users size={18} className="text-[#1E3A8A]" />
 							<span className="text-sm font-medium text-gray-900">
-								{event.attendees} participante{event.attendees !== 1 ? "s" : ""}
+								{event.attendees} {event.attendees !== 1 ? t("events.participants") : t("events.participant")}
 							</span>
 						</div>
 						{event.maxAttendees && (
-							<span className="text-xs text-gray-500">de {event.maxAttendees}</span>
+							<span className="text-xs text-gray-500">{t("events.of", { count: event.maxAttendees })}</span>
 						)}
 					</div>
 					{occupancyPercentage !== null && (
@@ -195,7 +207,7 @@ export default function EventCard({ event, onEdit, onDelete, isSquare = false }:
 						onClick={() => onEdit(event.id)}
 						className="px-4 py-2 text-sm font-medium text-[#1E3A8A] hover:bg-blue-50 rounded-lg transition-colors"
 					>
-						Editar
+						{t("events.actions.edit")}
 					</button>
 				)}
 				{onDelete && (
@@ -203,12 +215,12 @@ export default function EventCard({ event, onEdit, onDelete, isSquare = false }:
 						onClick={() => onDelete(event.id)}
 						className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
 					>
-						Eliminar
+						{t("events.actions.delete")}
 					</button>
 				)}
 				{!onEdit && !onDelete && (
 					<button className="px-4 py-2 text-sm font-medium text-[#1E3A8A] hover:bg-blue-50 rounded-lg transition-colors">
-						Ver Detalhes
+						{t("events.actions.viewDetails")}
 					</button>
 				)}
 			</div>

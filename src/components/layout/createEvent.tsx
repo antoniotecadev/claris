@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Calendar, Clock, MapPin, Users, Send } from "lucide-react";
+import { useMessages } from "@/i18n/messages";
 
 interface EventFormData {
 	title: string;
@@ -14,6 +15,7 @@ interface EventFormData {
 }
 
 export default function CreateEventCard() {
+	const { t } = useMessages();
 	const [formData, setFormData] = useState<EventFormData>({
 		title: "",
 		description: "",
@@ -62,8 +64,8 @@ export default function CreateEventCard() {
 				<div className="flex items-center gap-3">
 					<Calendar size={28} />
 					<div>
-						<h2 className="text-2xl font-bold">Criar Evento</h2>
-						<p className="text-[#DBEAFE] text-sm mt-1">Organize e compartilhe eventos com a comunidade</p>
+						<h2 className="text-2xl font-bold">{t("events.create.title")}</h2>
+						<p className="text-[#DBEAFE] text-sm mt-1">{t("events.create.subtitle")}</p>
 					</div>
 				</div>
 			</div>
@@ -73,14 +75,14 @@ export default function CreateEventCard() {
 				{/* Title */}
 				<div>
 					<label className="block text-sm font-semibold text-gray-700 mb-2">
-						Título do Evento *
+						{t("events.create.fields.title")}
 					</label>
 					<input
 						type="text"
 						name="title"
 						value={formData.title}
 						onChange={handleChange}
-						placeholder="Ex: Culto de Domingo"
+						placeholder={t("events.create.placeholders.title")}
 						className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
 						required
 					/>
@@ -89,13 +91,13 @@ export default function CreateEventCard() {
 				{/* Description */}
 				<div>
 					<label className="block text-sm font-semibold text-gray-700 mb-2">
-						Descrição *
+						{t("events.create.fields.description")}
 					</label>
 					<textarea
 						name="description"
 						value={formData.description}
 						onChange={handleChange}
-						placeholder="Descreva o evento em detalhes..."
+						placeholder={t("events.create.placeholders.description")}
 						rows={3}
 						className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent resize-none"
 						required
@@ -107,7 +109,7 @@ export default function CreateEventCard() {
 					{/* Date */}
 					<div>
 						<label className="block text-sm font-semibold text-gray-700 mb-2">
-							Data *
+							{t("events.create.fields.date")}
 						</label>
 						<input
 							type="date"
@@ -122,7 +124,7 @@ export default function CreateEventCard() {
 					{/* Category */}
 					<div>
 						<label className="block text-sm font-semibold text-gray-700 mb-2">
-							Categoria *
+							{t("events.create.fields.category")}
 						</label>
 						<select
 							name="category"
@@ -130,11 +132,11 @@ export default function CreateEventCard() {
 							onChange={handleChange}
 							className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
 						>
-							<option value="Culto">Culto</option>
-							<option value="Reunião">Reunião</option>
-							<option value="Treinamento">Treinamento</option>
-							<option value="Social">Social</option>
-							<option value="Outro">Outro</option>
+							<option value="Culto">{t("events.categories.culto")}</option>
+							<option value="Reunião">{t("events.categories.reuniao")}</option>
+							<option value="Treinamento">{t("events.categories.treinamento")}</option>
+							<option value="Social">{t("events.categories.social")}</option>
+							<option value="Outro">{t("events.categories.outro")}</option>
 						</select>
 					</div>
 				</div>
@@ -144,7 +146,7 @@ export default function CreateEventCard() {
 					{/* Start Time */}
 					<div>
 						<label className="block text-sm font-semibold text-gray-700 mb-2">
-							Hora de Início *
+							{t("events.create.fields.startTime")}
 						</label>
 						<input
 							type="time"
@@ -159,7 +161,7 @@ export default function CreateEventCard() {
 					{/* End Time */}
 					<div>
 						<label className="block text-sm font-semibold text-gray-700 mb-2">
-							Hora de Término *
+							{t("events.create.fields.endTime")}
 						</label>
 						<input
 							type="time"
@@ -175,14 +177,14 @@ export default function CreateEventCard() {
 				{/* Location */}
 				<div>
 					<label className="block text-sm font-semibold text-gray-700 mb-2">
-						Local do Evento
+						{t("events.create.fields.location")}
 					</label>
 					<input
 						type="text"
 						name="location"
 						value={formData.location}
 						onChange={handleChange}
-						placeholder="Ex: Sala 101, Igreja Principal"
+						placeholder={t("events.create.placeholders.location")}
 						className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
 					/>
 				</div>
@@ -190,14 +192,14 @@ export default function CreateEventCard() {
 				{/* Max Attendees */}
 				<div>
 					<label className="block text-sm font-semibold text-gray-700 mb-2">
-						Máximo de Participantes
+						{t("events.create.fields.maxAttendees")}
 					</label>
 					<input
 						type="number"
 						name="maxAttendees"
 						value={formData.maxAttendees}
 						onChange={handleChange}
-						placeholder="Ex: 100"
+						placeholder={t("events.create.placeholders.maxAttendees")}
 						className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
 					/>
 				</div>
@@ -210,7 +212,7 @@ export default function CreateEventCard() {
 						className="w-full bg-linear-to-r from-[#1E3A8A] to-[#002045] hover:from-[#1E3A8A]/90 hover:to-[#002045]/90 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
 					>
 						<Send size={18} />
-						{submitted ? "Evento Criado!" : "Criar Evento"}
+						{submitted ? t("events.create.submitted") : t("events.create.submit")}
 					</button>
 				</div>
 			</form>

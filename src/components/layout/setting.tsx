@@ -9,6 +9,8 @@ import {
 import { api } from "@/lib/api";
 import { getAuthToken } from "@/lib/auth-cookies";
 import { useUserStore } from "@/stores/userStore";
+import { addLocaleToPathname } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 interface SettingsPanelProps {
   isOpen: boolean;
@@ -29,6 +31,7 @@ interface MeResponse {
 }
 
 export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
+  const { locale, t } = useMessages();
   const user = useUserStore((state: any) => state.user);
   const setUser = useUserStore((state: any) => state.setUser);
   const logout = useUserStore((state: any) => state.logout);
@@ -53,14 +56,14 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
       logout();
 
       // redirect
-      window.location.href = "/login";
+      window.location.href = addLocaleToPathname("/login", locale);
     } catch (err) {
       console.error(err);
 
       alert(
         err instanceof Error
           ? err.message
-          : "Erro ao eliminar conta."
+          : t("settings.errors.deleteAccount")
       );
     } finally {
       setDeletingAccount(false);
@@ -78,7 +81,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
       // 2. limpar estado do frontend (Zustand)
       logout();
-      window.location.href = "/login";
+      window.location.href = addLocaleToPathname("/login", locale);
     } catch (err) {
       console.error("Erro no logout", err);
     }
@@ -131,7 +134,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
         setAvatarPreview(profile.avatarUrl ?? null);
       } catch (err) {
         console.error(err);
-        setError("Erro ao carregar utilizador.");
+        setError(t("settings.errors.loadUser"));
       } finally {
         setLoadingUser(false);
       }
@@ -184,7 +187,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
         const errData = await res.json().catch(() => ({}));
         const message = Array.isArray(errData?.message)
           ? errData.message[0]
-          : errData?.message ?? "Erro ao guardar alterações.";
+          : errData?.message ?? t("settings.errors.saveProfile");
         throw new Error(message);
       }
 
@@ -203,7 +206,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
       setSuccess(true);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Erro ao guardar alterações."
+        err instanceof Error ? err.message : t("settings.errors.saveProfile")
       );
     } finally {
       setSaving(false);
@@ -218,11 +221,11 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
   const handlePasswordSave = async () => {
     if (passwordFields.newPassword !== passwordFields.confirmPassword) {
-      setPasswordError("As passwords não coincidem.");
+      setPasswordError(t("settings.errors.passwordMismatch"));
       return;
     }
     if (passwordFields.newPassword.length < 6) {
-      setPasswordError("A nova password deve ter pelo menos 6 caracteres.");
+      setPasswordError(t("settings.errors.passwordLength"));
       return;
     }
 
@@ -235,7 +238,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
       setPasswordFields({ currentPassword: "", newPassword: "", confirmPassword: "" });
     } catch (err) {
       setPasswordError(
-        err instanceof Error ? err.message : "Erro ao alterar password."
+        err instanceof Error ? err.message : t("settings.errors.passwordUpdate")
       );
     }
   };
@@ -257,7 +260,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-100">
-          <p className="text-[#002045] font-semibold text-lg">Definições</p>
+          <p className="text-[#002045] font-semibold text-lg">{t("settings.title")}</p>
           <button
             onClick={onClose}
             className="p-2 rounded-xl hover:bg-zinc-100 transition-colors"
@@ -275,7 +278,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               : "border-transparent text-[#475F83] hover:text-[#002045]"
               }`}
           >
-            Perfil
+            {t("settings.tabs.profile")}
           </button>
           {!user?.googleId && (
             <button
@@ -285,14 +288,14 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 : "border-transparent text-[#475F83] hover:text-[#002045]"
                 }`}
             >
-              Password
+              {t("settings.tabs.password")}
             </button>)}
         </div>
 
         {/* Loading */}
         {loadingUser ? (
           <div className="flex-1 flex items-center justify-center">
-            <p className="text-[#475F83] animate-pulse">Carregando utilizador...</p>
+            <p className="text-[#475F83] animate-pulse">{t("settings.loading")}</p>
           </div>
         ) : activeTab === "profile" ? (
           <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-6">
@@ -332,14 +335,14 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             {/* Campos */}
             <div className="flex flex-col gap-4">
               <p className="text-[#002045] text-xs font-semibold tracking-widest uppercase">
-                Informações pessoais
+                {t("settings.profile.sectionTitle")}
               </p>
 
               {/* Nome */}
               <div className="flex flex-col gap-1">
                 <label className="text-[#43474E] text-sm flex items-center gap-2">
                   <User size={14} />
-                  Nome completo
+                  {t("settings.profile.name")}
                 </label>
                 <input
                   type="text"
@@ -354,7 +357,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <div className="flex flex-col gap-1">
                 <label className="text-[#43474E] text-sm flex items-center gap-2">
                   <Users size={14} />
-                  Género
+                  {t("settings.profile.gender")}
                 </label>
                 <select
                   name="gender"
@@ -362,9 +365,9 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   onChange={handleChange}
                   className="bg-[#F8F9FA] border border-zinc-200 rounded-xl px-4 py-3 text-[#1A1C1C] focus:outline-none focus:border-[#1E3A8A] transition-colors"
                 >
-                  <option value="">Selecionar</option>
-                  <option value="MALE">Masculino</option>
-                  <option value="FEMALE">Feminino</option>
+                  <option value="">{t("settings.profile.genderSelect")}</option>
+                  <option value="MALE">{t("settings.profile.genderMale")}</option>
+                  <option value="FEMALE">{t("settings.profile.genderFemale")}</option>
                 </select>
               </div>
             </div>
@@ -372,7 +375,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             {/* Feedback */}
             {success && (
               <p className="text-sm text-green-600 font-medium bg-green-50 px-4 py-2 rounded-xl">
-                ✓ Alterações guardadas com sucesso.
+                ✓ {t("settings.profile.saved")}
               </p>
             )}
             {error && (
@@ -388,7 +391,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               className="bg-[#002045] text-white rounded-xl px-4 py-3 flex items-center justify-center gap-2 hover:bg-[#003066] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 disabled:hover:translate-y-0"
             >
               <Save size={16} />
-              {saving ? "A guardar..." : "Guardar alterações"}
+              {saving ? t("common.saving") : t("common.saveChanges")}
             </button>
           </div>
 
@@ -398,14 +401,14 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
           <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <p className="text-[#002045] text-xs font-semibold tracking-widest uppercase">
-                Alterar password
+                {t("settings.password.sectionTitle")}
               </p>
 
               {/* Password atual */}
               <div className="flex flex-col gap-1">
                 <label className="text-[#43474E] text-sm flex items-center gap-2">
                   <Lock size={14} />
-                  Password atual
+                  {t("settings.password.current")}
                 </label>
                 <div className="relative">
                   <input
@@ -430,7 +433,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <div className="flex flex-col gap-1">
                 <label className="text-[#43474E] text-sm flex items-center gap-2">
                   <Lock size={14} />
-                  Nova password
+                  {t("settings.password.new")}
                 </label>
                 <div className="relative">
                   <input
@@ -455,7 +458,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <div className="flex flex-col gap-1">
                 <label className="text-[#43474E] text-sm flex items-center gap-2">
                   <Lock size={14} />
-                  Confirmar nova password
+                  {t("settings.password.confirm")}
                 </label>
                 <div className="relative">
                   <input
@@ -480,7 +483,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             {/* Feedback */}
             {passwordSuccess && (
               <p className="text-sm text-green-600 font-medium bg-green-50 px-4 py-2 rounded-xl">
-                ✓ Password alterada com sucesso.
+                ✓ {t("settings.password.saved")}
               </p>
             )}
             {passwordError && (
@@ -495,7 +498,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               className="bg-[#002045] text-white rounded-xl px-4 py-3 flex items-center justify-center gap-2  "
             >
               <Lock size={16} />
-              Alterar password
+              {t("settings.password.change")}
             </button>
           </div>
         )}
@@ -507,13 +510,13 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             className="w-full flex items-center justify-center gap-2 text-red-500 hover:bg-red-50 rounded-xl px-4 py-3 transition-colors text-sm font-medium"
           >
             <LogOut size={16} />
-            Terminar sessão
+            {t("settings.logout")}
           </button>
           <button
             onClick={() => setShowDeleteConfirm(true)}
             className="w-full flex items-center justify-center gap-2 text-red-700 hover:bg-red-100 rounded-xl px-4 py-3 transition-colors text-sm font-medium mt-2"
           >
-            Eliminar conta
+            {t("settings.delete")}
           </button>
         </div>
 
@@ -522,11 +525,11 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
           <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
               <h2 className="text-lg font-semibold text-[#002045]">
-                Eliminar conta?
+                {t("settings.deleteConfirm.title")}
               </h2>
 
               <p className="text-sm text-[#475F83] mt-2">
-                Esta ação é permanente e não poderá ser desfeita.
+                {t("settings.deleteConfirm.description")}
               </p>
 
               <div className="flex gap-3 mt-6">
@@ -534,7 +537,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   onClick={() => setShowDeleteConfirm(false)}
                   className="flex-1 border border-zinc-200 rounded-xl py-3 text-sm font-medium hover:bg-zinc-50"
                 >
-                  Cancelar
+                  {t("common.cancel")}
                 </button>
 
                 <button
@@ -543,8 +546,8 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   className="flex-1 bg-red-600 text-white rounded-xl py-3 text-sm font-medium hover:bg-red-700 disabled:opacity-60"
                 >
                   {deletingAccount
-                    ? "Eliminando..."
-                    : "Eliminar"}
+                    ? t("settings.deleteConfirm.deleting")
+                    : t("settings.deleteConfirm.confirm")}
                 </button>
               </div>
             </div>

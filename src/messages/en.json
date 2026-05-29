@@ -1,0 +1,403 @@
+{
+	"languageSelector": {
+		"label": "Select language",
+		"available": "Available languages",
+		"languages": {
+			"pt": "Portuguese",
+			"en": "English",
+			"fr": "French"
+		}
+	},
+	"header": {
+		"features": "Features",
+		"about": "About",
+		"start": "Get started"
+	},
+	"hero": {
+		"quotePrimary": "For God is not a God of disorder but of peace.",
+		"badge": "Technology with purpose",
+		"title": "Modernize your administration",
+		"titleAccent": "with grace.",
+		"description": "Simplify ministry so you can focus on what truly matters: people. A complete platform designed for the modern church.",
+		"quoteSecondary": "Your word is a lamp to my feet and a light to my path.",
+		"quoteSecondarySource": "— Psalm 119:105"
+	},
+	"features": {
+		"title": "Tools designed for service",
+		"membersTitle": "Member management",
+		"membersDescription": "A 360-degree view of your congregation. Track spiritual journeys, group participation, and baptisms with pastoral care.",
+		"calendarTitle": "Calendar",
+		"calendarDescription": "Sync events across departments in one sacred place.",
+		"donationsTitle": "Donations and Tithes",
+		"donationsDescription": "Transparent financial management and secure recurring giving via the app.",
+		"communicationTitle": "Living Communication",
+		"communicationDescription": "Connect small groups and leaders instantly.",
+		"communicationQuote": "As iron sharpens iron...",
+		"communicationQuoteSource": "— Proverbs 27:17"
+	},
+	"join": {
+		"title": "Join the future of ministry today",
+		"description": "Experience the digital sanctuary that helps your church thrive in the modern era.",
+		"cta": "Start now"
+	},
+	"footer": {
+		"description": "Empowering modern churches with technology built for community and growth.",
+		"legalTitle": "Legal",
+		"privacy": "Privacy Policy",
+		"terms": "Terms and Conditions",
+		"rights": "© 2026 Claris. All rights reserved.",
+		"support": "Contact Support"
+	},
+	"trust": {
+		"title": "Trusted by modern congregations"
+	},
+	"auth": {
+		"login": {
+			"scriptureLabel": "Scripture for today",
+			"scriptureText": "Your word is a lamp to my feet and a light to my path.",
+			"scriptureSource": "— Psalm 119:105",
+			"welcomeTitle": "Welcome back",
+			"welcomeSubtitle": "Enter your details to access the Claris portal.",
+			"google": "Continue with Google",
+			"divider": "OR USE EMAIL",
+			"emailLabel": "EMAIL",
+			"emailPlaceholder": "pastor@claris.org",
+			"passwordLabel": "PASSWORD",
+			"forgot": "Forgot your password?",
+			"passwordShow": "Show password",
+			"passwordHide": "Hide password",
+			"submit": "SIGN IN",
+			"submitting": "Signing in...",
+			"firstTime": "First time here?",
+			"createAccount": "Create account"
+		},
+		"register": {
+			"scriptureLabel": "A new dawn",
+			"scriptureTitle": "Begin your sacred journey.",
+			"scriptureDescription": "Join a global community devoted to quiet reflection, digital ministry, and spiritual growth.",
+			"title": "Create an account.",
+			"subtitle": "Enter the Digital Sanctuary. Your path begins here.",
+			"google": "Sign up with Google",
+			"divider": "OR USE EMAIL",
+			"fullName": "FULL NAME",
+			"fullNamePlaceholder": "Delson Pedro",
+			"email": "EMAIL",
+			"emailPlaceholder": "e.g. delson@church.com",
+			"gender": "GENDER",
+			"genderPlaceholder": "Select...",
+			"genderMale": "Male",
+			"genderFemale": "Female",
+			"birthDate": "Birth date",
+			"password": "PASSWORD",
+			"passwordHint": "Must be at least 6 characters",
+			"confirmPassword": "CONFIRM PASSWORD",
+			"termsPrefix": "I agree to the",
+			"terms": "terms and conditions",
+			"and": "and the",
+			"privacy": "privacy policy",
+			"submit": "CREATE ACCOUNT",
+			"submitting": "Creating account...",
+			"already": "Already have an account?",
+			"login": "Sign in"
+		},
+		"code": {
+			"label": "Moment of Reflection",
+			"quote": "Peace is the silence of the soul in harmony with the eternal.",
+			"title": "Confirm your identity",
+			"subtitle": "To keep your Claris secure, we sent a verification code to:",
+			"verify": "VERIFY CODE",
+			"verifying": "Verifying...",
+			"resend": "Resend code",
+			"resendCountdown": "Resend code ({{time}})",
+			"footerQuote": "Whatever you do, do it with all your heart.",
+			"footerSource": "— Colossians 3:23"
+		},
+		"selectOrg": {
+			"title": "Select church",
+			"subtitle": "Choose the organization you want to access.",
+			"loading": "Loading...",
+			"errorSelect": "Error selecting organization.",
+			"errorUnexpected": "Unexpected error."
+		},
+		"adminRegister": {
+			"scriptureLabel": "Scripture for today",
+			"scriptureText": "with decency and order",
+			"scriptureQuote": "Let all things be done with decency and order",
+			"scriptureSource": "— 1 Corinthians 14:40",
+			"title": "Begin your management journey.",
+			"subtitle": "Create an admin account to manage your church's digital presence.",
+			"steps": {
+				"personal": "Personal details",
+				"church": "Church details"
+			},
+			"fields": {
+				"fullName": "Full name",
+				"password": "Password",
+				"confirmPassword": "Confirm password",
+				"email": "Email",
+				"phone": "Phone",
+				"photo": "Photo",
+				"churchName": "Church name",
+				"location": "Location",
+				"churchEmail": "Email",
+				"logo": "Logo"
+			},
+			"submit": "CREATE ACCOUNT",
+			"already": "Already have a Claris account?",
+			"login": "Sign in",
+			"footer": {
+				"privacy": "PRIVACY",
+				"terms": "TERMS",
+				"support": "SUPPORT",
+				"contacts": "CONTACTS"
+			}
+		},
+		"callback": {
+			"authenticating": "Authenticating..."
+		}
+	},
+	"legal": {
+		"terms": {
+			"title": "Terms and Conditions",
+			"updated": "Updated on May 27, 2026",
+			"sections": {
+				"acceptTitle": "1. Acceptance of terms",
+				"acceptText": "By using the Claris platform, you agree to these terms and our Privacy Policy.",
+				"useTitle": "2. Use of the platform",
+				"useItems": [
+					"You are responsible for the information you provide.",
+					"Illegal, abusive, or unauthorized use is not allowed.",
+					"You must keep credentials secure and confidential."
+				],
+				"contentTitle": "3. Content and intellectual property",
+				"contentText": "All Claris content and marks belong to their respective owners. You keep rights to your submitted content.",
+				"suspensionTitle": "4. Suspension and termination",
+				"suspensionText": "We may suspend or terminate accounts for violations of these terms or to protect platform security.",
+				"liabilityTitle": "5. Limitation of liability",
+				"liabilityText": "Claris is not liable for indirect losses arising from use or unavailability of the service, within legal limits.",
+				"contactTitle": "6. Contact",
+				"contactText": "For questions about these terms, contact support."
+			}
+		},
+		"privacy": {
+			"title": "Privacy Policy",
+			"updated": "Updated on May 27, 2026",
+			"sections": {
+				"overviewTitle": "1. Overview",
+				"overviewText": "Claris respects your privacy and is committed to protecting your personal data. This policy describes how we collect, use, and protect information when you use the platform.",
+				"dataTitle": "2. Data we collect",
+				"dataItems": [
+					"Account data: name, email, phone, and organization."
+				],
+				"usageTitle": "3. How we use your data",
+				"usageItems": [
+					"Provide and improve platform services.",
+					"Personalize your experience and recommendations.",
+					"Communicate updates, support, and relevant information.",
+					"Ensure security, fraud prevention, and compliance."
+				],
+				"sharingTitle": "4. Data sharing",
+				"sharingText": "We do not sell your personal data. We may share information with essential vendors under confidentiality and security agreements.",
+				"retentionTitle": "5. Retention and security",
+				"retentionText": "We keep your data as long as needed to fulfill purposes described here and legal obligations. We apply technical and organizational measures to protect your information.",
+				"rightsTitle": "6. Your rights",
+				"rightsItems": [
+					"Access, correct, or delete your personal data.",
+					"Withdraw consent at any time."
+				],
+				"contactTitle": "7. Contact",
+				"contactText": "If you have questions, contact us through support."
+			}
+		}
+	},
+	"support": {
+		"title": "Support contact",
+		"subtitle": "We are here to help. We will respond as soon as possible.",
+		"channelsTitle": "Contact channels",
+		"channelsEmail": "Email:",
+		"channelsPhone": "Phone:",
+		"channelsHours": "Hours:",
+		"channelsHoursValue": "Mon-Fri, 09:00-18:00",
+		"helpfulTitle": "Helpful information",
+		"helpfulText": "To speed up support, share as much detail as possible, such as organization, problem description, and screenshots.",
+		"statusTitle": "Service status",
+		"statusText": "Check updates and scheduled maintenance on our status panel before opening a request.",
+		"statusCta": "View status"
+	},
+	"common": {
+		"cancel": "Cancel",
+		"saving": "Saving...",
+		"saveChanges": "Save changes"
+	},
+	"community": {
+		"noLogo": "No logo",
+		"enter": "Enter",
+		"communityLabel": "Community",
+		"member": "member",
+		"members": "members",
+		"requestJoin": "Request to join",
+		"logoAlt": "Logo of {{name}}"
+	},
+	"events": {
+		"participant": "participant",
+		"participants": "participants",
+		"of": "of {{count}}",
+		"actions": {
+			"edit": "Edit",
+			"delete": "Delete",
+			"viewDetails": "View details"
+		},
+		"categories": {
+			"culto": "Worship",
+			"reuniao": "Meeting",
+			"treinamento": "Training",
+			"social": "Social",
+			"outro": "Other"
+		},
+		"create": {
+			"title": "Create event",
+			"subtitle": "Organize and share events with the community",
+			"fields": {
+				"title": "Event title *",
+				"description": "Description *",
+				"date": "Date *",
+				"category": "Category *",
+				"startTime": "Start time *",
+				"endTime": "End time *",
+				"location": "Event location",
+				"maxAttendees": "Max attendees"
+			},
+			"placeholders": {
+				"title": "e.g. Sunday Service",
+				"description": "Describe the event in detail...",
+				"location": "e.g. Room 101, Main Church",
+				"maxAttendees": "e.g. 100"
+			},
+			"submit": "Create event",
+			"submitted": "Event created!"
+		}
+	},
+	"church": {
+		"create": {
+			"title": "Create church",
+			"description": "Fill in your church details here. Click save when you're done.",
+			"validation": "Fill in the name and select the church.",
+			"success": "Organization created successfully!",
+			"errors": {
+				"create": "Error creating organization"
+			},
+			"fields": {
+				"name": "Church name",
+				"address": "Address",
+				"church": "Church",
+				"logo": "Church photo / logo",
+				"description": "Church description"
+			},
+			"placeholders": {
+				"name": "e.g. Life Church",
+				"address": "City, State",
+				"description": "A brief description of the church"
+			}
+		}
+	},
+	"dashboard": {
+		"main": {
+			"welcome": "WELCOME BACK",
+			"title": "Choose your church",
+			"subtitle": "Reconnect with your spiritual home or explore new faith communities.",
+			"myChurches": "MY CHURCHES",
+			"empty": {
+				"title": "You do not belong to any church yet.",
+				"subtitle": "Create a new one or explore available options."
+			},
+			"searchEmpty": {
+				"title": "No church matches your search.",
+				"subtitle": "Try a different name or clear the search."
+			},
+			"banner": {
+				"title": "Manifest your vision",
+				"subtitle": "Create your church and start building a vibrant, welcoming faith community today."
+			},
+			"explore": {
+				"title": "Explore new churches ({{count}})",
+				"subtitle": "Congregations near you or aligned with your journey.",
+				"searchPlaceholder": "find your church...",
+				"searchCta": "Search",
+				"empty": "No churches available."
+			},
+			"joinSuccess": "Request sent successfully",
+			"joinError": "Error sending request."
+		},
+		"center": {
+			"hero": {
+				"label": "ADMIN DASHBOARD",
+				"title": "Welcome to the Digital Sanctuary",
+				"subtitle": "Visualize, manage, and connect with members of your faith community."
+			},
+			"events": {
+				"title": "Created events",
+				"count": "({{count}} events)",
+				"empty": "No events created yet",
+				"confirmDelete": "Are you sure you want to delete this event?"
+			},
+			"members": {
+				"title": "Church members",
+				"count": "{{count}} members registered",
+				"export": "Export",
+				"loading": "Loading members...",
+				"empty": "No members registered yet.",
+				"defaultRole": "Member",
+				"delete": "Delete",
+				"confirmDelete": "Are you sure you want to remove this member?",
+				"table": {
+					"member": "Member",
+					"phone": "Phone",
+					"role": "Role",
+					"joined": "Join date",
+					"actions": "Actions"
+				}
+			}
+		}
+	},
+	"settings": {
+		"title": "Settings",
+		"tabs": {
+			"profile": "Profile",
+			"password": "Password"
+		},
+		"loading": "Loading user...",
+		"profile": {
+			"sectionTitle": "Personal information",
+			"name": "Full name",
+			"gender": "Gender",
+			"genderSelect": "Select",
+			"genderMale": "Male",
+			"genderFemale": "Female",
+			"saved": "Changes saved successfully."
+		},
+		"password": {
+			"sectionTitle": "Change password",
+			"current": "Current password",
+			"new": "New password",
+			"confirm": "Confirm new password",
+			"saved": "Password updated successfully.",
+			"change": "Change password"
+		},
+		"logout": "Sign out",
+		"delete": "Delete account",
+		"deleteConfirm": {
+			"title": "Delete account?",
+			"description": "This action is permanent and cannot be undone.",
+			"confirm": "Delete",
+			"deleting": "Deleting..."
+		},
+		"errors": {
+			"loadUser": "Error loading user.",
+			"saveProfile": "Error saving changes.",
+			"passwordMismatch": "Passwords do not match.",
+			"passwordLength": "The new password must be at least 6 characters.",
+			"passwordUpdate": "Error updating password.",
+			"deleteAccount": "Error deleting account."
+		}
+	}
+}

@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowRight } from "lucide-react";
+import { useMessages } from "@/i18n/messages";
 
 interface CommunityCardProps {
 	name: string;
@@ -19,6 +22,8 @@ export default function CommunityCard({
 	onClick,
 	className = '',
 }: CommunityCardProps) {
+	const { t } = useMessages();
+
 	return (
 		<div 
 			className="relative bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer hover:scale-105 transform group aspect-square max-w-sm"
@@ -34,7 +39,7 @@ export default function CommunityCard({
 					/>
 				) : (
 					<div className="w-full h-full bg-linear-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-						<span className="text-gray-400 text-sm">Sem Logo</span>
+						<span className="text-gray-400 text-sm">{t("community.noLogo")}</span>
 					</div>
 				)}
 			</div>
@@ -70,7 +75,7 @@ export default function CommunityCard({
 							className="flex items-center gap-1 text-white font-medium text-xs bg-[#1E3A8A]/80 hover:bg-[#1E3A8A] px-2 py-1 rounded-md transition-all duration-200 backdrop-blur-sm"
 							onClick={onClick}
 						>
-							<span>Entrar</span>
+							<span>{t("community.enter")}</span>
 							<ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
 						</button>
 					</div>

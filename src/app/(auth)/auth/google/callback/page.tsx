@@ -3,8 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { setAuthToken } from "@/lib/auth-cookies";
+import { addLocaleToPathname } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 export default function GoogleCallbackPage() {
+	const { locale, t } = useMessages();
 	const router = useRouter();
 	const [loading, setLoading] = useState(true);
 
@@ -18,16 +21,16 @@ export default function GoogleCallbackPage() {
 				const token = params.get("token");
 
 				if (!token) {
-					router.push("/login");
+					router.push(addLocaleToPathname("/login", locale));
 					return;
 				}
 
 				await setAuthToken(token);
 
-				router.push("/mainDash");
+				router.push(addLocaleToPathname("/mainDash", locale));
 			} catch (error) {
 				console.error(error);
-				router.push("/login");
+				router.push(addLocaleToPathname("/login", locale));
 			} finally {
 				setLoading(false);
 			}
@@ -39,7 +42,7 @@ export default function GoogleCallbackPage() {
 	if (loading) {
 		return (
 			<div className="flex items-center justify-center h-screen">
-				<p>Autenticando...</p>
+				<p>{t("auth.callback.authenticating")}</p>
 			</div>
 		);
 	}

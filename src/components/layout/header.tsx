@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import icon from "@/assets/images/logo.png"
+import { addLocaleToPathname } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 import LanguageSelector from './LanguageSelector';
 
 
@@ -36,6 +38,8 @@ function NavLink({ href, children, className }: NavLinkProps) {
 
 
 export default function Header() {
+	const { locale, t } = useMessages();
+	const loginHref = addLocaleToPathname("/login", locale);
 
 	return (
 		<>
@@ -49,21 +53,15 @@ export default function Header() {
 					</div>
 
 					<div className='hidden md:flex gap-4 lg:gap-6'>
-						<NavLink href='#funcionalidades'>Funcionalidades</NavLink>
-						<NavLink href='#sobre'>Sobre</NavLink>
+						<NavLink href='#funcionalidades'>{t("header.features")}</NavLink>
+						<NavLink href='#sobre'>{t("header.about")}</NavLink>
 					</div>
 
 					<div className='flex gap-2'>
-						<NavLink href='/login' className="px-2 md:px-6 py-2 md:py-2 text-[#261900] rounded-lg md:rounded-2xl bg-[#FFDEA5] text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50">
-							Começar
+						<NavLink href={loginHref} className="px-2 md:px-6 py-2 md:py-2 text-[#261900] rounded-lg md:rounded-2xl bg-[#FFDEA5] text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50">
+							{t("header.start")}
 						</NavLink>
-						<LanguageSelector
-							currentLocale="pt"
-							onLocaleChange={(locale) => {
-								// ex: router.push(`/${locale}`)
-								console.log("Idioma selecionado:", locale);
-							}}
-						/>
+						<LanguageSelector />
 					</div>
 				</nav>
 			</header>

@@ -14,6 +14,7 @@ import {
 import { compare, hash } from 'bcrypt';
 import { VerifyEmailCodeDto } from './dto/verify-email-code.dto';
 import { RegisterDto } from './dto/register.dto';
+import { ResendLoginCodeDto } from './dto/resend-login-code.dto';
 
 @Injectable()
 export class AuthService {
@@ -122,6 +123,30 @@ export class AuthService {
     });
 
     return await this.generateFinalLoginResponse(user);
+  }
+
+  async resendLoginEmailCode(dto: ResendLoginCodeDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+      select: {
+        id: true,
+        email: true,
+        displayName: true,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Credenciais inválidas');
+    }
+
+    await this.sendLoginEmailCode(user);
+
+    return {
+      success: true,
+      requireEmailCode: true,
+      email: user.email,
+      message: 'Codigo de verificacao reenviado por email',
+    };
   }
 
   async registerWithEmail(dto: RegisterDto) {

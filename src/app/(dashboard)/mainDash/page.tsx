@@ -107,7 +107,7 @@ export default function MainDashClient() {
 			const orgs = res2.organizations ?? [];
 			setChurches(orgs);
 			setOrganizationLength(res2.organizationLength ?? orgs.length);
-			console.log("Organizations:", orgs);
+			console.log("My Organizations:", res);
 		} finally {
 			setLoadingChurches(false);
 		}
@@ -218,6 +218,7 @@ export default function MainDashClient() {
 							churches={churchOptions}
 							loadingChurches={loadingChurches}
 							onOpen={loadChurches}
+							setOrganizations={setOrganizations}
 						/>
 
 					</section>

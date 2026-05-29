@@ -25,6 +25,7 @@ interface Church {
   description: string;
   logoUrl: string | null;
   membersCount: number;
+  address: string;
 }
 
 interface Props {
@@ -59,7 +60,7 @@ export default function MainDashClient({ organizations, churches }: Props) {
 
   return (
     <div className="bg-white">
-		<SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
       <div className="container m-auto">
         {/* Header */}
         <header className="flex gap-4 justify-between py-3 border-b border-zinc-200">
@@ -99,7 +100,7 @@ export default function MainDashClient({ organizations, churches }: Props) {
               <div className="w-8 h-8 bg-[#1E3A8A] rounded-2xl" />
             </div>
           </div>
-          
+
         </header>
 
         <nav className="flex flex-col mt-10">
@@ -185,7 +186,7 @@ export default function MainDashClient({ organizations, churches }: Props) {
                 <CommunityJoin
                   key={church.id}
                   name={church.name}
-                  local="Lisboa, Portugal"
+                  address={church.address}
                   logoUrl={church.logoUrl}
                   membersCount={church.membersCount}
                   onClick={() => requestToJoin(church.id)}

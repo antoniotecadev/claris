@@ -21,6 +21,7 @@ type DialogDemoProps = {
 	loadingChurches?: boolean
 	onOpen?: () => void
 	onSuccess?: () => void  // ← novo: para recarregar lista após criação
+	setOrganizations?: React.Dispatch<React.SetStateAction<any[]>>
 }
 
 export function DialogDemo({
@@ -28,13 +29,13 @@ export function DialogDemo({
 	loadingChurches = false,
 	onOpen,
 	onSuccess,
+	setOrganizations,
 }: DialogDemoProps) {
 	const [open, setOpen] = useState(false)
 	const [submitting, setSubmitting] = useState(false)
 
 	// Campos controlados
 	const [name, setName] = useState("")
-	const [slug, setSlug] = useState("")
 	const [address, setAddress] = useState("")
 	const [churchId, setChurchId] = useState("")
 	const [description, setDescription] = useState("")
@@ -54,7 +55,6 @@ export function DialogDemo({
 
 	const resetForm = () => {
 		setName("")
-		setSlug("")
 		setAddress("")
 		setChurchId("")
 		setDescription("")
@@ -72,7 +72,6 @@ export function DialogDemo({
 		try {
 			const formData = new FormData()
 			formData.append('name', name.trim())
-			formData.append('slug', slug.trim())
 			formData.append('churchId', churchId.trim())
 			formData.append('address', address.trim())
 			formData.append('description', description.trim())
@@ -83,7 +82,7 @@ export function DialogDemo({
 
 			const token = await getAuthToken();
 
-			const response = await fetch("http://localhost:3001/v1/api/organizations", {
+			const response: any = await fetch("http://localhost:3001/v1/api/organizations", {
 				method: "POST",
 				body: formData,
 				headers: {
@@ -99,6 +98,13 @@ export function DialogDemo({
 			setOpen(false)
 			onSuccess?.()  // ← notifica o pai para atualizar a lista
 			alert("Organização criada com sucesso!")
+			setOrganizations?.((prev: any) => [...prev, {
+				organizationId: churchId,
+				name: name,
+				description: description,
+				logoUrl: URL.createObjectURL(logoUrl!!),
+				role: "SUPER_ADMIN",
+			}])
 		} catch (error) {
 			alert(error instanceof Error ? error.message : "Erro ao criar organização")
 		} finally {
@@ -134,7 +140,7 @@ export function DialogDemo({
 						/>
 					</div>
 
-				
+
 
 					<div className="flex flex-col">
 						<Label htmlFor="church-address" className="mb-2">Endereço</Label>

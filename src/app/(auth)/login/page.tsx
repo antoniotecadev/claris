@@ -31,16 +31,16 @@ export default function Login() {
 		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
 
 			{/* ===== MAIN CARD ===== */}
-			<div className="flex flex-col md:flex-row w-full max-w-[960px] rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
+			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
 
 				{/* ===== LEFT PANEL — Image + Quote ===== */}
-				<div className="side bg-amber-700 w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-[50rem] md:min-h-0 self-stretch">
+				<div className="side bg-amber-700 w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-200 md:min-h-0 self-stretch">
 					{/* Dark overlay */}
 					<div className="absolute inset-0 bg-linear-to-b from-[rgba(0,32,69,0.15)] to-[rgba(0,32,69,0.45)] pointer-events-none z-0" />
 
 					{/* Logo */}
 					<div className="flex items-center gap-2.5 relative z-10">
-						<div className="w-9 h-[42px] flex items-center justify-center">
+						<div className="w-9 h-10.5 flex items-center justify-center">
 							<Image src={Logo} alt="Claris Logo" className="w-full h-full object-contain" />
 						</div>
 						<p className="text-white text-2xl font-semibold tracking-wider">CLARIS</p>
@@ -52,7 +52,7 @@ export default function Login() {
 							<Sparkles size={14} />
 							<span>Escrituras para hoje</span>
 						</div>
-						<p className="text-white text-xl leading-relaxed italic font-serif max-w-[340px]">
+						<p className="text-white text-xl leading-relaxed italic font-serif max-w-85">
 							"A tua palavra é lâmpada para os meus pés
 							e luz para o meu caminho."
 						</p>
@@ -69,7 +69,7 @@ export default function Login() {
 
 				{/* ===== RIGHT PANEL — Form ===== */}
 				<div className="w-full md:w-[55%] flex items-center justify-center gradientes p-7 md:p-10 self-stretch">
-					<div className="w-full max-w-[400px] flex flex-col">
+					<div className="w-full max-w-100 flex flex-col">
 
 						{/* Heading */}
 						<div className="mb-7">
@@ -85,7 +85,7 @@ export default function Login() {
 						<a
 							href="http://localhost:3001/v1/api/auth/google"
 							id="google-login-btn"
-							className="flex items-center justify-center gap-2.5 px-4 py-3 border border-black/[0.08] rounded-[14px] bg-white/85 backdrop-blur-sm text-gray-800 text-sm font-medium cursor-pointer transition-all duration-300 ease-out no-underline mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
+							className="flex items-center justify-center gap-2.5 px-4 py-3 border border-black/8 rounded-[14px] bg-white/85 backdrop-blur-sm text-gray-800 text-sm font-medium cursor-pointer transition-all duration-300 ease-out no-underline mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
 						>
 							<Image src={Google} alt="Google" width={18} height={18} />
 							<span>Continuar com Google</span>
@@ -111,7 +111,7 @@ export default function Login() {
 									required
 									id="email"
 									placeholder="pastor@claris.org"
-									className="w-full px-4 py-3 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									className="w-full px-4 py-3 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 									onFocus={() => setFocusedField("email")}
 									onBlur={() => setFocusedField(null)}
 									autoComplete="email"
@@ -133,7 +133,7 @@ export default function Login() {
 										name="password"
 										required
 										placeholder="••••••••"
-										className="w-full px-4 py-3 pr-12 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+										className="w-full px-4 py-3 pr-12 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 										onFocus={() => setFocusedField("password")}
 										onBlur={() => setFocusedField(null)}
 										autoComplete="current-password"
@@ -191,7 +191,7 @@ export default function Login() {
 			</div>
 
 			{/* ===== FOOTER ===== */}
-			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-[960px] px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
+			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
 				<p className="text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
 				<div className="flex gap-5">
 					<Link href="/politica-privacidade" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">Política de Privacidade</Link>

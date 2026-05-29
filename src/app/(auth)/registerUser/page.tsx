@@ -47,16 +47,16 @@ export default function RegisterUser() {
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
 			{/* ===== MAIN CARD ===== */}
-			<div className="flex flex-col md:flex-row w-full max-w-[960px] rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
+			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
 
 				{/* ===== LEFT PANEL — Image + Quote ===== */}
-				<div className="side2 bg-amber-700 w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-[300px] md:min-h-[700px] self-stretch">
+				<div className="side2 bg-amber-700 w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-75 md:min-h-175 self-stretch">
 					{/* Dark overlay */}
 					<div className="absolute inset-0 bg-linear-to-b from-[rgba(0,32,69,0.15)] to-[rgba(0,32,69,0.65)] pointer-events-none z-0" />
 
 					{/* Logo */}
 					<div className="flex items-center gap-2.5 relative z-10">
-						<div className="w-9 h-[42px] flex items-center justify-center">
+						<div className="w-9 h-10.5 flex items-center justify-center">
 							<Image src={Logo} alt="Claris Logo" className="w-full h-full object-contain" />
 						</div>
 						<p className="text-white text-2xl font-semibold tracking-wider">CLARIS</p>
@@ -68,7 +68,7 @@ export default function RegisterUser() {
 							<Sparkles size={14} />
 							<span>Um novo amanhecer</span>
 						</div>
-						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-[340px] mb-2">
+						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-85 mb-2">
 							"Comece a sua jornada sagrada."
 						</p>
 						<p className="text-[#86A0CD] text-sm md:text-base text-center">
@@ -87,7 +87,7 @@ export default function RegisterUser() {
 
 				{/* ===== RIGHT PANEL — Form ===== */}
 				<div className="w-full md:w-[55%] flex flex-col justify-center gradientes p-7 md:p-10 self-stretch">
-					<div className="w-full max-w-[400px] mx-auto flex flex-col">
+					<div className="w-full max-w-100 mx-auto flex flex-col">
 						{/* Heading */}
 						<div className="mb-6">
 							<p className="text-[1.65rem] font-bold text-gray-900 font-serif italic mb-1.5">
@@ -101,7 +101,7 @@ export default function RegisterUser() {
 						{/* Google button */}
 						<a
 							href="http://localhost:3001/v1/api/auth/google"
-							className="flex items-center justify-center gap-2.5 px-4 py-3 border border-black/[0.08] rounded-[14px] bg-white/85 backdrop-blur-sm text-gray-800 text-sm font-medium cursor-pointer transition-all duration-300 ease-out no-underline mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
+							className="flex items-center justify-center gap-2.5 px-4 py-3 border border-black/8 rounded-[14px] bg-white/85 backdrop-blur-sm text-gray-800 text-sm font-medium cursor-pointer transition-all duration-300 ease-out no-underline mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
 						>
 							<Image src={Google} alt="Google" width={18} height={18} />
 							<span>Sign up with Google</span>
@@ -129,7 +129,7 @@ export default function RegisterUser() {
 									onChange={handleChange}
 									required
 									placeholder="Delson Pedro"
-									className="w-full px-4 py-2.5 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 									onFocus={() => setFocusedField("displayName")}
 									onBlur={() => setFocusedField(null)}
 								/>
@@ -148,7 +148,7 @@ export default function RegisterUser() {
 									onChange={handleChange}
 									required
 									placeholder="ex. delson@church.com"
-									className="w-full px-4 py-2.5 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 									onFocus={() => setFocusedField("email")}
 									onBlur={() => setFocusedField(null)}
 									autoComplete="email"
@@ -165,7 +165,7 @@ export default function RegisterUser() {
 										value={fields.gender}
 										onChange={handleChange}
 										required
-										className="w-full px-4 py-2.5 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)] appearance-none"
+										className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)] appearance-none"
 										onFocus={() => setFocusedField("gender")}
 										onBlur={() => setFocusedField(null)}
 									>
@@ -184,7 +184,7 @@ export default function RegisterUser() {
 										value={fields.birthDate}
 										onChange={handleChange}
 										required
-										className="w-full px-4 py-2.5 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+										className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 										onFocus={() => setFocusedField("birthDate")}
 										onBlur={() => setFocusedField(null)}
 									/>
@@ -201,7 +201,7 @@ export default function RegisterUser() {
 										name="password"
 										required
 										placeholder="••••••••"
-										className="w-full px-4 py-2.5 pr-12 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+										className="w-full px-4 py-2.5 pr-12 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 										onFocus={() => setFocusedField("password")}
 										onBlur={() => setFocusedField(null)}
 										autoComplete="new-password"
@@ -230,7 +230,7 @@ export default function RegisterUser() {
 										name="confirmPassword"
 										required
 										placeholder="••••••••"
-										className="w-full px-4 py-2.5 pr-12 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+										className="w-full px-4 py-2.5 pr-12 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 										onFocus={() => setFocusedField("confirmPassword")}
 										onBlur={() => setFocusedField(null)}
 										autoComplete="new-password"

@@ -77,7 +77,7 @@ export default function CodeAuth() {
 			setPending(false);
 			return;
 		}
-		
+
 		const result = await sendCodeAction(undefined, code, email);
 		if (result?.error) {
 			setError(result.error);
@@ -97,16 +97,16 @@ export default function CodeAuth() {
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
 			{/* ===== MAIN CARD ===== */}
-			<div className="flex flex-col md:flex-row w-full max-w-[960px] rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)] bg-white">
+			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)] bg-white">
 
 				{/* ===== LEFT PANEL — Image + Quote ===== */}
-				<div className="side1 bg-slate-800 w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-[300px] md:min-h-[620px] self-stretch">
+				<div className="side1 bg-slate-800 w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-75 md:min-h-155 self-stretch">
 					{/* Dark overlay */}
-					<div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,32,69,0.15)] to-[rgba(0,32,69,0.55)] pointer-events-none z-0" />
+					<div className="absolute inset-0 bg-linear-to-b from-[rgba(0,32,69,0.15)] to-[rgba(0,32,69,0.55)] pointer-events-none z-0" />
 
 					{/* Logo */}
 					<div className="flex items-center gap-2.5 relative z-10">
-						<div className="w-9 h-[42px] flex items-center justify-center">
+						<div className="w-9 h-10.5 flex items-center justify-center">
 							<Image src={Logo} alt="Claris Logo" className="w-full h-full object-contain" />
 						</div>
 						<p className="text-white text-2xl font-semibold tracking-wider">CLARIS</p>
@@ -118,7 +118,7 @@ export default function CodeAuth() {
 							<Sparkles size={14} />
 							<span>Momento de Reflexão</span>
 						</div>
-						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-[340px]">
+						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-85">
 							"A paz é o silêncio da alma em harmonia com o eterno."
 						</p>
 					</div>
@@ -133,15 +133,15 @@ export default function CodeAuth() {
 
 				{/* ===== RIGHT PANEL — Form ===== */}
 				<div className="w-full md:w-[55%] flex flex-col items-center justify-center bg-[#fafafa] p-7 md:p-10 self-stretch">
-					<div className="w-full max-w-[400px] flex flex-col items-center">
-						
+					<div className="w-full max-w-100 flex flex-col items-center">
+
 						{/* Heading */}
 						<div className="text-center mb-8 w-full">
 							<p className="text-[1.65rem] font-bold text-gray-900 font-serif italic mb-2">
 								Confirme sua Identidade
 							</p>
 							<p className="text-gray-500 text-[0.9rem] leading-relaxed">
-								Para garantir a segurança do seu Claris, enviamos um código de verificação para: <br/>
+								Para garantir a segurança do seu Claris, enviamos um código de verificação para: <br />
 								<strong className="text-[#002045] block mt-1">{email}</strong>
 							</p>
 						</div>
@@ -203,7 +203,7 @@ export default function CodeAuth() {
 						{/* Bottom Quote */}
 						<div className="mt-auto pt-4 w-full border-t border-gray-200 text-center">
 							<p className="text-gray-500 text-sm italic">
-								"Tudo o que fizerem, façam de todo o coração." <br/>
+								"Tudo o que fizerem, façam de todo o coração." <br />
 								<span className="text-[#002045] font-medium not-italic block mt-1">— Colossenses 3:23</span>
 							</p>
 						</div>
@@ -212,7 +212,7 @@ export default function CodeAuth() {
 			</div>
 
 			{/* ===== FOOTER ===== */}
-			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-[960px] px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
+			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
 				<p className="text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
 				<div className="flex gap-5">
 					<Link href="/politica-privacidade" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">Política de Privacidade</Link>

@@ -326,6 +326,7 @@
 				"subtitle": "Congregations near you or aligned with your journey.",
 				"searchPlaceholder": "find your church...",
 				"searchCta": "Search",
+				"clearSearch": "Clear search",
 				"empty": "No churches available."
 			},
 			"joinSuccess": "Request sent successfully",

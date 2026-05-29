@@ -76,12 +76,12 @@ export default function MainDashClient({ organizations, churches }: Props) {
             </div>
           </div>
           <div className="flex justify-between gap-3">
-            <div className="flex bg-[#F3F3F3] rounded-2xl p-2 text-[#74777F]">
-              <Search size={14} className="w-6 p-1 h-6 bg-[#F3F3F3]" />
+            <div className="hidden min-w-72 items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-1.5 text-[#74777F] shadow-sm transition-colors focus-within:border-[#1E3A8A]/40 focus-within:shadow-md md:flex">
+              <Search size={17} className="shrink-0 text-[#1E3A8A]" />
               <input
                 type="text"
                 placeholder="encontrar a tua igreja..."
-                className="bg-[#F3F3F3] w-62.5 h-6 focus:outline-none"
+                className="h-9 min-w-0 flex-1 bg-transparent text-sm text-[#002045] placeholder:text-slate-400 focus:outline-none"
               />
             </div>
             <div className="flex items-center justify-center">
@@ -113,13 +113,16 @@ export default function MainDashClient({ organizations, churches }: Props) {
             <p className="text-[#475F83] text-[20px] w-120">
               Reconecte-se com o seu lar espiritual ou explore novas comunidades de fé e devoção.
             </p>
-            <div className="flex bg-[#F3F3F3] rounded-2xl p-1 text-[#74777F] items-center justify-center">
-              <input
-                type="text"
-                placeholder="encontrar a tua igreja..."
-                className="bg-[#F3F3F3] w-62.5 h-5.6 focus:outline-none px-2"
-              />
-              <button className="bg-[#1E3A8A] text-white rounded-2xl px-4 py-2 ml-2">
+            <div className="flex w-full max-w-md items-center rounded-2xl border border-slate-200 bg-white p-1.5 text-[#74777F] shadow-sm transition-colors focus-within:border-[#1E3A8A]/40 focus-within:shadow-md">
+              <div className="flex min-w-0 flex-1 items-center gap-2 px-3">
+                <Search size={18} className="shrink-0 text-[#1E3A8A]" />
+                <input
+                  type="text"
+                  placeholder="encontrar a tua igreja..."
+                  className="h-10 min-w-0 flex-1 bg-transparent text-sm text-[#002045] placeholder:text-slate-400 focus:outline-none"
+                />
+              </div>
+              <button className="rounded-xl bg-[#1E3A8A] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#002045]">
                 Pesquisar
               </button>
             </div>

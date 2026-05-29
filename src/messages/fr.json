@@ -326,6 +326,7 @@
 				"subtitle": "Congregations proches de vous ou en accord avec votre parcours.",
 				"searchPlaceholder": "trouvez votre eglise...",
 				"searchCta": "Rechercher",
+				"clearSearch": "Effacer la recherche",
 				"empty": "Aucune eglise disponible."
 			},
 			"joinSuccess": "Demande envoyee avec succes",

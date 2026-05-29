@@ -3,7 +3,7 @@ import Image from "next/image";
 import icon from "@/assets/images/logoSem.png";
 import heroImg from "@/assets/images/create.png";
 import Link from "next/link";
-import { Search, Bell, Settings } from "lucide-react";
+import { Bell, Search, Settings, X } from "lucide-react";
 import CommunityCard from "@/components/layout/commityCard";
 import CommunityJoin from "@/components/layout/commityJoin";
 import { api } from "@/lib/api";
@@ -233,21 +233,31 @@ export default function MainDashClient() {
 								{t("dashboard.main.explore.subtitle")}
 							</p>
 						</div>
-						<div className="flex bg-[#F3F3F3] rounded-2xl p-1 text-[#74777F] items-center justify-center">
-							<input
-								type="text"
-								placeholder={t("dashboard.main.explore.searchPlaceholder")}
-								value={searchTerm}
-								onChange={(event) => setSearchTerm(event.target.value)}
-								className="bg-[#F3F3F3] w-62.5 h-5.6 focus:outline-none px-2"
-							/>
-							<button
-								type="button"
-								onClick={() => setSearchTerm("")}
-								className="bg-[#1E3A8A] text-white rounded-2xl px-4 py-2 ml-2"
-							>
-								{t("dashboard.main.explore.searchCta")}
-							</button>
+						<div className="flex w-full max-w-md items-center rounded-2xl border border-slate-200 bg-white p-1.5 text-[#74777F] shadow-sm transition-colors focus-within:border-[#1E3A8A]/40 focus-within:shadow-md lg:w-auto">
+							<div className="flex min-w-0 flex-1 items-center gap-2 px-3">
+								<Search size={18} className="shrink-0 text-[#1E3A8A]" />
+								<input
+									type="search"
+									placeholder={t("dashboard.main.explore.searchPlaceholder")}
+									value={searchTerm}
+									onChange={(event) => setSearchTerm(event.target.value)}
+									className="h-10 min-w-0 flex-1 bg-transparent text-sm text-[#002045] placeholder:text-slate-400 focus:outline-none"
+								/>
+							</div>
+							{searchTerm ? (
+								<button
+									type="button"
+									onClick={() => setSearchTerm("")}
+									aria-label={t("dashboard.main.explore.clearSearch")}
+									className="mr-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100 hover:text-[#002045]"
+								>
+									<X size={16} />
+								</button>
+							) : null}
+							<div className="hidden h-8 w-px bg-slate-200 sm:block" />
+							<div className="hidden px-3 text-xs font-semibold text-[#1E3A8A] sm:block">
+								{filteredAvailableChurches.length}
+							</div>
 						</div>
 					</div>
 

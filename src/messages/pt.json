@@ -326,6 +326,7 @@
 				"subtitle": "Congregações perto de si ou alinhadas com a sua jornada.",
 				"searchPlaceholder": "encontrar a tua igreja...",
 				"searchCta": "Pesquisa",
+				"clearSearch": "Limpar pesquisa",
 				"empty": "Nenhuma igreja disponível."
 			},
 			"joinSuccess": "Pedido enviado com sucesso",

@@ -283,6 +283,9 @@
 			"description": "Fill in your church details here. Click save when you're done.",
 			"validation": "Fill in the name and select the church.",
 			"success": "Organization created successfully!",
+			"imageHint": "PNG, JPG, or WEBP. The image appears complete on the church card.",
+			"selectImage": "Select image",
+			"changeImage": "Change image",
 			"errors": {
 				"create": "Error creating organization"
 			},

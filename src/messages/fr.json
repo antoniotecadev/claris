@@ -283,6 +283,9 @@
 			"description": "Renseignez les details de votre eglise ici. Cliquez sur enregistrer lorsque vous avez termine.",
 			"validation": "Renseignez le nom et selectionnez l'eglise.",
 			"success": "Organisation creee avec succes!",
+			"imageHint": "PNG, JPG ou WEBP. L'image apparait en entier sur la carte de l'eglise.",
+			"selectImage": "Selectionner une image",
+			"changeImage": "Changer l'image",
 			"errors": {
 				"create": "Erreur lors de la creation de l'organisation"
 			},

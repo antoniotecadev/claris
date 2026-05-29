@@ -283,6 +283,9 @@
 			"description": "Preencha os detalhes da sua igreja aqui. Clique em salvar quando terminar.",
 			"validation": "Preencha o nome e selecione a igreja.",
 			"success": "Organização criada com sucesso!",
+			"imageHint": "PNG, JPG ou WEBP. A imagem aparece completa no cartão da igreja.",
+			"selectImage": "Selecionar imagem",
+			"changeImage": "Trocar imagem",
 			"errors": {
 				"create": "Erro ao criar organização"
 			},

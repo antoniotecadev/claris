@@ -1,6 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { addLocaleToPathname } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 export default function Footer() {
+    const { locale, t } = useMessages();
+    const privacyHref = addLocaleToPathname("/politica-privacidade", locale);
+    const termsHref = addLocaleToPathname("/termos-condicoes", locale);
+    const supportHref = addLocaleToPathname("/contacto-suporte", locale);
+
     return (
         <footer className="bg-white">
             <div className="container mx-auto px-4 md:px-6 pt-8 md:pt-12 pb-4 md:pb-6">
@@ -13,25 +22,24 @@ export default function Footer() {
                             Claris
                         </h2>
                         <p className="text-gray-500 mt-3 text-sm leading-relaxed">
-                            Empoderando igrejas modernas com tecnologia pensada
-                            para comunidade e crescimento.
+                            {t("footer.description")}
                         </p>
                     </div>
 
        
                     <div>
                         <h3 className="font-semibold text-[#1A365D] mb-3">
-                            Legal
+                            {t("footer.legalTitle")}
                         </h3>
                         <ul className="space-y-2 text-sm text-gray-500">
                             <li>
-                                <Link className="hover:text-[#1A365D]" href="/politica-privacidade">
-                                    Política de Privacidade
+                                <Link className="hover:text-[#1A365D]" href={privacyHref}>
+                                    {t("footer.privacy")}
                                 </Link>
                             </li>
                             <li>
-                                <Link className="hover:text-[#1A365D]" href="/termos-condicoes">
-                                    Termos e Condições
+                                <Link className="hover:text-[#1A365D]" href={termsHref}>
+                                    {t("footer.terms")}
                                 </Link>
                             </li>
                         </ul>
@@ -41,13 +49,13 @@ export default function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="mt-10 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-                    <p>© 2026 Claris. Todos os direitos reservados.</p>
+                    <p>{t("footer.rights")}</p>
 
                     <Link
                         className="text-[#2B3EA2] mt-4 md:mt-0 font-medium hover:underline"
-                        href="/contacto-suporte"
+                        href={supportHref}
                     >
-                        Contactar Suporte
+                        {t("footer.support")}
                     </Link>
                 </div>
                 <div className="mt-12 overflow-hidden">

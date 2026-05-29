@@ -1,8 +1,11 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { addLocaleToPathname } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 export default function CallbackPage() {
+  const { locale, t } = useMessages();
   const router = useRouter();
 
   useEffect(() => {
@@ -14,9 +17,9 @@ export default function CallbackPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
-      }).then(() => router.replace("/mainDash"));
+      }).then(() => router.replace(addLocaleToPathname("/mainDash", locale)));
     }
-  }, [router]);
+  }, [router, locale]);
 
-  return <p>A autenticar...</p>;
+  return <p>{t("auth.callback.authenticating")}</p>;
 }

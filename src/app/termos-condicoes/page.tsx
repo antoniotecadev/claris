@@ -1,72 +1,64 @@
+"use client";
+
+import { useMessages } from "@/i18n/messages";
+
 export default function TermosCondicoesPage() {
+	const { t } = useMessages();
+
 	return (
 		<main className="min-h-screen bg-gray-50">
 			<section className="container mx-auto px-4 md:px-6 py-12 md:py-16">
 				<div className="max-w-3xl">
 					<h1 className="text-3xl md:text-4xl font-bold text-[#1A365D]">
-						Termos e Condições
+						{t("legal.terms.title")}
 					</h1>
-					<p className="text-gray-500 mt-2">Atualizado em 27 de maio de 2026</p>
+					<p className="text-gray-500 mt-2">{t("legal.terms.updated")}</p>
 
 					<div className="mt-8 space-y-8 text-gray-700">
 						<section>
 							<h2 className="text-xl md:text-2xl font-semibold text-[#1A365D]">
-								1. Aceitação dos termos
+								{t("legal.terms.sections.acceptTitle")}
 							</h2>
-							<p className="mt-2">
-								Ao utilizar a plataforma Claris, você concorda com estes termos e
-								com a nossa Política de Privacidade.
-							</p>
+							<p className="mt-2">{t("legal.terms.sections.acceptText")}</p>
 						</section>
 
 						<section>
 							<h2 className="text-xl md:text-2xl font-semibold text-[#1A365D]">
-								2. Uso da plataforma
+								{t("legal.terms.sections.useTitle")}
 							</h2>
 							<ul className="mt-2 list-disc pl-5 space-y-2">
-								<li>Você é responsável pelas informações fornecidas.</li>
-								<li>Não é permitido uso ilegal, abusivo ou não autorizado.</li>
-								<li>Você deve manter credenciais seguras e confidenciais.</li>
+								<li>{t("legal.terms.sections.useItems.0")}</li>
+								<li>{t("legal.terms.sections.useItems.1")}</li>
+								<li>{t("legal.terms.sections.useItems.2")}</li>
 							</ul>
 						</section>
 
 						<section>
 							<h2 className="text-xl md:text-2xl font-semibold text-[#1A365D]">
-								3. Conteúdos e propriedade intelectual
+								{t("legal.terms.sections.contentTitle")}
 							</h2>
-							<p className="mt-2">
-								Todo conteúdo e marcas da Claris pertencem aos seus respectivos
-								proprietários. Você mantém direitos sobre seus conteúdos enviados.
-							</p>
+							<p className="mt-2">{t("legal.terms.sections.contentText")}</p>
 						</section>
 
 						<section>
 							<h2 className="text-xl md:text-2xl font-semibold text-[#1A365D]">
-								4. Suspensão e encerramento
+								{t("legal.terms.sections.suspensionTitle")}
 							</h2>
-							<p className="mt-2">
-								Podemos suspender ou encerrar contas em caso de violação destes
-								termos ou para proteger a segurança da plataforma.
-							</p>
+							<p className="mt-2">{t("legal.terms.sections.suspensionText")}</p>
 						</section>
 
 						<section>
 							<h2 className="text-xl md:text-2xl font-semibold text-[#1A365D]">
-								5. Limitação de responsabilidade
+								{t("legal.terms.sections.liabilityTitle")}
 							</h2>
-							<p className="mt-2">
-								A Claris não se responsabiliza por perdas indiretas decorrentes do uso
-								ou indisponibilidade do serviço, dentro dos limites legais aplicáveis.
-							</p>
+							<p className="mt-2">{t("legal.terms.sections.liabilityText")}</p>
 						</section>
 
 						<section>
 							<h2 className="text-xl md:text-2xl font-semibold text-[#1A365D]">
-								6. Contato
+								{t("legal.terms.sections.contactTitle")}
 							</h2>
-							<p className="mt-2">
-								Para dúvidas sobre estes termos, entre em contato com o suporte.
-							</p>
+							<p className="mt-2">{t("legal.terms.sections.contactText")}</p>
 						</section>
 					</div>
 				</div>

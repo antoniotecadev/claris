@@ -1,11 +1,14 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { addLocaleToPathname } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 const languages = [
-	{ code: "pt", label: "Português", flag: "🇦🇴", short: "PT" },
-	{ code: "en", label: "English", flag: "🇬🇧", short: "EN" },
-	{ code: "fr", label: "Frances", flag: "🇫🇷", short: "FR" },
+	{ code: "pt", labelKey: "languageSelector.languages.pt", flag: "🇦🇴", short: "PT" },
+	{ code: "en", labelKey: "languageSelector.languages.en", flag: "🇬🇧", short: "EN" },
+	{ code: "fr", labelKey: "languageSelector.languages.fr", flag: "🇫🇷", short: "FR" },
 ];
 
 interface LanguageSelectorProps {
@@ -14,12 +17,24 @@ interface LanguageSelectorProps {
 }
 
 export default function LanguageSelector({
-	currentLocale = "pt",
+	currentLocale,
 	onLocaleChange,
 }: LanguageSelectorProps) {
+	const { locale, t } = useMessages();
+	const router = useRouter();
+	const pathname = usePathname();
 	const [isOpen, setIsOpen] = useState(false);
+	const effectiveLocale = currentLocale || locale;
+	const languageOptions = useMemo(
+		() =>
+			languages.map((lang) => ({
+				...lang,
+				label: t(lang.labelKey),
+			})),
+		[t]
+	);
 	const [selected, setSelected] = useState(
-		languages.find((l) => l.code === currentLocale) || languages[0]
+		languageOptions.find((l) => l.code === effectiveLocale) || languageOptions[0]
 	);
 	const ref = useRef<HTMLDivElement>(null);
 
@@ -43,10 +58,20 @@ export default function LanguageSelector({
 		return () => document.removeEventListener("keydown", handleKey);
 	}, []);
 
-	const handleSelect = (lang: (typeof languages)[0]) => {
+	useEffect(() => {
+		const next = languageOptions.find((l) => l.code === effectiveLocale) || languageOptions[0];
+		setSelected(next);
+	}, [effectiveLocale, languageOptions]);
+
+	const handleSelect = (lang: (typeof languageOptions)[0]) => {
 		setSelected(lang);
 		setIsOpen(false);
-		onLocaleChange?.(lang.code);
+		if (onLocaleChange) {
+			onLocaleChange(lang.code);
+			return;
+		}
+		const nextPath = addLocaleToPathname(pathname || "/", lang.code);
+		router.replace(nextPath);
 	};
 
 	return (
@@ -56,7 +81,7 @@ export default function LanguageSelector({
 				onClick={() => setIsOpen((prev) => !prev)}
 				aria-haspopup="listbox"
 				aria-expanded={isOpen}
-				aria-label="Selecionar idioma"
+				aria-label={t("languageSelector.label")}
 				className={`
           flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-sm font-medium
           border transition-all duration-150 cursor-pointer whitespace-nowrap
@@ -91,7 +116,7 @@ export default function LanguageSelector({
 			{isOpen && (
 				<ul
 					role="listbox"
-					aria-label="Idiomas disponíveis"
+					aria-label={t("languageSelector.available")}
 					className="
             absolute top-[calc(100%+6px)] right-0 z-50
             min-w-40 p-1 m-0 list-none
@@ -102,7 +127,7 @@ export default function LanguageSelector({
             animate-in fade-in slide-in-from-top-1 duration-150
           "
 				>
-					{languages.map((lang) => {
+					{languageOptions.map((lang) => {
 						const isActive = lang.code === selected.code;
 						return (
 							<li

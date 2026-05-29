@@ -8,8 +8,11 @@ import { registerAction } from "@/utils/actionsRegister";
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { useUserStore } from "@/stores/userStore";
+import { addLocaleToPathname } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 export default function RegisterUser() {
+	const { locale, t } = useMessages();
 	const initialState = {
 		error: undefined,
 		success: false,
@@ -30,6 +33,9 @@ export default function RegisterUser() {
 
 	const setUser = useUserStore((state: { setUser: any; }) => state.setUser);
 	const router = useRouter();
+	const loginHref = addLocaleToPathname("/login", locale);
+	const termsHref = addLocaleToPathname("/termos-condicoes", locale);
+	const privacyHref = addLocaleToPathname("/politica-privacidade", locale);
 
 	const [state, formAction, pending] = useActionState(registerAction, initialState);
 	
@@ -40,9 +46,9 @@ export default function RegisterUser() {
 	useEffect(() => {
 		if (state.success && state.user) {
 			setUser(state.user);
-			router.push('/mainDash');
+			router.push(addLocaleToPathname("/mainDash", locale));
 		}
-	}, [state, router, setUser]);
+	}, [state, router, setUser, locale]);
 
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
@@ -66,14 +72,13 @@ export default function RegisterUser() {
 					<div className="flex flex-col items-center gap-3.5 text-center relative z-10">
 						<div className="inline-flex items-center gap-1.5 bg-[rgba(255,222,165,0.2)] border border-[rgba(255,222,165,0.35)] backdrop-blur-sm px-3.5 py-1.5 rounded-full text-[#ffdea5] text-xs tracking-wide animate-pulse">
 							<Sparkles size={14} />
-							<span>Um novo amanhecer</span>
+							<span>{t("auth.register.scriptureLabel")}</span>
 						</div>
-						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-85 mb-2">
-							"Comece a sua jornada sagrada."
+						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-[340px] mb-2">
+							"{t("auth.register.scriptureTitle")}"
 						</p>
 						<p className="text-[#86A0CD] text-sm md:text-base text-center">
-							Junte-se a uma comunidade global dedicada à reflexão silenciosa,
-							ao ministério digital e ao crescimento espiritual.
+							{t("auth.register.scriptureDescription")}
 						</p>
 					</div>
 
@@ -91,10 +96,10 @@ export default function RegisterUser() {
 						{/* Heading */}
 						<div className="mb-6">
 							<p className="text-[1.65rem] font-bold text-gray-900 font-serif italic mb-1.5">
-								Criar uma conta.
+								{t("auth.register.title")}
 							</p>
 							<p className="text-gray-500 text-[0.9rem] leading-relaxed">
-								Entre no Santuário Digital. O seu caminho começa aqui.
+								{t("auth.register.subtitle")}
 							</p>
 						</div>
 
@@ -104,22 +109,25 @@ export default function RegisterUser() {
 							className="flex items-center justify-center gap-2.5 px-4 py-3 border border-black/8 rounded-[14px] bg-white/85 backdrop-blur-sm text-gray-800 text-sm font-medium cursor-pointer transition-all duration-300 ease-out no-underline mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
 						>
 							<Image src={Google} alt="Google" width={18} height={18} />
-							<span>Sign up with Google</span>
+							<span>{t("auth.register.google")}</span>
 						</a>
 
 						{/* Divider */}
 						<div className="flex items-center gap-4 mb-5">
 							<div className="flex-1 h-px bg-[#c9c9c9]" />
-							<span className="text-[0.65rem] text-gray-400 tracking-widest font-medium whitespace-nowrap">OR USE EMAIL</span>
+							<span className="text-[0.65rem] text-gray-400 tracking-widest font-medium whitespace-nowrap">
+								{t("auth.register.divider")}
+							</span>
 							<div className="flex-1 h-px bg-[#c9c9c9]" />
 						</div>
 
 						{/* Form */}
 						<form action={formAction} className="flex flex-col w-full">
+							<input type="hidden" name="locale" value={locale} />
 							{/* Nome completo */}
 							<div className={`mb-4 transition-transform duration-200 ${focusedField === "displayName" ? "translate-x-0.5" : ""}`}>
 								<label htmlFor="displayName" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
-									NOME COMPLETO
+									{t("auth.register.fullName")}
 								</label>
 								<input
 									type="text"
@@ -128,8 +136,8 @@ export default function RegisterUser() {
 									value={fields.displayName}
 									onChange={handleChange}
 									required
-									placeholder="Delson Pedro"
-									className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									placeholder={t("auth.register.fullNamePlaceholder")}
+									className="w-full px-4 py-2.5 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 									onFocus={() => setFocusedField("displayName")}
 									onBlur={() => setFocusedField(null)}
 								/>
@@ -138,7 +146,7 @@ export default function RegisterUser() {
 							{/* E-mail */}
 							<div className={`mb-4 transition-transform duration-200 ${focusedField === "email" ? "translate-x-0.5" : ""}`}>
 								<label htmlFor="email" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
-									E-MAIL
+									{t("auth.register.email")}
 								</label>
 								<input
 									type="email"
@@ -147,8 +155,8 @@ export default function RegisterUser() {
 									value={fields.email}
 									onChange={handleChange}
 									required
-									placeholder="ex. delson@church.com"
-									className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									placeholder={t("auth.register.emailPlaceholder")}
+									className="w-full px-4 py-2.5 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 									onFocus={() => setFocusedField("email")}
 									onBlur={() => setFocusedField(null)}
 									autoComplete="email"
@@ -158,7 +166,9 @@ export default function RegisterUser() {
 							{/* Gênero e Data de Nascimento */}
 							<div className="flex gap-4 mb-4">
 								<div className={`flex flex-col flex-1 transition-transform duration-200 ${focusedField === "gender" ? "translate-x-0.5" : ""}`}>
-									<label htmlFor="gender" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">GÉNERO</label>
+										<label htmlFor="gender" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
+											{t("auth.register.gender")}
+										</label>
 									<select
 										id="gender"
 										name="gender"
@@ -169,14 +179,16 @@ export default function RegisterUser() {
 										onFocus={() => setFocusedField("gender")}
 										onBlur={() => setFocusedField(null)}
 									>
-										<option value="" disabled hidden>Selecione...</option>
-										<option value="masculino">Masculino</option>
-										<option value="feminino">Feminino</option>
+											<option value="" disabled hidden>{t("auth.register.genderPlaceholder")}</option>
+											<option value="masculino">{t("auth.register.genderMale")}</option>
+											<option value="feminino">{t("auth.register.genderFemale")}</option>
 									</select>
 								</div>
 
 								<div className={`flex flex-col flex-1 transition-transform duration-200 ${focusedField === "birthDate" ? "translate-x-0.5" : ""}`}>
-									<label htmlFor="birthDate" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">DATA Nasc.</label>
+									<label htmlFor="birthDate" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
+										{t("auth.register.birthDate")}
+									</label>
 									<input
 										type="date"
 										id="birthDate"
@@ -193,7 +205,9 @@ export default function RegisterUser() {
 
 							{/* Senha */}
 							<div className={`mb-4 transition-transform duration-200 ${focusedField === "password" ? "translate-x-0.5" : ""}`}>
-								<label htmlFor="password" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">SENHA</label>
+								<label htmlFor="password" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
+									{t("auth.register.password")}
+								</label>
 								<div className="relative">
 									<input
 										type={showPassword ? "text" : "password"}
@@ -215,13 +229,13 @@ export default function RegisterUser() {
 										{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
 									</button>
 								</div>
-								<p className="text-gray-400 text-[0.7rem] mt-1.5 ml-1">Deve ter pelo menos 6 caracteres</p>
+								<p className="text-gray-400 text-[0.7rem] mt-1.5 ml-1">{t("auth.register.passwordHint")}</p>
 							</div>
 
 							{/* Confirmar Senha */}
 							<div className={`mb-5 transition-transform duration-200 ${focusedField === "confirmPassword" ? "translate-x-0.5" : ""}`}>
 								<label htmlFor="confirmPassword" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
-									CONFIRMAR SENHA
+									{t("auth.register.confirmPassword")}
 								</label>
 								<div className="relative">
 									<input
@@ -256,13 +270,13 @@ export default function RegisterUser() {
 									className="mt-1 cursor-pointer w-4 h-4 text-[#002045] bg-gray-100 border-gray-300 rounded focus:ring-[#002045]"
 								/>
 								<label htmlFor="terms" className="text-[0.75rem] text-gray-600 cursor-pointer select-none leading-relaxed">
-									Estou de acordo com os{" "}
-									<Link href={"/termos-condicoes"} className="text-[#002045] font-semibold hover:underline">
-										termos e condições
+									{t("auth.register.termsPrefix")} {" "}
+									<Link href={termsHref} className="text-[#002045] font-semibold hover:underline">
+										{t("auth.register.terms")}
 									</Link>{" "}
-									e a{" "}
-									<Link href={"/termos-condicoes"} className="text-[#002045] font-semibold hover:underline">
-										política de privacidade
+									{t("auth.register.and")} {" "}
+									<Link href={privacyHref} className="text-[#002045] font-semibold hover:underline">
+										{t("auth.register.privacy")}
 									</Link>.
 								</label>
 							</div>
@@ -284,11 +298,11 @@ export default function RegisterUser() {
 								{pending ? (
 									<>
 										<Loader2 size={18} className="animate-spin" />
-										<span>A criar conta...</span>
+										<span>{t("auth.register.submitting")}</span>
 									</>
 								) : (
 									<>
-										<span>CRIAR CONTA</span>
+										<span>{t("auth.register.submit")}</span>
 										<ArrowRight size={18} />
 									</>
 								)}
@@ -297,9 +311,9 @@ export default function RegisterUser() {
 							<div className="flex items-center gap-4 mb-2">
 								<div className="flex-1 h-px bg-[#c9c9c9]" />
 								<p className="text-gray-500 text-sm">
-									Já tens uma conta?{" "}
-									<Link href="/login" className="text-[#002045] font-semibold no-underline ml-1 transition-all duration-200 hover:text-[#003066] hover:underline">
-										Entrar
+									{t("auth.register.already")} {" "}
+									<Link href={loginHref} className="text-[#002045] font-semibold no-underline ml-1 transition-all duration-200 hover:text-[#003066] hover:underline">
+										{t("auth.register.login")}
 									</Link>
 								</p>
 								<div className="flex-1 h-px bg-[#c9c9c9]" />

@@ -6,9 +6,12 @@ import Logo from "@/assets/images/lobo-SE.png"
 import { useSearchParams, useRouter } from "next/navigation";
 import { sendCodeAction } from "@/utils/actionSendCode";
 import { Loader2, AlertCircle, Sparkles, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import  Link  from "next/link"
+import { addLocaleToPathname } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 export default function CodeAuth() {
+	const { locale, t } = useMessages();
 	const searchParams = useSearchParams();
 	const email = searchParams.get("email") || "";
 	const [pending, setPending] = useState(false);
@@ -77,14 +80,14 @@ export default function CodeAuth() {
 			setPending(false);
 			return;
 		}
-
-		const result = await sendCodeAction(undefined, code, email);
+		
+		const result = await sendCodeAction(undefined, code, email, locale);
 		if (result?.error) {
 			setError(result.error);
 			setPending(false);
 		} else {
 			// If success, we should redirect to mainDash
-			router.push('/mainDash');
+			router.push(addLocaleToPathname("/mainDash", locale));
 		}
 	};
 
@@ -116,10 +119,10 @@ export default function CodeAuth() {
 					<div className="flex flex-col items-center gap-3.5 text-center relative z-10">
 						<div className="inline-flex items-center gap-1.5 bg-[rgba(255,222,165,0.2)] border border-[rgba(255,222,165,0.35)] backdrop-blur-sm px-3.5 py-1.5 rounded-full text-[#ffdea5] text-xs tracking-wide animate-pulse">
 							<Sparkles size={14} />
-							<span>Momento de Reflexão</span>
+							<span>{t("auth.code.label")}</span>
 						</div>
-						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-85">
-							"A paz é o silêncio da alma em harmonia com o eterno."
+						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-[340px]">
+							"{t("auth.code.quote")}" 
 						</p>
 					</div>
 
@@ -138,10 +141,10 @@ export default function CodeAuth() {
 						{/* Heading */}
 						<div className="text-center mb-8 w-full">
 							<p className="text-[1.65rem] font-bold text-gray-900 font-serif italic mb-2">
-								Confirme sua Identidade
+								{t("auth.code.title")}
 							</p>
 							<p className="text-gray-500 text-[0.9rem] leading-relaxed">
-								Para garantir a segurança do seu Claris, enviamos um código de verificação para: <br />
+								{t("auth.code.subtitle")} <br/>
 								<strong className="text-[#002045] block mt-1">{email}</strong>
 							</p>
 						</div>
@@ -181,11 +184,11 @@ export default function CodeAuth() {
 							{pending ? (
 								<>
 									<Loader2 size={18} className="animate-spin" />
-									<span>A verificar...</span>
+									<span>{t("auth.code.verifying")}</span>
 								</>
 							) : (
 								<>
-									<span>VERIFICAR CÓDIGO</span>
+									<span>{t("auth.code.verify")}</span>
 									<ArrowRight size={18} />
 								</>
 							)}
@@ -197,14 +200,16 @@ export default function CodeAuth() {
 							disabled={countdown > 0}
 							className="flex items-center justify-center w-full py-3.5 border border-gray-200 rounded-[14px] bg-white text-[#002045] text-[0.85rem] font-semibold tracking-wide cursor-pointer transition-all duration-300 ease-out mb-8 hover:bg-gray-50 hover:shadow-sm active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50"
 						>
-							{countdown > 0 ? `Reenviar Código (${formatCountdown()})` : "Reenviar Código"}
+							{countdown > 0
+								? t("auth.code.resendCountdown", { time: formatCountdown() })
+								: t("auth.code.resend")}
 						</button>
 
 						{/* Bottom Quote */}
 						<div className="mt-auto pt-4 w-full border-t border-gray-200 text-center">
 							<p className="text-gray-500 text-sm italic">
-								"Tudo o que fizerem, façam de todo o coração." <br />
-								<span className="text-[#002045] font-medium not-italic block mt-1">— Colossenses 3:23</span>
+								"{t("auth.code.footerQuote")}" <br/>
+								<span className="text-[#002045] font-medium not-italic block mt-1">{t("auth.code.footerSource")}</span>
 							</p>
 						</div>
 					</div>

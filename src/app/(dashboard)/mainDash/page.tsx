@@ -14,6 +14,8 @@ import { DialogDemo } from "@/components/layout/createChurchDialogo";
 import type { ChurchOption } from "@/components/layout/OrganizatioSelect";
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import LanguageSelector from "@/components/layout/LanguageSelector";
+import { useMessages } from "@/i18n/messages";
+import { addLocaleToPathname } from "@/i18n/routing";
 
 interface OrganizationRef {
 	id: string;
@@ -45,6 +47,7 @@ interface Props {
 
 
 export default function MainDashClient() {
+	const { locale, t } = useMessages();
 	const [organizations, setOrganizations] = useState<OrganizationRef[]>([]);
 	const [churchOptions, setChurchOptions] = useState<ChurchOption[]>([]);
 	const [churches, setChurches] = useState<OrganizationRef[]>([]);
@@ -55,9 +58,9 @@ export default function MainDashClient() {
 	async function requestToJoin(organizationId: string) {
 		try {
 			await api.post(`/organizations/${organizationId}/memberships/request`, {});
-			alert("Pedido enviado com sucesso");
+			alert(t("dashboard.main.joinSuccess"));
 		} catch (error) {
-			alert(error instanceof Error ? error.message : "Erro ao enviar pedido.");
+			alert(error instanceof Error ? error.message : t("dashboard.main.joinError"));
 		}
 	}
 
@@ -144,45 +147,39 @@ export default function MainDashClient() {
 							<ModeToggle />
 						</div>
 						<div className="flex items-center justify-center">
-							<LanguageSelector
-								currentLocale="pt"
-								onLocaleChange={(locale) => {
-									// ex: router.push(`/${locale}`)
-									console.log("Idioma selecionado:", locale);
-								}}
-							/>
+							<LanguageSelector />
 						</div>
 					</div>
 
 				</header>
 
 				<nav className="flex flex-col mt-10">
-					<p className="text-[#1A1C1C] tracking-wide text-[12px]">BEM VINDO DE VOLTA</p>
+					<p className="text-[#1A1C1C] tracking-wide text-[12px]">{t("dashboard.main.welcome")}</p>
 					<p className="text-[#002045] text-[72px] font-bold">
-						Escolhe a sua Igreja
+						{t("dashboard.main.title")}
 					</p>
 
 					<div className="flex items-center justify-between">
 						<p className="text-[#475F83] text-[20px] w-120">
-							Reconecte-se com o seu lar espiritual ou explore novas comunidades de fé e devoção.
+							{t("dashboard.main.subtitle")}
 						</p>
 					</div>
 
 					{/* Minhas igrejas */}
 					<div className="flex mt-10 items-center justify-start">
-						<p className="text-[#002045] font-semibold mr-4">MINHAS IGREJAS</p>
+						<p className="text-[#002045] font-semibold mr-4">{t("dashboard.main.myChurches")}</p>
 						<div className="h-px bg-zinc-300 flex-1" />
 					</div>
 
 					{organizations.length === 0 ? (
 						<div className="py-16 flex flex-col items-center justify-center">
-							<p className="text-[#475F83] text-lg">Não pertence a nenhuma igreja ainda.</p>
-							<p className="text-[#9CA3AF] text-sm mt-2">Crie uma nova ou explore as disponíveis.</p>
+							<p className="text-[#475F83] text-lg">{t("dashboard.main.empty.title")}</p>
+							<p className="text-[#9CA3AF] text-sm mt-2">{t("dashboard.main.empty.subtitle")}</p>
 						</div>
 					) : filteredOrganizations.length === 0 ? (
 						<div className="py-16 flex flex-col items-center justify-center">
-							<p className="text-[#475F83] text-lg">Nenhuma igreja corresponde à pesquisa.</p>
-							<p className="text-[#9CA3AF] text-sm mt-2">Tente outro nome ou limpe a pesquisa.</p>
+							<p className="text-[#475F83] text-lg">{t("dashboard.main.searchEmpty.title")}</p>
+							<p className="text-[#9CA3AF] text-sm mt-2">{t("dashboard.main.searchEmpty.subtitle")}</p>
 						</div>
 					) : (
 						<div className="py-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -195,7 +192,10 @@ export default function MainDashClient() {
 									membersCount={0}
 									responsable={org.role}
 									onClick={() => {
-										window.location.href = `/dashboard?org=${org.organizationId}`;
+										window.location.href = addLocaleToPathname(
+											`/dashboard?org=${org.organizationId}`,
+											locale
+										);
 									}}
 								/>
 							))}
@@ -210,9 +210,9 @@ export default function MainDashClient() {
 						className="bg-center bg-cover mt-10 mb-10 rounded-2xl flex flex-col p-20"
 					>
 
-						<p className="text-white text-4xl italic">Manifesta a tua visão</p>
+						<p className="text-white text-4xl italic">{t("dashboard.main.banner.title")}</p>
 						<p className="text-[#DBEAFE] w-120 mt-4">
-							Crie a sua igreja e comece hoje a construir uma comunidade de fé vibrante e acolhedora.
+							{t("dashboard.main.banner.subtitle")}
 						</p>
 						<DialogDemo
 							churches={churchOptions}
@@ -226,15 +226,17 @@ export default function MainDashClient() {
 					{/* Explorar igrejas */}
 					<div className="flex justify-between items-center my-10">
 						<div className="flex flex-col">
-							<p className="text-[#002045] text-[30px]">Explorar novas igrejas ({filteredAvailableChurches.length})</p>
+							<p className="text-[#002045] text-[30px]">
+								{t("dashboard.main.explore.title", { count: filteredAvailableChurches.length })}
+							</p>
 							<p className="text-[#475F83] text-[24px]">
-								Congregações perto de si ou alinhadas com a sua jornada.
+								{t("dashboard.main.explore.subtitle")}
 							</p>
 						</div>
 						<div className="flex bg-[#F3F3F3] rounded-2xl p-1 text-[#74777F] items-center justify-center">
 							<input
 								type="text"
-								placeholder="encontrar a tua igreja..."
+								placeholder={t("dashboard.main.explore.searchPlaceholder")}
 								value={searchTerm}
 								onChange={(event) => setSearchTerm(event.target.value)}
 								className="bg-[#F3F3F3] w-62.5 h-5.6 focus:outline-none px-2"
@@ -244,14 +246,14 @@ export default function MainDashClient() {
 								onClick={() => setSearchTerm("")}
 								className="bg-[#1E3A8A] text-white rounded-2xl px-4 py-2 ml-2"
 							>
-								Pesquisa
+								{t("dashboard.main.explore.searchCta")}
 							</button>
 						</div>
 					</div>
 
 					<div className="flex gap-8 pb-10">
 						{filteredAvailableChurches.length === 0 ? (
-							<p className="text-[#475F83]">Nenhuma igreja disponível.</p>
+							<p className="text-[#475F83]">{t("dashboard.main.explore.empty")}</p>
 						) : (
 							filteredAvailableChurches.map((church) => (
 								<CommunityJoin

@@ -3,6 +3,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { selectOrganization } from "@/utils/actionMain";
 import { getOrganizations } from "@/utils/actionMain";
 import { useEffect, useState } from "react";
+import { addLocaleToPathname } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 interface Organization {
   organizationId: string;
@@ -13,6 +15,7 @@ interface Organization {
 }
 
 export default function SelectOrganizationPage() {
+  const { locale, t } = useMessages();
   const searchParams = useSearchParams();
   const router = useRouter();
   const selectionToken = searchParams.get("selectionToken") || "";
@@ -36,24 +39,24 @@ export default function SelectOrganizationPage() {
       const accessToken = data?.user?.token?.access_token ?? data?.token?.access_token;
 
       if (accessToken) {
-        router.push("/mainDash");
+        router.push(addLocaleToPathname("/mainDash", locale));
       } else {
-        setError("Erro ao selecionar organização.");
+        setError(t("auth.selectOrg.errorSelect"));
       }
     } catch {
-      setError("Erro inesperado.");
+      setError(t("auth.selectOrg.errorUnexpected"));
     } finally {
       setSelecting(false);
     }
   }
 
-  if (loading) return <p className="text-center mt-10">A carregar...</p>;
+  if (loading) return <p className="text-center mt-10">{t("auth.selectOrg.loading")}</p>;
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-[#E5E5E5]">
       <div className="bg-white rounded-2xl p-8 w-96 shadow-md">
-        <h1 className="text-2xl font-serif italic text-black mb-2">Selecionar Igreja</h1>
-        <p className="text-[#43474E] mb-6">Escolha a organização à qual pretende aceder.</p>
+        <h1 className="text-2xl font-serif italic text-black mb-2">{t("auth.selectOrg.title")}</h1>
+        <p className="text-[#43474E] mb-6">{t("auth.selectOrg.subtitle")}</p>
 
         {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
 

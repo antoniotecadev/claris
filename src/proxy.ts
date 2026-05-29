@@ -1,12 +1,54 @@
 import { NextRequest, NextResponse } from "next/server";
-const PUBLIC_ROUTES = ["/", "/login", "/registerAdmim", "/registerUser", "/codeAuth", "/mainCenter"];
+import {
+	addLocaleToPathname,
+	defaultLocale,
+	getLocaleFromPathname,
+	removeLocaleFromPathname,
+} from "@/i18n/routing";
+
+const PUBLIC_ROUTES = [
+	"/",
+	"/login",
+	"/registerAdmim",
+	"/registerUser",
+	"/codeAuth",
+	"/select-organization",
+	"/auth/google/callback",
+	"/callback",
+	"/mainCenter",
+];
 const API_PREFIX = "/api";
+
+const getPreferredLocale = (request: NextRequest) => {
+	const header = request.headers.get("accept-language") ?? "";
+	const languages = header
+		.split(",")
+		.map((part) => part.split(";")[0]?.trim())
+		.filter(Boolean)
+		.map((lang) => lang.toLowerCase());
+
+	for (const lang of languages) {
+		const base = lang.split("-")[0] ?? lang;
+		if (["pt", "en", "fr"].includes(base)) return base;
+	}
+
+	return defaultLocale;
+};
 
 export function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 	console.log("Pathname: ", pathname);
+
+	const localeInPath = getLocaleFromPathname(pathname);
+	if (!localeInPath) {
+		const locale = getPreferredLocale(request);
+		request.nextUrl.pathname = addLocaleToPathname(pathname, locale);
+		return NextResponse.redirect(request.nextUrl);
+	}
+
+	const pathWithoutLocale = removeLocaleFromPathname(pathname);
 	const isPublicRoute = PUBLIC_ROUTES.some(
-		(route) => pathname === route || pathname.startsWith(`${route}/`)
+		(route) => pathWithoutLocale === route || pathWithoutLocale.startsWith(`${route}/`)
 	);
 
 	if (pathname.startsWith(API_PREFIX)) {
@@ -19,11 +61,18 @@ export function proxy(request: NextRequest) {
 	console.log("Is Public Route1: ", isPublicRoute);
 
 	if (!token && !isPublicRoute) {
-		return NextResponse.redirect(new URL("/login", request.url));
+		return NextResponse.redirect(
+			new URL(addLocaleToPathname("/login", localeInPath), request.url)
+		);
 	}
 
-	if (token && ["/login", "/codeAuth", "/select-organization"].includes(pathname)) {
-		return NextResponse.redirect(new URL("/login", request.url));
+	if (
+		token &&
+		["/login", "/codeAuth", "/select-organization"].includes(pathWithoutLocale)
+	) {
+		return NextResponse.redirect(
+			new URL(addLocaleToPathname("/login", localeInPath), request.url)
+		);
 	}
 
 	const requestHeaders = new Headers(request.headers);

@@ -5,6 +5,8 @@ import EventCard from "@/components/layout/EventCard";
 import { Users, Mail, Calendar, MapPin, Phone, Mail as MailIcon, Trash2, PhoneIcon, Clock, Users as UsersIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
+import { getDateLocale } from "@/i18n/routing";
+import { useMessages } from "@/i18n/messages";
 
 interface Member {
 	id: string;
@@ -30,6 +32,7 @@ interface Event {
 }
 
 export default function DashboardPage() {
+	const { locale, t } = useMessages();
 	const [members, setMembers] = useState<Member[]>([]);
 	const [events, setEvents] = useState<Event[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -83,7 +86,7 @@ export default function DashboardPage() {
 	};
 
 	const deleteMember = (id: string) => {
-		if (confirm("Tem certeza que deseja remover este membro?")) {
+		if (confirm(t("dashboard.center.members.confirmDelete"))) {
 			setMembers((prev) => prev.filter((member) => member.id !== id));
 		}
 	};
@@ -94,11 +97,11 @@ export default function DashboardPage() {
 			<div className="w-full h-64 bg-linear-to-r from-[#1E3A8A] to-[#002045] rounded-2xl p-8 text-white shadow-lg">
 				<div className="flex flex-col justify-between h-full">
 					<div>
-						<p className="text-[#DBEAFE] font-semibold text-sm tracking-wide">PAINEL ADMINISTRATIVO</p>
-						<p className="text-white font-bold text-5xl mt-2">Bem-vindo ao Santuário Digital</p>
+						<p className="text-[#DBEAFE] font-semibold text-sm tracking-wide">{t("dashboard.center.hero.label")}</p>
+						<p className="text-white font-bold text-5xl mt-2">{t("dashboard.center.hero.title")}</p>
 					</div>
 					<p className="text-[#E0E7FF] text-lg">
-						Visualize, gerencie e conecte-se com os membros da sua comunidade de fé.
+						{t("dashboard.center.hero.subtitle")}
 					</p>
 				</div>
 			</div>
@@ -107,13 +110,13 @@ export default function DashboardPage() {
 			<div className="w-full">
 				<div className="flex items-center gap-3 mb-6">
 					<Calendar size={28} className="text-[#1E3A8A]" />
-					<h2 className="text-2xl font-bold text-gray-900">Eventos Criados</h2>
-					<span className="text-sm text-gray-500">({events.length} eventos)</span>
+					<h2 className="text-2xl font-bold text-gray-900">{t("dashboard.center.events.title")}</h2>
+					<span className="text-sm text-gray-500">{t("dashboard.center.events.count", { count: events.length })}</span>
 				</div>
 				{events.length === 0 ? (
 					<div className="text-center py-12 bg-white rounded-lg border border-gray-200">
 						<Calendar size={32} className="mx-auto text-gray-400 mb-3" />
-						<p className="text-gray-500 text-sm">Nenhum evento criado ainda</p>
+						<p className="text-gray-500 text-sm">{t("dashboard.center.events.empty")}</p>
 					</div>
 				) : (
 					<div className="overflow-x-auto pb-4">
@@ -125,7 +128,7 @@ export default function DashboardPage() {
 										isSquare={true}
 										onEdit={(id) => console.log("Editar evento:", id)}
 										onDelete={(id) => {
-											const confirmed = window.confirm("Tem certeza que deseja eliminar este evento?");
+											const confirmed = window.confirm(t("dashboard.center.events.confirmDelete"));
 											if (confirmed) {
 												setEvents(events.filter(e => e.id !== id));
 											}
@@ -154,12 +157,12 @@ export default function DashboardPage() {
 								<div className="flex items-center gap-3">
 									<Users size={28} />
 									<div>
-										<h2 className="text-2xl font-bold">Membros da Igreja</h2>
-										<p className="text-[#DBEAFE] text-sm mt-1">{members.length} membros cadastrados</p>
+										<h2 className="text-2xl font-bold">{t("dashboard.center.members.title")}</h2>
+										<p className="text-[#DBEAFE] text-sm mt-1">{t("dashboard.center.members.count", { count: members.length })}</p>
 									</div>
 								</div>
 								<button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg font-medium transition-all text-sm">
-									Exportar
+									{t("dashboard.center.members.export")}
 								</button>
 							</div>
 						</div>
@@ -168,21 +171,21 @@ export default function DashboardPage() {
 						<div className="overflow-x-auto">
 							{loading ? (
 								<div className="p-8 text-center text-gray-500">
-									Carregando membros...
+									{t("dashboard.center.members.loading")}
 								</div>
 							) : members.length === 0 ? (
 								<div className="p-8 text-center text-gray-500">
-									Nenhum membro cadastrado ainda.
+									{t("dashboard.center.members.empty")}
 								</div>
 							) : (
 								<table className="w-full">
 									<thead>
 										<tr className="border-b border-gray-200 bg-gray-50">
-											<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">Membro</th>
-											<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">Telefone</th>
-											<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">Função</th>
-											<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">Data de Entrada</th>
-											<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">Ações</th>
+											<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">{t("dashboard.center.members.table.member")}</th>
+											<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">{t("dashboard.center.members.table.phone")}</th>
+											<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">{t("dashboard.center.members.table.role")}</th>
+											<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">{t("dashboard.center.members.table.joined")}</th>
+											<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">{t("dashboard.center.members.table.actions")}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -208,11 +211,11 @@ export default function DashboardPage() {
 												</td>
 												<td className="px-6 py-4">
 													<span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getRoleColor(member.role)}`}>
-														{member.role || "Membro"}
+														{member.role || t("dashboard.center.members.defaultRole")}
 													</span>
 												</td>
 												<td className="px-6 py-4 text-gray-600 text-sm">
-													{member.joinedAt ? new Date(member.joinedAt).toLocaleDateString("pt-PT") : "-"}
+													{member.joinedAt ? new Date(member.joinedAt).toLocaleDateString(getDateLocale(locale)) : "-"}
 												</td>
 												<td className="px-6 py-4">
 													<div className="flex items-center gap-2">
@@ -221,7 +224,7 @@ export default function DashboardPage() {
 															className="text-red-600 hover:text-red-700 font-medium text-sm hover:underline flex items-center gap-1"
 														>
 															<Trash2 size={14} />
-															Eliminar
+															{t("dashboard.center.members.delete")}
 														</button>
 													</div>
 												</td>

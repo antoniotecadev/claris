@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Users, Calendar, MessageSquare, Heart } from "lucide-react";
 
@@ -6,8 +8,11 @@ import Sister from "@/assets/images/sisters.png";
 import Rnascer from "@/assets/images/renascer.png";
 import BackG from "@/assets/images/Background.png";
 import Esp from "@/assets/images/Container.png";
+import { useMessages } from "@/i18n/messages";
 
 export default function Fun() {
+	const { t } = useMessages();
+
 	return (
 		<div className="bg-white">
 			<div className="container mx-auto px-4">
@@ -15,7 +20,7 @@ export default function Fun() {
 				{/* HEADER */}
 				<div className="flex flex-col items-center text-center py-16 space-y-4">
 					<h5 className="text-[#1A365D] font-bold text-2xl md:text-4xl">
-						Ferramentas desenhadas para o serviço
+						{t("features.title")}
 					</h5>
 					<div className="w-24 h-1 bg-amber-300"></div>
 				</div>
@@ -32,12 +37,11 @@ export default function Fun() {
 							</div>
 
 							<p className="text-[#1A365D] text-xl md:text-2xl">
-								Gestão de membros
+								{t("features.membersTitle")}
 							</p>
 
 							<p className="text-[#475569] text-base md:text-lg">
-								Uma visão 360º da sua congregação. Acompanhe jornadas espirituais,
-								participação em grupos e batismos com cuidado pastoral.
+								{t("features.membersDescription")}
 							</p>
 						</div>
 
@@ -56,10 +60,10 @@ export default function Fun() {
 							<Calendar className="text-[#1A365D]" />
 						</div>
 
-						<p className="text-white text-xl md:text-2xl">Calendário</p>
+						<p className="text-white text-xl md:text-2xl">{t("features.calendarTitle")}</p>
 
 						<p className="text-[#DBEAFE] text-base md:text-lg">
-							Sincronize eventos de todos os departamentos em um único lugar sagrado.
+							{t("features.calendarDescription")}
 						</p>
 
 						<Image
@@ -81,11 +85,11 @@ export default function Fun() {
 						</div>
 
 						<p className="text-xl md:text-2xl text-[#1A365D]">
-							Doações e Dízimos
+							{t("features.donationsTitle")}
 						</p>
 
 						<p className="text-base md:text-lg text-[#475569]">
-							Gestão financeira transparente e doações recorrentes seguras via aplicativo.
+							{t("features.donationsDescription")}
 						</p>
 
 						<Image src={BackG} alt="Back" className="w-full h-auto" />
@@ -100,15 +104,15 @@ export default function Fun() {
 							</div>
 
 							<p className="text-xl md:text-2xl text-[#1A365D]">
-								Comunicação Viva
+								{t("features.communicationTitle")}
 							</p>
 
 							<p className="text-base md:text-lg text-[#475569]">
-								Conecte pequenos grupos e lideranças instantaneamente.
+								{t("features.communicationDescription")}
 							</p>
 
 							<p className="italic text-[#94A3B8] text-sm md:text-base">
-								"Como o ferro com o ferro se afia..." — Provérbios 27:17
+								&quot;{t("features.communicationQuote")}" {t("features.communicationQuoteSource")}
 							</p>
 						</div>
 

@@ -1,12 +1,13 @@
 "use server"
-import { redirect } from "next/navigation";
 import { api } from "@/lib/api";
 import { setAuthToken } from "@/lib/auth-cookies";
+import { addLocaleToPathname, defaultLocale } from "@/i18n/routing";
 import type { ActionResult, LoginResponse } from "@/types/auth.types";
 
 export async function loginAction(_prevState: unknown, formData: FormData): Promise<ActionResult> {
 	const email = formData.get('email') as string;
 	const password = formData.get('password') as string;
+	const locale = (formData.get("locale") as string) || defaultLocale;
 
 	if (!email || !password) {
 		return { success: false, error: "Email e senha são obrigatórios." };
@@ -21,24 +22,33 @@ export async function loginAction(_prevState: unknown, formData: FormData): Prom
 
 		if (data?.user?.token?.access_token) {
 			await setAuthToken(data.user.token.access_token);
-			redirectUrl = "/mainDash";
+			redirectUrl = addLocaleToPathname("/mainDash", locale);
 		}
 		else if (data?.requireEmailCode) {
-			redirectUrl = `/codeAuth?email=${encodeURIComponent(formData.get('email') as string)}`;
+			redirectUrl = addLocaleToPathname(
+				`/codeAuth?email=${encodeURIComponent(formData.get('email') as string)}`,
+				locale
+			);
 		}
 		else if (data?.requireEmailVerification) {
 			if (!data.email) {
 				return { success: false, error: "Email não informado pelo servidor." };
 			}
-			redirectUrl = `/codeAuth?email=${encodeURIComponent(data.email)}`;
+			redirectUrl = addLocaleToPathname(
+				`/codeAuth?email=${encodeURIComponent(data.email)}`,
+				locale
+			);
 		}
 		else if (data?.requireOrganizationSelection) {
 			if (!data.selectionToken) {
 				return { success: false, error: "Token de seleção não informado pelo servidor." };
 			}
-			redirectUrl = `/select-organization?selectionToken=${encodeURIComponent(
-				data.selectionToken,
-			)}`;
+			redirectUrl = addLocaleToPathname(
+				`/select-organization?selectionToken=${encodeURIComponent(
+					data.selectionToken,
+				)}`,
+				locale
+			);
 		}
 		else {
 			return { success: false, error: "Resposta inesperada do servidor." };

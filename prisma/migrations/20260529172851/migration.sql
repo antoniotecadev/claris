@@ -1,8 +1,5 @@
 -- CreateEnum
-CREATE TYPE "MembershipStatus" AS ENUM ('NORMAL', 'PENDING', 'ACCEPTED', 'DECLINED');
-
--- CreateEnum
-CREATE TYPE "Role" AS ENUM ('SUPER_ADMIN', 'PASTOR', 'LEADER', 'MEMBER');
+CREATE TYPE "Role" AS ENUM ('ADMIN', 'MEMBER');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -21,10 +18,22 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Organization" (
+CREATE TABLE "Church" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Church_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Organization" (
+    "id" TEXT NOT NULL,
+    "churchId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
+    "address" TEXT,
+    "description" TEXT,
     "logoUrl" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -37,7 +46,6 @@ CREATE TABLE "Membership" (
     "userId" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'MEMBER',
-    "status" "MembershipStatus" NOT NULL DEFAULT 'NORMAL',
     "joinedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Membership_pkey" PRIMARY KEY ("id")
@@ -92,6 +100,9 @@ CREATE UNIQUE INDEX "Membership_userId_organizationId_key" ON "Membership"("user
 
 -- CreateIndex
 CREATE INDEX "EmailLoginCode_userId_idx" ON "EmailLoginCode"("userId");
+
+-- AddForeignKey
+ALTER TABLE "Organization" ADD CONSTRAINT "Organization_churchId_fkey" FOREIGN KEY ("churchId") REFERENCES "Church"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Membership" ADD CONSTRAINT "Membership_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

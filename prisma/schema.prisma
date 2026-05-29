@@ -3,9 +3,9 @@
 
 // Configuração do cliente Prisma que vai interagir com o banco de dados.
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
-  moduleFormat    = "cjs"
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
 }
 
 // Configuração da fonte de dados, indicando o tipo de banco de dados e a URL de conexão.
@@ -16,18 +16,20 @@ datasource db {
 
 // User: representa os usuários do sistema, com campos para email, senha, nome de exibição, genero, data de nascimento, avatar e relacionamentos com organizações e mensagens.
 model User {
-  id            String       @id @default(cuid())
-  email         String       @unique
-  passwordHash  String?
-  displayName   String
-  gender        String?
-  birthDate     DateTime?
-  avatarUrl     String?
-  googleId      String?      @unique
-  lastSeen      DateTime?
-  createdAt     DateTime     @default(now())
-  memberships   Membership[]
-  messages      Message[]
+  id              String           @id @default(cuid())
+  email           String           @unique
+  passwordHash    String?
+  displayName     String
+  gender          String?
+  birthDate       DateTime?
+  avatarUrl       String?
+  googleId        String?          @unique
+  lastSeen        DateTime?
+  createdAt       DateTime         @default(now())
+  memberships     Membership[]
+  messages        Message[]
+  eventInterests  EventInterest[]
+  eventComments   EventComment[]
   emailLoginCodes EmailLoginCode[]
 }
 
@@ -74,15 +76,46 @@ enum Role {
   MEMBER
 }
 
-// Event: representa os eventos organizados pelas igrejas, com campos para título, descrição, data e relacionamentos com a organização.
+// Event: representa os eventos organizados pelas igrejas, com campos para título, descrição, data, local, foto e relacionamentos com a organização, interessados e comentários.
 model Event {
-  id             String       @id @default(cuid())
+  id             String          @id @default(cuid())
   organizationId String
   title          String
   description    String?
   date           DateTime
-  createdAt      DateTime     @default(now())
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  location       String?
+  photoUrl       String?
+  createdAt      DateTime        @default(now())
+  organization   Organization    @relation(fields: [organizationId], references: [id])
+  interests      EventInterest[]
+  comments       EventComment[]
+}
+
+// EventInterest: representa o interesse de um membro em participar de um evento.
+model EventInterest {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([eventId, userId])
+  @@index([userId])
+}
+
+// EventComment: representa comentários adicionados por membros dentro de um evento.
+model EventComment {
+  id        String   @id @default(cuid())
+  eventId   String
+  authorId  String
+  content   String
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id])
+
+  @@index([eventId])
+  @@index([authorId])
 }
 
 // Message: representa as mensagens enviadas pelos usuários, com campos para o conteúdo, data de criação e relacionamentos com o remetente e a organização.
@@ -98,14 +131,13 @@ model Message {
 
 // EmailLoginCode: representa um codigo de login enviado por email, com expiracao e uso unico.
 model EmailLoginCode {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
   codeHash  String
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
-

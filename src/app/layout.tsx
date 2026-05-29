@@ -26,10 +26,7 @@ export default async function RootLayout({
 	const messages = await getDictionary(defaultLocale);
 
 	return (
-		<html
-			lang={defaultLocale}
-			className={cn("h-full", "antialiased", inter.variable, "font-sans", geist.variable)}
-		>
+		<html lang={defaultLocale} className={cn("h-full", "antialiased", inter.variable, "font-sans", geist.variable)} >
 			<body className="min-h-full flex flex-col">
 				<MessagesProvider locale={defaultLocale} messages={messages}>
 					{children}

@@ -1,17 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, Geist } from "next/font/google";
-import "@/assets/styles/globals.css";
 import { MessagesProvider } from "@/i18n/messages";
 import { getDictionary } from "@/i18n/dictionaries";
 import { locales, type Locale } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
-
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
-
-const inter = Inter({
-	variable: "--font-inter",
-	subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
 	title: "Claris",
@@ -32,15 +22,8 @@ export default async function RootLayout({
 	const messages = await getDictionary(locale);
 
 	return (
-		<html
-			lang={locale}
-			className={cn("h-full", "antialiased", inter.variable, "font-sans", geist.variable)}
-		>
-			<body className="min-h-full flex flex-col">
-				<MessagesProvider locale={locale} messages={messages}>
-					{children}
-				</MessagesProvider>
-			</body>
-		</html>
+		<MessagesProvider locale={locale} messages={messages}>
+			{children}
+		</MessagesProvider>
 	);
 }

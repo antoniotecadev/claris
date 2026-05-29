@@ -189,7 +189,7 @@ export default function MainDashClient() {
 									name={org.name}
 									description={org.description}
 									logoUrl={org.logoUrl}
-									membersCount={0}
+									membersCount={org.memberCount ?? 0}
 									responsable={org.role}
 									onClick={() => {
 										window.location.href = addLocaleToPathname(

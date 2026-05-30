@@ -31,11 +31,12 @@ export default function RegisterUser() {
 		setFields(prev => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
-	const setUser = useUserStore((state: { setUser: any; }) => state.setUser);
+	const setUser = useUserStore((state) => state.setUser);
 	const router = useRouter();
 	const loginHref = addLocaleToPathname("/login", locale);
 	const termsHref = addLocaleToPathname("/termos-condicoes", locale);
 	const privacyHref = addLocaleToPathname("/politica-privacidade", locale);
+	const supportHref = addLocaleToPathname("/contacto-suporte", locale);
 
 	const [state, formAction, pending] = useActionState(registerAction, initialState);
 	
@@ -49,6 +50,15 @@ export default function RegisterUser() {
 			router.push(addLocaleToPathname("/mainDash", locale));
 		}
 	}, [state, router, setUser, locale]);
+
+	const handleLegalNavigation = (
+		event: React.MouseEvent<HTMLAnchorElement>,
+		href: string,
+	) => {
+		event.preventDefault();
+		event.stopPropagation();
+		router.push(href);
+	};
 
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
@@ -75,7 +85,7 @@ export default function RegisterUser() {
 							<span>{t("auth.register.scriptureLabel")}</span>
 						</div>
 						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-[340px] mb-2">
-							"{t("auth.register.scriptureTitle")}"
+							&quot;{t("auth.register.scriptureTitle")}&quot;
 						</p>
 						<p className="text-[#86A0CD] text-sm md:text-base text-center">
 							{t("auth.register.scriptureDescription")}
@@ -269,16 +279,26 @@ export default function RegisterUser() {
 									required
 									className="mt-1 cursor-pointer w-4 h-4 text-[#002045] bg-gray-100 border-gray-300 rounded focus:ring-[#002045]"
 								/>
-								<label htmlFor="terms" className="text-[0.75rem] text-gray-600 cursor-pointer select-none leading-relaxed">
+								<p className="text-[0.75rem] text-gray-600 leading-relaxed">
+									<label htmlFor="terms" className="cursor-pointer select-none">
 									{t("auth.register.termsPrefix")} {" "}
-									<Link href={termsHref} className="text-[#002045] font-semibold hover:underline">
+									</label>
+									<Link
+										href={termsHref}
+										onClick={(event) => handleLegalNavigation(event, termsHref)}
+										className="text-[#002045] font-semibold hover:underline"
+									>
 										{t("auth.register.terms")}
 									</Link>{" "}
-									{t("auth.register.and")} {" "}
-									<Link href={privacyHref} className="text-[#002045] font-semibold hover:underline">
+									<span>{t("auth.register.and")} </span>
+									<Link
+										href={privacyHref}
+										onClick={(event) => handleLegalNavigation(event, privacyHref)}
+										className="text-[#002045] font-semibold hover:underline"
+									>
 										{t("auth.register.privacy")}
 									</Link>.
-								</label>
+								</p>
 							</div>
 
 							{/* Erro */}
@@ -322,6 +342,23 @@ export default function RegisterUser() {
 					</div>
 				</div>
 			</div>
+
+			{/* ===== FOOTER ===== */}
+			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
+				<p className="text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
+				<div className="flex gap-5">
+					<Link href={privacyHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+						{t("footer.privacy")}
+					</Link>
+					<Link href={termsHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+						{t("footer.terms")}
+					</Link>
+					<Link href={supportHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+						{t("footer.support")}
+					</Link>
+				</div>
+				<p className="text-gray-400 text-[0.72rem] tracking-wide">© 2024 CLARIS ORGANIZATION</p>
+			</footer>
 		</div>
 	);
 }

@@ -1,4 +1,4 @@
-import HeaderWithDialog from "@/components/layout/headerWithDialog";
+import Sidebar from "@/components/layout/sideBar";
 
 export default function DashboardLayout({
   children,
@@ -7,10 +7,9 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top Navigation Bar */}
-      <HeaderWithDialog />
+      <Sidebar />
 
-      <main className="max-w-7xl mx-auto">
+      <main className="w-full lg:pl-64">
         {children}
       </main>
     </div>

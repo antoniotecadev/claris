@@ -23,17 +23,17 @@
 		"quoteSecondarySource": "— Psaume 119:105"
 	},
 	"features": {
-		"title": "Des outils concus pour le service",
-		"membersTitle": "Gestion des membres",
-		"membersDescription": "Une vision a 360 degres de votre congregation. Suivez les parcours spirituels, la participation aux groupes et les baptemes avec un soin pastoral.",
-		"calendarTitle": "Calendrier",
-		"calendarDescription": "Synchronisez les evenements de tous les departements en un seul lieu sacre.",
-		"donationsTitle": "Dons et dimes",
-		"donationsDescription": "Gestion financiere transparente et dons recurrents securises via l'application.",
-		"communicationTitle": "Communication vivante",
-		"communicationDescription": "Connectez instantanement petits groupes et responsables.",
-		"communicationQuote": "Comme le fer aiguise le fer...",
-		"communicationQuoteSource": "— Proverbes 27:17"
+		"title": "Fonctionnalites simples pour la communaute",
+		"membersTitle": "Differentes eglises",
+		"membersDescription": "Consultez les eglises inscrites, decouvrez leurs informations principales et suivez ce que chaque communaute publie.",
+		"calendarTitle": "Evenements de l'eglise",
+		"calendarDescription": "Suivez les evenements publies par les eglises, consultez les details importants et restez informe.",
+		"donationsTitle": "Participation aux evenements",
+		"donationsDescription": "Cliquez pour participer aux evenements disponibles et suivre les activites de votre communaute.",
+		"communicationTitle": "Messages entre utilisateurs",
+		"communicationDescription": "Echangez des messages avec d'autres utilisateurs et gardez la communication de la communaute plus proche.",
+		"communicationQuote": "Un espace simple pour connecter les personnes et les communautes.",
+		"communicationQuoteSource": ""
 	},
 	"join": {
 		"title": "Rejoignez l'avenir du ministere aujourd'hui",

@@ -1,1 +1,1 @@
-export { default } from "../termos-condicoes/page";
+export { default } from "../../termos-condicoes/page";

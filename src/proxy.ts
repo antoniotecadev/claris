@@ -16,6 +16,9 @@ const PUBLIC_ROUTES = [
 	"/auth/google/callback",
 	"/callback",
 	"/mainCenter",
+	"/termos-condicoes",
+	"/politica-privacidade",
+	"/contacto-suporte",
 ];
 const API_PREFIX = "/api";
 

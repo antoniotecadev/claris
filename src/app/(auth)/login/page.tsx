@@ -41,17 +41,19 @@ export default function Login() {
 			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
 
 				{/* ===== LEFT PANEL — Image + Quote ===== */}
-				<div className="side bg-amber-700 w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-200 md:min-h-0 self-stretch">
+				<div className="side  w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-200 md:min-h-0 self-stretch">
 					{/* Dark overlay */}
 					<div className="absolute inset-0 bg-linear-to-b from-[rgba(0,32,69,0.15)] to-[rgba(0,32,69,0.45)] pointer-events-none z-0" />
 
 					{/* Logo */}
+					<Link href="/">
 					<div className="flex items-center gap-2.5 relative z-10">
 						<div className="w-9 h-10.5 flex items-center justify-center">
 							<Image src={Logo} alt="Claris Logo" className="w-full h-full object-contain" />
 						</div>
 						<p className="text-white text-2xl font-semibold tracking-wider">CLARIS</p>
 					</div>
+					</Link>
 
 					{/* Inspirational quote */}
 					<div className="flex flex-col items-center gap-3.5 text-center relative z-10">
@@ -59,7 +61,7 @@ export default function Login() {
 							<Sparkles size={14} />
 							<span>{t("auth.login.scriptureLabel")}</span>
 						</div>
-						<p className="text-white text-xl leading-relaxed italic font-serif max-w-[340px]">
+						<p className="text-white text-xl leading-relaxed italic font-serif max-w-85">
 							"{t("auth.login.scriptureText")}"
 						</p>
 						<p className="text-[#86a0cd] text-base">{t("auth.login.scriptureSource")}</p>
@@ -120,7 +122,7 @@ export default function Login() {
 									required
 									id="email"
 										placeholder={t("auth.login.emailPlaceholder")}
-									className="w-full px-4 py-3 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									className="w-full px-4 py-3 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 									onFocus={() => setFocusedField("email")}
 									onBlur={() => setFocusedField(null)}
 									autoComplete="email"

@@ -23,17 +23,17 @@
 		"quoteSecondarySource": "— Salmos 119:105"
 	},
 	"features": {
-		"title": "Ferramentas desenhadas para o serviço",
-		"membersTitle": "Gestão de membros",
-		"membersDescription": "Uma visão 360º da sua congregação. Acompanhe jornadas espirituais, participação em grupos e batismos com cuidado pastoral.",
-		"calendarTitle": "Calendário",
-		"calendarDescription": "Sincronize eventos de todos os departamentos em um único lugar sagrado.",
-		"donationsTitle": "Doações e Dízimos",
-		"donationsDescription": "Gestão financeira transparente e doações recorrentes seguras via aplicativo.",
-		"communicationTitle": "Comunicação Viva",
-		"communicationDescription": "Conecte pequenos grupos e lideranças instantaneamente.",
-		"communicationQuote": "Como o ferro com o ferro se afia...",
-		"communicationQuoteSource": "— Provérbios 27:17"
+		"title": "Funcionalidades simples para a comunidade",
+		"membersTitle": "Diferentes igrejas",
+		"membersDescription": "Veja igrejas cadastradas, conheça suas informações principais e acompanhe o que cada comunidade publica.",
+		"calendarTitle": "Eventos da igreja",
+		"calendarDescription": "Acompanhe eventos publicados pelas igrejas, veja detalhes importantes e mantenha-se atualizado.",
+		"donationsTitle": "Participação em eventos",
+		"donationsDescription": "Clique para participar nos eventos disponíveis e acompanhe as atividades da sua comunidade.",
+		"communicationTitle": "Mensagens entre usuários",
+		"communicationDescription": "Troque mensagens com outros usuários e mantenha a comunicação da comunidade mais próxima.",
+		"communicationQuote": "Um espaço simples para conectar pessoas e comunidades.",
+		"communicationQuoteSource": ""
 	},
 	"join": {
 		"title": "Junte-se ao futuro do ministério hoje",

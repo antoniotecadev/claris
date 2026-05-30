@@ -23,17 +23,17 @@
 		"quoteSecondarySource": "— Psalm 119:105"
 	},
 	"features": {
-		"title": "Tools designed for service",
-		"membersTitle": "Member management",
-		"membersDescription": "A 360-degree view of your congregation. Track spiritual journeys, group participation, and baptisms with pastoral care.",
-		"calendarTitle": "Calendar",
-		"calendarDescription": "Sync events across departments in one sacred place.",
-		"donationsTitle": "Donations and Tithes",
-		"donationsDescription": "Transparent financial management and secure recurring giving via the app.",
-		"communicationTitle": "Living Communication",
-		"communicationDescription": "Connect small groups and leaders instantly.",
-		"communicationQuote": "As iron sharpens iron...",
-		"communicationQuoteSource": "— Proverbs 27:17"
+		"title": "Simple features for the community",
+		"membersTitle": "Different churches",
+		"membersDescription": "View registered churches, learn their main information, and follow what each community shares.",
+		"calendarTitle": "Church events",
+		"calendarDescription": "Follow events published by churches, check important details, and stay up to date.",
+		"donationsTitle": "Event participation",
+		"donationsDescription": "Click to join available events and keep up with your community activities.",
+		"communicationTitle": "Messages between users",
+		"communicationDescription": "Exchange messages with other users and keep community communication closer.",
+		"communicationQuote": "A simple space to connect people and communities.",
+		"communicationQuoteSource": ""
 	},
 	"join": {
 		"title": "Join the future of ministry today",

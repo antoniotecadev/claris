@@ -176,6 +176,13 @@ body {
 	background-position: center;
 }
 
+.side3 {
+	background-image: url('../images/fundoCenter.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+
 .gradientes {
 	background: linear-gradient(to right,
 			#c4c7cc 0%,

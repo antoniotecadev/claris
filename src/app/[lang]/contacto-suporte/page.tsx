@@ -1,1 +1,1 @@
-export { default } from "../contacto-suporte/page";
+export { default } from "../../contacto-suporte/page";

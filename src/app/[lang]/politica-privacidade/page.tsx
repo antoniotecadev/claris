@@ -1,1 +1,1 @@
-export { default } from "../politica-privacidade/page";
+export { default } from "../../politica-privacidade/page";

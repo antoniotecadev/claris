@@ -44,11 +44,11 @@ export default function Sidebar() {
 					</Link>
 
 					<Link
-						href="/dashboard/convidados"
+						href="/dashboard/criarComunicado"
 						className="hover:bg-white rounded-2xl flex items-center px-6 h-11 gap-3 hover:text-[#002045]"
 					>
-						<UserPlus size={20} />
-						<p>Convidados</p>
+						<Megaphone size={20} />
+						<p>Criar Comunicados</p>
 					</Link>
 
 					<Link

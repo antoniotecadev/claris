@@ -77,7 +77,7 @@ export default function Fun() {
 							</p>
 						</div>
 
-						<div className="relative mt-6 min-h-[220px] overflow-hidden rounded-xl bg-white/10">
+						<div className="relative mt-6 min-h-55 overflow-hidden rounded-xl bg-white/10">
 							<Image
 								src={featureImages.calendar}
 								alt="Pessoas reunidas em evento da igreja"

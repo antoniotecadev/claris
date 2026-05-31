@@ -1,229 +1,157 @@
 "use client";
 
-import { Calendar, Clock, MapPin, Users } from "lucide-react";
-import { getDateLocale } from "@/i18n/routing";
-import { useMessages } from "@/i18n/messages";
+import { useState } from "react";
+import { Pencil, Trash2, Heart, MapPin, Users } from "lucide-react";
 
-interface Event {
-	id: string;
-	title: string;
-	description: string;
-	date: string;
-	startTime: string;
-	endTime: string;
-	location?: string;
-	category: string;
-	attendees: number;
-	maxAttendees?: number;
-}
+export type EventCardProps = {
+  id: string | number;
+  date: string;           // e.g. "15 OUT"
+  time: string;           // e.g. "09:00"
+  title: string;
+  description: string;
+  location: string;
+  spotsRemaining: number;
+  imageUrl: string;
+  isFavorited?: boolean;
+  onEdit?: (id: string | number) => void;
+  onDelete?: (id: string | number) => void;
+  onParticipate?: (id: string | number) => void;
+  onFavorite?: (id: string | number) => void;
+};
 
-interface EventCardProps {
-	event: Event;
-	onEdit?: (id: string) => void;
-	onDelete?: (id: string) => void;
-	isSquare?: boolean;
-}
+export default function EventCard({
+  id,
+  date,
+  time,
+  title,
+  description,
+  location,
+  spotsRemaining,
+  imageUrl,
+  isFavorited = false,
+  onEdit,
+  onDelete,
+  onParticipate,
+  onFavorite,
+}: EventCardProps) {
+  const [favorited, setFavorited] = useState(isFavorited);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
-export default function EventCard({ event, onEdit, onDelete, isSquare = false }: EventCardProps) {
-	const { locale, t } = useMessages();
-	// Format date to Portuguese locale
-	const formatDate = (dateString: string) => {
-		const date = new Date(dateString + "T00:00:00");
-		return date.toLocaleDateString(getDateLocale(locale), {
-			weekday: "long",
-			day: "numeric",
-			month: "long",
-		});
-	};
+  const handleFavorite = () => {
+    setFavorited((prev) => !prev);
+    onFavorite?.(id);
+  };
 
-	const categoryKeyMap: Record<string, string> = {
-		Culto: "culto",
-		Reunião: "reuniao",
-		Treinamento: "treinamento",
-		Social: "social",
-		Outro: "outro",
-	};
-	const categoryKey = categoryKeyMap[event.category] || "outro";
+  const handleDelete = () => {
+    if (confirmDelete) {
+      onDelete?.(id);
+      setConfirmDelete(false);
+    } else {
+      setConfirmDelete(true);
+    }
+  };
 
-	// Get category color
-	const getCategoryColor = (category: string) => {
-		const colors: Record<string, { bg: string; text: string }> = {
-			Culto: { bg: "bg-blue-100", text: "text-blue-800" },
-			Reunião: { bg: "bg-purple-100", text: "text-purple-800" },
-			Treinamento: { bg: "bg-green-100", text: "text-green-800" },
-			Social: { bg: "bg-orange-100", text: "text-orange-800" },
-			Outro: { bg: "bg-gray-100", text: "text-gray-800" },
-		};
-		return colors[category] || colors.Outro;
-	};
+  return (
+    <article className="group relative w-full max-w-[340px] rounded-[18px] overflow-hidden bg-[#faf9f7] shadow-[0_2px_16px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.13),0_2px_8px_rgba(0,0,0,0.06)]">
 
-	const categoryColor = getCategoryColor(event.category);
-	const occupancyPercentage = event.maxAttendees
-		? Math.round((event.attendees / event.maxAttendees) * 100)
-		: null;
+      {/* ── Image ── */}
+      <div className="relative w-full aspect-video overflow-hidden bg-stone-200">
+        <img
+          src={imageUrl}
+          alt={title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
 
-	// Square card format (compact)
-	if (isSquare) {
-		return (
-			<div className="relative aspect-square bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow border border-gray-100 overflow-hidden group cursor-pointer">
-				{/* Gradient background */}
-				<div className="absolute inset-0 bg-linear-to-br from-[#1E3A8A] to-[#002045] opacity-10" />
+        {/* Edit / Delete overlay — top left */}
+        <div className="absolute top-2.5 left-2.5 flex gap-1.5 z-10">
+          {onEdit && (
+            <button
+              onClick={() => onEdit(id)}
+              aria-label="Editar evento"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/85 backdrop-blur-sm text-stone-700 shadow-sm transition-all duration-150 hover:bg-white hover:scale-[0.97]"
+            >
+              <Pencil size={11} />
+              Editar
+            </button>
+          )}
 
-				{/* Content with absolute positioning */}
-				<div className="absolute inset-0 p-4 flex flex-col justify-between">
-					{/* Header */}
-					<div>
-						<span className={`text-xs font-semibold px-2 py-1 rounded-full inline-block ${categoryColor.bg} ${categoryColor.text}`}>
-							{t(`events.categories.${categoryKey}`)}
-						</span>
-						<h3 className="text-sm font-bold text-gray-900 mt-2 line-clamp-2">{event.title}</h3>
-						<p className="text-xs text-gray-600 mt-1 line-clamp-1">{event.description}</p>
-					</div>
+          {onDelete && (
+            <button
+              onClick={handleDelete}
+              onBlur={() => setConfirmDelete(false)}
+              aria-label="Eliminar evento"
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium backdrop-blur-sm shadow-sm transition-all duration-150 hover:scale-[0.97]
+                ${confirmDelete
+                  ? "bg-red-700/95 text-white animate-pulse"
+                  : "bg-red-500/85 text-white hover:bg-red-600/90"
+                }`}
+            >
+              <Trash2 size={11} />
+              {confirmDelete ? "Confirmar?" : "Eliminar"}
+            </button>
+          )}
+        </div>
 
-					{/* Middle - Date and Time */}
-					<div className="space-y-1.5">
-						<div className="flex items-center gap-1 text-xs text-gray-700">
-							<Calendar size={12} className="shrink-0" />
-							<span className="font-medium line-clamp-1">{formatDate(event.date)}</span>
-						</div>
-						<div className="flex items-center gap-1 text-xs text-gray-700">
-							<Clock size={12} className="shrink-0" />
-							<span>{event.startTime} - {event.endTime}</span>
-						</div>
-						{event.location && (
-							<div className="flex items-center gap-1 text-xs text-gray-700">
-								<MapPin size={12} className="shrink-0" />
-								<span className="line-clamp-1">{event.location}</span>
-							</div>
-						)}
-					</div>
+        {/* Favorite — top right */}
+        <button
+          onClick={handleFavorite}
+          aria-label={favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+          className="absolute top-2.5 right-2.5 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/85 backdrop-blur-sm shadow-sm transition-transform duration-200 hover:scale-110"
+        >
+          <Heart
+            size={15}
+            className="transition-all duration-200"
+            fill={favorited ? "#e63946" : "none"}
+            stroke={favorited ? "#e63946" : "#bbb"}
+            strokeWidth={2}
+          />
+        </button>
+      </div>
 
-					{/* Footer - Attendees and Actions */}
-					<div>
-						<div className="flex items-center justify-between mb-2">
-							<div className="flex items-center gap-1 text-xs text-gray-700">
-								<Users size={12} />
-								<span className="font-medium">{event.attendees}/{event.maxAttendees || "∞"}</span>
-							</div>
-						</div>
-						{occupancyPercentage !== null && (
-							<div className="w-full bg-gray-200 rounded-full h-1.5 mb-3">
-								<div
-									className="bg-linear-to-r from-[#1E3A8A] to-[#002045] h-1.5 rounded-full transition-all"
-									style={{ width: `${Math.min(occupancyPercentage, 100)}%` }}
-								/>
-							</div>
-						)}
-						<div className="flex gap-1">
-							{onEdit && (
-								<button
-									onClick={() => onEdit(event.id)}
-									className="flex-1 px-2 py-1 text-xs font-medium text-[#1E3A8A] bg-blue-50 hover:bg-blue-100 rounded transition-colors"
-								>
-									{t("events.actions.edit")}
-								</button>
-							)}
-							{onDelete && (
-								<button
-									onClick={() => onDelete(event.id)}
-									className="flex-1 px-2 py-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded transition-colors"
-								>
-									{t("events.actions.delete")}
-								</button>
-							)}
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
+      {/* ── Body ── */}
+      <div className="px-[18px] pt-4 pb-[18px]">
 
-	// Regular rectangular format
-	return (
-		<div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow border border-gray-100 overflow-hidden">
-			{/* Header with gradient background */}
-			<div className="bg-linear-to-r from-[#1E3A8A] to-[#002045] px-6 py-4">
-				<h3 className="text-lg font-bold text-white mb-1">{event.title}</h3>
-				<p className="text-sm text-gray-200 line-clamp-2">{event.description}</p>
-			</div>
+        {/* Date & time */}
+        <p className="text-[11px] font-medium tracking-widest text-stone-400 uppercase mb-1.5">
+          {date} &bull; {time}
+        </p>
 
-			{/* Content */}
-			<div className="px-6 py-4 space-y-4">
-				{/* Category Badge */}
-				<div className="flex items-center gap-2">
-					<span className={`text-xs font-semibold px-3 py-1 rounded-full ${categoryColor.bg} ${categoryColor.text}`}>
-						{t(`events.categories.${categoryKey}`)}
-					</span>
-				</div>
+        {/* Title */}
+        <h2 className="font-serif text-[19px] leading-snug text-stone-900 mb-2">
+          {title}
+        </h2>
 
-				{/* Date and Time */}
-				<div className="flex items-start gap-3 text-sm">
-					<Calendar size={18} className="text-[#1E3A8A] mt-0.5 shrink-0" />
-					<div>
-						<div className="font-medium text-gray-900">{formatDate(event.date)}</div>
-						<div className="text-gray-600 flex items-center gap-1 mt-1">
-							<Clock size={14} className="inline" />
-							{event.startTime} - {event.endTime}
-						</div>
-					</div>
-				</div>
+        {/* Description */}
+        <p className="text-[13px] leading-relaxed text-stone-500 mb-3">
+          {description}
+        </p>
 
-				{/* Location */}
-				{event.location && (
-					<div className="flex items-center gap-3 text-sm">
-						<MapPin size={18} className="text-[#1E3A8A] shrink-0" />
-						<span className="text-gray-700">{event.location}</span>
-					</div>
-				)}
+        {/* Location */}
+        <div className="flex items-center gap-1.5 text-[12px] text-stone-400 mb-3.5">
+          <MapPin size={12} className="shrink-0 text-stone-400" />
+          <span>{location}</span>
+        </div>
 
-				{/* Attendance */}
-				<div className="bg-gray-50 rounded-lg p-3">
-					<div className="flex items-center justify-between gap-2">
-						<div className="flex items-center gap-2">
-							<Users size={18} className="text-[#1E3A8A]" />
-							<span className="text-sm font-medium text-gray-900">
-								{event.attendees} {event.attendees !== 1 ? t("events.participants") : t("events.participant")}
-							</span>
-						</div>
-						{event.maxAttendees && (
-							<span className="text-xs text-gray-500">{t("events.of", { count: event.maxAttendees })}</span>
-						)}
-					</div>
-					{occupancyPercentage !== null && (
-						<div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-							<div
-								className="bg-linear-to-r from-[#1E3A8A] to-[#002045] h-2 rounded-full transition-all"
-								style={{ width: `${Math.min(occupancyPercentage, 100)}%` }}
-							/>
-						</div>
-					)}
-				</div>
-			</div>
+        {/* Divider */}
+        <div className="h-px bg-stone-200 mb-3.5" />
 
-			{/* Footer with actions */}
-			<div className="px-6 py-4 border-t border-gray-100 flex gap-2 justify-end">
-				{onEdit && (
-					<button
-						onClick={() => onEdit(event.id)}
-						className="px-4 py-2 text-sm font-medium text-[#1E3A8A] hover:bg-blue-50 rounded-lg transition-colors"
-					>
-						{t("events.actions.edit")}
-					</button>
-				)}
-				{onDelete && (
-					<button
-						onClick={() => onDelete(event.id)}
-						className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-					>
-						{t("events.actions.delete")}
-					</button>
-				)}
-				{!onEdit && !onDelete && (
-					<button className="px-4 py-2 text-sm font-medium text-[#1E3A8A] hover:bg-blue-50 rounded-lg transition-colors">
-						{t("events.actions.viewDetails")}
-					</button>
-				)}
-			</div>
-		</div>
-	);
+        {/* Footer */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-[11.5px] text-stone-400">
+            <Users size={12} className="shrink-0" />
+            <span>{spotsRemaining} vagas restantes</span>
+          </div>
+
+          {onParticipate && (
+            <button
+              onClick={() => onParticipate(id)}
+              className="text-[12px] font-semibold tracking-widest uppercase text-blue-600 transition-all duration-200 hover:text-blue-800 hover:tracking-[0.1em]"
+            >
+              Participar
+            </button>
+          )}
+        </div>
+      </div>
+    </article>
+  );
 }

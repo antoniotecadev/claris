@@ -39,12 +39,19 @@ export class MembershipsController {
     );
   }
 
+  @Post('join')
+  joinOrganization(
+    @CurrentUser() user: JwtPayload,
+    @Param('organizationId') organizationId: string,
+  ) {
+    return this.membershipsService.joinOrganization(user, organizationId);
+  }
+
   @Delete(':memberId')
   removeMember(
-    @CurrentUser() user: JwtPayload,
     @Param('organizationId') organizationId: string,
     @Param('memberId') memberId: string,
   ) {
-    return this.membershipsService.removeMember(user, organizationId, memberId);
+    return this.membershipsService.removeMember(organizationId, memberId);
   }
 }

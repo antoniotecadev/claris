@@ -105,16 +105,63 @@ export class MembershipsService {
     };
   }
 
-  async removeMember(
+  async joinOrganization(
     currentUser: JwtPayload,
+    organizationId: string,
+  ) {
+    if (!organizationId) {
+      throw new BadRequestException('ID da organização é obrigatório');
+    }
+
+    const organization = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+    });
+
+    if (!organization) {
+      throw new NotFoundException('Organização não encontrada');
+    }
+
+    const existingMembership = await this.prisma.membership.findUnique({
+      where: {
+        userId_organizationId: {
+          userId: currentUser.id,
+          organizationId,
+        },
+      },
+    });
+
+    if (existingMembership) {
+      throw new BadRequestException('Utilizador já é membro desta organização');
+    }
+
+    const membership = await this.prisma.membership.create({
+      data: {
+        userId: currentUser.id,
+        organizationId,
+        role: Role.MEMBER,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            displayName: true,
+            avatarUrl: true,
+          },
+        },
+      },
+    });
+
+    return {
+      success: true,
+      member: membership,
+    };
+  }
+
+  async removeMember(
     organizationId: string | undefined,
     memberId: string,
   ) {
-    await this.assertCanManageMembers(currentUser.id, organizationId);
-
-    if (currentUser.id === memberId) {
-      throw new BadRequestException('Não é permitido remover o próprio membro');
-    }
 
     const membership = await this.prisma.membership.findUnique({
       where: {

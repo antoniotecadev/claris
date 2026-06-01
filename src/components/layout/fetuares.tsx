@@ -134,7 +134,7 @@ export default function Fun() {
 							</p>
 						</div>
 
-						<div className="relative mt-6 min-h-[220px] overflow-hidden rounded-xl bg-white/70">
+						<div className="relative mt-6 min-h-55 overflow-hidden rounded-xl bg-white/70">
 							<Image
 								src={featureImages.communication}
 								alt="Pessoa usando telemovel para trocar mensagens"

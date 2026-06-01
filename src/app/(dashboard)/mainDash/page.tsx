@@ -17,6 +17,7 @@ import LanguageSelector from "@/components/layout/LanguageSelector";
 import { useMessages } from "@/i18n/messages";
 import { addLocaleToPathname } from "@/i18n/routing";
 import { switchOrganization } from "@/utils/actionMain";
+import { FeedbackToast } from "@/components/ui/feedback-toast";
 
 interface OrganizationRef {
 	id: string;
@@ -32,6 +33,12 @@ interface OrganizationRef {
 	createdAt: string | Date;
 }
 
+type ToastState = {
+	title: string;
+	description?: string;
+	variant: "success" | "error" | "info";
+} | null;
+
 export default function MainDashClient() {
 	const { locale, t } = useMessages();
 	const router = useRouter();
@@ -40,15 +47,35 @@ export default function MainDashClient() {
 	const [churches, setChurches] = useState<OrganizationRef[]>([]);
 	const [loadingChurches, setLoadingChurches] = useState(false);
 	const [switchingOrganizationId, setSwitchingOrganizationId] = useState<string | null>(null);
+	const [pendingJoinChurch, setPendingJoinChurch] = useState<OrganizationRef | null>(null);
+	const [joiningChurch, setJoiningChurch] = useState(false);
+	const [joinError, setJoinError] = useState<string | null>(null);
+	const [toast, setToast] = useState<ToastState>(null);
 	const [searchTerm, setSearchTerm] = useState("");
 	const user = useUserStore((state) => state.user);
 	const setUser = useUserStore((state) => state.setUser);
-	async function requestToJoin(organizationId: string) {
+
+	async function requestToJoin() {
+		if (!pendingJoinChurch || joiningChurch) return;
+
+		setJoiningChurch(true);
+		setJoinError(null);
 		try {
-			await api.post(`/organizations/${organizationId}/memberships/request`, {});
-			alert(t("dashboard.main.joinSuccess"));
+			const organizationId = pendingJoinChurch.organizationId ?? pendingJoinChurch.id;
+			await api.post(`/organizations/${organizationId}/memberships/join`, {});
+			await loadOrganizations();
+			setChurches((currentChurches) =>
+				currentChurches.filter((church) => (church.organizationId ?? church.id) !== organizationId),
+			);
+			setPendingJoinChurch(null);
+			setToast({
+				title: t("dashboard.main.joinSuccess"),
+				variant: "success",
+			});
 		} catch (error) {
-			alert(error instanceof Error ? error.message : t("dashboard.main.joinError"));
+			setJoinError(error instanceof Error ? error.message : t("dashboard.main.joinError"));
+		} finally {
+			setJoiningChurch(false);
 		}
 	}
 
@@ -121,7 +148,11 @@ export default function MainDashClient() {
 
 			router.push(addLocaleToPathname(`/mainCenter?org=${organizationId}`, locale));
 		} catch (error) {
-			alert(error instanceof Error ? error.message : "Erro ao abrir a organização.");
+			setToast({
+				title: t("dashboard.main.openOrganizationError"),
+				description: error instanceof Error ? error.message : undefined,
+				variant: "error",
+			});
 		} finally {
 			setSwitchingOrganizationId(null);
 		}
@@ -136,12 +167,73 @@ export default function MainDashClient() {
 		return () => window.clearTimeout(timeoutId);
 	}, [loadOrganizations]);
 
+	useEffect(() => {
+		if (!toast) return;
+
+		const timeoutId = window.setTimeout(() => {
+			setToast(null);
+		}, 4200);
+
+		return () => window.clearTimeout(timeoutId);
+	}, [toast]);
+
 	const displayName = user?.displayName?.trim();
 	const firstName = displayName?.split(" ")[0];
 
 	return (
 		<div className="min-h-screen bg-[#F7F9FC] text-[#002045]">
 			<SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
+			<FeedbackToast
+				open={Boolean(toast)}
+				title={toast?.title ?? ""}
+				description={toast?.description}
+				variant={toast?.variant}
+				onClose={() => setToast(null)}
+			/>
+			{pendingJoinChurch && (
+				<div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
+					<div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
+						<h2 className="text-lg font-semibold text-[#002045]">
+							{t("dashboard.main.joinConfirm.title", { name: pendingJoinChurch.name })}
+						</h2>
+
+						<p className="mt-2 text-sm leading-6 text-[#475F83]">
+							{t("dashboard.main.joinConfirm.description")}
+						</p>
+
+						{joinError && (
+							<p className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-600">
+								{joinError}
+							</p>
+						)}
+
+						<div className="mt-6 flex gap-3">
+							<button
+								type="button"
+								onClick={() => {
+									if (joiningChurch) return;
+									setPendingJoinChurch(null);
+									setJoinError(null);
+								}}
+								className="flex-1 rounded-xl border border-zinc-200 py-3 text-sm font-medium hover:bg-zinc-50"
+							>
+								{t("common.cancel")}
+							</button>
+
+							<button
+								type="button"
+								onClick={requestToJoin}
+								disabled={joiningChurch}
+								className="flex-1 rounded-xl bg-[#002045] py-3 text-sm font-medium text-white hover:bg-[#1E3A8A] disabled:opacity-60"
+							>
+								{joiningChurch
+									? t("dashboard.main.joinConfirm.joining")
+									: t("dashboard.main.joinConfirm.confirm")}
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 			<div className="mx-auto flex w-full max-w-7xl flex-col px-4 py-4 sm:px-6 lg:px-8">
 				<header className="sticky top-0 z-30 -mx-4 border-b border-white/70 bg-[#F7F9FC]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
 					<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
@@ -340,7 +432,10 @@ export default function MainDashClient() {
 										createdAt={church.createdAt}
 										church={{ id: church.churchId ?? church.id, name: church.name }}
 										membersCount={church.memberCount}
-										onClick={() => requestToJoin(church.id)}
+										onClick={() => {
+											setJoinError(null);
+											setPendingJoinChurch(church);
+										}}
 										className="max-w-none"
 									/>
 								))

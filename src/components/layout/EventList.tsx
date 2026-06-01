@@ -16,9 +16,9 @@ export default function EventList({ events, initialCount = 3 }: EventListProps) 
   const hasMore = events.length > initialCount;
 
   return (
-    <div>
+    <div className="w-full">
       {/* Grid */}
-      <div className="flex flex-wrap gap-6  mt-6 justify-between items-start w-screen">
+      <div className="mt-6 grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
         {visible.map((event, i) => (
           <div
             key={`${event.id}-${i}`}
@@ -35,12 +35,12 @@ export default function EventList({ events, initialCount = 3 }: EventListProps) 
 
       {/* Button */}
       {hasMore && (
-        <div className="flex items-center justify-center mt-6">
+        <div className="mt-6 flex items-center justify-center">
           <button
             onClick={() => setShowAll((prev) => !prev)}
-            className="w-60 h-13 bg-white rounded-2xl text-[#002045] font-bold hover:text-white hover:bg-[#002045]/90 flex gap-2 items-center justify-center border border-[#002045] px-6 py-3 transition-all duration-200"
+            className="flex h-12 w-full max-w-xs items-center justify-center gap-2 rounded-2xl border border-[#002045] bg-white px-6 py-3 text-sm font-bold text-[#002045] shadow-sm transition-all duration-200 hover:bg-[#002045] hover:text-white"
           >
-            <p>{showAll ? "Mostrar menos" : "Carregar Mais eventos"}</p>
+            <span>{showAll ? "Mostrar menos" : "Carregar mais eventos"}</span>
             {showAll ? <ArrowUp size={20} /> : <ArrowRight size={20} />}
           </button>
         </div>

@@ -6,6 +6,7 @@ interface CommunityCardProps {
   local: string;
   logoUrl: string | null;
   membersCount: number;
+  responsable?: string;
 
   onClick: () => void;
   className?: string;
@@ -18,11 +19,12 @@ export default function CommunityCard({
   local,
   logoUrl,
   membersCount,
+  responsable = "Comunidade",
   onClick,
   className = '',
 }: CommunityCardProps) {
   return (
-    <div className="bg-white w-148 h-63.5 rounded-lg shadow-md  cursor-pointer flex" onClick={onClick}>
+    <div className={`bg-white w-148 h-63.5 rounded-lg shadow-md  cursor-pointer flex ${className}`} onClick={onClick}>
       <div className="w-73.75 ">
         {logoUrl ? (
           <img src={logoUrl} alt={`${name} logo`} className="w-full h-full object-cover rounded-lg" />

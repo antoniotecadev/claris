@@ -330,7 +330,14 @@
 				"empty": "No churches available."
 			},
 			"joinSuccess": "Request sent successfully",
-			"joinError": "Error sending request."
+			"joinError": "Error sending request.",
+			"openOrganizationError": "Error opening the organization.",
+			"joinConfirm": {
+				"title": "Join {{name}}?",
+				"description": "If you accept, you will enter this church, see published events, become part of the community, and other people will be able to interact with you.",
+				"confirm": "Accept",
+				"joining": "Joining..."
+			}
 		},
 		"center": {
 			"hero": {

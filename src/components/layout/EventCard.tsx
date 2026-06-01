@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Trash2, Heart, MapPin, Users } from "lucide-react";
+import { Loader2, Pencil, Trash2, Heart, MapPin, Users } from "lucide-react";
 
 export type EventCardProps = {
   id: string | number;
@@ -17,6 +17,7 @@ export type EventCardProps = {
   onDelete?: (id: string | number) => void;
   onParticipate?: (id: string | number) => void;
   onFavorite?: (id: string | number) => void;
+  isParticipationPending?: boolean;
 };
 
 export default function EventCard({
@@ -33,12 +34,11 @@ export default function EventCard({
   onDelete,
   onParticipate,
   onFavorite,
+  isParticipationPending = false,
 }: EventCardProps) {
-  const [favorited, setFavorited] = useState(isFavorited);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleFavorite = () => {
-    setFavorited((prev) => !prev);
     onFavorite?.(id);
   };
 
@@ -52,10 +52,10 @@ export default function EventCard({
   };
 
   return (
-    <article className="group relative w-full max-w-[340px] rounded-[18px] overflow-hidden bg-[#faf9f7] shadow-[0_2px_16px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.13),0_2px_8px_rgba(0,0,0,0.06)]">
+    <article className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/10">
 
       {/* ── Image ── */}
-      <div className="relative w-full aspect-video overflow-hidden bg-stone-200">
+      <div className="relative aspect-video w-full overflow-hidden bg-slate-200">
         <img
           src={imageUrl}
           alt={title}
@@ -93,23 +93,26 @@ export default function EventCard({
         </div>
 
         {/* Favorite — top right */}
-        <button
-          onClick={handleFavorite}
-          aria-label={favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-          className="absolute top-2.5 right-2.5 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/85 backdrop-blur-sm shadow-sm transition-transform duration-200 hover:scale-110"
-        >
-          <Heart
-            size={15}
-            className="transition-all duration-200"
-            fill={favorited ? "#e63946" : "none"}
-            stroke={favorited ? "#e63946" : "#bbb"}
-            strokeWidth={2}
-          />
-        </button>
+        {onFavorite && (
+          <button
+            onClick={handleFavorite}
+            disabled={isParticipationPending}
+            aria-label={isFavorited ? "Deixar de participar no evento" : "Participar no evento"}
+            className="absolute top-2.5 right-2.5 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/85 backdrop-blur-sm shadow-sm transition-transform duration-200 hover:scale-110 disabled:cursor-wait"
+          >
+            <Heart
+              size={15}
+              className="transition-all duration-200"
+              fill={isFavorited ? "#e63946" : "none"}
+              stroke={isFavorited ? "#e63946" : "#bbb"}
+              strokeWidth={2}
+            />
+          </button>
+        )}
       </div>
 
       {/* ── Body ── */}
-      <div className="px-[18px] pt-4 pb-[18px]">
+      <div className="flex flex-1 flex-col px-[18px] pt-4 pb-[18px]">
 
         {/* Date & time */}
         <p className="text-[11px] font-medium tracking-widest text-stone-400 uppercase mb-1.5">
@@ -122,12 +125,12 @@ export default function EventCard({
         </h2>
 
         {/* Description */}
-        <p className="text-[13px] leading-relaxed text-stone-500 mb-3">
+        <p className="mb-3 line-clamp-3 text-[13px] leading-relaxed text-stone-500">
           {description}
         </p>
 
         {/* Location */}
-        <div className="flex items-center gap-1.5 text-[12px] text-stone-400 mb-3.5">
+        <div className="mb-3.5 mt-auto flex items-center gap-1.5 text-[12px] text-stone-400">
           <MapPin size={12} className="shrink-0 text-stone-400" />
           <span>{location}</span>
         </div>
@@ -139,15 +142,17 @@ export default function EventCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-[11.5px] text-stone-400">
             <Users size={12} className="shrink-0" />
-            <span>{spotsRemaining} vagas restantes</span>
+            <span>{spotsRemaining} participantes</span>
           </div>
 
           {onParticipate && (
             <button
               onClick={() => onParticipate(id)}
-              className="text-[12px] font-semibold tracking-widest uppercase text-blue-600 transition-all duration-200 hover:text-blue-800 hover:tracking-[0.1em]"
+              disabled={isParticipationPending}
+              className="flex min-w-20 items-center justify-center gap-1.5 text-[12px] font-semibold tracking-widest uppercase text-blue-600 transition-all duration-200 hover:text-blue-800 hover:tracking-[0.1em] disabled:cursor-wait disabled:text-stone-400"
             >
-              Participar
+              {isParticipationPending ? <Loader2 size={12} className="animate-spin" /> : null}
+              {isParticipationPending ? "A guardar" : isFavorited ? "Deixar" : "Participar"}
             </button>
           )}
         </div>

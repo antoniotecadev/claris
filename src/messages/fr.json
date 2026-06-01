@@ -330,7 +330,14 @@
 				"empty": "Aucune eglise disponible."
 			},
 			"joinSuccess": "Demande envoyee avec succes",
-			"joinError": "Erreur lors de l'envoi de la demande."
+			"joinError": "Erreur lors de l'envoi de la demande.",
+			"openOrganizationError": "Erreur lors de l'ouverture de l'organisation.",
+			"joinConfirm": {
+				"title": "Rejoindre {{name}} ?",
+				"description": "Si vous acceptez, vous entrerez dans cette eglise, verrez les evenements publies, ferez partie de la communaute et d'autres personnes pourront interagir avec vous.",
+				"confirm": "Accepter",
+				"joining": "Connexion..."
+			}
 		},
 		"center": {
 			"hero": {

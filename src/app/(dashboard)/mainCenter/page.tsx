@@ -1,7 +1,16 @@
 "use client";
 
-import { ArrowRight, Building2, Loader2, MapPin, ShieldCheck, Users } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import {
+	Building2,
+	CalendarDays,
+	ChevronLeft,
+	Loader2,
+	MapPin,
+	Plus,
+	ShieldCheck,
+	Users,
+} from "lucide-react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,7 +23,9 @@ import { getCurrentUser, getMyOrganizations } from "@/utils/actionMain";
 import { useMessages } from "@/i18n/messages";
 import { addLocaleToPathname } from "@/i18n/routing";
 import { useUserStore } from "@/stores/userStore";
+import { api } from "@/lib/api";
 import Logo from "@/assets/images/logo.png";
+import { FeedbackToast } from "@/components/ui/feedback-toast";
 
 interface OrganizationRef {
 	id?: string;
@@ -39,74 +50,165 @@ interface CurrentUser {
 	avatarUrl?: string | null;
 }
 
-const members: Member[] = [
-	{ id: "1", name: "Ana Silva", role: "Membro Fundador", avatarColor: "#2d4a7a" },
-	{ id: "2", name: "Gabriel Costa", role: "Líder de Jovens", avatarUrl: "/images/gabriel.jpg" },
-	{ id: "3", name: "Elena Luz", role: "Ministério de Oração", avatarColor: "#7ab4e0" },
-	{ id: "4", name: "Ricardo M.", role: "Voluntário", avatarColor: "#e0c47a" },
-	{ id: "5", name: "Sofia Rocha", role: "Membro", avatarUrl: "/images/sofia.jpg" },
-	{ id: "6", name: "Pedro Alves", role: "Diácono", avatarColor: "#4a7c6f" },
-];
+type MembershipUser = {
+	id?: string;
+	userId?: string;
+	displayName?: string | null;
+	name?: string | null;
+	email?: string | null;
+	avatarUrl?: string | null;
+};
 
-const events: EventCardProps[] = [
-	{
-		id: "workshop-1",
-		date: "15 OUT",
-		time: "09:00",
-		title: "Workshop: Liderança com Alma",
-		description: "Explore princípios de gestão e vida baseados na integridade, propósito e compaixão em um ambiente de mentoria.",
-		location: "Centro de Formação, Lisboa",
-		spotsRemaining: 12,
-		imageUrl: "/images/workshop.jpg",
-		isFavorited: false,
-		onEdit: (id) => console.log("Editar:", id),
-		onDelete: (id) => console.log("Eliminar:", id),
-		onParticipate: (id) => console.log("Participar:", id),
-		onFavorite: (id) => console.log("Favorito:", id),
-	},
-	{
-		id: "workshop-2",
-		date: "22 OUT",
-		time: "17:30",
-		title: "Encontro de Comunidade",
-		description: "Um tempo preparado para oração, partilha e integração dos membros.",
-		location: "Auditório Principal",
-		spotsRemaining: 24,
-		imageUrl: "/images/workshop.jpg",
-		isFavorited: false,
-		onEdit: (id) => console.log("Editar:", id),
-		onDelete: (id) => console.log("Eliminar:", id),
-		onParticipate: (id) => console.log("Participar:", id),
-		onFavorite: (id) => console.log("Favorito:", id),
-	},
-	{
-		id: "workshop-3",
-		date: "29 OUT",
-		time: "10:00",
-		title: "Serviço Solidário",
-		description: "Organização de equipes para ações práticas de apoio à comunidade local.",
-		location: "Ponto de Missão",
-		spotsRemaining: 8,
-		imageUrl: "/images/workshop.jpg",
-		isFavorited: false,
-		onEdit: (id) => console.log("Editar:", id),
-		onDelete: (id) => console.log("Eliminar:", id),
-		onParticipate: (id) => console.log("Participar:", id),
-		onFavorite: (id) => console.log("Favorito:", id),
-	},
-];
+type MembershipResponseItem = {
+	id?: string;
+	memberId?: string;
+	userId?: string;
+	displayName?: string | null;
+	name?: string | null;
+	email?: string | null;
+	role?: string | null;
+	avatarUrl?: string | null;
+	user?: MembershipUser | null;
+};
 
-export default function DashboardPage() {
+type MembershipsResponse =
+	| MembershipResponseItem[]
+	| {
+			result?: MembershipResponseItem[] | { members?: MembershipResponseItem[] };
+			members?: MembershipResponseItem[];
+	  };
+
+type ApiEvent = {
+	id: string;
+	title: string;
+	description: string | null;
+	date: string;
+	location: string | null;
+	photoUrl: string | null;
+	createdAt?: string;
+	interests?: { id: string }[];
+	_count?: {
+		interests?: number;
+		comments?: number;
+	};
+};
+
+type EventsResponse =
+	| ApiEvent[]
+	| {
+			result?: ApiEvent[] | { events?: ApiEvent[] };
+			events?: ApiEvent[];
+	  };
+
+type UpdateEventPayload = {
+	title?: string;
+	description?: string;
+	location?: string;
+};
+
+type ToastState = {
+	title: string;
+	description?: string;
+	variant: "success" | "error" | "info";
+} | null;
+
+function unwrapMembershipsResponse(response: MembershipsResponse): MembershipResponseItem[] {
+	if (Array.isArray(response)) return response;
+	if (Array.isArray(response.members)) return response.members;
+	if (Array.isArray(response.result)) return response.result;
+	if (response.result && Array.isArray(response.result.members)) return response.result.members;
+	return [];
+}
+
+function unwrapEventsResponse(response: EventsResponse): ApiEvent[] {
+	if (Array.isArray(response)) return response;
+	if (Array.isArray(response.events)) return response.events;
+	if (Array.isArray(response.result)) return response.result;
+	if (response.result && Array.isArray(response.result.events)) return response.result.events;
+	return [];
+}
+
+function mapMembershipToMember(membership: MembershipResponseItem): Member {
+	const user = membership.user;
+	const name =
+		user?.displayName?.trim() ||
+		user?.name?.trim() ||
+		membership.displayName?.trim() ||
+		membership.name?.trim() ||
+		user?.email ||
+		membership.email ||
+		"Membro";
+
+	return {
+		id: membership.id ?? membership.memberId ?? user?.id ?? user?.userId ?? membership.userId ?? name,
+		name,
+		role: membership.role ?? "Membro",
+		avatarUrl: user?.avatarUrl ?? membership.avatarUrl ?? undefined,
+	};
+}
+
+const ADMIN_ROLES = new Set(["ADMIN", "SUPER_ADMIN"]);
+const EVENT_IMAGE_FALLBACK = "/igreja.png";
+
+function formatEventDate(value: string) {
+	const date = new Date(value);
+	if (Number.isNaN(date.getTime())) return { date: "--", time: "--:--" };
+
+	const day = String(date.getDate()).padStart(2, "0");
+	const month = new Intl.DateTimeFormat("pt-PT", { month: "short" })
+		.format(date)
+		.replace(".", "")
+		.toUpperCase();
+	const time = new Intl.DateTimeFormat("pt-PT", {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+	}).format(date);
+
+	return { date: `${day} ${month}`, time };
+}
+
+function mapApiEventToCard(event: ApiEvent): EventCardProps {
+	const eventDate = formatEventDate(event.date);
+
+	return {
+		id: event.id,
+		date: eventDate.date,
+		time: eventDate.time,
+		title: event.title,
+		description: event.description?.trim() || "Sem descrição disponível.",
+		location: event.location?.trim() || "Local a definir",
+		spotsRemaining: event._count?.interests ?? 0,
+		imageUrl: event.photoUrl || EVENT_IMAGE_FALLBACK,
+		isFavorited: Boolean(event.interests?.length),
+	};
+}
+
+function DashboardPageContent() {
 	const { locale } = useMessages();
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const selectedOrganizationId = searchParams.get("org");
-	const storedUser = useUserStore((state) => state.user);
 	const setUser = useUserStore((state) => state.setUser);
 	const [organization, setOrganization] = useState<OrganizationRef | null>(null);
-	const [currentUser, setCurrentUser] = useState<CurrentUser | null>(storedUser);
+	const [organizationMembers, setOrganizationMembers] = useState<Member[]>([]);
+	const [membersError, setMembersError] = useState<string | null>(null);
+	const [organizationEvents, setOrganizationEvents] = useState<EventCardProps[]>([]);
+	const [eventsError, setEventsError] = useState<string | null>(null);
+	const [interestPendingEventIds, setInterestPendingEventIds] = useState<Set<EventCardProps["id"]>>(
+		() => new Set(),
+	);
+	const [toast, setToast] = useState<ToastState>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+
+	const loadOrganizationEvents = useCallback(async (organizationId: string) => {
+		const response = await api.get<EventsResponse>(
+			`/organizations/${organizationId}/events`,
+		);
+
+		return unwrapEventsResponse(response).map(mapApiEventToCard);
+	}, []);
 
 	useEffect(() => {
 		let active = true;
@@ -133,8 +235,6 @@ export default function DashboardPage() {
 				null;
 
 			if (nextUser) {
-				setCurrentUser(nextUser);
-
 				const nextUserId =
 					"userId" in nextUser ? nextUser.id ?? nextUser.userId : nextUser.id;
 				if (nextUserId && nextUser.displayName && nextUser.email) {
@@ -149,11 +249,50 @@ export default function DashboardPage() {
 
 			if (!nextOrganization) {
 				setError("Não foi possível encontrar os dados desta organização.");
+				setOrganizationMembers([]);
+				setMembersError(null);
+				setOrganizationEvents([]);
+				setEventsError(null);
 				setLoading(false);
 				return;
 			}
 
 			setOrganization(nextOrganization);
+			setOrganizationMembers([]);
+			setMembersError(null);
+			setOrganizationEvents([]);
+			setEventsError(null);
+
+			const [membershipsResult, eventsResult] = await Promise.allSettled([
+				api.get<MembershipsResponse>(
+					`/organizations/${nextOrganization.organizationId}/memberships`,
+				),
+				loadOrganizationEvents(nextOrganization.organizationId),
+			]);
+
+			if (!active) return;
+
+			if (membershipsResult.status === "fulfilled") {
+				setOrganizationMembers(
+					unwrapMembershipsResponse(membershipsResult.value).map(mapMembershipToMember),
+				);
+			} else {
+				setMembersError(
+					membershipsResult.reason instanceof Error
+						? membershipsResult.reason.message
+						: "Não foi possível carregar os membros desta organização.",
+				);
+			}
+
+			if (eventsResult.status === "fulfilled") {
+				setOrganizationEvents(eventsResult.value);
+			} else {
+				setEventsError(
+					eventsResult.reason instanceof Error
+						? eventsResult.reason.message
+						: "Não foi possível carregar os eventos desta organização.",
+				);
+			}
 
 			if (!selectedOrganizationId) {
 				router.replace(addLocaleToPathname(`/mainCenter?org=${nextOrganization.organizationId}`, locale));
@@ -167,23 +306,197 @@ export default function DashboardPage() {
 		return () => {
 			active = false;
 		};
-	}, [locale, router, selectedOrganizationId, setUser]);
+	}, [loadOrganizationEvents, locale, router, selectedOrganizationId, setUser]);
 
-	const memberCount = organization?.memberCount ?? organization?.membersCount ?? 0;
-	const userName = currentUser?.displayName?.trim() || "Usuário";
-	const userInitial = userName[0]?.toUpperCase() ?? "U";
-	const organizationDescription = organization?.description?.trim() || "Centro da comunidade selecionada.";
+	useEffect(() => {
+		if (!toast) return;
+
+		const timeoutId = window.setTimeout(() => {
+			setToast(null);
+		}, 4200);
+
+		return () => window.clearTimeout(timeoutId);
+	}, [toast]);
+
 	const organizationAddress = organization?.address?.trim() || "Endereço não informado";
-	const backHref = addLocaleToPathname("/mainDash", locale);
-
-	const stats = useMemo(
-		() => [
-			{ label: "Membros", value: memberCount, icon: Users },
-			{ label: "Função", value: organization?.role ?? "-", icon: ShieldCheck },
-			{ label: "Comunidade", value: organization?.slug ?? organization?.name ?? "-", icon: Building2 },
-		],
-		[memberCount, organization?.name, organization?.role, organization?.slug],
+	const organizationDescription =
+		organization?.description?.trim() || "Centro da comunidade selecionada.";
+	const organizationMemberCount =
+		organization?.memberCount ?? organization?.membersCount ?? organizationMembers.length;
+	const totalParticipants = organizationEvents.reduce(
+		(total, event) => total + event.spotsRemaining,
+		0,
 	);
+	const organizationInitial = organization?.name?.[0]?.toUpperCase() ?? "C";
+	const roleLabel = organization?.role?.replaceAll("_", " ") ?? "Membro";
+	const backHref = addLocaleToPathname("/mainDash", locale);
+	const canManageEvents = ADMIN_ROLES.has(organization?.role?.toUpperCase() ?? "");
+	const centerStats = [
+		{ label: "Membros", value: organizationMemberCount, icon: Users },
+		{ label: "Eventos", value: organizationEvents.length, icon: CalendarDays },
+		{ label: "Participantes", value: totalParticipants, icon: ShieldCheck },
+	];
+	const handleToggleEventInterest = useCallback(
+		async (eventId: EventCardProps["id"]) => {
+			if (!organization || interestPendingEventIds.has(eventId)) return;
+
+			const currentEvent = organizationEvents.find((event) => event.id === eventId);
+			if (!currentEvent) return;
+
+			const wasParticipating = Boolean(currentEvent.isFavorited);
+			const endpoint = `/organizations/${organization.organizationId}/events/${eventId}/interests`;
+
+			setEventsError(null);
+			setInterestPendingEventIds((currentIds) => new Set(currentIds).add(eventId));
+
+			try {
+				if (wasParticipating) {
+					await api.delete(endpoint);
+				} else {
+					await api.post(endpoint, {});
+				}
+
+				setOrganizationEvents((currentEvents) =>
+					currentEvents.map((event) => {
+						if (event.id !== eventId) return event;
+
+						return {
+							...event,
+							isFavorited: !wasParticipating,
+							spotsRemaining: Math.max(
+								0,
+								event.spotsRemaining + (wasParticipating ? -1 : 1),
+							),
+						};
+					}),
+				);
+				setToast({
+					title: wasParticipating
+						? "Você deixou de participar neste evento."
+						: "Você está a participar neste evento.",
+					variant: "success",
+				});
+			} catch (error) {
+				const message =
+					error instanceof Error
+						? error.message
+						: "Não foi possível actualizar a sua participação.";
+				setEventsError(message);
+				setToast({
+					title: "Não foi possível actualizar a participação.",
+					description: message,
+					variant: "error",
+				});
+			} finally {
+				setInterestPendingEventIds((currentIds) => {
+					const nextIds = new Set(currentIds);
+					nextIds.delete(eventId);
+					return nextIds;
+				});
+			}
+		},
+		[interestPendingEventIds, organization, organizationEvents],
+	);
+	const handleDeleteEvent = useCallback(
+		async (eventId: EventCardProps["id"]) => {
+			if (!organization) return;
+
+			setEventsError(null);
+
+			try {
+				await api.delete(
+					`/organizations/${organization.organizationId}/events/${eventId}`,
+				);
+				setOrganizationEvents((currentEvents) =>
+					currentEvents.filter((event) => event.id !== eventId),
+				);
+			} catch (error) {
+				setEventsError(
+					error instanceof Error
+						? error.message
+						: "Não foi possível eliminar este evento.",
+				);
+			}
+		},
+		[organization],
+	);
+	const handleUpdateEvent = useCallback(
+		async (eventId: EventCardProps["id"]) => {
+			if (!organization) return;
+
+			const currentEvent = organizationEvents.find((event) => event.id === eventId);
+			if (!currentEvent) return;
+
+			const title = window.prompt("Novo título do evento:", currentEvent.title);
+			if (title === null) return;
+
+			const description = window.prompt(
+				"Nova descrição do evento:",
+				currentEvent.description,
+			);
+			if (description === null) return;
+
+			const location = window.prompt("Novo local do evento:", currentEvent.location);
+			if (location === null) return;
+
+			const payload: UpdateEventPayload = {};
+			const nextTitle = title.trim();
+			const nextDescription = description.trim();
+			const nextLocation = location.trim();
+
+			if (nextTitle && nextTitle !== currentEvent.title) payload.title = nextTitle;
+			if (nextDescription !== currentEvent.description) payload.description = nextDescription;
+			if (nextLocation !== currentEvent.location) payload.location = nextLocation;
+
+			if (!Object.keys(payload).length) return;
+
+			setEventsError(null);
+
+			try {
+				await api.patch(
+					`/organizations/${organization.organizationId}/events/${eventId}`,
+					payload,
+				);
+				setOrganizationEvents(
+					await loadOrganizationEvents(organization.organizationId),
+				);
+			} catch (error) {
+				setEventsError(
+					error instanceof Error
+						? error.message
+						: "Não foi possível actualizar este evento.",
+				);
+			}
+		},
+		[loadOrganizationEvents, organization, organizationEvents],
+	);
+	const visibleEvents = useMemo(() => {
+		if (canManageEvents) {
+			return organizationEvents.map((event) => ({
+				...event,
+				onEdit: handleUpdateEvent,
+				onDelete: handleDeleteEvent,
+				onParticipate: undefined,
+				onFavorite: undefined,
+			}));
+		}
+
+		return organizationEvents.map((event) => ({
+			...event,
+			onEdit: undefined,
+			onDelete: undefined,
+			onParticipate: handleToggleEventInterest,
+			onFavorite: handleToggleEventInterest,
+			isParticipationPending: interestPendingEventIds.has(event.id),
+		}));
+	}, [
+		canManageEvents,
+		handleDeleteEvent,
+		handleToggleEventInterest,
+		handleUpdateEvent,
+		interestPendingEventIds,
+		organizationEvents,
+	]);
 
 	if (loading) {
 		return (
@@ -207,126 +520,192 @@ export default function DashboardPage() {
 	}
 
 	return (
-		<div className="min-h-screen bg-white text-[#002045]">
-			<header className="h-20 border-b border-gray-200 px-8">
-				<div className="mx-auto flex h-full max-w-7xl justify-between">
+		<div className="min-h-screen bg-[#F7F9FC] text-[#002045]">
+			<FeedbackToast
+				open={Boolean(toast)}
+				title={toast?.title ?? ""}
+				description={toast?.description}
+				variant={toast?.variant}
+				onClose={() => setToast(null)}
+			/>
+			<header className="sticky top-0 z-40 border-b border-white/70 bg-[#F7F9FC]/85 px-4 py-3 backdrop-blur-md sm:px-6 lg:px-8">
+				<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 					<Link href={backHref} className="flex items-center justify-center gap-3">
-						<Image src={Logo} alt="Logo" width={50} height={50} />
-						<span className="font-bold text-[#1E3A8A]">CLARIS</span>
+						<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+							<Image src={Logo} alt="Logo" width={34} height={34} />
+						</span>
+						<span className="font-bold tracking-wide text-[#1E3A8A]">CLARIS</span>
 					</Link>
 					<div className="flex items-center gap-3">
-						<div className="hidden items-center gap-3 rounded-2xl border border-slate-200 px-3 py-2 text-sm text-slate-600 sm:flex">
-							<div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#002045] text-xs font-bold text-white">
-								{userInitial}
-							</div>
-							<div className="leading-tight">
-								<p className="font-semibold text-[#002045]">{userName}</p>
-								<p className="text-xs text-slate-400">{currentUser?.email}</p>
-							</div>
-						</div>
-						<Link href={backHref} className="flex h-10 items-center justify-center rounded-2xl bg-[#002045] px-5 text-sm font-semibold text-white">
+						<Link
+							href={backHref}
+							className="flex h-10 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-[#002045] shadow-sm transition-colors hover:border-[#1E3A8A]/30 hover:text-[#1E3A8A]"
+						>
+							<ChevronLeft size={16} />
 							Voltar
 						</Link>
 					</div>
 				</div>
 			</header>
 
-			<section className="side3 px-8 py-16">
-				<div className="mx-auto flex max-w-7xl flex-col gap-8">
-					<div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-						<div className="max-w-3xl">
-							<div className="flex flex-wrap items-center gap-3">
-								<p className="w-fit rounded-2xl bg-[#FFDEA5] px-4 py-1 text-sm font-bold tracking-wide text-[#5D4201]">
-									{organization.role}
-								</p>
-								<p className="w-fit rounded-2xl bg-white/15 px-4 py-1 text-sm font-semibold text-white backdrop-blur">
-									{organization.slug}
-								</p>
-							</div>
-							<h1 className="mt-6 text-4xl font-bold tracking-wide text-white sm:text-5xl">
-								{organization.name}
-							</h1>
-							<p className="mt-4 max-w-2xl text-lg font-medium leading-8 text-white/90">
-								{organizationDescription}
-							</p>
-							<div className="mt-5 flex gap-3">
-								<MapPin size={24} color="#FFDEA5" />
-								<p className="text-lg font-bold tracking-wide text-white">
-									{organizationAddress}
-								</p>
-							</div>
-						</div>
-
-						<div className="flex items-center gap-4 rounded-2xl bg-white/95 p-4 shadow-sm">
-							{organization.logoUrl ? (
-								<Image
-									src={organization.logoUrl}
-									alt={`Logo de ${organization.name}`}
-									width={64}
-									height={64}
-									unoptimized
-									className="h-16 w-16 rounded-xl object-contain"
-								/>
-							) : (
-								<div className="flex h-16 w-16 items-center justify-center rounded-xl bg-[#002045] text-xl font-bold text-white">
-									{organization.name[0]?.toUpperCase()}
-								</div>
-							)}
+			<main className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
+				<section className="side3 relative overflow-hidden rounded-3xl bg-[#002045] shadow-sm">
+					<div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,32,69,0.96)_0%,rgba(30,58,138,0.84)_54%,rgba(217,119,6,0.38)_100%)]" />
+					<div className="relative grid min-h-[360px] gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:p-10">
+						<div className="flex flex-col justify-between gap-8">
 							<div>
-								<p className="text-sm font-semibold text-slate-500">Organização atual</p>
-								<p className="text-lg font-bold text-[#002045]">{organization.name}</p>
+								<div className="flex flex-wrap items-center gap-3">
+									<span className="inline-flex items-center gap-2 rounded-full bg-[#FFDEA5] px-3 py-1 text-xs font-bold uppercase tracking-wide text-[#5D4201]">
+										<ShieldCheck size={14} />
+										{roleLabel}
+									</span>
+									{organization.slug ? (
+										<span className="rounded-full bg-white/12 px-3 py-1 text-xs font-semibold text-white ring-1 ring-white/20">
+											{organization.slug}
+										</span>
+									) : null}
+								</div>
+
+								<h1 className="mt-6 max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl">
+									{organization.name}
+								</h1>
+								<p className="mt-4 max-w-2xl text-base leading-7 text-white/82 sm:text-lg">
+									{organizationDescription}
+								</p>
+
+								<div className="mt-6 flex max-w-2xl items-start gap-3 rounded-2xl bg-white/10 px-4 py-3 text-white ring-1 ring-white/15 backdrop-blur-sm">
+									<MapPin size={20} className="mt-0.5 shrink-0 text-[#FFDEA5]" />
+									<p className="text-sm font-semibold leading-6 sm:text-base">
+										{organizationAddress}
+									</p>
+								</div>
+							</div>
+
+							{canManageEvents ? (
+								<Button className="h-12 w-fit rounded-2xl bg-[#FFDEA5] px-5 font-bold text-[#5D4201] shadow-sm hover:bg-[#FFD38A]">
+									<Plus size={18} />
+									<span>Criar Evento</span>
+								</Button>
+							) : null}
+						</div>
+
+						<div className="flex flex-col justify-end gap-4">
+							<div className="w-full rounded-3xl bg-white/94 p-5 shadow-xl shadow-slate-950/10 ring-1 ring-white/70 backdrop-blur">
+								<div className="flex items-center gap-4">
+									{organization.logoUrl ? (
+										<Image
+											src={organization.logoUrl}
+											alt={`Logo de ${organization.name}`}
+											width={72}
+											height={72}
+											unoptimized
+											className="h-18 w-18 rounded-2xl object-contain ring-1 ring-slate-200"
+										/>
+									) : (
+										<div className="flex h-18 w-18 items-center justify-center rounded-2xl bg-[#002045] text-2xl font-bold text-white">
+											{organizationInitial}
+										</div>
+									)}
+									<div className="min-w-0">
+										<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
+											Organização atual
+										</p>
+										<p className="mt-1 truncate text-xl font-bold text-[#002045]">
+											{organization.name}
+										</p>
+									</div>
+								</div>
+
+								<div className="mt-5 grid grid-cols-3 gap-2">
+									{centerStats.map((stat) => {
+										const Icon = stat.icon;
+
+										return (
+											<div key={stat.label} className="rounded-2xl bg-[#F7F9FC] p-3 ring-1 ring-slate-200">
+												<div className="flex items-center gap-1.5 text-xs font-semibold text-[#475F83]">
+													<Icon size={14} className="text-[#1E3A8A]" />
+													<span className="truncate">{stat.label}</span>
+												</div>
+												<p className="mt-2 text-2xl font-bold text-[#002045]">{stat.value}</p>
+											</div>
+										);
+									})}
+								</div>
 							</div>
 						</div>
 					</div>
+				</section>
 
-					<div className="grid gap-3 sm:grid-cols-3">
-						{stats.map((stat) => {
-							const Icon = stat.icon;
-							return (
-								<div key={stat.label} className="rounded-2xl border border-white/20 bg-white/95 p-4 shadow-sm">
-									<div className="flex items-center gap-2 text-sm font-semibold text-slate-500">
-										<Icon size={16} className="text-[#D97706]" />
-										{stat.label}
-									</div>
-									<p className="mt-2 truncate text-2xl font-bold text-[#002045]">{stat.value}</p>
-								</div>
-							);
-						})}
+				<div className="flex items-center justify-center">
+					<SearchBar />
+				</div>
+
+				<section className="flex flex-col gap-4">
+					<div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+						<div>
+							<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
+								Agenda da comunidade
+							</p>
+							<h2 className="mt-1 text-3xl font-bold tracking-tight text-[#002045] sm:text-4xl">
+								Próximos Encontros
+							</h2>
+							<p className="mt-3 max-w-2xl text-base leading-7 text-[#475F83]">
+								Junte-se à comunidade {organization.name} em momentos de reflexão, música e serviço.
+							</p>
+						</div>
+						<div className="flex h-11 w-fit items-center gap-2 rounded-2xl bg-white px-4 text-sm font-semibold text-[#1E3A8A] shadow-sm ring-1 ring-slate-200">
+							<CalendarDays size={16} />
+							{organizationEvents.length} eventos
+						</div>
 					</div>
 
-					<Button className="h-13 w-50 rounded-2xl bg-[#FFDEA5] font-bold text-[#5D4201] hover:bg-[#FFDEA5]/90">
-						<span>Criar Evento</span>
-						<ArrowRight size={20} color="#5D4201" />
-					</Button>
-				</div>
-			</section>
+					{eventsError ? (
+						<p className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+							{eventsError}
+						</p>
+					) : visibleEvents.length ? (
+						<EventList events={visibleEvents} initialCount={3} />
+					) : (
+						<div className="flex min-h-48 flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center shadow-sm">
+							<CalendarDays size={32} className="text-[#1E3A8A]/50" />
+							<p className="mt-4 text-lg font-semibold text-[#475F83]">
+								Ainda não existem eventos publicados nesta organização.
+							</p>
+						</div>
+					)}
+				</section>
 
-			<div className="mt-3 flex items-center justify-center">
-				<SearchBar />
-			</div>
-
-			<section className="mx-auto mt-10 flex max-w-7xl flex-col gap-4 px-8">
-				<p className="text-[36px] italic tracking-tight text-[#002045]">Próximos Encontros</p>
-				<p className="max-w-2xl text-lg tracking-wide text-[#002045]">
-					Junte-se à comunidade {organization.name} em momentos de reflexão, música e serviço.
-				</p>
-			</section>
-
-			<section className="mx-auto mt-6 flex max-w-7xl flex-wrap items-center justify-between gap-6 px-8">
-				<EventList events={events} initialCount={3} />
-			</section>
-
-			<section className="mx-auto flex max-w-7xl items-center justify-center px-8 py-10">
-				<CommunityMembers
-					title={`Membros de ${organization.name}`}
-					subtitle={`Você está a entrar como ${organization.role}.`}
-					members={members}
-					maxVisible={5}
-					onViewAll={() => console.log("Ver todos")}
-					onInvite={() => console.log("Convidar")}
-					onMemberClick={(member) => console.log("Clicou:", member.name)}
-				/>
-			</section>
+				<section className="pb-10">
+					<CommunityMembers
+						title={`Membros de ${organization.name}`}
+						subtitle={
+							membersError
+								? `Não foi possível carregar os membros: ${membersError}`
+								: `Você está a entrar como ${roleLabel}.`
+						}
+						members={organizationMembers}
+						maxVisible={6}
+						onViewAll={() => console.log("Ver todos")}
+						onInvite={() => console.log("Convidar")}
+						onMemberClick={(member) => console.log("Clicou:", member.name)}
+					/>
+				</section>
+			</main>
 		</div>
+	);
+}
+
+export default function DashboardPage() {
+	return (
+		<Suspense
+			fallback={
+				<div className="flex min-h-screen items-center justify-center bg-[#F7F9FC] text-[#002045]">
+					<Loader2 className="mr-2 animate-spin" size={20} />
+					<span>A carregar o centro da organização...</span>
+				</div>
+			}
+		>
+			<DashboardPageContent />
+		</Suspense>
 	);
 }

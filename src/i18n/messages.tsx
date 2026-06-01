@@ -3,7 +3,9 @@
 import React, { createContext, useContext, useMemo } from "react";
 import type { Locale } from "./routing";
 
-export type Messages = Record<string, string | Messages>;
+export type Messages = {
+	[key: string]: string | string[] | Messages;
+};
 
 type MessageParams = Record<string, string | number>;
 
@@ -17,7 +19,7 @@ const MessagesContext = createContext<MessagesContextValue | null>(null);
 
 const resolveMessage = (messages: Messages, key: string): string | null => {
 	const parts = key.split(".");
-	let current: Messages | string | undefined = messages;
+	let current: Messages | string | string[] | undefined = messages;
 	for (const part of parts) {
 		if (!current || typeof current !== "object") return null;
 		current = (current as Messages)[part];

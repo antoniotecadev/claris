@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import { useActionState, useRef, useState, useEffect } from "react";
+import { Suspense, useRef, useState, useEffect } from "react";
 import Logo from "@/assets/images/lobo-SE.png"
 import { useSearchParams, useRouter } from "next/navigation";
 import { sendCodeAction } from "@/utils/actionSendCode";
@@ -10,7 +10,7 @@ import  Link  from "next/link"
 import { addLocaleToPathname } from "@/i18n/routing";
 import { useMessages } from "@/i18n/messages";
 
-export default function CodeAuth() {
+function CodeAuthContent() {
 	const { locale, t } = useMessages();
 	const searchParams = useSearchParams();
 	const email = searchParams.get("email") || "";
@@ -122,7 +122,7 @@ export default function CodeAuth() {
 							<span>{t("auth.code.label")}</span>
 						</div>
 						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-[340px]">
-							"{t("auth.code.quote")}" 
+								&quot;{t("auth.code.quote")}&quot;
 						</p>
 					</div>
 
@@ -208,7 +208,7 @@ export default function CodeAuth() {
 						{/* Bottom Quote */}
 						<div className="mt-auto pt-4 w-full border-t border-gray-200 text-center">
 							<p className="text-gray-500 text-sm italic">
-								"{t("auth.code.footerQuote")}" <br/>
+									&quot;{t("auth.code.footerQuote")}&quot; <br/>
 								<span className="text-[#002045] font-medium not-italic block mt-1">{t("auth.code.footerSource")}</span>
 							</p>
 						</div>
@@ -227,5 +227,20 @@ export default function CodeAuth() {
 				<p className="text-gray-400 text-[0.72rem] tracking-wide">© 2024 CLARIS ORGANIZATION</p>
 			</footer>
 		</div>
+	);
+}
+
+export default function CodeAuth() {
+	return (
+		<Suspense
+			fallback={
+				<div className="flex min-h-screen items-center justify-center bg-[#e8eaed] text-[#002045]">
+					<Loader2 className="mr-2 animate-spin" size={20} />
+					<span>A carregar verificação...</span>
+				</div>
+			}
+		>
+			<CodeAuthContent />
+		</Suspense>
 	);
 }

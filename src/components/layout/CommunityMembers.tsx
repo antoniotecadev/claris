@@ -98,21 +98,20 @@ export default function CommunityMembers({
   }, [members, query]);
 
   const visibleMembers = searchOpen ? filtered : members.slice(0, maxVisible);
-  const isSearching = searchOpen;
 
   return (
-    <section className="bg-black rounded-2xl px-7 py-6 w-300 mt-6 ">
+    <section className="mt-2 w-full rounded-3xl bg-white px-5 py-6 shadow-sm ring-1 ring-slate-200 sm:px-7">
 
       {/* ── Header ── */}
       <div className="flex items-start justify-between gap-4 mb-5">
         <div className="flex-1 min-w-0">
-          <h2 className="text-[18px] font-semibold text-[#1a2a3a] leading-tight mb-1">
+          <h2 className="mb-1 text-[20px] font-bold leading-tight text-[#002045]">
             {title}
           </h2>
-          <p className="text-[13px] text-stone-500 leading-snug">{subtitle}</p>
+          <p className="text-[13px] leading-snug text-[#475F83]">{subtitle}</p>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex shrink-0 items-center gap-2">
           {/* Search toggle */}
           <button
             onClick={() => {
@@ -123,7 +122,7 @@ export default function CommunityMembers({
             className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-200
               ${searchOpen
                 ? "bg-[#002045] border-[#002045] text-white"
-                : "bg-white border-stone-200 text-stone-500 hover:border-[#002045] hover:text-[#002045]"
+              : "bg-white border-slate-200 text-slate-500 hover:border-[#002045] hover:text-[#002045]"
               }`}
           >
             {searchOpen ? <X size={15} /> : <Search size={15} />}
@@ -133,10 +132,20 @@ export default function CommunityMembers({
           {onViewAll && (
             <button
               onClick={onViewAll}
-              className="h-9 px-4 rounded-full bg-white border border-stone-200 text-[13px] font-medium text-[#1a2a3a] flex items-center gap-1.5 hover:border-[#002045] hover:text-[#002045] transition-all duration-200"
+              className="hidden h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 text-[13px] font-medium text-[#1a2a3a] transition-all duration-200 hover:border-[#002045] hover:text-[#002045] sm:flex"
             >
               Ver Todos os Membros
               <ChevronRight size={14} />
+            </button>
+          )}
+
+          {onInvite && (
+            <button
+              onClick={onInvite}
+              aria-label="Convidar membro"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition-all duration-200 hover:border-[#002045] hover:text-[#002045]"
+            >
+              <UserPlus size={15} />
             </button>
           )}
         </div>
@@ -156,7 +165,7 @@ export default function CommunityMembers({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Pesquisar por nome ou função..."
-            className="w-full h-10 pl-9 pr-4 rounded-xl bg-white border border-stone-200 text-[13px] text-stone-700 placeholder:text-stone-400 outline-none focus:border-[#002045] transition-colors duration-200"
+            className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-4 text-[13px] text-stone-700 outline-none transition-colors duration-200 placeholder:text-stone-400 focus:border-[#002045]"
           />
           {query && (
             <button

@@ -330,7 +330,14 @@
 				"empty": "Nenhuma igreja disponível."
 			},
 			"joinSuccess": "Pedido enviado com sucesso",
-			"joinError": "Erro ao enviar pedido."
+			"joinError": "Erro ao enviar pedido.",
+			"openOrganizationError": "Erro ao abrir a organização.",
+			"joinConfirm": {
+				"title": "Participar em {{name}}?",
+				"description": "Se aceitar, entrarás nesta igreja, verás os eventos publicados, farás parte da comunidade e outras pessoas poderão interagir contigo.",
+				"confirm": "Aceitar",
+				"joining": "A entrar..."
+			}
 		},
 		"center": {
 			"hero": {

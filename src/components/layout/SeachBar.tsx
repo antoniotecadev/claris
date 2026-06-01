@@ -3,28 +3,28 @@ import { Search, SlidersHorizontal } from 'lucide-react'; // Importa os ícones 
 
 export default function SearchBar() {
   return (
-    <div className="flex items-center w-full max-w-5xl bg-white p-3 rounded-2xl shadow-xl border border-gray-100">
+    <div className="flex w-full max-w-5xl flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-3 shadow-sm sm:flex-row sm:items-center">
       
-      <div className="flex items-center flex-[1.5] px-3">
+      <div className="flex min-w-0 flex-[1.5] items-center px-3">
         {/* Ícone de Busca limpo e estilizado com Tailwind */}
-        <Search className="w-5 h-5 text-gray-400 mr-3" />
+        <Search className="mr-3 h-5 w-5 shrink-0 text-[#1E3A8A]" />
         
         <input 
           type="text" 
           placeholder="Buscar por nome do evento, tema ou local..." 
-          className="w-full text-sm text-gray-600 bg-transparent outline-none placeholder-gray-400"
+          className="h-11 min-w-0 w-full bg-transparent text-sm text-[#002045] outline-none placeholder:text-slate-400"
         />
       </div>
 
-      <div className="flex-1 min-w-[50px]" />
+      <div className="hidden min-w-[50px] flex-1 sm:block" />
 
-      <button className="flex items-center bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium text-sm px-4 py-2.5 rounded-xl mx-2 transition-colors">
+      <button className="flex h-11 items-center justify-center rounded-2xl bg-slate-50 px-4 text-sm font-semibold text-[#475F83] transition-colors hover:bg-slate-100">
         {/* Substituindo também o ícone do botão de filtros por um limpo */}
-        <SlidersHorizontal className="w-4 h-4 mr-2 text-gray-500" />
+        <SlidersHorizontal className="mr-2 h-4 w-4 text-[#1E3A8A]" />
         Filtros
       </button>
 
-      <button className="bg-[#001D4A] hover:bg-[#002d72] text-white font-medium text-sm px-6 py-2.5 rounded-xl transition-colors">
+      <button className="h-11 rounded-2xl bg-[#002045] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#1E3A8A]">
         Explorar
       </button>
 

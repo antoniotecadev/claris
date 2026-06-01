@@ -2,7 +2,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { selectOrganization } from "@/utils/actionMain";
 import { getOrganizations } from "@/utils/actionMain";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { addLocaleToPathname } from "@/i18n/routing";
 import { useMessages } from "@/i18n/messages";
 
@@ -14,7 +14,7 @@ interface Organization {
   role: string;
 }
 
-export default function SelectOrganizationPage() {
+function SelectOrganizationContent() {
   const { locale, t } = useMessages();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -76,5 +76,13 @@ export default function SelectOrganizationPage() {
         </ul>
       </div>
     </div>
+  );
+}
+
+export default function SelectOrganizationPage() {
+  return (
+    <Suspense fallback={<p className="mt-10 text-center">A carregar...</p>}>
+      <SelectOrganizationContent />
+    </Suspense>
   );
 }

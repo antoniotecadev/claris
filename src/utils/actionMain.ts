@@ -3,6 +3,30 @@ import { api } from "@/lib/api";
 import { setAuthToken } from "@/lib/auth-cookies";
 import type { OrganizationOptionsResponse, VerifyCodeResponse } from "@/types/auth.types";
 
+type TokenResponse = {
+  access_token?: string;
+};
+
+export type SwitchedOrganizationUser = {
+  id?: string;
+  userId?: string;
+  displayName?: string | null;
+  email?: string | null;
+  avatarUrl?: string | null;
+  token?: TokenResponse;
+};
+
+type SwitchOrganizationResponse = {
+  success?: boolean;
+  user?: SwitchedOrganizationUser;
+  token?: TokenResponse;
+};
+
+type CurrentUserResponse = {
+  profile?: SwitchedOrganizationUser;
+  user?: SwitchedOrganizationUser;
+};
+
 export async function getOrganizations(selectionToken: string) {
   if (!selectionToken) return null;
 
@@ -34,9 +58,10 @@ export async function selectOrganization(selectionToken: string, organizationId:
 
 export async function getMyOrganizations() {
   try {
-    const res = await api.get<any>("/organizations/my");
+    const res = await api.get<{ result?: unknown; organizations?: unknown[] } | unknown[]>("/organizations/my");
     // backend likely returns an array of organizations
-    return res?.organizations ?? res;
+    if (Array.isArray(res)) return res;
+    return res?.organizations ?? res?.result ?? [];
   } catch (error: unknown) {
     console.error("Erro ao buscar minhas organizações:", error instanceof Error ? error.message : error);
     return null;
@@ -45,7 +70,9 @@ export async function getMyOrganizations() {
 
 export async function switchOrganization(organizationId: string) {
   try {
-    const res = await api.post<any>(`/organizations/switch/${organizationId}`, {});
+    const res = await api.post<
+      ({ result?: SwitchOrganizationResponse } & SwitchOrganizationResponse)
+    >(`/organizations/switch/${organizationId}`, {});
     const data = res?.result ?? res;
     const accessToken = data?.user?.token?.access_token ?? data?.token?.access_token;
 
@@ -62,8 +89,9 @@ export async function switchOrganization(organizationId: string) {
 
 export async function getCurrentUser() {
   try {
-    const res = await api.get<any>("/user/me");
-    return res?.profile ?? res?.user ?? res;
+    const res = await api.get<({ result?: CurrentUserResponse } & CurrentUserResponse)>("/user/me");
+    const data = res?.result ?? res;
+    return data?.profile ?? data?.user ?? null;
   } catch (error: unknown) {
     console.error("Erro ao buscar usuário atual:", error instanceof Error ? error.message : error);
     return null;

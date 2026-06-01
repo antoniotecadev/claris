@@ -32,13 +32,6 @@ interface OrganizationRef {
 	createdAt: string | Date;
 }
 
-type UserStoreState = {
-	user: {
-		displayName?: string | null;
-		email?: string | null;
-	} | null;
-};
-
 export default function MainDashClient() {
 	const { locale, t } = useMessages();
 	const router = useRouter();
@@ -48,8 +41,8 @@ export default function MainDashClient() {
 	const [loadingChurches, setLoadingChurches] = useState(false);
 	const [switchingOrganizationId, setSwitchingOrganizationId] = useState<string | null>(null);
 	const [searchTerm, setSearchTerm] = useState("");
-	const user = useUserStore((state: UserStoreState) => state.user);
-	const setUser = useUserStore((state: any) => state.setUser);
+	const user = useUserStore((state) => state.user);
+	const setUser = useUserStore((state) => state.setUser);
 	async function requestToJoin(organizationId: string) {
 		try {
 			await api.post(`/organizations/${organizationId}/memberships/request`, {});
@@ -115,13 +108,14 @@ export default function MainDashClient() {
 		try {
 			const data = await switchOrganization(organizationId);
 			const switchedUser = data?.user;
+			const switchedUserId = switchedUser?.id ?? switchedUser?.userId;
 
-			if (switchedUser) {
+			if (switchedUserId && switchedUser?.displayName && switchedUser?.email) {
 				setUser({
-					id: switchedUser.id ?? switchedUser.userId,
+					id: switchedUserId,
 					displayName: switchedUser.displayName,
 					email: switchedUser.email,
-					avatarUrl: switchedUser.avatarUrl,
+					avatarUrl: switchedUser.avatarUrl ?? undefined,
 				});
 			}
 

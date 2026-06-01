@@ -29,7 +29,6 @@ model User {
   memberships     Membership[]
   messages        Message[]
   eventInterests  EventInterest[]
-  eventComments   EventComment[]
   emailLoginCodes EmailLoginCode[]
 }
 
@@ -88,7 +87,6 @@ model Event {
   createdAt      DateTime        @default(now())
   organization   Organization    @relation(fields: [organizationId], references: [id])
   interests      EventInterest[]
-  comments       EventComment[]
 }
 
 // EventInterest: representa o interesse de um membro em participar de um evento.
@@ -102,20 +100,6 @@ model EventInterest {
 
   @@unique([eventId, userId])
   @@index([userId])
-}
-
-// EventComment: representa comentários adicionados por membros dentro de um evento.
-model EventComment {
-  id        String   @id @default(cuid())
-  eventId   String
-  authorId  String
-  content   String
-  createdAt DateTime @default(now())
-  event     Event    @relation(fields: [eventId], references: [id])
-  author    User     @relation(fields: [authorId], references: [id])
-
-  @@index([eventId])
-  @@index([authorId])
 }
 
 // Message: representa as mensagens enviadas pelos usuários, com campos para o conteúdo, data de criação e relacionamentos com o remetente e a organização.

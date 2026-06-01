@@ -551,7 +551,7 @@ function DashboardPageContent() {
 			<main className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
 				<section className="side3 relative overflow-hidden rounded-3xl bg-[#002045] shadow-sm">
 					<div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,32,69,0.96)_0%,rgba(30,58,138,0.84)_54%,rgba(217,119,6,0.38)_100%)]" />
-					<div className="relative grid min-h-[360px] gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:p-10">
+					<div className="relative grid min-h-90 gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:p-10">
 						<div className="flex flex-col justify-between gap-8">
 							<div>
 								<div className="flex flex-wrap items-center gap-3">

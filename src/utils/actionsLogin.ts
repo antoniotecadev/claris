@@ -24,7 +24,7 @@ export async function loginAction(_prevState: unknown, formData: FormData): Prom
 			redirectUrl = "/mainDash";
 		}
 		else if (data?.requireEmailCode) {
-			redirectUrl = `/codeAuth`;
+			redirectUrl = `/codeAuth?email=${encodeURIComponent(formData.get('email') as string)}`;
 		}
 		else if (data?.requireEmailVerification) {
 			if (!data.email) {

@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import Logo from "@/assets/images/lobo-SE.png";
 import Google from "@/assets/images/SVG.png";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Loader2, AlertCircle, Sparkles } from "lucide-react";
 import { registerAction } from "@/utils/actionsRegister";
-import { use, useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
 import { useUserStore } from "@/stores/userStore";
-import { useRouter } from 'next/navigation'
 
 export default function RegisterUser() {
 	const initialState = {
@@ -28,76 +29,97 @@ export default function RegisterUser() {
 	};
 
 	const setUser = useUserStore((state: { setUser: any; }) => state.setUser);
-	const router = useRouter()
+	const router = useRouter();
 
 	const [state, formAction, pending] = useActionState(registerAction, initialState);
-	useEffect(() =>{
-		
-		if(state.success && state.user) {
+	
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const [focusedField, setFocusedField] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (state.success && state.user) {
 			setUser(state.user);
-			router.push('/mainDash')
-		}	
-	}, [state]);
+			router.push('/mainDash');
+		}
+	}, [state, router, setUser]);
 
 	return (
-		<div className="bg-[#E5E5E5]">
-			<div className="container m-auto flex flex-col justify-center items-center h-screen">
-				<section className="flex w-7xl h-291.5">
-					{/* Lado esquerdo */}
-					<div className="side2 w-10 h-full flex justify-between flex-col p-5">
-						<div className="flex gap-2 p-5 items-center">
-							<Image src={Logo} alt="" className="w-20 h-full" />
-							<p className="text-white text-4xl">CLARIS</p>
+		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
+			{/* ===== MAIN CARD ===== */}
+			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
+
+				{/* ===== LEFT PANEL — Image + Quote ===== */}
+				<div className="side2 bg-amber-700 w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-75 md:min-h-175 self-stretch">
+					{/* Dark overlay */}
+					<div className="absolute inset-0 bg-linear-to-b from-[rgba(0,32,69,0.15)] to-[rgba(0,32,69,0.65)] pointer-events-none z-0" />
+
+					{/* Logo */}
+					<div className="flex items-center gap-2.5 relative z-10">
+						<div className="w-9 h-10.5 flex items-center justify-center">
+							<Image src={Logo} alt="Claris Logo" className="w-full h-full object-contain" />
 						</div>
-						<div className="flex flex-col gap-3 items-center justify-center">
-							<p className="text-[#FFDEA5] tracking-wide font-bold text-[14px]">Um novo amanhecer</p>
-							<p className="italic text-white text-[60px] text-center font-serif mb-2">
-								"Comece a sua jornada sagrada."
-							</p>
-							<p className="text-[#86A0CD] text-[18px] text-center">
-								Junte-se a uma comunidade global dedicada à reflexão silenciosa,
-								ao ministério digital e ao crescimento espiritual.
-							</p>
-						</div>
-						<div />
+						<p className="text-white text-2xl font-semibold tracking-wider">CLARIS</p>
 					</div>
-					<div className="w-full h-full flex flex-col py-20 items-center gradientes">
-						<div className="w-159 flex flex-col">
-							<p className="text-[36px] text-[#002045] font-serif italic mb-4">Criar uma conta.</p>
-							<p className="text-[#43474E] text-[16px] mb-12">
+
+					{/* Inspirational quote */}
+					<div className="flex flex-col items-center gap-3.5 text-center relative z-10">
+						<div className="inline-flex items-center gap-1.5 bg-[rgba(255,222,165,0.2)] border border-[rgba(255,222,165,0.35)] backdrop-blur-sm px-3.5 py-1.5 rounded-full text-[#ffdea5] text-xs tracking-wide animate-pulse">
+							<Sparkles size={14} />
+							<span>Um novo amanhecer</span>
+						</div>
+						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-85 mb-2">
+							"Comece a sua jornada sagrada."
+						</p>
+						<p className="text-[#86A0CD] text-sm md:text-base text-center">
+							Junte-se a uma comunidade global dedicada à reflexão silenciosa,
+							ao ministério digital e ao crescimento espiritual.
+						</p>
+					</div>
+
+					{/* Decorative dots */}
+					<div className="flex gap-2 justify-center relative z-10">
+						<span className="w-6 h-2 rounded bg-[#ffdea5] transition-all duration-300" />
+						<span className="w-2 h-2 rounded-full bg-white/30 transition-all duration-300" />
+						<span className="w-2 h-2 rounded-full bg-white/30 transition-all duration-300" />
+					</div>
+				</div>
+
+				{/* ===== RIGHT PANEL — Form ===== */}
+				<div className="w-full md:w-[55%] flex flex-col justify-center gradientes p-7 md:p-10 self-stretch">
+					<div className="w-full max-w-100 mx-auto flex flex-col">
+						{/* Heading */}
+						<div className="mb-6">
+							<p className="text-[1.65rem] font-bold text-gray-900 font-serif italic mb-1.5">
+								Criar uma conta.
+							</p>
+							<p className="text-gray-500 text-[0.9rem] leading-relaxed">
 								Entre no Santuário Digital. O seu caminho começa aqui.
 							</p>
-							<a href="http://localhost:3001/v1/api/auth/google"
-								className="
-									p-4
-									bg-white
-									text-black
-									flex gap-2
-									items-center justify-center
-									rounded-2xl
-									mb-10
-									border border-gray-200
-									transition-all duration-300
-									hover:bg-gray-50
-									hover:shadow-md
-									hover:-translate-y-0.5
-									hover:cursor-pointer
-									active:scale-[0.98]
-								"
-							>
-								<Image src={Google} alt="Google" className="w-5 h-5" />
-								<p>Sign up with Google</p>
-							</a>
+						</div>
 
-							<div className="flex gap-3 items-center justify-between mb-8">
-								<div className="w-54 h-px bg-gray-400" />
-								<p className="text-gray-500 text-[12px]">OR USE EMAIL</p>
-								<div className="w-54 h-px bg-gray-400" />
-							</div>
+						{/* Google button */}
+						<a
+							href="http://localhost:3001/v1/api/auth/google"
+							className="flex items-center justify-center gap-2.5 px-4 py-3 border border-black/8 rounded-[14px] bg-white/85 backdrop-blur-sm text-gray-800 text-sm font-medium cursor-pointer transition-all duration-300 ease-out no-underline mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
+						>
+							<Image src={Google} alt="Google" width={18} height={18} />
+							<span>Sign up with Google</span>
+						</a>
 
-							<form action={formAction} className="flex flex-col w-full">
-								<label htmlFor="displayName" className="mb-1 text-[#43474E]">
-									Nome completo
+						{/* Divider */}
+						<div className="flex items-center gap-4 mb-5">
+							<div className="flex-1 h-px bg-[#c9c9c9]" />
+							<span className="text-[0.65rem] text-gray-400 tracking-widest font-medium whitespace-nowrap">OR USE EMAIL</span>
+							<div className="flex-1 h-px bg-[#c9c9c9]" />
+						</div>
+
+						{/* Form */}
+						<form action={formAction} className="flex flex-col w-full">
+							{/* Nome completo */}
+							<div className={`mb-4 transition-transform duration-200 ${focusedField === "displayName" ? "translate-x-0.5" : ""}`}>
+								<label htmlFor="displayName" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
+									NOME COMPLETO
 								</label>
 								<input
 									type="text"
@@ -106,127 +128,184 @@ export default function RegisterUser() {
 									value={fields.displayName}
 									onChange={handleChange}
 									required
-									placeholder="ex. Delson Pedro"
-									className="text-[#6B7280] bg-white rounded-2xl h-13.5 p-4 mb-4"
+									placeholder="Delson Pedro"
+									className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									onFocus={() => setFocusedField("displayName")}
+									onBlur={() => setFocusedField(null)}
 								/>
-								<div className="flex flex-col mb-4">
-									<label htmlFor="email" className="mb-1 text-[#43474E]">E-mail</label>
-									<input
-										type="email"
-										id="email"
-										name="email"
-										value={fields.email}
+							</div>
+
+							{/* E-mail */}
+							<div className={`mb-4 transition-transform duration-200 ${focusedField === "email" ? "translate-x-0.5" : ""}`}>
+								<label htmlFor="email" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
+									E-MAIL
+								</label>
+								<input
+									type="email"
+									id="email"
+									name="email"
+									value={fields.email}
+									onChange={handleChange}
+									required
+									placeholder="ex. delson@church.com"
+									className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									onFocus={() => setFocusedField("email")}
+									onBlur={() => setFocusedField(null)}
+									autoComplete="email"
+								/>
+							</div>
+
+							{/* Gênero e Data de Nascimento */}
+							<div className="flex gap-4 mb-4">
+								<div className={`flex flex-col flex-1 transition-transform duration-200 ${focusedField === "gender" ? "translate-x-0.5" : ""}`}>
+									<label htmlFor="gender" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">GÉNERO</label>
+									<select
+										id="gender"
+										name="gender"
+										value={fields.gender}
 										onChange={handleChange}
 										required
-										placeholder="ex. delson@church.com"
-										className="text-[#6B7280] bg-white rounded-2xl h-13.5 p-4"
+										className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)] appearance-none"
+										onFocus={() => setFocusedField("gender")}
+										onBlur={() => setFocusedField(null)}
+									>
+										<option value="" disabled hidden>Selecione...</option>
+										<option value="masculino">Masculino</option>
+										<option value="feminino">Feminino</option>
+									</select>
+								</div>
+
+								<div className={`flex flex-col flex-1 transition-transform duration-200 ${focusedField === "birthDate" ? "translate-x-0.5" : ""}`}>
+									<label htmlFor="birthDate" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">DATA Nasc.</label>
+									<input
+										type="date"
+										id="birthDate"
+										name="birthDate"
+										value={fields.birthDate}
+										onChange={handleChange}
+										required
+										className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+										onFocus={() => setFocusedField("birthDate")}
+										onBlur={() => setFocusedField(null)}
 									/>
 								</div>
-								<div className="flex gap-5 mb-4">
-									<div className="flex flex-col w-[50%]">
-										<label htmlFor="gender" className="mb-1 text-[#43474E]">Género</label>
-										<select
-											id="gender"
-											name="gender"
-											value={fields.gender}
-											onChange={handleChange}
-											className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4"
-										>
-											<option value="" disabled hidden>
-												Selecione o género
-											</option>
-											<option value="masculino">Masculino</option>
-											<option value="feminino">Feminino</option>
-										</select>
-									</div>
+							</div>
 
-									<div className="flex flex-col w-[50%]">
-										<label htmlFor="birthDate" className="mb-1 text-[#43474E]">Data de Nascimento</label>
-										<input
-											type="date"
-											id="birthDate"
-											name="birthDate"
-											value={fields.birthDate}
-											onChange={handleChange}
-											className="text-[#6B7280] bg-white rounded-2xl h-13.5 p-4"
-										/>
-									</div>
-								</div>
-
-								{/* Senha */}
-								<div className="flex flex-col mb-2">
-									<label htmlFor="password" className="mb-1 text-[#43474E]">Senha</label>
+							{/* Senha */}
+							<div className={`mb-4 transition-transform duration-200 ${focusedField === "password" ? "translate-x-0.5" : ""}`}>
+								<label htmlFor="password" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">SENHA</label>
+								<div className="relative">
 									<input
-										type="password"
+										type={showPassword ? "text" : "password"}
 										id="password"
 										name="password"
 										required
-										placeholder="........"
-										className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4"
+										placeholder="••••••••"
+										className="w-full px-4 py-2.5 pr-12 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+										onFocus={() => setFocusedField("password")}
+										onBlur={() => setFocusedField(null)}
+										autoComplete="new-password"
 									/>
-									<p className="text-[#74777F] text-[11px] mt-1 mb-3">
-										Deve ter pelo menos 6 caracteres
-									</p>
+									<button
+										type="button"
+										onClick={() => setShowPassword(!showPassword)}
+										className="absolute right-3.5 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-400 p-1 flex items-center justify-center transition-colors duration-200 rounded-md hover:text-[#002045] hover:bg-[rgba(0,32,69,0.06)]"
+										aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+									>
+										{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+									</button>
 								</div>
+								<p className="text-gray-400 text-[0.7rem] mt-1.5 ml-1">Deve ter pelo menos 6 caracteres</p>
+							</div>
 
-								{/* Confirmar Senha */}
-								<div className="flex flex-col mb-6">
-									<label htmlFor="confirmPassword" className="mb-1 text-[#43474E]">
-										Confirmar senha
-									</label>
+							{/* Confirmar Senha */}
+							<div className={`mb-5 transition-transform duration-200 ${focusedField === "confirmPassword" ? "translate-x-0.5" : ""}`}>
+								<label htmlFor="confirmPassword" className="block mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
+									CONFIRMAR SENHA
+								</label>
+								<div className="relative">
 									<input
-										type="password"
+										type={showConfirmPassword ? "text" : "password"}
 										id="confirmPassword"
 										name="confirmPassword"
 										required
-										placeholder="........"
-										className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4"
+										placeholder="••••••••"
+										className="w-full px-4 py-2.5 pr-12 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+										onFocus={() => setFocusedField("confirmPassword")}
+										onBlur={() => setFocusedField(null)}
+										autoComplete="new-password"
 									/>
+									<button
+										type="button"
+										onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+										className="absolute right-3.5 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-400 p-1 flex items-center justify-center transition-colors duration-200 rounded-md hover:text-[#002045] hover:bg-[rgba(0,32,69,0.06)]"
+										aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+									>
+										{showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+									</button>
 								</div>
+							</div>
 
-								{/* Erro */}
-								{state?.error && (
-									<p className="text-sm text-red-600 font-medium mb-4">{state.error}</p>
+							{/* Termos e Condições */}
+							<div className="flex items-start gap-2 mb-5">
+								<input
+									type="checkbox"
+									id="terms"
+									name="terms"
+									required
+									className="mt-1 cursor-pointer w-4 h-4 text-[#002045] bg-gray-100 border-gray-300 rounded focus:ring-[#002045]"
+								/>
+								<label htmlFor="terms" className="text-[0.75rem] text-gray-600 cursor-pointer select-none leading-relaxed">
+									Estou de acordo com os{" "}
+									<Link href={"/termos-condicoes"} className="text-[#002045] font-semibold hover:underline">
+										termos e condições
+									</Link>{" "}
+									e a{" "}
+									<Link href={"/termos-condicoes"} className="text-[#002045] font-semibold hover:underline">
+										política de privacidade
+									</Link>.
+								</label>
+							</div>
+
+							{/* Erro */}
+							{state?.error && (
+								<div className="flex items-center gap-2 px-3.5 py-2.5 bg-red-50 border border-red-200 rounded-xl mb-4 animate-shake" role="alert">
+									<AlertCircle size={16} className="text-red-600 shrink-0" />
+									<p className="text-red-600 text-[0.85rem] font-medium">{state.error}</p>
+								</div>
+							)}
+
+							{/* Botão */}
+							<button
+								type="submit"
+								disabled={pending}
+								className="flex items-center justify-center gap-2 py-3.5 border-none rounded-[14px] bg-[#002045] text-white text-[0.85rem] font-semibold tracking-wide cursor-pointer transition-all duration-300 ease-out mb-6 hover:bg-[#003066] hover:shadow-[0_6px_24px_rgba(0,32,69,0.25)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,32,69,0.15)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+							>
+								{pending ? (
+									<>
+										<Loader2 size={18} className="animate-spin" />
+										<span>A criar conta...</span>
+									</>
+								) : (
+									<>
+										<span>CRIAR CONTA</span>
+										<ArrowRight size={18} />
+									</>
 								)}
+							</button>
 
-								{/* Botão */}
-								<button
-									type="submit"
-									disabled={pending}
-									className="bg-[#002045] flex justify-center items-center gap-4 text-white h-14 rounded-2xl mb-10
-											transition-all duration-300  hover:bg-[#003066]
-											hover:-translate-y-0.5 hover:shadow-lg
-											active:scale-[0.98 hover:cursor-pointer disabled:opacity-60
-											disabled:hover:translate-y-0  disabled:hover:shadow-none "
-								>
-									<p>{pending ? "A criar conta..." : "CRIAR CONTA"}</p>
-									<ArrowRight size={20} />
-								</button>
-
-								<div className="flex justify-between items-center">
-									<div className="w-35 h-px bg-gray-400" />
-									<p className="text-gray-500 text-[12px]">
-										Já tens uma conta?{" "}
-										<a href="/login" className="text-[#002045]">Entrar</a>
-									</p>
-									<div className="w-35 h-px bg-gray-400" />
-
-								</div>
-							</form>
-						</div>
+							<div className="flex items-center gap-4 mb-2">
+								<div className="flex-1 h-px bg-[#c9c9c9]" />
+								<p className="text-gray-500 text-sm">
+									Já tens uma conta?{" "}
+									<Link href="/login" className="text-[#002045] font-semibold no-underline ml-1 transition-all duration-200 hover:text-[#003066] hover:underline">
+										Entrar
+									</Link>
+								</p>
+								<div className="flex-1 h-px bg-[#c9c9c9]" />
+							</div>
+						</form>
 					</div>
-				</section>
-
-				{/* Footer */}
-				<div className="flex justify-around p-3 sm:w-7xl bg-white tracking-wide w-full text-[#74777F] items-center h-27.25">
-					<p className="text-[#002045] italic">CLARIS</p>
-					<div className="flex gap-4">
-						<p>PRIVACIDADE</p>
-						<p>TERMOS</p>
-						<p>SUPORTE</p>
-						<p>CONTACTOS</p>
-					</div>
-					<p>© 2024 CLARIS ORGANIZATION</p>
 				</div>
 			</div>
 		</div>

@@ -12,24 +12,16 @@ export async function sendCodeAction(_prevState: unknown, code: string, email: s
 	let redirecionarUrl: string | null = null;
 
 	try {
-		const res = await api.post<{ result?: VerifyCodeResponse } & VerifyCodeResponse>("/auth/email/verify", { email, code });
+		console.log("Enviando código para verificação -> ", { email, code });
+		const res = await api.post<{ result?: VerifyCodeResponse } & VerifyCodeResponse>("/auth/email/verify-login", { email, code });
 		const data = res?.result ?? res;
-		console.log("Resposta da verificação -> ", data);
+
 
 		const accessToken = data?.user?.token?.access_token ?? data?.token?.access_token;
 		if (accessToken) {
 			await setAuthToken(accessToken);
 			redirecionarUrl = "/mainDash";
-		} else if (data?.requireOrganizationSelection) {
-			if (!data.selectionToken) {
-				return { success: false, error: "Token de seleção não informado pelo servidor." };
-			}
-			redirecionarUrl = `/select-organization?selectionToken=${encodeURIComponent(
-				data.selectionToken,
-			)}`;
-		} else if (data?.success) {
-			redirecionarUrl = "/mainDash";
-
+		
 		} else {
 			return { success: false, error: "Resposta inesperada do servidor." };
 		}

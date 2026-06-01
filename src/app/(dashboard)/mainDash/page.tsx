@@ -16,6 +16,8 @@ import { ModeToggle } from "@/components/layout/ModeToggle";
 import LanguageSelector from "@/components/layout/LanguageSelector";
 
 interface OrganizationRef {
+	id: string;
+	churchId: string;
 	organizationId: string;
 	name: string;
 	slug: string;
@@ -23,6 +25,8 @@ interface OrganizationRef {
 	role: string;
 	description: string;
 	address: string;
+	memberCount: number;
+	createdAt: string | Date;
 }
 
 interface Church {
@@ -38,21 +42,15 @@ interface Props {
 	churches: Church[];
 }
 
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
-	return (
-		<Link
-			href={href}
-			className="text-[#475569] border-b-2 border-transparent hover:text-[#D97706] hover:font-bold hover:border-[#D97706] transition-all duration-300 text-center"
-		>
-			{children}
-		</Link>
-	);
-}
+
 
 export default function MainDashClient() {
 	const [organizations, setOrganizations] = useState<OrganizationRef[]>([]);
 	const [churchOptions, setChurchOptions] = useState<ChurchOption[]>([]);
+	const [churches, setChurches] = useState<OrganizationRef[]>([]);
+	const [organizationLength, setOrganizationLength] = useState(0);
 	const [loadingChurches, setLoadingChurches] = useState(false);
+	const [searchTerm, setSearchTerm] = useState("");
 	const user = useUserStore((state: { user: any; }) => state.user);
 	async function requestToJoin(organizationId: string) {
 		try {
@@ -64,6 +62,29 @@ export default function MainDashClient() {
 	}
 
 	const [settingsOpen, setSettingsOpen] = useState(false);
+	const userOrganizationIds = new Set(
+		organizations.map((organization) => organization.organizationId ?? organization.id),
+	);
+	const availableChurches = churches.filter((church) => {
+		const churchId = church.organizationId ?? church.id;
+		return !userOrganizationIds.has(churchId);
+	});
+
+	const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+	const matchesSearchTerm = (value: string | null | undefined) => {
+		if (!normalizedSearchTerm) return true;
+		return (value ?? "").toLowerCase().includes(normalizedSearchTerm);
+	};
+
+	const filteredOrganizations = organizations;
+
+	const filteredAvailableChurches = availableChurches.filter((church) => {
+		return (
+			matchesSearchTerm(church.name) ||
+			matchesSearchTerm(church.slug) ||
+			matchesSearchTerm(church.description)
+		);
+	});
 
 	const loadChurches = async () => {
 		if (loadingChurches || churchOptions.length > 0) return;
@@ -82,7 +103,11 @@ export default function MainDashClient() {
 		try {
 			const res = await api.get<{ organizations: OrganizationRef[] }>("/organizations/my");
 			setOrganizations(res.organizations ?? []);
-			console.log(res.organizations);
+			const res2 = await api.get<{ organizations: OrganizationRef[]; organizationLength?: number }>("/organizations");
+			const orgs = res2.organizations ?? [];
+			setChurches(orgs);
+			setOrganizationLength(res2.organizationLength ?? orgs.length);
+			console.log("My Organizations:", res);
 		} finally {
 			setLoadingChurches(false);
 		}
@@ -93,8 +118,7 @@ export default function MainDashClient() {
 		loadOrganizations();
 	}, []);
 	return (
-		
-		<div className="bg-white dark:bg-neutral-800">
+		<div className="bg-white">
 			<SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
 			<div className="container m-auto">
 				{/* Header */}
@@ -102,19 +126,19 @@ export default function MainDashClient() {
 					<div className="items-center justify-center flex gap-9">
 						<div className="flex justify-center items-center gap-2">
 							<Image src={icon} alt="Logo" width={30} />
-							<h1 className="text-2xl text-[#1E3A8A] dark:text-white	">CLARIS</h1>
+							<h1 className="text-2xl text-[#1E3A8A]">CLARIS</h1>
 						</div>
 
 					</div>
 					<div className="flex justify-between gap-3">
 						<div className="flex items-center justify-center">
-							<Bell size={14} className="text-[#1E3A8A] dark:text-white w-6 h-7" />
+							<Bell size={14} className="text-[#1E3A8A] w-6 h-7" />
 						</div>
 						<button
 							onClick={() => setSettingsOpen(true)}
 							className="flex items-center justify-center hover:cursor-pointer "
 						>
-							<Settings size={14} className="text-[#1E3A8A] dark:text-white w-6 h-7 cursor-pointer hover:text-[#D97706] transition-colors" />
+							<Settings size={14} className="text-[#1E3A8A] w-6 h-7 cursor-pointer hover:text-[#D97706] transition-colors" />
 						</button>
 						<div className="flex items-center justify-center">
 							<ModeToggle />
@@ -133,45 +157,40 @@ export default function MainDashClient() {
 				</header>
 
 				<nav className="flex flex-col mt-10">
-					<p className="text-[#1A1C1C] dark:text-white tracking-wide text-[12px]">BEM VINDO DE VOLTA</p>
-					<p className="text-[#002045] dark:text-white text-[72px] font-bold">
+					<p className="text-[#1A1C1C] tracking-wide text-[12px]">BEM VINDO DE VOLTA</p>
+					<p className="text-[#002045] text-[72px] font-bold">
 						Escolhe a sua Igreja
 					</p>
 
 					<div className="flex items-center justify-between">
-						<p className="text-[#475F83] dark:text-white text-[20px] w-120">
+						<p className="text-[#475F83] text-[20px] w-120">
 							Reconecte-se com o seu lar espiritual ou explore novas comunidades de fé e devoção.
 						</p>
-						<div className="flex bg-[#F3F3F3] rounded-2xl p-1 text-[#74777F] items-center justify-center">
-							<input
-								type="text"
-								placeholder="encontrar a tua igreja..."
-								className="bg-[#F3F3F3] w-62.5 h-5.6 focus:outline-none px-2"
-							/>
-							<button className="bg-[#1E3A8A] text-white rounded-2xl px-4 py-2 ml-2">
-								Pesquisar
-							</button>
-						</div>
 					</div>
 
 					{/* Minhas igrejas */}
 					<div className="flex mt-10 items-center justify-start">
-						<p className="text-[#002045] dark:text-white font-semibold mr-4">MINHAS IGREJAS</p>
+						<p className="text-[#002045] font-semibold mr-4">MINHAS IGREJAS</p>
 						<div className="h-px bg-zinc-300 flex-1" />
 					</div>
 
 					{organizations.length === 0 ? (
 						<div className="py-16 flex flex-col items-center justify-center">
-							<p className="text-[#475F83] dark:text-white text-lg">Não pertence a nenhuma igreja ainda.</p>
+							<p className="text-[#475F83] text-lg">Não pertence a nenhuma igreja ainda.</p>
 							<p className="text-[#9CA3AF] text-sm mt-2">Crie uma nova ou explore as disponíveis.</p>
+						</div>
+					) : filteredOrganizations.length === 0 ? (
+						<div className="py-16 flex flex-col items-center justify-center">
+							<p className="text-[#475F83] text-lg">Nenhuma igreja corresponde à pesquisa.</p>
+							<p className="text-[#9CA3AF] text-sm mt-2">Tente outro nome ou limpe a pesquisa.</p>
 						</div>
 					) : (
 						<div className="py-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-							{organizations.map((org) => (
+							{filteredOrganizations.map((org) => (
 								<CommunityCard
 									key={org.organizationId}
 									name={org.name}
-									description={org.slug}
+									description={org.description}
 									logoUrl={org.logoUrl}
 									membersCount={0}
 									responsable={org.role}
@@ -199,37 +218,57 @@ export default function MainDashClient() {
 							churches={churchOptions}
 							loadingChurches={loadingChurches}
 							onOpen={loadChurches}
+							setOrganizations={setOrganizations}
 						/>
 
 					</section>
 
 					{/* Explorar igrejas */}
-					<div className="flex justify-between items-center mt-10">
+					<div className="flex justify-between items-center my-10">
 						<div className="flex flex-col">
-							<p className="text-[#002045] dark:text-white text-[30px] ">Explorar novas igrejas</p>
-							<p className="text-[#475F83] dark:text-white text-[24px]">
+							<p className="text-[#002045] text-[30px]">Explorar novas igrejas ({filteredAvailableChurches.length})</p>
+							<p className="text-[#475F83] text-[24px]">
 								Congregações perto de si ou alinhadas com a sua jornada.
 							</p>
 						</div>
-						<p className="text-[#002045] dark:text-white text-[24px] cursor-pointer">ver todas recomendações</p>
+						<div className="flex bg-[#F3F3F3] rounded-2xl p-1 text-[#74777F] items-center justify-center">
+							<input
+								type="text"
+								placeholder="encontrar a tua igreja..."
+								value={searchTerm}
+								onChange={(event) => setSearchTerm(event.target.value)}
+								className="bg-[#F3F3F3] w-62.5 h-5.6 focus:outline-none px-2"
+							/>
+							<button
+								type="button"
+								onClick={() => setSearchTerm("")}
+								className="bg-[#1E3A8A] text-white rounded-2xl px-4 py-2 ml-2"
+							>
+								Pesquisa
+							</button>
+						</div>
 					</div>
 
-					{/* <div className="flex gap-8 pb-10">
-						{churches.length === 0 ? (
+					<div className="flex gap-8 pb-10">
+						{filteredAvailableChurches.length === 0 ? (
 							<p className="text-[#475F83]">Nenhuma igreja disponível.</p>
 						) : (
-							churches.map((church) => (
+							filteredAvailableChurches.map((church) => (
 								<CommunityJoin
 									key={church.id}
 									name={church.name}
-									local="Lisboa, Portugal"
+									slug={church.slug}
+									address={church.address}
+									description={church.description}
 									logoUrl={church.logoUrl}
-									membersCount={church.membersCount}
+									createdAt={church.createdAt}
+									church={{ id: church.churchId ?? church.id, name: church.name }}
+									membersCount={church.memberCount}
 									onClick={() => requestToJoin(church.id)}
 								/>
 							))
 						)}
-					</div> */}
+					</div>
 				</nav>
 			</div>
 		</div>

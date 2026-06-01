@@ -7,6 +7,7 @@ import CommunityCard from "@/components/layout/commityCard";
 import CommunityJoin from "@/components/layout/commityJoin";
 import { api } from "@/lib/api";
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/userStore";
 import SettingsPanel from "@/components/layout/setting";
 import { DialogDemo } from "@/components/layout/createChurchDialogo";
@@ -15,6 +16,7 @@ import { ModeToggle } from "@/components/layout/ModeToggle";
 import LanguageSelector from "@/components/layout/LanguageSelector";
 import { useMessages } from "@/i18n/messages";
 import { addLocaleToPathname } from "@/i18n/routing";
+import { switchOrganization } from "@/utils/actionMain";
 
 interface OrganizationRef {
 	id: string;
@@ -39,12 +41,15 @@ type UserStoreState = {
 
 export default function MainDashClient() {
 	const { locale, t } = useMessages();
+	const router = useRouter();
 	const [organizations, setOrganizations] = useState<OrganizationRef[]>([]);
 	const [churchOptions, setChurchOptions] = useState<ChurchOption[]>([]);
 	const [churches, setChurches] = useState<OrganizationRef[]>([]);
 	const [loadingChurches, setLoadingChurches] = useState(false);
+	const [switchingOrganizationId, setSwitchingOrganizationId] = useState<string | null>(null);
 	const [searchTerm, setSearchTerm] = useState("");
 	const user = useUserStore((state: UserStoreState) => state.user);
+	const setUser = useUserStore((state: any) => state.setUser);
 	async function requestToJoin(organizationId: string) {
 		try {
 			await api.post(`/organizations/${organizationId}/memberships/request`, {});
@@ -102,6 +107,31 @@ export default function MainDashClient() {
 			setLoadingChurches(false);
 		}
 	}, []);
+
+	const handleOrganizationClick = async (organizationId: string) => {
+		if (switchingOrganizationId) return;
+		setSwitchingOrganizationId(organizationId);
+
+		try {
+			const data = await switchOrganization(organizationId);
+			const switchedUser = data?.user;
+
+			if (switchedUser) {
+				setUser({
+					id: switchedUser.id ?? switchedUser.userId,
+					displayName: switchedUser.displayName,
+					email: switchedUser.email,
+					avatarUrl: switchedUser.avatarUrl,
+				});
+			}
+
+			router.push(addLocaleToPathname(`/mainCenter?org=${organizationId}`, locale));
+		} catch (error) {
+			alert(error instanceof Error ? error.message : "Erro ao abrir a organização.");
+		} finally {
+			setSwitchingOrganizationId(null);
+		}
+	};
 
 
 	useEffect(() => {
@@ -245,12 +275,12 @@ export default function MainDashClient() {
 										logoUrl={org.logoUrl}
 										membersCount={org.memberCount ?? 0}
 										responsable={org.role}
-										onClick={() => {
-											window.location.href = addLocaleToPathname(
-												`/dashboard?org=${org.organizationId}`,
-												locale
-											);
-										}}
+										onClick={() => handleOrganizationClick(org.organizationId)}
+										className={
+											switchingOrganizationId === org.organizationId
+												? "pointer-events-none opacity-70"
+												: ""
+										}
 									/>
 								))}
 							</div>

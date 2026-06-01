@@ -42,3 +42,30 @@ export async function getMyOrganizations() {
     return null;
   }
 }
+
+export async function switchOrganization(organizationId: string) {
+  try {
+    const res = await api.post<any>(`/organizations/switch/${organizationId}`, {});
+    const data = res?.result ?? res;
+    const accessToken = data?.user?.token?.access_token ?? data?.token?.access_token;
+
+    if (accessToken) {
+      await setAuthToken(accessToken);
+    }
+
+    return data;
+  } catch (error: unknown) {
+    console.error("Erro ao trocar organização:", error instanceof Error ? error.message : error);
+    return null;
+  }
+}
+
+export async function getCurrentUser() {
+  try {
+    const res = await api.get<any>("/user/me");
+    return res?.profile ?? res?.user ?? res;
+  } catch (error: unknown) {
+    console.error("Erro ao buscar usuário atual:", error instanceof Error ? error.message : error);
+    return null;
+  }
+}

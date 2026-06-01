@@ -18,7 +18,7 @@ export default function EventList({ events, initialCount = 3 }: EventListProps) 
   return (
     <div>
       {/* Grid */}
-      <div className="flex flex-wrap gap-6 px-8 mt-6 justify-between items-start">
+      <div className="flex flex-wrap gap-6  mt-6 justify-between items-start w-screen">
         {visible.map((event, i) => (
           <div
             key={`${event.id}-${i}`}

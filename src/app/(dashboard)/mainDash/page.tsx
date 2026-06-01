@@ -118,7 +118,7 @@ export default function MainDashClient() {
 		loadOrganizations();
 	}, []);
 	return (
-		<div className="bg-white">
+		<div className="bg-gray-50 text-gray-900 min-h-full dark:bg-neutral-800">
 			<SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
 			<div className="container m-auto">
 				{/* Header */}
@@ -126,7 +126,7 @@ export default function MainDashClient() {
 					<div className="items-center justify-center flex gap-9">
 						<div className="flex justify-center items-center gap-2">
 							<Image src={icon} alt="Logo" width={30} />
-							<h1 className="text-2xl text-[#1E3A8A]">CLARIS</h1>
+							<h1 className="text-2xl dark:text-white text-[#1E3A8A]">CLARIS</h1>
 						</div>
 
 					</div>

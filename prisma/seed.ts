@@ -18,7 +18,6 @@ async function main() {
   console.log('Semeando base de dados...');
 
   // 1. Limpar dados existentes (Ordem inversa das dependências)
-  await prisma.eventComment.deleteMany();
   await prisma.eventInterest.deleteMany();
   await prisma.membership.deleteMany();
   await prisma.event.deleteMany();
@@ -150,14 +149,6 @@ async function main() {
     data: {
       eventId: centralEvent.id,
       userId: memberCentral.id,
-    },
-  });
-
-  await prisma.eventComment.create({
-    data: {
-      eventId: centralEvent.id,
-      authorId: memberCentral.id,
-      content: 'Estou interessado em participar.',
     },
   });
 

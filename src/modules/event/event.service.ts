@@ -8,7 +8,6 @@ import { Role } from 'generated/prisma/enums';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateEventCommentDto } from './dto/create-event-comment.dto';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 
@@ -43,7 +42,6 @@ export class EventService {
         _count: {
           select: {
             interests: true,
-            comments: true,
           },
         },
       },
@@ -143,7 +141,6 @@ export class EventService {
     await this.assertEventBelongsToOrganization(organizationId!, eventId);
 
     await this.prisma.$transaction([
-      this.prisma.eventComment.deleteMany({ where: { eventId } }),
       this.prisma.eventInterest.deleteMany({ where: { eventId } }),
       this.prisma.event.delete({ where: { id: eventId } }),
     ]);
@@ -210,79 +207,6 @@ export class EventService {
       success: true,
       interested: false,
       interestedCount,
-    };
-  }
-
-  async addComment(
-    currentUser: JwtPayload,
-    organizationId: string | undefined,
-    eventId: string,
-    dto: CreateEventCommentDto,
-  ) {
-    await this.assertIsOrganizationMember(currentUser.id, organizationId);
-    await this.assertEventBelongsToOrganization(organizationId!, eventId);
-
-    const content = dto.content.trim();
-
-    if (!content) {
-      throw new BadRequestException('Comentário é obrigatório');
-    }
-
-    const comment = await this.prisma.eventComment.create({
-      data: {
-        eventId,
-        authorId: currentUser.id,
-        content,
-      },
-      select: this.commentSelect(),
-    });
-
-    return {
-      success: true,
-      comment,
-    };
-  }
-
-  async deleteComment(
-    currentUser: JwtPayload,
-    organizationId: string | undefined,
-    eventId: string,
-    commentId: string,
-  ) {
-    const membership = await this.assertIsOrganizationMember(
-      currentUser.id,
-      organizationId,
-    );
-    await this.assertEventBelongsToOrganization(organizationId!, eventId);
-
-    const comment = await this.prisma.eventComment.findFirst({
-      where: {
-        id: commentId,
-        eventId,
-      },
-      select: {
-        id: true,
-        authorId: true,
-      },
-    });
-
-    if (!comment) {
-      throw new NotFoundException('Comentário não encontrado');
-    }
-
-    if (comment.authorId !== currentUser.id && membership.role !== Role.ADMIN) {
-      throw new ForbiddenException(
-        'Sem permissão para remover este comentário',
-      );
-    }
-
-    await this.prisma.eventComment.delete({
-      where: { id: commentId },
-    });
-
-    return {
-      success: true,
-      message: 'Comentário removido com sucesso',
     };
   }
 
@@ -376,29 +300,9 @@ export class EventService {
         where: { userId },
         select: { id: true },
       },
-      comments: {
-        orderBy: { createdAt: 'asc' as const },
-        select: this.commentSelect(),
-      },
       _count: {
         select: {
           interests: true,
-          comments: true,
-        },
-      },
-    };
-  }
-
-  private commentSelect() {
-    return {
-      id: true,
-      content: true,
-      createdAt: true,
-      author: {
-        select: {
-          id: true,
-          displayName: true,
-          avatarUrl: true,
         },
       },
     };
@@ -406,7 +310,7 @@ export class EventService {
 
   private formatEventSummary(event: {
     interests: { id: string }[];
-    _count: { interests: number; comments: number };
+    _count: { interests: number; };
   }) {
     const { interests, _count, ...rest } = event;
 
@@ -414,13 +318,12 @@ export class EventService {
       ...rest,
       interested: interests.length > 0,
       interestedCount: _count.interests,
-      commentCount: _count.comments,
     };
   }
 
   private formatEventDetail(event: {
     interests: { id: string }[];
-    _count: { interests: number; comments: number };
+    _count: { interests: number; };
   }) {
     const { interests, _count, ...rest } = event;
 
@@ -428,7 +331,6 @@ export class EventService {
       ...rest,
       interested: interests.length > 0,
       interestedCount: _count.interests,
-      commentCount: _count.comments,
     };
   }
 

@@ -14,7 +14,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CreateEventCommentDto } from './dto/create-event-comment.dto';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventService } from './event.service';
@@ -95,30 +94,5 @@ export class EventController {
     @Param('eventId') eventId: string,
   ) {
     return this.eventService.removeInterest(user, organizationId, eventId);
-  }
-
-  @Post(':eventId/comments')
-  addComment(
-    @CurrentUser() user: JwtPayload,
-    @Param('organizationId') organizationId: string,
-    @Param('eventId') eventId: string,
-    @Body() dto: CreateEventCommentDto,
-  ) {
-    return this.eventService.addComment(user, organizationId, eventId, dto);
-  }
-
-  @Delete(':eventId/comments/:commentId')
-  deleteComment(
-    @CurrentUser() user: JwtPayload,
-    @Param('organizationId') organizationId: string,
-    @Param('eventId') eventId: string,
-    @Param('commentId') commentId: string,
-  ) {
-    return this.eventService.deleteComment(
-      user,
-      organizationId,
-      eventId,
-      commentId,
-    );
   }
 }

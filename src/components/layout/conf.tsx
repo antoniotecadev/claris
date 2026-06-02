@@ -1,6 +1,6 @@
 export default function Conf() {
 	return (
-		<div className="bg-[#E2E8F0] py-12">
+		<div className="bg-[#f2f4f6] dark:bg-[#d2deef] py-12">
 			<div className="container mx-auto px-4">
 
 				<nav className="flex flex-col items-center justify-center space-y-8">

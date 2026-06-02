@@ -51,14 +51,14 @@ export default function Fun() {
 					</div>
 
 					{/* CARD 2 */}
-					<div className="w-full lg:w-1/3 rounded-2xl bg-slate-900 p-6 md:p-8 flex flex-col gap-4 shadow-lg shadow-slate-900/20 dark:bg-slate-900">
-						<div className="flex items-center justify-center w-12 h-12 bg-white/10 rounded-2xl">
-							<Calendar className="text-amber-200" />
+					<div className="w-full lg:w-1/3 rounded-2xl bg-slate-50 dark:bg-slate-900 p-6 md:p-8 flex flex-col gap-4 shadow-lg shadow-slate-900/20 dark:bg-slate-900">
+						<div className="flex items-center justify-center w-12 h-12 bg-amber-100 dark:bg-amber-300/20 rounded-2xl">
+							<Calendar className="text-amber-900 dark:text-amber-200" />
 						</div>
 
-						<p className="text-white text-xl md:text-2xl">Calendário</p>
+						<p className="text-slate-900 dark:text-white text-xl md:text-2xl">Calendário</p>
 
-						<p className="text-slate-200 text-base md:text-lg leading-relaxed">
+						<p className="text-slate-950 dark:text-slate-200 text-base md:text-lg leading-relaxed">
 							Sincronize eventos de todos os departamentos em um único lugar sagrado.
 						</p>
 

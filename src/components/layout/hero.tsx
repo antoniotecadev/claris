@@ -14,14 +14,16 @@ export default function Hero() {
 			<section
 				style={{
 					backgroundImage: `linear-gradient(
-                   to right, 
-				    rgba(26, 54, 93, 0.98) 10%, 
-				    rgba(26, 54, 93, 0.80) 50%, 
-				    rgba(26, 54, 93, 0.60) 100%
-                ), url(${heroImg.src})`
+						to right,
+						rgba(15, 23, 42, 0.96) 8%,
+						rgba(15, 23, 42, 0.78) 52%,
+						rgba(15, 23, 42, 0.56) 100%
+					), url(${heroImg.src})`
 				}}
-				className="bg-white bg-center bg-cover flex flex-col justify-center py-12 md:py-20 lg:py-28 min-h-screen md:min-h-auto"
+				className="relative overflow-hidden bg-slate-50 bg-center bg-cover flex flex-col justify-center py-12 md:py-20 lg:py-28 min-h-screen md:min-h-auto dark:bg-slate-950"
 			>
+				<div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(251,191,36,0.12),_transparent_28%),radial-gradient(circle_at_bottom_left,_rgba(56,189,248,0.14),_transparent_30%)]" />
+				<div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/10 dark:from-white/0 dark:via-transparent dark:to-black/30" />
 				<div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 justify-between items-center px-4 md:px-6 lg:px-0">
 					<div className="flex flex-col justify-center space-y-6 md:space-y-8">
 						<p className="text-center lg:text-left text-xs md:text-sm text-[#FDE68A] italic">

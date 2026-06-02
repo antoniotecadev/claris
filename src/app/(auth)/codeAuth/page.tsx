@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import { Suspense, useRef, useState, useEffect } from "react";
@@ -38,7 +38,7 @@ function CodeAuthContent() {
 	const getCode = () => digits.join("");
 
 	const handleChange = (value: string, idx: number) => {
-		const digit = value.replace(/\D/g, "")
+		const digit = value.replace(/\D/g, "");
 		const newDigits = [...digits];
 		newDigits[idx] = digit;
 		setDigits(newDigits);
@@ -94,30 +94,24 @@ function CodeAuthContent() {
 	const handleResend = () => {
 		if (countdown > 0) return;
 		setCountdown(300);
-		// TODO: Call an API to actually resend the code
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
-			{/* ===== MAIN CARD ===== */}
-			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)] bg-white">
+		<div className="min-h-screen flex flex-col items-center justify-center bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.16),transparent_28%),linear-gradient(to_bottom,#e5eef9,#dbeafe)] px-4 py-8 text-slate-900 dark:bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_26%),linear-gradient(to_bottom,#020617,#0f172a)] dark:text-slate-50">
+			<div className="flex w-full max-w-240 flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/80 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur-xl md:flex-row dark:border-white/10 dark:bg-slate-950/70">
+				<div className="side1 relative min-h-75 w-full overflow-hidden bg-slate-900 p-8 md:min-h-155 md:w-[45%] self-stretch">
+					<div className="absolute inset-0 bg-linear-to-b from-[rgba(2,6,23,0.2)] via-[rgba(2,6,23,0.55)] to-[rgba(2,6,23,0.82)] pointer-events-none z-0" />
+					<div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.16),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(56,189,248,0.10),transparent_30%)]" />
 
-				{/* ===== LEFT PANEL — Image + Quote ===== */}
-				<div className="side1 bg-slate-800 w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-75 md:min-h-155 self-stretch">
-					{/* Dark overlay */}
-					<div className="absolute inset-0 bg-linear-to-b from-[rgba(0,32,69,0.15)] to-[rgba(0,32,69,0.55)] pointer-events-none z-0" />
-
-					{/* Logo */}
-					<div className="flex items-center gap-2.5 relative z-10">
+					<div className="relative z-10 flex items-center gap-2.5">
 						<div className="w-9 h-10.5 flex items-center justify-center">
 							<Image src={Logo} alt="Claris Logo" className="w-full h-full object-contain" />
 						</div>
 						<p className="text-white text-2xl font-semibold tracking-wider">CLARIS</p>
 					</div>
 
-					{/* Inspirational quote */}
-					<div className="flex flex-col items-center gap-3.5 text-center relative z-10">
-						<div className="inline-flex items-center gap-1.5 bg-[rgba(255,222,165,0.2)] border border-[rgba(255,222,165,0.35)] backdrop-blur-sm px-3.5 py-1.5 rounded-full text-[#ffdea5] text-xs tracking-wide animate-pulse">
+					<div className="relative z-10 flex flex-col items-center gap-3.5 text-center">
+						<div className="inline-flex items-center gap-1.5 rounded-full border border-amber-200/30 bg-white/10 px-3.5 py-1.5 text-xs tracking-wide text-amber-100 backdrop-blur-sm animate-pulse">
 							<Sparkles size={14} />
 							<span>{t("auth.code.label")}</span>
 						</div>
@@ -126,11 +120,10 @@ function CodeAuthContent() {
 						</p>
 					</div>
 
-					{/* Decorative dots */}
-					<div className="flex gap-2 justify-center relative z-10">
-						<span className="w-2 h-2 rounded-full bg-white/30 transition-all duration-300" />
-						<span className="w-6 h-2 rounded bg-[#ffdea5] transition-all duration-300" />
-						<span className="w-2 h-2 rounded-full bg-white/30 transition-all duration-300" />
+					<div className="relative z-10 flex justify-center gap-2">
+						<span className="h-2 w-2 rounded-full bg-white/30 transition-all duration-300" />
+						<span className="h-2 w-6 rounded bg-amber-200 transition-all duration-300" />
+						<span className="h-2 w-2 rounded-full bg-white/30 transition-all duration-300" />
 					</div>
 				</div>
 
@@ -149,38 +142,20 @@ function CodeAuthContent() {
 							</p>
 						</div>
 
-						{/* Code Input */}
-						<div className="flex gap-2 sm:gap-3 justify-center mb-8 w-full" dir="ltr">
+						<div className="flex w-full justify-center gap-2 sm:gap-3" dir="ltr">
 							{digits.map((digit, idx) => (
-								<input
-									key={idx}
-									ref={(el) => { inputRefs.current[idx] = el; }}
-									type="text"
-									inputMode="numeric"
-									maxLength={1}
-									value={digit}
-									onChange={(e) => handleChange(e.target.value, idx)}
-									onKeyDown={(e) => handleKeyDown(e, idx)}
-									onPaste={handlePaste}
-									className="w-12 h-14 sm:w-14 sm:h-16 bg-white border-[1.5px] border-gray-200 rounded-[14px] text-[1.5rem] font-medium text-center text-gray-800 outline-none transition-all duration-300 ease-out focus:border-[#002045] focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)] focus:-translate-y-1"
-								/>
+								<input key={idx} ref={(el) => { inputRefs.current[idx] = el; }} type="text" inputMode="numeric" maxLength={1} value={digit} onChange={(e) => handleChange(e.target.value, idx)} onKeyDown={(e) => handleKeyDown(e, idx)} onPaste={handlePaste} className="h-14 w-12 rounded-[14px] border-[1.5px] border-slate-200 bg-white px-4 text-center text-[1.5rem] font-medium text-slate-800 outline-none transition-all duration-300 ease-out focus:-translate-y-1 focus:border-sky-700 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.12)] sm:h-16 sm:w-14 dark:border-white/10 dark:bg-white/5 dark:text-slate-100" />
 							))}
 						</div>
 
-						{/* Error */}
 						{error && (
-							<div className="flex items-center gap-2 px-3.5 py-2.5 bg-red-50 border border-red-200 rounded-xl w-full mb-6 animate-shake" role="alert">
+							<div className="mb-6 mt-8 flex w-full items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 animate-shake dark:border-red-400/20 dark:bg-red-500/10" role="alert">
 								<AlertCircle size={16} className="text-red-600 shrink-0" />
-								<p className="text-red-600 text-[0.85rem] font-medium">{error}</p>
+								<p className="text-[0.85rem] font-medium text-red-600 dark:text-red-200">{error}</p>
 							</div>
 						)}
 
-						{/* Verify Button */}
-						<button
-							onClick={handleVerify}
-							disabled={getCode().length < 6 || pending}
-							className="flex items-center justify-center gap-2 w-full py-3.5 border-none rounded-[14px] bg-[#002045] text-white text-[0.85rem] font-semibold tracking-wide cursor-pointer transition-all duration-300 ease-out mb-4 hover:bg-[#003066] hover:shadow-[0_6px_24px_rgba(0,32,69,0.25)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,32,69,0.15)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
-						>
+						<button onClick={handleVerify} disabled={getCode().length < 6 || pending} className="mt-8 mb-4 flex w-full items-center justify-center gap-2 rounded-[14px] border-none bg-slate-950 py-3.5 text-[0.85rem] font-semibold tracking-wide text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-[0_12px_28px_rgba(15,23,42,0.2)] active:translate-y-0 active:scale-[0.98] active:shadow-[0_2px_8px_rgba(15,23,42,0.15)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none dark:bg-amber-300 dark:text-slate-950 dark:hover:bg-amber-200">
 							{pending ? (
 								<>
 									<Loader2 size={18} className="animate-spin" />
@@ -216,15 +191,14 @@ function CodeAuthContent() {
 				</div>
 			</div>
 
-			{/* ===== FOOTER ===== */}
-			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
-				<p className="text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
+			<footer className="mt-0 flex w-full max-w-240 flex-col items-center justify-between gap-3 rounded-b-2xl border border-t-0 border-white/60 bg-white/80 px-7 py-4 shadow-[0_4px_12px_rgba(15,23,42,0.04)] backdrop-blur-xl md:flex-row md:gap-0 dark:border-white/10 dark:bg-slate-950/70">
+				<p className="text-[0.8rem] font-semibold italic tracking-wide text-slate-800 dark:text-slate-100">CLARIS</p>
 				<div className="flex gap-5">
-					<Link href="/politica-privacidade" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">Política de Privacidade</Link>
-					<Link href="/termos-condicoes" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">Termos de serviço</Link>
-					<Link href="/contacto-suporte" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">Contactos</Link>
+					<Link href="/politica-privacidade" className="text-[0.72rem] tracking-wide text-slate-400 no-underline transition-colors duration-200 hover:text-sky-800 dark:hover:text-sky-300">Política de Privacidade</Link>
+					<Link href="/termos-condicoes" className="text-[0.72rem] tracking-wide text-slate-400 no-underline transition-colors duration-200 hover:text-sky-800 dark:hover:text-sky-300">Termos de serviço</Link>
+					<Link href="/contacto-suporte" className="text-[0.72rem] tracking-wide text-slate-400 no-underline transition-colors duration-200 hover:text-sky-800 dark:hover:text-sky-300">Contactos</Link>
 				</div>
-				<p className="text-gray-400 text-[0.72rem] tracking-wide">© 2024 CLARIS ORGANIZATION</p>
+				<p className="text-[0.72rem] tracking-wide text-slate-400">© 2024 CLARIS ORGANIZATION</p>
 			</footer>
 		</div>
 	);

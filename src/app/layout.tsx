@@ -5,6 +5,7 @@ import { MessagesProvider } from "@/i18n/messages";
 import { getDictionary } from "@/i18n/dictionaries";
 import { defaultLocale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/layout/theme-provider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -27,10 +28,12 @@ export default async function RootLayout({
 
 	return (
 		<html lang={defaultLocale} className={cn("h-full", "antialiased", inter.variable, "font-sans", geist.variable)} >
-			<body className="min-h-full flex flex-col">
-				<MessagesProvider locale={defaultLocale} messages={messages}>
-					{children}
-				</MessagesProvider>
+			<body className="min-h-full flex flex-col bg-background text-foreground">
+				<ThemeProvider >
+					<MessagesProvider locale={defaultLocale} messages={messages}>
+						{children}
+					</MessagesProvider>
+				</ThemeProvider>
 			</body>
 		</html>
 	);

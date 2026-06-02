@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import Logo from "@/assets/images/lobo-SE.png";
 import Google from "@/assets/images/SVG.png";
@@ -35,7 +36,11 @@ export default function Login() {
 	}, [state, router, locale]);
 
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
+		<div className="min-h-screen flex flex-col items-center justify-center bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.16),transparent_28%),linear-gradient(to_bottom,#e5eef9,#dbeafe)] px-4 py-8 text-slate-900 dark:bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_26%),linear-gradient(to_bottom,#020617,#0f172a)] dark:text-slate-50">
+			<div className="flex w-full max-w-240 flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/80 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur-xl md:flex-row dark:border-white/10 dark:bg-slate-950/70">
+				<div className="side relative min-h-200 w-full overflow-hidden bg-slate-900 p-8 md:min-h-0 md:w-[45%] self-stretch">
+					<div className="absolute inset-0 bg-linear-to-b from-[rgba(2,6,23,0.2)] via-[rgba(2,6,23,0.55)] to-[rgba(2,6,23,0.82)] pointer-events-none z-0" />
+					<div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.16),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(56,189,248,0.10),transparent_30%)]" />
 
 			{/* ===== MAIN CARD ===== */}
 			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
@@ -55,9 +60,8 @@ export default function Login() {
 					</div>
 					</Link>
 
-					{/* Inspirational quote */}
-					<div className="flex flex-col items-center gap-3.5 text-center relative z-10">
-						<div className="inline-flex items-center gap-1.5 bg-[rgba(255,222,165,0.2)] border border-[rgba(255,222,165,0.35)] backdrop-blur-sm px-3.5 py-1.5 rounded-full text-[#ffdea5] text-xs tracking-wide animate-pulse">
+					<div className="relative z-10 flex flex-col items-center gap-3.5 text-center">
+						<div className="inline-flex items-center gap-1.5 rounded-full border border-amber-200/30 bg-white/10 px-3.5 py-1.5 text-xs tracking-wide text-amber-100 backdrop-blur-sm animate-pulse">
 							<Sparkles size={14} />
 							<span>{t("auth.login.scriptureLabel")}</span>
 						</div>
@@ -67,11 +71,10 @@ export default function Login() {
 						<p className="text-[#86a0cd] text-base">{t("auth.login.scriptureSource")}</p>
 					</div>
 
-					{/* Decorative dots */}
-					<div className="flex gap-2 justify-center relative z-10">
-						<span className="w-6 h-2 rounded bg-[#ffdea5] transition-all duration-300" />
-						<span className="w-2 h-2 rounded-full bg-white/30 transition-all duration-300" />
-						<span className="w-2 h-2 rounded-full bg-white/30 transition-all duration-300" />
+					<div className="relative z-10 flex justify-center gap-2">
+						<span className="h-2 w-6 rounded bg-amber-200 transition-all duration-300" />
+						<span className="h-2 w-2 rounded-full bg-white/30 transition-all duration-300" />
+						<span className="h-2 w-2 rounded-full bg-white/30 transition-all duration-300" />
 					</div>
 				</div>
 
@@ -89,11 +92,10 @@ export default function Login() {
 							</p>
 						</div>
 
-						{/* Google button */}
 						<a
 							href="http://localhost:3001/v1/api/auth/google"
 							id="google-login-btn"
-							className="flex items-center justify-center gap-2.5 px-4 py-3 border border-black/8 rounded-[14px] bg-white/85 backdrop-blur-sm text-gray-800 text-sm font-medium cursor-pointer transition-all duration-300 ease-out no-underline mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
+							className="mb-5 flex items-center justify-center gap-2.5 rounded-[14px] border border-slate-200/80 bg-white/85 px-4 py-3 text-sm font-medium text-slate-800 shadow-[0_1px_3px_rgba(15,23,42,0.04)] backdrop-blur-sm no-underline transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_10px_24px_rgba(15,23,42,0.08)] active:translate-y-0 active:scale-[0.98] dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:hover:bg-white/8"
 						>
 							<Image src={Google} alt="Google" width={18} height={18} />
 							<span>{t("auth.login.google")}</span>
@@ -108,7 +110,6 @@ export default function Login() {
 							<div className="flex-1 h-px bg-[#c9c9c9]" />
 						</div>
 
-						{/* Form */}
 						<form action={formAction} className="flex flex-col">
 							<input type="hidden" name="locale" value={locale} />
 							{/* Email */}
@@ -129,7 +130,6 @@ export default function Login() {
 								/>
 							</div>
 
-							{/* Password */}
 							<div className={`mb-5 transition-transform duration-200 ${focusedField === "password" ? "translate-x-0.5" : ""}`}>
 								<label htmlFor="pss" className="flex justify-between items-center mb-2 text-[0.7rem] font-semibold text-gray-500 tracking-wider">
 										<span>{t("auth.login.passwordLabel")}</span>
@@ -141,7 +141,7 @@ export default function Login() {
 										name="password"
 										required
 										placeholder="••••••••"
-										className="w-full px-4 py-3 pr-12 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+										className="w-full rounded-[14px] border-[1.5px] border-slate-200 bg-white/80 px-4 py-3 pr-12 text-[0.9rem] text-slate-800 outline-none backdrop-blur-xs transition-all duration-300 ease-out placeholder:text-slate-400 focus:border-sky-700 focus:bg-white focus:shadow-[0_0_0_3px_rgba(14,165,233,0.12)] dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:bg-white/8"
 										onFocus={() => setFocusedField("password")}
 										onBlur={() => setFocusedField(null)}
 										autoComplete="current-password"
@@ -157,20 +157,18 @@ export default function Login() {
 								</div>
 							</div>
 
-							{/* Error */}
 							{state?.error && (
-								<div className="flex items-center gap-2 px-3.5 py-2.5 bg-red-50 border border-red-200 rounded-xl mb-4 animate-shake" role="alert">
+								<div className="mb-4 flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 animate-shake dark:border-red-400/20 dark:bg-red-500/10" role="alert">
 									<AlertCircle size={16} className="text-red-600 shrink-0" />
-									<p className="text-red-600 text-[0.85rem] font-medium">{state.error}</p>
+									<p className="text-[0.85rem] font-medium text-red-600 dark:text-red-200">{state.error}</p>
 								</div>
 							)}
 
-							{/* Submit */}
 							<button
 								type="submit"
 								disabled={pending}
 								id="login-submit-btn"
-								className="flex items-center justify-center gap-2 py-3.5 border-none rounded-[14px] bg-[#002045] text-white text-[0.85rem] font-semibold tracking-wide cursor-pointer transition-all duration-300 ease-out mb-6 hover:bg-[#003066] hover:shadow-[0_6px_24px_rgba(0,32,69,0.25)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,32,69,0.15)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+								className="mb-6 flex items-center justify-center gap-2 rounded-[14px] border-none bg-slate-950 py-3.5 text-[0.85rem] font-semibold tracking-wide text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-[0_12px_28px_rgba(15,23,42,0.2)] active:translate-y-0 active:scale-[0.98] active:shadow-[0_2px_8px_rgba(15,23,42,0.15)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none dark:bg-amber-300 dark:text-slate-950 dark:hover:bg-amber-200"
 							>
 								{pending ? (
 									<>
@@ -198,9 +196,8 @@ export default function Login() {
 				</div>
 			</div>
 
-			{/* ===== FOOTER ===== */}
-			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
-				<p className="text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
+			<footer className="mt-0 flex w-full max-w-240 flex-col items-center justify-between gap-3 rounded-b-2xl border border-t-0 border-white/60 bg-white/80 px-7 py-4 shadow-[0_4px_12px_rgba(15,23,42,0.04)] backdrop-blur-xl md:flex-row md:gap-0 dark:border-white/10 dark:bg-slate-950/70">
+				<p className="text-[0.8rem] font-semibold italic tracking-wide text-slate-800 dark:text-slate-100">CLARIS</p>
 				<div className="flex gap-5">
 					<Link href={privacyHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
 						{t("footer.privacy")}
@@ -212,8 +209,9 @@ export default function Login() {
 						{t("footer.support")}
 					</Link>
 				</div>
-				<p className="text-gray-400 text-[0.72rem] tracking-wide">© 2024 CLARIS ORGANIZATION</p>
+				<p className="text-[0.72rem] tracking-wide text-slate-400">© 2024 CLARIS ORGANIZATION</p>
 			</footer>
+			</div>
+			</div>
 		</div>
-	);
 }

@@ -20,16 +20,16 @@ function NavLink({ href, children, className }: NavLinkProps) {
 		<Link
 			href={href}
 			className={`
-        text-[#475569]
-        border-b-2 border-transparent
-        hover:text-[#4F46E5] hover:font-bold
-        hover:border-[#FBBF24]
-        transition-all duration-300
-        hover:scale-105
-        active:scale-95
-    
-        ${className}
-      `}
+				text-slate-600 dark:text-slate-300
+				border-b-2 border-transparent
+				hover:text-slate-950 dark:hover:text-white hover:font-semibold
+				hover:border-amber-300
+				transition-all duration-300
+				hover:scale-105
+				active:scale-95
+
+				${className}
+			`}
 		>
 			{children}
 		</Link>
@@ -44,7 +44,7 @@ export default function Header() {
 	return (
 		<>
 
-			<header className='bg-white text-black py-3 md:py-4 border-b-2 border-zinc-200 shadow-lg sticky top-0 z-40'>
+			<header className='sticky top-0 z-40 border-b border-white/70 bg-white/75 py-3 text-slate-900 shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-50'>
 				<nav className='flex justify-between items-center container mx-auto px-4 md:px-6 lg:px-0' >
 					<div className='flex justify-center items-center gap-2 md:gap-4'>
 						<Link href="#inicio" aria-label="Ir para o início">

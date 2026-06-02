@@ -11,12 +11,12 @@ export default function HeaderWithDialog() {
 
 	return (
 		<>
-			<nav className="bg-white border-b border-gray-200 sticky top-0 z-40">
+			<nav className="bg-white border-b dark:bg-neutral-800 border-gray-200 sticky top-0 z-40">
 				<div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 					{/* Logo */}
 					<div className="flex items-center gap-3">
 						<Image src={icon} alt="Logo" width={36} height={36} />
-						<h1 className="text-2xl font-bold text-[#1E3A8A]">CLARIS</h1>
+						<h1 className="text-2xl font-bold text-[#1E3A8A] dark:text-white">CLARIS</h1>
 					</div>
 
 					{/* Right Icons */}
@@ -24,7 +24,7 @@ export default function HeaderWithDialog() {
 						{/* Members & Invites Button */}
 						<button
 							onClick={() => setIsDialogOpen(true)}
-							className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-gray-700 font-medium text-sm"
+							className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors dark:bg-neutral-600 text-gray-700 font-medium text-sm"
 							title="Membros & Convites"
 						>
 							<UserPlus size={20} className="text-[#1E3A8A]" />

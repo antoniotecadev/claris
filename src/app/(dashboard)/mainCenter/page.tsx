@@ -26,6 +26,7 @@ import { useUserStore } from "@/stores/userStore";
 import { api } from "@/lib/api";
 import Logo from "@/assets/images/logo.png";
 import { FeedbackToast } from "@/components/ui/feedback-toast";
+import { CreateEventDialog } from "@/components/layout/createEvent";
 
 interface OrganizationRef {
 	id?: string;
@@ -397,6 +398,17 @@ function DashboardPageContent() {
 		},
 		[interestPendingEventIds, organization, organizationEvents],
 	);
+
+	const handleRefreshEvents = useCallback(async () => {
+		if (!organization) return;
+		try {
+			const freshEvents = await loadOrganizationEvents(organization.organizationId);
+			setOrganizationEvents(freshEvents);
+		} catch (error) {
+			console.error("Erro ao atualizar eventos:", error);
+		}
+	}, [loadOrganizationEvents, organization]);
+
 	const handleDeleteEvent = useCallback(
 		async (eventId: EventCardProps["id"]) => {
 			if (!organization) return;
@@ -582,10 +594,15 @@ function DashboardPageContent() {
 							</div>
 
 							{canManageEvents ? (
-								<Button className="h-12 w-fit rounded-2xl bg-[#FFDEA5] px-5 font-bold text-[#5D4201] shadow-sm hover:bg-[#FFD38A]">
-									<Plus size={18} />
-									<span>Criar Evento</span>
-								</Button>
+								<CreateEventDialog
+									organizationId={organization.organizationId}
+									onSuccess={handleRefreshEvents}
+								>
+									<Button className="h-12 w-fit rounded-2xl bg-[#FFDEA5] px-5 font-bold text-[#5D4201] shadow-sm hover:bg-[#FFD38A]">
+										<Plus size={18} />
+										<span>Criar Evento</span>
+									</Button>
+								</CreateEventDialog>
 							) : null}
 						</div>
 

@@ -27,6 +27,8 @@ import { api } from "@/lib/api";
 import Logo from "@/assets/images/logo.png";
 import { FeedbackToast } from "@/components/ui/feedback-toast";
 import { CreateEventDialog } from "@/components/layout/createEvent";
+import { EditEventDialog } from "@/components/layout/editEvent";
+import type { EditEventData } from "@/components/layout/editEvent";
 
 interface OrganizationRef {
 	id?: string;
@@ -195,6 +197,7 @@ function DashboardPageContent() {
 	const [organizationMembers, setOrganizationMembers] = useState<Member[]>([]);
 	const [membersError, setMembersError] = useState<string | null>(null);
 	const [organizationEvents, setOrganizationEvents] = useState<EventCardProps[]>([]);
+	const [rawEvents, setRawEvents] = useState<ApiEvent[]>([]);
 	const [eventsError, setEventsError] = useState<string | null>(null);
 	const [interestPendingEventIds, setInterestPendingEventIds] = useState<Set<EventCardProps["id"]>>(
 		() => new Set(),
@@ -202,13 +205,17 @@ function DashboardPageContent() {
 	const [toast, setToast] = useState<ToastState>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const [editDialogOpen, setEditDialogOpen] = useState(false);
+	const [editingEvent, setEditingEvent] = useState<EditEventData | null>(null);
 
 	const loadOrganizationEvents = useCallback(async (organizationId: string) => {
 		const response = await api.get<EventsResponse>(
 			`/organizations/${organizationId}/events`,
 		);
 
-		return unwrapEventsResponse(response).map(mapApiEventToCard);
+		const raw = unwrapEventsResponse(response);
+		setRawEvents(raw);
+		return raw.map(mapApiEventToCard);
 	}, []);
 
 	useEffect(() => {
@@ -433,54 +440,21 @@ function DashboardPageContent() {
 		[organization],
 	);
 	const handleUpdateEvent = useCallback(
-		async (eventId: EventCardProps["id"]) => {
-			if (!organization) return;
+		(eventId: EventCardProps["id"]) => {
+			const raw = rawEvents.find((e) => e.id === eventId);
+			if (!raw) return;
 
-			const currentEvent = organizationEvents.find((event) => event.id === eventId);
-			if (!currentEvent) return;
-
-			const title = window.prompt("Novo título do evento:", currentEvent.title);
-			if (title === null) return;
-
-			const description = window.prompt(
-				"Nova descrição do evento:",
-				currentEvent.description,
-			);
-			if (description === null) return;
-
-			const location = window.prompt("Novo local do evento:", currentEvent.location);
-			if (location === null) return;
-
-			const payload: UpdateEventPayload = {};
-			const nextTitle = title.trim();
-			const nextDescription = description.trim();
-			const nextLocation = location.trim();
-
-			if (nextTitle && nextTitle !== currentEvent.title) payload.title = nextTitle;
-			if (nextDescription !== currentEvent.description) payload.description = nextDescription;
-			if (nextLocation !== currentEvent.location) payload.location = nextLocation;
-
-			if (!Object.keys(payload).length) return;
-
-			setEventsError(null);
-
-			try {
-				await api.patch(
-					`/organizations/${organization.organizationId}/events/${eventId}`,
-					payload,
-				);
-				setOrganizationEvents(
-					await loadOrganizationEvents(organization.organizationId),
-				);
-			} catch (error) {
-				setEventsError(
-					error instanceof Error
-						? error.message
-						: "Não foi possível actualizar este evento.",
-				);
-			}
+			setEditingEvent({
+				id: raw.id,
+				title: raw.title,
+				description: raw.description,
+				date: raw.date,
+				location: raw.location,
+				photoUrl: raw.photoUrl,
+			});
+			setEditDialogOpen(true);
 		},
-		[loadOrganizationEvents, organization, organizationEvents],
+		[rawEvents],
 	);
 	const visibleEvents = useMemo(() => {
 		if (canManageEvents) {
@@ -546,7 +520,6 @@ function DashboardPageContent() {
 						<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
 							<Image src={Logo} alt="Logo" width={34} height={34} />
 						</span>
-						<span className="font-bold tracking-wide text-[#1E3A8A]">CLARIS</span>
 					</Link>
 					<div className="flex items-center gap-3">
 						<Link
@@ -708,6 +681,17 @@ function DashboardPageContent() {
 					/>
 				</section>
 			</main>
+
+			{/* Edit Event Dialog */}
+			{organization ? (
+				<EditEventDialog
+					organizationId={organization.organizationId}
+					event={editingEvent}
+					open={editDialogOpen}
+					onOpenChange={setEditDialogOpen}
+					onSuccess={handleRefreshEvents}
+				/>
+			) : null}
 		</div>
 	);
 }

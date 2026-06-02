@@ -118,7 +118,7 @@ export default function MainDashClient() {
 		loadOrganizations();
 	}, []);
 	return (
-		<div className="bg-gray-50 text-gray-900 min-h-full dark:bg-neutral-800">
+		<div className="bg-gray-50 text-gray-900 min-h-full dark:bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.16),_transparent_0%),linear-gradient(to_bottom,_#0f172a,_#020617)] dark:text-slate-50">
 			<SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
 			<div className="container m-auto">
 				{/* Header */}
@@ -126,7 +126,7 @@ export default function MainDashClient() {
 					<div className="items-center justify-center flex gap-9">
 						<div className="flex justify-center items-center gap-2">
 							<Image src={icon} alt="Logo" width={30} />
-							<h1 className="text-2xl dark:text-white text-[#1E3A8A]">CLARIS</h1>
+							<h1 className="text-2xl dark:text-[#252854] text-[#1E3A8A]">CLARIS</h1>
 						</div>
 
 					</div>
@@ -157,8 +157,8 @@ export default function MainDashClient() {
 				</header>
 
 				<nav className="flex flex-col mt-10">
-					<p className="text-[#1A1C1C] tracking-wide text-[12px]">BEM VINDO DE VOLTA</p>
-					<p className="text-[#002045] text-[72px] font-bold">
+					<p className="text-[#1A1C1C] dark:text-slate-50 tracking-wide text-[12px]">BEM VINDO DE VOLTA</p>
+					<p className="text-[#002045] dark:text-slate-50 text-[72px] font-bold">
 						Escolhe a sua Igreja
 					</p>
 
@@ -170,7 +170,7 @@ export default function MainDashClient() {
 
 					{/* Minhas igrejas */}
 					<div className="flex mt-10 items-center justify-start">
-						<p className="text-[#002045] font-semibold mr-4">MINHAS IGREJAS</p>
+						<p className="text-[#002045] dark:text-slate-50 font-semibold mr-4">MINHAS IGREJAS</p>
 						<div className="h-px bg-zinc-300 flex-1" />
 					</div>
 
@@ -226,7 +226,7 @@ export default function MainDashClient() {
 					{/* Explorar igrejas */}
 					<div className="flex justify-between items-center my-10">
 						<div className="flex flex-col">
-							<p className="text-[#002045] text-[30px]">Explorar novas igrejas ({filteredAvailableChurches.length})</p>
+							<p className="text-[#002045] dark:text-slate-50 text-[30px]">Explorar novas igrejas ({filteredAvailableChurches.length})</p>
 							<p className="text-[#475F83] text-[24px]">
 								Congregações perto de si ou alinhadas com a sua jornada.
 							</p>

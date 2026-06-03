@@ -13,6 +13,7 @@ import { MembershipsModule } from './modules/memberships/memberships.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { ChurchModule } from './modules/church/church.module';
 import { EventModule } from './modules/event/event.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { EventModule } from './modules/event/event.module';
     MembershipsModule, // Gestão de membros por organização
     ChurchModule,
     EventModule,
+    ChatModule,
   ],
   controllers: [AppController], // Controladores que lidam com as rotas e solicitações HTTP.
   providers: [AppService], // Serviços que contêm a lógica de negócios e são injetados nos controladores.

@@ -64,10 +64,14 @@ export class UsersService {
     const updatedUser = await this.prisma.user.update({
       where: { id: currentUser.id },
       data: {
-        ...(dto.displayName !== undefined ? { displayName: dto.displayName } : {}),
+        ...(dto.displayName !== undefined
+          ? { displayName: dto.displayName }
+          : {}),
         ...(avatarUrl !== undefined ? { avatarUrl } : {}),
         ...(dto.gender !== undefined ? { gender: dto.gender } : {}),
-        ...(dto.birthDate !== undefined ? { birthDate: new Date(dto.birthDate) } : {}),
+        ...(dto.birthDate !== undefined
+          ? { birthDate: new Date(dto.birthDate) }
+          : {}),
         lastSeen: new Date(),
       },
       select: {
@@ -87,8 +91,10 @@ export class UsersService {
     };
   }
 
-  async touchOnline(currentUser: JwtPayload, organizationId: string | undefined) {
-
+  async touchOnline(
+    currentUser: JwtPayload,
+    organizationId: string | undefined,
+  ) {
     this.assertTenantContext(organizationId);
 
     await this.assertMembership(currentUser.id, organizationId!);
@@ -153,11 +159,25 @@ export class UsersService {
       this.prisma.emailLoginCode.deleteMany({
         where: { userId: currentUser.id },
       }),
+      this.prisma.eventInterest.deleteMany({
+        where: { userId: currentUser.id },
+      }),
+      this.prisma.friendship.deleteMany({
+        where: {
+          OR: [
+            { userAId: currentUser.id },
+            { userBId: currentUser.id },
+            { createdById: currentUser.id },
+          ],
+        },
+      }),
       this.prisma.membership.deleteMany({
         where: { userId: currentUser.id },
       }),
       this.prisma.message.deleteMany({
-        where: { senderId: currentUser.id },
+        where: {
+          OR: [{ senderId: currentUser.id }, { recipientId: currentUser.id }],
+        },
       }),
       this.prisma.user.delete({
         where: { id: currentUser.id },

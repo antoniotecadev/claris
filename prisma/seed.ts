@@ -22,6 +22,7 @@ async function main() {
   await prisma.membership.deleteMany();
   await prisma.event.deleteMany();
   await prisma.message.deleteMany();
+  await prisma.friendship.deleteMany();
   await prisma.user.deleteMany();
   await prisma.organization.deleteMany();
   await prisma.church.deleteMany();
@@ -78,7 +79,7 @@ async function main() {
 
   // 4. Criar Utilizadores e Atribuir Memberships
   // Utilizador 1: Pastor na Igreja Central
-  await prisma.user.create({
+  const pastorCentral = await prisma.user.create({
     data: {
       email: 'pastor@central.com',
       passwordHash: passwordHash,
@@ -149,6 +150,26 @@ async function main() {
     data: {
       eventId: centralEvent.id,
       userId: memberCentral.id,
+    },
+  });
+
+  const [userAId, userBId] = [pastorCentral.id, memberCentral.id].sort();
+
+  await prisma.friendship.create({
+    data: {
+      organizationId: org1.id,
+      userAId,
+      userBId,
+      createdById: pastorCentral.id,
+    },
+  });
+
+  await prisma.message.create({
+    data: {
+      organizationId: org1.id,
+      senderId: pastorCentral.id,
+      recipientId: memberCentral.id,
+      content: 'Bem-vindo ao chat da Igreja Central.',
     },
   });
 

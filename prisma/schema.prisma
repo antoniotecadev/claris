@@ -1,5 +1,4 @@
 // prisma/schema.prisma
-// Este arquivo é usado para definir o modelo de dados e a configuração do Prisma. 
 
 // Configuração do cliente Prisma que vai interagir com o banco de dados.
 generator client {
@@ -16,20 +15,24 @@ datasource db {
 
 // User: representa os usuários do sistema, com campos para email, senha, nome de exibição, genero, data de nascimento, avatar e relacionamentos com organizações e mensagens.
 model User {
-  id              String           @id @default(cuid())
-  email           String           @unique
-  passwordHash    String?
-  displayName     String
-  gender          String?
-  birthDate       DateTime?
-  avatarUrl       String?
-  googleId        String?          @unique
-  lastSeen        DateTime?
-  createdAt       DateTime         @default(now())
-  memberships     Membership[]
-  messages        Message[]
-  eventInterests  EventInterest[]
-  emailLoginCodes EmailLoginCode[]
+  id                 String           @id @default(cuid())
+  email              String           @unique
+  passwordHash       String?
+  displayName        String
+  gender             String?
+  birthDate          DateTime?
+  avatarUrl          String?
+  googleId           String?          @unique
+  lastSeen           DateTime?
+  createdAt          DateTime         @default(now())
+  memberships        Membership[]
+  sentMessages       Message[]        @relation("SentMessages")
+  receivedMessages   Message[]        @relation("ReceivedMessages")
+  friendshipsA       Friendship[]     @relation("FriendshipUserA")
+  friendshipsB       Friendship[]     @relation("FriendshipUserB")
+  createdFriendships Friendship[]     @relation("FriendshipCreator")
+  eventInterests     EventInterest[]
+  emailLoginCodes    EmailLoginCode[]
 }
 
 // Church: representa igrejas padrão que podem ter várias organizações.
@@ -53,10 +56,11 @@ model Organization {
   memberships Membership[]
   events      Event[]
   messages    Message[]
+  friendships Friendship[]
   church      Church       @relation(fields: [churchId], references: [id])
 }
 
-// Membership: representa a associação de um usuário a uma organização, com campos para o papel do membro e a data de adesão. Inclui relacionamentos com User e Organization.
+// Membership (Filiação / Associação): representa a associação de um usuário a uma organização, com campos para o papel do membro e a data de adesão. Inclui relacionamentos com User e Organization.
 model Membership {
   id             String       @id @default(cuid())
   userId         String
@@ -75,7 +79,26 @@ enum Role {
   MEMBER
 }
 
-// Event: representa os eventos organizados pelas igrejas, com campos para título, descrição, data, local, foto e relacionamentos com a organização, interessados e comentários.
+// Friendship (Amizade): representa uma amizade entre dois membros dentro de uma organização.
+model Friendship {
+  id             String       @id @default(cuid())
+  organizationId String
+  userAId        String
+  userBId        String
+  createdById    String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  userA          User         @relation("FriendshipUserA", fields: [userAId], references: [id])
+  userB          User         @relation("FriendshipUserB", fields: [userBId], references: [id])
+  createdBy      User         @relation("FriendshipCreator", fields: [createdById], references: [id])
+
+  @@unique([organizationId, userAId, userBId])
+  @@index([organizationId, userAId])
+  @@index([organizationId, userBId])
+  @@index([createdById])
+}
+
+// Event: representa os eventos organizados pelas igrejas, com campos para título, descrição, data, local, foto e relacionamentos com a organização, interessados.
 model Event {
   id             String          @id @default(cuid())
   organizationId String
@@ -102,18 +125,24 @@ model EventInterest {
   @@index([userId])
 }
 
-// Message: representa as mensagens enviadas pelos usuários, com campos para o conteúdo, data de criação e relacionamentos com o remetente e a organização.
+// Message: representa as mensagens enviadas pelos membros, com campos para o conteúdo, data de criação e relacionamentos com o remetente e a organização.
 model Message {
   id             String       @id @default(cuid())
   senderId       String
+  recipientId    String?
   organizationId String
   content        String
+  readAt         DateTime?
   createdAt      DateTime     @default(now())
-  sender         User         @relation(fields: [senderId], references: [id])
+  sender         User         @relation("SentMessages", fields: [senderId], references: [id])
+  recipient      User?        @relation("ReceivedMessages", fields: [recipientId], references: [id])
   organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([organizationId, senderId, recipientId, createdAt])
+  @@index([organizationId, recipientId, senderId, createdAt])
 }
 
-// EmailLoginCode: representa um codigo de login enviado por email, com expiracao e uso unico.
+// EmailLoginCode: representa um código de login enviado por email, com expiração e uso único.
 model EmailLoginCode {
   id        String    @id @default(cuid())
   userId    String

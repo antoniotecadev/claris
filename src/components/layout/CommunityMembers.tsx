@@ -8,6 +8,7 @@ export type Member = {
   id: string | number;
   name: string;
   role: string;
+  email?: string;
   avatarUrl?: string;       // if absent → initials avatar
   avatarColor?: string;     // bg color for initials (e.g. "#3b5998")
 };

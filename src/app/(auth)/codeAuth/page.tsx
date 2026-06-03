@@ -115,7 +115,7 @@ function CodeAuthContent() {
 							<Sparkles size={14} />
 							<span>{t("auth.code.label")}</span>
 						</div>
-						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-[340px]">
+						<p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif max-w-85">
 								&quot;{t("auth.code.quote")}&quot;
 						</p>
 					</div>

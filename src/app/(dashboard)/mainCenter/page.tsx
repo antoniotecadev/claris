@@ -6,9 +6,12 @@ import {
 	ChevronLeft,
 	Loader2,
 	MapPin,
+	MessageCircle,
 	Plus,
+	Send,
 	ShieldCheck,
 	Users,
+	X,
 } from "lucide-react";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -115,6 +118,13 @@ type ToastState = {
 	variant: "success" | "error" | "info";
 } | null;
 
+type ChatMessage = {
+	id: string;
+	text: string;
+	sender: "me" | "member";
+	createdAt: Date;
+};
+
 function unwrapMembershipsResponse(response: MembershipsResponse): MembershipResponseItem[] {
 	if (Array.isArray(response)) return response;
 	if (Array.isArray(response.members)) return response.members;
@@ -146,6 +156,7 @@ function mapMembershipToMember(membership: MembershipResponseItem): Member {
 		id: membership.id ?? membership.memberId ?? user?.id ?? user?.userId ?? membership.userId ?? name,
 		name,
 		role: membership.role ?? "Membro",
+		email: user?.email ?? membership.email ?? undefined,
 		avatarUrl: user?.avatarUrl ?? membership.avatarUrl ?? undefined,
 	};
 }
@@ -187,6 +198,145 @@ function mapApiEventToCard(event: ApiEvent): EventCardProps {
 	};
 }
 
+function getMemberInitials(name: string) {
+	return name
+		.split(" ")
+		.slice(0, 2)
+		.map((word) => word[0])
+		.join("")
+		.toUpperCase();
+}
+
+function formatChatTime(date: Date) {
+	return new Intl.DateTimeFormat("pt-PT", {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+	}).format(date);
+}
+
+function MemberChatPanel({
+	member,
+	messages,
+	draft,
+	onDraftChange,
+	onSendMessage,
+	onClose,
+}: {
+	member: Member | null;
+	messages: ChatMessage[];
+	draft: string;
+	onDraftChange: (value: string) => void;
+	onSendMessage: () => void;
+	onClose: () => void;
+}) {
+	if (!member) {
+		return (
+			<aside className="flex min-h-80 flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-10 text-center shadow-sm">
+				<div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#E8EEF8] text-[#1E3A8A]">
+					<MessageCircle size={24} />
+				</div>
+				<h3 className="mt-4 text-lg font-bold text-[#002045]">Iniciar conversa</h3>
+				<p className="mt-2 max-w-xs text-sm leading-6 text-[#475F83]">
+					Clique em um membro da comunidade para abrir o chat com essa pessoa.
+				</p>
+			</aside>
+		);
+	}
+
+	return (
+		<aside className="flex min-h-105 flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
+			<header className="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
+				<div className="flex min-w-0 items-center gap-3">
+					{member.avatarUrl ? (
+						<img
+							src={member.avatarUrl}
+							alt={member.name}
+							className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
+						/>
+					) : (
+						<div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#002045] text-sm font-bold text-white">
+							{getMemberInitials(member.name)}
+						</div>
+					)}
+					<div className="min-w-0">
+						<h3 className="truncate text-base font-bold text-[#002045]">{member.name}</h3>
+						<p className="truncate text-xs font-semibold uppercase tracking-wide text-[#D97706]">
+							{member.role}
+						</p>
+					</div>
+				</div>
+				<button
+					type="button"
+					onClick={onClose}
+					aria-label="Fechar chat"
+					className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:border-[#002045] hover:text-[#002045]"
+				>
+					<X size={16} />
+				</button>
+			</header>
+
+			<div className="flex flex-1 flex-col gap-3 bg-[#F7F9FC] px-5 py-5">
+				{messages.length ? (
+					messages.map((message) => (
+						<div
+							key={message.id}
+							className={`flex ${message.sender === "me" ? "justify-end" : "justify-start"}`}
+						>
+							<div
+								className={`max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${
+									message.sender === "me"
+										? "rounded-br-md bg-[#002045] text-white"
+										: "rounded-bl-md bg-white text-[#1a2a3a] ring-1 ring-slate-200"
+								}`}
+							>
+								<p>{message.text}</p>
+								<p
+									className={`mt-1 text-[10px] font-semibold ${
+										message.sender === "me" ? "text-white/65" : "text-slate-400"
+									}`}
+								>
+									{formatChatTime(message.createdAt)}
+								</p>
+							</div>
+						</div>
+					))
+				) : (
+					<div className="flex flex-1 items-center justify-center text-center">
+						<p className="max-w-xs text-sm leading-6 text-[#475F83]">
+							A conversa com {member.name} está pronta. Escreva a primeira mensagem.
+						</p>
+					</div>
+				)}
+			</div>
+
+			<form
+				className="flex items-end gap-2 border-t border-slate-100 bg-white p-4"
+				onSubmit={(event) => {
+					event.preventDefault();
+					onSendMessage();
+				}}
+			>
+				<textarea
+					value={draft}
+					onChange={(event) => onDraftChange(event.target.value)}
+					placeholder={`Mensagem para ${member.name.split(" ")[0]}...`}
+					rows={1}
+					className="max-h-28 min-h-11 flex-1 resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-[#1a2a3a] outline-none transition-colors placeholder:text-slate-400 focus:border-[#002045] focus:bg-white"
+				/>
+				<button
+					type="submit"
+					disabled={!draft.trim()}
+					aria-label="Enviar mensagem"
+					className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#002045] text-white transition-colors hover:bg-[#1E3A8A] disabled:cursor-not-allowed disabled:bg-slate-300"
+				>
+					<Send size={17} />
+				</button>
+			</form>
+		</aside>
+	);
+}
+
 function DashboardPageContent() {
 	const { locale } = useMessages();
 	const router = useRouter();
@@ -207,6 +357,9 @@ function DashboardPageContent() {
 	const [error, setError] = useState<string | null>(null);
 	const [editDialogOpen, setEditDialogOpen] = useState(false);
 	const [editingEvent, setEditingEvent] = useState<EditEventData | null>(null);
+	const [selectedChatMember, setSelectedChatMember] = useState<Member | null>(null);
+	const [chatDraft, setChatDraft] = useState("");
+	const [chatMessagesByMember, setChatMessagesByMember] = useState<Record<string, ChatMessage[]>>({});
 
 	const loadOrganizationEvents = useCallback(async (organizationId: string) => {
 		const response = await api.get<EventsResponse>(
@@ -483,6 +636,30 @@ function DashboardPageContent() {
 		interestPendingEventIds,
 		organizationEvents,
 	]);
+	const selectedChatMessages = selectedChatMember
+		? chatMessagesByMember[String(selectedChatMember.id)] ?? []
+		: [];
+	const handleMemberChatOpen = useCallback((member: Member) => {
+		setSelectedChatMember(member);
+		setChatDraft("");
+	}, []);
+	const handleSendChatMessage = useCallback(() => {
+		if (!selectedChatMember || !chatDraft.trim()) return;
+
+		const memberKey = String(selectedChatMember.id);
+		const nextMessage: ChatMessage = {
+			id: `${memberKey}-${Date.now()}`,
+			text: chatDraft.trim(),
+			sender: "me",
+			createdAt: new Date(),
+		};
+
+		setChatMessagesByMember((currentMessages) => ({
+			...currentMessages,
+			[memberKey]: [...(currentMessages[memberKey] ?? []), nextMessage],
+		}));
+		setChatDraft("");
+	}, [chatDraft, selectedChatMember]);
 
 	if (loading) {
 		return (
@@ -665,19 +842,32 @@ function DashboardPageContent() {
 					)}
 				</section>
 
-				<section className="pb-10">
-					<CommunityMembers
-						title={`Membros de ${organization.name}`}
-						subtitle={
-							membersError
-								? `Não foi possível carregar os membros: ${membersError}`
-								: `Você está a entrar como ${roleLabel}.`
-						}
-						members={organizationMembers}
-						maxVisible={6}
-						onViewAll={() => console.log("Ver todos")}
-						onInvite={() => console.log("Convidar")}
-						onMemberClick={(member) => console.log("Clicou:", member.name)}
+				<section className="grid gap-5 pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.78fr)]">
+					<div>
+						<CommunityMembers
+							title={`Membros de ${organization.name}`}
+							subtitle={
+								membersError
+									? `Não foi possível carregar os membros: ${membersError}`
+									: `Você está a entrar como ${roleLabel}. Clique em um membro para conversar.`
+							}
+							members={organizationMembers}
+							maxVisible={12}
+							onViewAll={() => console.log("Ver todos")}
+							onInvite={() => console.log("Convidar")}
+							onMemberClick={handleMemberChatOpen}
+						/>
+					</div>
+					<MemberChatPanel
+						member={selectedChatMember}
+						messages={selectedChatMessages}
+						draft={chatDraft}
+						onDraftChange={setChatDraft}
+						onSendMessage={handleSendChatMessage}
+						onClose={() => {
+							setSelectedChatMember(null);
+							setChatDraft("");
+						}}
 					/>
 				</section>
 			</main>

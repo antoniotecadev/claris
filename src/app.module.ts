@@ -14,6 +14,7 @@ import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { ChurchModule } from './modules/church/church.module';
 import { EventModule } from './modules/event/event.module';
 import { ChatModule } from './modules/chat/chat.module';
+import { ApiUsersModule } from './api/users.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ChatModule } from './modules/chat/chat.module';
     ChurchModule,
     EventModule,
     ChatModule,
+    ApiUsersModule, // API pública para listar organizações
   ],
   controllers: [AppController], // Controladores que lidam com as rotas e solicitações HTTP.
   providers: [AppService], // Serviços que contêm a lógica de negócios e são injetados nos controladores.

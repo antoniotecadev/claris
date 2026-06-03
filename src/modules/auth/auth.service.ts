@@ -124,6 +124,26 @@ export class AuthService {
 		return randomInt(0, 1_000_000).toString().padStart(6, '0');
 	}
 
+	private buildLoginEmailHtml(displayName: string, code: string) {
+    const safeName = displayName?.trim() || 'olá';
+
+    return `
+      <div style="background:#f5f6f8;padding:24px 12px;">
+        <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:12px;padding:24px 24px 20px;box-shadow:0 6px 18px rgba(20,20,20,0.06);font-family:Arial, sans-serif;">
+          <div style="margin-bottom:16px;">
+            <div style="font-size:14px;color:#6b7280;">Claris</div>
+            <div style="font-size:20px;font-weight:700;color:#111827;margin-top:6px;">Código de acesso</div>
+          </div>
+          <div style="font-size:14px;color:#374151;margin-bottom:16px;">Olá ${safeName}, use o código abaixo para entrar na sua conta.</div>
+          <div style="background:#f9fafb;border:1px dashed #d1d5db;border-radius:10px;padding:14px;text-align:center;margin-bottom:16px;">
+            <div style="font-size:24px;letter-spacing:6px;font-weight:700;color:#111827;">${code}</div>
+          </div>
+          <div style="font-size:12px;color:#6b7280;">Este código expira em 5 minutos. Se não foi você, ignore este email.</div>
+        </div>
+      </div>
+    `;
+  }
+
 	private async sendLoginEmailCode(user: UserPayload)
 	{
 		const RESEND_API_KEY = this.configService.get<string>('RESEND_API_KEY')
@@ -150,7 +170,22 @@ export class AuthService {
 				});
 			}
 		}
-		const code = this.
+		const code = this.generateEmailCode();
+		const codeHash = await hash(code, 10);
+		const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+		await this.prisma.emailLoginCode.deleteMany({
+			where: {userId: user.id},
+		});
+		
+		await this.prisma.emailLoginCode.create({
+			data: {
+				userId: user.id!,
+				codeHash,
+				expiresAt,
+			},
+		});
+
 	}
 
 	async loginWithGoogle(googleUser: any): Promise<any | null>

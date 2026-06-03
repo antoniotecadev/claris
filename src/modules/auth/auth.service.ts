@@ -186,6 +186,12 @@ export class AuthService {
 			},
 		});
 
+		await this.resend.emails.send({
+			from: this.resendFrom,
+			to: user.email!,
+			subject: 'Access code',
+			html: this.buildLoginEmailHtml(user.displayName!, code),
+		});
 	}
 
 	async loginWithGoogle(googleUser: any): Promise<any | null>

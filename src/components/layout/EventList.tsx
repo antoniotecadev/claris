@@ -14,7 +14,6 @@ export default function EventList({ events, initialCount = 3 }: EventListProps) 
 
   const visible = showAll ? events : events.slice(0, initialCount);
   const hasMore = events.length > initialCount;
-
   return (
     <div className="w-full">
       {/* Grid */}
@@ -22,11 +21,10 @@ export default function EventList({ events, initialCount = 3 }: EventListProps) 
         {visible.map((event, i) => (
           <div
             key={`${event.id}-${i}`}
-            className={`transition-all duration-500 ${
-              showAll && i >= initialCount
-                ? "animate-fade-in opacity-100"
-                : "opacity-100"
-            }`}
+            className={`transition-all duration-500 ${showAll && i >= initialCount
+              ? "animate-fade-in opacity-100"
+              : "opacity-100"
+              }`}
           >
             <EventCard {...event} />
           </div>

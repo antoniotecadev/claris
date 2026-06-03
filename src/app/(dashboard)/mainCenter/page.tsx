@@ -80,13 +80,14 @@ type MembershipResponseItem = {
 type MembershipsResponse =
 	| MembershipResponseItem[]
 	| {
-			result?: MembershipResponseItem[] | { members?: MembershipResponseItem[] };
-			members?: MembershipResponseItem[];
-	  };
+		result?: MembershipResponseItem[] | { members?: MembershipResponseItem[] };
+		members?: MembershipResponseItem[];
+	};
 
 type ApiEvent = {
 	id: string;
 	title: string;
+	interestedCount?: number;
 	description: string | null;
 	date: string;
 	location: string | null;
@@ -102,9 +103,9 @@ type ApiEvent = {
 type EventsResponse =
 	| ApiEvent[]
 	| {
-			result?: ApiEvent[] | { events?: ApiEvent[] };
-			events?: ApiEvent[];
-	  };
+		result?: ApiEvent[] | { events?: ApiEvent[] };
+		events?: ApiEvent[];
+	};
 
 type UpdateEventPayload = {
 	title?: string;
@@ -192,9 +193,20 @@ function mapApiEventToCard(event: ApiEvent): EventCardProps {
 		title: event.title,
 		description: event.description?.trim() || "Sem descrição disponível.",
 		location: event.location?.trim() || "Local a definir",
-		spotsRemaining: event._count?.interests ?? 0,
+		interestedCount: getEventInterestedCount(event),
 		imageUrl: event.photoUrl || EVENT_IMAGE_FALLBACK,
 		isFavorited: Boolean(event.interests?.length),
+	};
+}
+
+function getEventInterestedCount(event: ApiEvent) {
+	return event.interestedCount ?? event._count?.interests ?? event.interests?.length ?? 0;
+}
+
+function normalizeApiEvent(event: ApiEvent): ApiEvent {
+	return {
+		...event,
+		interestedCount: getEventInterestedCount(event),
 	};
 }
 
@@ -284,17 +296,15 @@ function MemberChatPanel({
 							className={`flex ${message.sender === "me" ? "justify-end" : "justify-start"}`}
 						>
 							<div
-								className={`max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${
-									message.sender === "me"
-										? "rounded-br-md bg-[#002045] text-white"
-										: "rounded-bl-md bg-white text-[#1a2a3a] ring-1 ring-slate-200"
-								}`}
+								className={`max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${message.sender === "me"
+									? "rounded-br-md bg-[#002045] text-white"
+									: "rounded-bl-md bg-white text-[#1a2a3a] ring-1 ring-slate-200"
+									}`}
 							>
 								<p>{message.text}</p>
 								<p
-									className={`mt-1 text-[10px] font-semibold ${
-										message.sender === "me" ? "text-white/65" : "text-slate-400"
-									}`}
+									className={`mt-1 text-[10px] font-semibold ${message.sender === "me" ? "text-white/65" : "text-slate-400"
+										}`}
 								>
 									{formatChatTime(message.createdAt)}
 								</p>
@@ -366,7 +376,8 @@ function DashboardPageContent() {
 			`/organizations/${organizationId}/events`,
 		);
 
-		const raw = unwrapEventsResponse(response);
+		const raw = unwrapEventsResponse(response).map(normalizeApiEvent);
+
 		setRawEvents(raw);
 		return raw.map(mapApiEventToCard);
 	}, []);
@@ -378,96 +389,106 @@ function DashboardPageContent() {
 			setLoading(true);
 			setError(null);
 
-			const [organizationsResult, userResult] = await Promise.all([
-				getMyOrganizations(),
-				getCurrentUser(),
-			]);
+			try {
+				const [organizationsResult, userResult] = await Promise.all([
+					getMyOrganizations(),
+					getCurrentUser(),
+				]);
 
-			if (!active) return;
+				if (!active) return;
 
-			const organizations = Array.isArray(organizationsResult)
-				? (organizationsResult as OrganizationRef[])
-				: [];
-			const nextUser =
-				(userResult as CurrentUser | null) ?? useUserStore.getState().user;
-			const nextOrganization =
-				organizations.find((org) => org.organizationId === selectedOrganizationId) ??
-				organizations[0] ??
-				null;
+				const organizations = Array.isArray(organizationsResult)
+					? (organizationsResult as OrganizationRef[])
+					: [];
+				const nextUser =
+					(userResult as CurrentUser | null) ?? useUserStore.getState().user;
+				const nextOrganization =
+					organizations.find((org) => org.organizationId === selectedOrganizationId) ??
+					organizations[0] ??
+					null;
 
-			if (nextUser) {
-				const nextUserId =
-					"userId" in nextUser ? nextUser.id ?? nextUser.userId : nextUser.id;
-				if (nextUserId && nextUser.displayName && nextUser.email) {
-					setUser({
-						id: nextUserId,
-						displayName: nextUser.displayName,
-						email: nextUser.email,
-						avatarUrl: nextUser.avatarUrl ?? undefined,
-					});
+				if (nextUser) {
+					const nextUserId =
+						"userId" in nextUser ? nextUser.id ?? nextUser.userId : nextUser.id;
+					if (nextUserId && nextUser.displayName && nextUser.email) {
+						setUser({
+							id: nextUserId,
+							displayName: nextUser.displayName,
+							email: nextUser.email,
+							avatarUrl: nextUser.avatarUrl ?? undefined,
+						});
+					}
 				}
-			}
 
-			if (!nextOrganization) {
-				setError("Não foi possível encontrar os dados desta organização.");
+				if (!nextOrganization) {
+					setError("Não foi possível encontrar os dados desta organização.");
+					setOrganizationMembers([]);
+					setMembersError(null);
+					setOrganizationEvents([]);
+					setEventsError(null);
+					setLoading(false);
+					return;
+				}
+
+				setOrganization(nextOrganization);
 				setOrganizationMembers([]);
 				setMembersError(null);
 				setOrganizationEvents([]);
 				setEventsError(null);
+
+				// Chama a função diretamente aqui
+				const [membershipsResult, eventsResult] = await Promise.allSettled([
+					api.get<MembershipsResponse>(
+						`/organizations/${nextOrganization.organizationId}/memberships`,
+					),
+					loadOrganizationEvents(nextOrganization.organizationId),
+				]);
+
+				if (!active) return;
+
+				if (membershipsResult.status === "fulfilled") {
+					setOrganizationMembers(
+						unwrapMembershipsResponse(membershipsResult.value).map(mapMembershipToMember),
+					);
+				} else {
+					setMembersError(
+						membershipsResult.reason instanceof Error
+							? membershipsResult.reason.message
+							: "Não foi possível carregar os membros desta organização.",
+					);
+				}
+
+				if (eventsResult.status === "fulfilled") {
+					setOrganizationEvents(eventsResult.value);
+				} else {
+					setEventsError(
+						eventsResult.reason instanceof Error
+							? eventsResult.reason.message
+							: "Não foi possível carregar os eventos desta organização.",
+					);
+				}
+
+				if (!selectedOrganizationId) {
+					router.replace(
+						addLocaleToPathname(
+							`/mainCenter?org=${nextOrganization.organizationId}`,
+							locale,
+						),
+					);
+				}
+			} catch (err) {
+				console.error(err);
+				setError("Ocorreu um erro ao carregar os dados.");
+			} finally {
 				setLoading(false);
-				return;
 			}
-
-			setOrganization(nextOrganization);
-			setOrganizationMembers([]);
-			setMembersError(null);
-			setOrganizationEvents([]);
-			setEventsError(null);
-
-			const [membershipsResult, eventsResult] = await Promise.allSettled([
-				api.get<MembershipsResponse>(
-					`/organizations/${nextOrganization.organizationId}/memberships`,
-				),
-				loadOrganizationEvents(nextOrganization.organizationId),
-			]);
-
-			if (!active) return;
-
-			if (membershipsResult.status === "fulfilled") {
-				setOrganizationMembers(
-					unwrapMembershipsResponse(membershipsResult.value).map(mapMembershipToMember),
-				);
-			} else {
-				setMembersError(
-					membershipsResult.reason instanceof Error
-						? membershipsResult.reason.message
-						: "Não foi possível carregar os membros desta organização.",
-				);
-			}
-
-			if (eventsResult.status === "fulfilled") {
-				setOrganizationEvents(eventsResult.value);
-			} else {
-				setEventsError(
-					eventsResult.reason instanceof Error
-						? eventsResult.reason.message
-						: "Não foi possível carregar os eventos desta organização.",
-				);
-			}
-
-			if (!selectedOrganizationId) {
-				router.replace(addLocaleToPathname(`/mainCenter?org=${nextOrganization.organizationId}`, locale));
-			}
-
-			setLoading(false);
 		}
 
 		void loadCenterData();
-
 		return () => {
 			active = false;
 		};
-	}, [loadOrganizationEvents, locale, router, selectedOrganizationId, setUser]);
+	}, [loadOrganizationEvents, selectedOrganizationId, locale, router, setUser]);
 
 	useEffect(() => {
 		if (!toast) return;
@@ -485,7 +506,7 @@ function DashboardPageContent() {
 	const organizationMemberCount =
 		organization?.memberCount ?? organization?.membersCount ?? organizationMembers.length;
 	const totalParticipants = organizationEvents.reduce(
-		(total, event) => total + event.spotsRemaining,
+		(total, event) => total + event.interestedCount,
 		0,
 	);
 	const organizationInitial = organization?.name?.[0]?.toUpperCase() ?? "C";
@@ -517,20 +538,8 @@ function DashboardPageContent() {
 					await api.post(endpoint, {});
 				}
 
-				setOrganizationEvents((currentEvents) =>
-					currentEvents.map((event) => {
-						if (event.id !== eventId) return event;
-
-						return {
-							...event,
-							isFavorited: !wasParticipating,
-							spotsRemaining: Math.max(
-								0,
-								event.spotsRemaining + (wasParticipating ? -1 : 1),
-							),
-						};
-					}),
-				);
+				const freshEvents = await loadOrganizationEvents(organization.organizationId);
+				setOrganizationEvents(freshEvents);
 				setToast({
 					title: wasParticipating
 						? "Você deixou de participar neste evento."
@@ -556,7 +565,7 @@ function DashboardPageContent() {
 				});
 			}
 		},
-		[interestPendingEventIds, organization, organizationEvents],
+		[interestPendingEventIds, loadOrganizationEvents, organization, organizationEvents],
 	);
 
 	const handleRefreshEvents = useCallback(async () => {
@@ -579,6 +588,7 @@ function DashboardPageContent() {
 				await api.delete(
 					`/organizations/${organization.organizationId}/events/${eventId}`,
 				);
+
 				setOrganizationEvents((currentEvents) =>
 					currentEvents.filter((event) => event.id !== eventId),
 				);
@@ -601,6 +611,7 @@ function DashboardPageContent() {
 				id: raw.id,
 				title: raw.title,
 				description: raw.description,
+				interestedCount: getEventInterestedCount(raw),
 				date: raw.date,
 				location: raw.location,
 				photoUrl: raw.photoUrl,

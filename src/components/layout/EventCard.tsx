@@ -10,7 +10,7 @@ export type EventCardProps = {
   title: string;
   description: string;
   location: string;
-  spotsRemaining: number;
+  interestedCount: number;
   imageUrl: string;
   isFavorited?: boolean;
   onEdit?: (id: string | number) => void;
@@ -27,7 +27,7 @@ export default function EventCard({
   title,
   description,
   location,
-  spotsRemaining,
+  interestedCount,
   imageUrl,
   isFavorited = false,
   onEdit,
@@ -50,7 +50,6 @@ export default function EventCard({
       setConfirmDelete(true);
     }
   };
-
   return (
     <article className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/10">
 
@@ -142,7 +141,7 @@ export default function EventCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-[11.5px] text-stone-400">
             <Users size={12} className="shrink-0" />
-            <span>{spotsRemaining} participantes</span>
+            <span>{interestedCount} participantes</span>
           </div>
 
           {onParticipate && (

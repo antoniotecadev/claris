@@ -32,6 +32,7 @@ const BASE_URL =
 export type EditEventData = {
 	id: string
 	title: string
+	interestedCount: number
 	description: string | null
 	date: string // ISO-8601
 	location: string | null

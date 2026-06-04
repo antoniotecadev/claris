@@ -1,8 +1,9 @@
 import {
     CanActivate,
     ExecutionContext,
+    HttpException,
+    HttpStatus,
     Injectable,
-    TooManyRequestsException,
 } from '@nestjs/common';
 
 
@@ -33,9 +34,7 @@ export class RateLimitGuard implements CanActivate {
         }
         entry.count++;
         if (entry.count > maxRequests) {
-            throw new TooManyRequestsException(
-                'Rate limit exceeded',
-            );
+            throw new HttpException('Rate limit exceeded', HttpStatus.TOO_MANY_REQUESTS);
         }
         return true;
     }

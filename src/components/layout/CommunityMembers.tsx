@@ -196,7 +196,7 @@ export default function CommunityMembers({
                 <div className="absolute inset-0 rounded-full ring-2 ring-transparent group-hover:ring-[#002045]/30 transition-all duration-200" />
               </div>
               <div className="text-center">
-                <p className="text-[12px] font-medium text-[#1a2a3a] leading-tight group-hover:text-[#002045] transition-colors duration-150 max-w-[72px] truncate">
+                <p className="text-[12px] font-medium text-[#1a2a3a] leading-tight group-hover:text-[#002045] transition-colors duration-150 max-w-18 truncate">
                   {member.name.split(" ")[0]}
                 </p>
                 <p className="text-[9px] font-semibold tracking-widest text-stone-400 uppercase mt-0.5 max-w-[72px] truncate">

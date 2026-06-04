@@ -6,6 +6,7 @@ import icon from "@/assets/images/logo.png"
 import { addLocaleToPathname } from "@/i18n/routing";
 import { useMessages } from "@/i18n/messages";
 import LanguageSelector from './LanguageSelector';
+import { ModeToggle } from './ModeToggle';
 
 
 
@@ -61,6 +62,7 @@ export default function Header() {
 						<NavLink href={loginHref} className="px-2 md:px-6 py-2 md:py-2 text-[#261900] rounded-lg md:rounded-2xl bg-[#FFDEA5] text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50">
 							{t("header.start")}
 						</NavLink>
+						<ModeToggle />
 						<LanguageSelector />
 					</div>
 				</nav>

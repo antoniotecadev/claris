@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import {
-  X, Camera, Save, LogOut, User,
-  Lock, Eye, EyeOff, Calendar, Users,
-  Link,
+  ArrowLeft, X, Camera, Save, LogOut, User,
+  Lock, Eye, EyeOff, Users,
 } from "lucide-react";
 import { api } from "@/lib/api";
 import { getAuthToken } from "@/lib/auth-cookies";
@@ -13,8 +13,9 @@ import { addLocaleToPathname } from "@/i18n/routing";
 import { useMessages } from "@/i18n/messages";
 
 interface SettingsPanelProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
+  variant?: "drawer" | "page";
 }
 
 interface MeResponse {
@@ -30,11 +31,17 @@ interface MeResponse {
   };
 }
 
-export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
+export default function SettingsPanel({
+  isOpen = false,
+  onClose,
+  variant = "drawer",
+}: SettingsPanelProps) {
   const { locale, t } = useMessages();
-  const user = useUserStore((state: any) => state.user);
-  const setUser = useUserStore((state: any) => state.setUser);
-  const logout = useUserStore((state: any) => state.logout);
+  const router = useRouter();
+  const isPage = variant === "page";
+  const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+  const logout = useUserStore((state) => state.logout);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deletingAccount, setDeletingAccount] = useState(false);
 
@@ -139,8 +146,8 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
         setLoadingUser(false);
       }
     }
-    if (isOpen) loadUser();
-  }, [isOpen, setUser]);
+    if (isPage || isOpen) loadUser();
+  }, [isOpen, isPage, setUser, t]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -243,29 +250,46 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
     }
   };
 
-  if (!isOpen) return null;
+  if (!isPage && !isOpen) return null;
 
   const initials = user?.displayName?.[0]?.toUpperCase() ?? "U";
+  const shellClassName = isPage
+    ? "min-h-screen bg-[#F7F9FC] text-[#002045]"
+    : "fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col animate-slide-in";
+  const contentClassName = isPage
+    ? "mx-auto flex min-h-screen w-full max-w-4xl flex-col px-4 py-6 sm:px-6 lg:px-8"
+    : "flex h-full flex-col";
+  const bodyClassName = isPage
+    ? "flex-1 rounded-2xl bg-white shadow-sm ring-1 ring-slate-200"
+    : "flex min-h-0 flex-1 flex-col";
 
   return (
     <>
       {/* Overlay */}
-      <div
-        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
-        onClick={onClose}
-      />
+      {!isPage && (
+        <div
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+          onClick={onClose}
+        />
+      )}
 
-      {/* Drawer */}
-      <aside className="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col animate-slide-in">
+      <section className={shellClassName}>
+        <div className={contentClassName}>
+          <div className={bodyClassName}>
 
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-100">
           <p className="text-[#002045] font-semibold text-lg">{t("settings.title")}</p>
           <button
-            onClick={onClose}
+            onClick={() => (isPage ? router.back() : onClose?.())}
             className="p-2 rounded-xl hover:bg-zinc-100 transition-colors"
+            aria-label={isPage ? "Voltar" : "Fechar"}
           >
-            <X size={18} className="text-zinc-500" />
+            {isPage ? (
+              <ArrowLeft size={18} className="text-zinc-500" />
+            ) : (
+              <X size={18} className="text-zinc-500" />
+            )}
           </button>
         </div>
 
@@ -523,7 +547,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
 
         {showDeleteConfirm && (
-          <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
             <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
               <h2 className="text-lg font-semibold text-[#002045]">
                 {t("settings.deleteConfirm.title")}
@@ -554,7 +578,9 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             </div>
           </div>
         )}
-      </aside>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

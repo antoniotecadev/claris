@@ -10,6 +10,9 @@ interface user
 	displayName: string;
 	email: string;
 	avatarUrl?: string;
+	gender?: "MALE" | "FEMALE";
+	birthDate?: string;
+	googleId?: string;
 }
 
 interface userStore

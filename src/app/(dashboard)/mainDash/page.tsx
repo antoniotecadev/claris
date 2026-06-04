@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import icon from "@/assets/images/logoSem.png";
 import heroImg from "@/assets/images/create.png";
 import { Bell, Building2, Compass, Search, Settings, Sparkles, X } from "lucide-react";
@@ -9,7 +10,6 @@ import { api } from "@/lib/api";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/userStore";
-import SettingsPanel from "@/components/layout/setting";
 import { DialogDemo } from "@/components/layout/createChurchDialogo";
 import type { ChurchOption } from "@/components/layout/OrganizatioSelect";
 import { ModeToggle } from "@/components/layout/ModeToggle";
@@ -79,7 +79,6 @@ export default function MainDashClient() {
 		}
 	}
 
-	const [settingsOpen, setSettingsOpen] = useState(false);
 	const userOrganizationIds = new Set(
 		organizations.map((organization) => organization.organizationId ?? organization.id),
 	);
@@ -182,7 +181,6 @@ export default function MainDashClient() {
 
 	return (
 		<div className="min-h-screen bg-[#F7F9FC] text-[#002045]">
-			<SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
 			<FeedbackToast
 				open={Boolean(toast)}
 				title={toast?.title ?? ""}
@@ -256,14 +254,13 @@ export default function MainDashClient() {
 							>
 								<Bell size={18} />
 							</button>
-							<button
-								type="button"
-								onClick={() => setSettingsOpen(true)}
+							<Link
+								href={addLocaleToPathname("/settings", locale)}
 								className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-[#1E3A8A] shadow-sm transition-colors hover:border-[#D97706]/40 hover:text-[#D97706]"
 								aria-label="Settings"
 							>
 								<Settings size={18} />
-							</button>
+							</Link>
 							<ModeToggle />
 							<LanguageSelector />
 						</div>

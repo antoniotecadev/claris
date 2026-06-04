@@ -7,9 +7,8 @@ import { Search, Bell, Settings } from "lucide-react";
 import CommunityCard from "@/components/layout/commityCard";
 import CommunityJoin from "@/components/layout/commityJoin";
 import { api } from "@/lib/api";
-import { use, useState } from "react";
-import { useUserStore } from "@/stores/userStore";
-import SettingsPanel from "@/components/layout/setting";
+import { useMessages } from "@/i18n/messages";
+import { addLocaleToPathname } from "@/i18n/routing";
 
 interface OrganizationRef {
   organizationId: string;
@@ -46,7 +45,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 
 export default function MainDashClient({ organizations, churches }: Props) {
 
-  const user = useUserStore((state: { user: any; }) => state.user);
+  const { locale } = useMessages();
   async function requestToJoin(organizationId: string) {
     try {
       await api.post(`/organizations/${organizationId}/memberships/request`, {});
@@ -56,11 +55,8 @@ export default function MainDashClient({ organizations, churches }: Props) {
     }
   }
 
-  const [settingsOpen, setSettingsOpen] = useState(false);
-
   return (
     <div className="bg-white">
-      <SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
       <div className="container m-auto">
         {/* Header */}
         <header className="flex gap-4 justify-between py-3 border-b border-zinc-200">
@@ -87,12 +83,13 @@ export default function MainDashClient({ organizations, churches }: Props) {
             <div className="flex items-center justify-center">
               <Bell size={14} className="text-[#1E3A8A] w-6 h-7" />
             </div>
-            <button
-              onClick={() => setSettingsOpen(true)}
+            <Link
+              href={addLocaleToPathname("/settings", locale)}
               className="flex items-center justify-center hover:cursor-pointer "
+              aria-label="Settings"
             >
               <Settings size={14} className="text-[#1E3A8A] w-6 h-7 cursor-pointer hover:text-[#D97706] transition-colors" />
-            </button>
+            </Link>
             {/*<div className="flex items-center justify-center">
               <Settings size={14} className="text-[#1E3A8A] w-6 h-7" />
             </div>*/}

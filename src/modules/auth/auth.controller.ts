@@ -1,6 +1,7 @@
 import { Controller, Post, Get, Body, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
+import { VerifyEmailCodeDto } from './dto/verify-email-code.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -32,5 +33,10 @@ export class AuthController
 	async googleLoginCallback(@Req() req: any)
 	{
 		return await this.authService.loginWithGoogle(req.user);
+	}
+
+	@Post('email/verify-login')
+	async verifyEmailLogin(@Body() dto: VerifyEmailCodeDto){
+		return await this.authService.verifyEmailCodeAndLogin(dto);
 	}
 }

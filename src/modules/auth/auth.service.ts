@@ -3,12 +3,14 @@ import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto'
+import { VerifyEmailCodeDto } from './dto/verify-email-code.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface'
 import { UserPayload } from './interfaces/user-payload.interface';
 import { compare, hash } from 'bcrypt'
 import { Resend } from 'resend';
 import { ConfigService } from '@nestjs/config';
 import { randomInt } from 'node:crypto';
+import { throwDeprecation } from 'node:process';
 
 
 @Injectable()
@@ -122,6 +124,45 @@ export class AuthService {
 
 	private generateEmailCode(){
 		return randomInt(0, 1_000_000).toString().padStart(6, '0');
+	}
+
+	async verifyEmailCodeAndLogin(dto: VerifyEmailCodeDto){
+		const user = await this.prisma.user.findUnique({
+			where: { email: dto.email},
+			select: {
+				id: true,
+				email: true,
+				displayName: true,
+			},
+
+		});
+
+		if (!user)
+			throw new UnauthorizedException('Credenciais inválidas');
+
+		const emailCode = await this.prisma.emailLoginCode.findFirst({
+			where: {
+				userId: user.id,
+				usedAt: null,
+				expiresAt: { gt: new Date() },
+			},
+			orderBy: {createdAt: 'desc'},
+		});
+
+		if (!emailCode)
+			throw new UnauthorizedException('Código inválido');
+		
+		const isValid = await compare(dto.code!, emailCode.codeHash);
+
+		if (!isValid)
+			throw new UnauthorizedException('Código inválido')
+
+		await this.prisma.emailLoginCode.update({
+			where: { id: emailCode.id },
+			data: { usedAt: new Date() },
+		});
+
+		return await this.generateFinalLoginResponse(user);
 	}
 
 	private buildLoginEmailHtml(displayName: string, code: string) {

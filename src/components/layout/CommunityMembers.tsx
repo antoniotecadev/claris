@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Search, X, UserPlus, Users, ChevronRight } from "lucide-react";
+import { Search, X, UserPlus, Users, ChevronRight, Heart, Loader2, UserCheck } from "lucide-react";
 
 /* ── Types ─────────────────────────────────────────────── */
 export type Member = {
@@ -17,11 +17,18 @@ export type CommunityMembersProps = {
   title?: string;
   subtitle?: string;
   members: Member[];
+  friends?: Member[];
+  friendIds?: Set<string | number>;
   onViewAll?: () => void;
   onInvite?: () => void;
   onMemberClick?: (member: Member) => void;
+  onAddFriend?: (memberId: string | number) => void;
+  addingFriendIds?: Set<string | number>;
   maxVisible?: number;      // how many avatars to show before search
+  currentUserId?: string;
 };
+
+type Tab = "members" | "friends";
 
 /* ── Helpers ────────────────────────────────────────────── */
 function getInitials(name: string) {
@@ -74,13 +81,19 @@ export default function CommunityMembers({
   title = "Corações em Comunhão",
   subtitle = "Pessoas que caminham ao seu lado nesta jornada espiritual.",
   members,
+  friends = [],
+  friendIds = new Set(),
   onViewAll,
   onInvite,
   onMemberClick,
-  maxVisible = 5,
+  onAddFriend,
+  addingFriendIds = new Set(),
+  maxVisible = 12,
+  currentUserId,
 }: CommunityMembersProps) {
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>("members");
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Focus input when search opens
@@ -88,17 +101,24 @@ export default function CommunityMembers({
     if (searchOpen) inputRef.current?.focus();
   }, [searchOpen]);
 
+  const sourceList = activeTab === "friends" ? friends : members;
+
   const filtered = useMemo(() => {
-    if (!query.trim()) return members;
+    if (!query.trim()) return sourceList;
     const q = query.toLowerCase();
-    return members.filter(
+    return sourceList.filter(
       (m) =>
         m.name.toLowerCase().includes(q) ||
         m.role.toLowerCase().includes(q)
     );
-  }, [members, query]);
+  }, [sourceList, query]);
 
-  const visibleMembers = searchOpen ? filtered : members.slice(0, maxVisible);
+  const visibleMembers = searchOpen ? filtered : filtered.slice(0, maxVisible);
+
+  const tabs: { key: Tab; label: string; count: number; icon: React.ReactNode }[] = [
+    { key: "members", label: "Membros", count: members.length, icon: <Users size={14} /> },
+    { key: "friends", label: "Amigos", count: friends.length, icon: <Heart size={14} /> },
+  ];
 
   return (
     <section className="mt-2 w-full rounded-3xl bg-white px-5 py-6 shadow-sm ring-1 ring-slate-200 sm:px-7">
@@ -152,6 +172,40 @@ export default function CommunityMembers({
         </div>
       </div>
 
+      {/* ── Tabs ── */}
+      <div className="mb-5 flex gap-1.5 rounded-2xl bg-[#F7F9FC] p-1 ring-1 ring-slate-200">
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.key;
+          return (
+            <button
+              key={tab.key}
+              onClick={() => {
+                setActiveTab(tab.key);
+                setQuery("");
+                setSearchOpen(false);
+              }}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-all duration-200
+                ${isActive
+                  ? "bg-white text-[#002045] shadow-sm ring-1 ring-slate-200"
+                  : "text-[#475F83] hover:text-[#002045]"
+                }`}
+            >
+              {tab.icon}
+              <span>{tab.label}</span>
+              <span
+                className={`ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold
+                  ${isActive
+                    ? "bg-[#002045] text-white"
+                    : "bg-slate-200 text-[#475F83]"
+                  }`}
+              >
+                {tab.count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* ── Search bar ── */}
       <div
         className={`overflow-hidden transition-all duration-300 ${
@@ -165,7 +219,7 @@ export default function CommunityMembers({
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Pesquisar por nome ou função..."
+            placeholder={activeTab === "friends" ? "Pesquisar amigos..." : "Pesquisar por nome ou função..."}
             className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-4 text-[13px] text-stone-700 outline-none transition-colors duration-200 placeholder:text-stone-400 focus:border-[#002045]"
           />
           {query && (
@@ -179,43 +233,82 @@ export default function CommunityMembers({
         </div>
       </div>
 
-      {/* ── Members row ── */}
+      {/* ── Members / Friends grid ── */}
       <div className="flex items-start gap-5 flex-wrap">
-
-        {/* Member cards */}
         {visibleMembers.length > 0 ? (
-          visibleMembers.map((member) => (
-            <button
-              key={member.id}
-              onClick={() => onMemberClick?.(member)}
-              className="flex flex-col items-center gap-1.5 group focus:outline-none"
-            >
-              <div className="relative">
-                <Avatar member={member} size="md" />
-                {/* hover ring */}
-                <div className="absolute inset-0 rounded-full ring-2 ring-transparent group-hover:ring-[#002045]/30 transition-all duration-200" />
+          visibleMembers.map((member) => {
+            const isSelf = currentUserId != null && String(member.id) === String(currentUserId);
+            const isFriend = friendIds.has(member.id);
+            const isAdding = addingFriendIds.has(member.id);
+            const showAddButton = activeTab === "members" && onAddFriend && !isSelf && !isFriend;
+
+            return (
+              <div key={member.id} className="flex flex-col items-center gap-1.5 group">
+                <button
+                  onClick={() => onMemberClick?.(member)}
+                  className="flex flex-col items-center gap-1.5 focus:outline-none"
+                >
+                  <div className="relative">
+                    <Avatar member={member} size="md" />
+                    {/* hover ring */}
+                    <div className="absolute inset-0 rounded-full ring-2 ring-transparent group-hover:ring-[#002045]/30 transition-all duration-200" />
+                    {/* friend badge */}
+                    {isFriend && activeTab === "members" && (
+                      <div className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-white ring-2 ring-white">
+                        <UserCheck size={10} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[12px] font-medium text-[#1a2a3a] leading-tight group-hover:text-[#002045] transition-colors duration-150 max-w-18 truncate">
+                      {member.name.split(" ")[0]}
+                    </p>
+                    <p className="text-[9px] font-semibold tracking-widest text-stone-400 uppercase mt-0.5 max-w-[72px] truncate">
+                      {member.role}
+                    </p>
+                  </div>
+                </button>
+
+                {/* Add friend button */}
+                {showAddButton && (
+                  <button
+                    onClick={() => onAddFriend(member.id)}
+                    disabled={isAdding}
+                    className="flex h-7 items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 text-[10px] font-semibold text-[#1E3A8A] shadow-sm transition-all duration-200 hover:border-[#1E3A8A] hover:bg-[#E8EEF8] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {isAdding ? (
+                      <Loader2 size={10} className="animate-spin" />
+                    ) : (
+                      <UserPlus size={10} />
+                    )}
+                    <span>{isAdding ? "..." : "Amigo"}</span>
+                  </button>
+                )}
               </div>
-              <div className="text-center">
-                <p className="text-[12px] font-medium text-[#1a2a3a] leading-tight group-hover:text-[#002045] transition-colors duration-150 max-w-18 truncate">
-                  {member.name.split(" ")[0]}
-                </p>
-                <p className="text-[9px] font-semibold tracking-widest text-stone-400 uppercase mt-0.5 max-w-[72px] truncate">
-                  {member.role}
-                </p>
-              </div>
-            </button>
-          ))
+            );
+          })
         ) : (
-          <div className="flex items-center gap-2 text-[13px] text-stone-400 py-2">
-            <Users size={15} />
-            <span>Nenhum membro encontrado.</span>
+          <div className="flex w-full flex-col items-center gap-3 py-8 text-center">
+            {activeTab === "friends" ? (
+              <>
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#FFF7ED] text-[#D97706]">
+                  <Heart size={24} />
+                </div>
+                <p className="text-sm font-semibold text-[#475F83]">
+                  Ainda não tens amigos nesta organização.
+                </p>
+                <p className="max-w-xs text-xs text-[#475F83]/70">
+                  Vai ao separador &quot;Membros&quot; e clica em &quot;Amigo&quot; para adicionar pessoas.
+                </p>
+              </>
+            ) : (
+              <div className="flex items-center gap-2 text-[13px] text-stone-400 py-2">
+                <Users size={15} />
+                <span>Nenhum membro encontrado.</span>
+              </div>
+            )}
           </div>
         )}
-
-        {/* Overflow badge — show when not searching */}
-        
-
-       
       </div>
     </section>
   );

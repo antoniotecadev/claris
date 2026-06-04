@@ -153,8 +153,10 @@ function mapMembershipToMember(membership: MembershipResponseItem): Member {
 		membership.email ||
 		"Membro";
 
+	// IMPORTANT: prioritize user.id / user.userId / membership.userId (the actual user ID)
+	// over membership.id (the membership record ID). The backend expects user IDs for friend operations.
 	return {
-		id: membership.id ?? membership.memberId ?? user?.id ?? user?.userId ?? membership.userId ?? name,
+		id: user?.id ?? user?.userId ?? membership.userId ?? membership.id ?? membership.memberId ?? name,
 		name,
 		role: membership.role ?? "Membro",
 		email: user?.email ?? membership.email ?? undefined,
@@ -234,6 +236,8 @@ function MemberChatPanel({
 	onDraftChange,
 	onSendMessage,
 	onClose,
+	isFriend,
+	onAddFriend,
 }: {
 	member: Member | null;
 	messages: ChatMessage[];
@@ -241,6 +245,8 @@ function MemberChatPanel({
 	onDraftChange: (value: string) => void;
 	onSendMessage: () => void;
 	onClose: () => void;
+	isFriend: boolean;
+	onAddFriend?: () => void;
 }) {
 	if (!member) {
 		return (
@@ -250,7 +256,7 @@ function MemberChatPanel({
 				</div>
 				<h3 className="mt-4 text-lg font-bold text-[#002045]">Iniciar conversa</h3>
 				<p className="mt-2 max-w-xs text-sm leading-6 text-[#475F83]">
-					Clique em um membro da comunidade para abrir o chat com essa pessoa.
+					Clique em um amigo para abrir o chat com essa pessoa.
 				</p>
 			</aside>
 		);
@@ -288,61 +294,90 @@ function MemberChatPanel({
 				</button>
 			</header>
 
-			<div className="flex flex-1 flex-col gap-3 bg-[#F7F9FC] px-5 py-5">
-				{messages.length ? (
-					messages.map((message) => (
-						<div
-							key={message.id}
-							className={`flex ${message.sender === "me" ? "justify-end" : "justify-start"}`}
-						>
-							<div
-								className={`max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${message.sender === "me"
-									? "rounded-br-md bg-[#002045] text-white"
-									: "rounded-bl-md bg-white text-[#1a2a3a] ring-1 ring-slate-200"
-									}`}
-							>
-								<p>{message.text}</p>
-								<p
-									className={`mt-1 text-[10px] font-semibold ${message.sender === "me" ? "text-white/65" : "text-slate-400"
-										}`}
-								>
-									{formatChatTime(message.createdAt)}
-								</p>
-							</div>
-						</div>
-					))
-				) : (
-					<div className="flex flex-1 items-center justify-center text-center">
-						<p className="max-w-xs text-sm leading-6 text-[#475F83]">
-							A conversa com {member.name} está pronta. Escreva a primeira mensagem.
+			{!isFriend ? (
+				/* ── Not a friend: show prompt to add ── */
+				<div className="flex flex-1 flex-col items-center justify-center gap-4 bg-[#F7F9FC] px-5 py-10 text-center">
+					<div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#FFF7ED] text-[#D97706]">
+						<Users size={24} />
+					</div>
+					<div>
+						<p className="text-sm font-semibold text-[#002045]">
+							{member.name} ainda não é teu amigo
+						</p>
+						<p className="mt-1 max-w-xs text-xs leading-5 text-[#475F83]">
+							Adiciona como amigo para iniciar uma conversa.
 						</p>
 					</div>
-				)}
-			</div>
+					{onAddFriend && (
+						<button
+							type="button"
+							onClick={onAddFriend}
+							className="flex h-10 items-center gap-2 rounded-2xl bg-[#002045] px-5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#1E3A8A]"
+						>
+							<Users size={15} />
+							Adicionar amigo
+						</button>
+					)}
+				</div>
+			) : (
+				<>
+					<div className="flex flex-1 flex-col gap-3 bg-[#F7F9FC] px-5 py-5">
+						{messages.length ? (
+							messages.map((message) => (
+								<div
+									key={message.id}
+									className={`flex ${message.sender === "me" ? "justify-end" : "justify-start"}`}
+								>
+									<div
+										className={`max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${message.sender === "me"
+											? "rounded-br-md bg-[#002045] text-white"
+											: "rounded-bl-md bg-white text-[#1a2a3a] ring-1 ring-slate-200"
+											}`}
+									>
+										<p>{message.text}</p>
+										<p
+											className={`mt-1 text-[10px] font-semibold ${message.sender === "me" ? "text-white/65" : "text-slate-400"
+												}`}
+										>
+											{formatChatTime(message.createdAt)}
+										</p>
+									</div>
+								</div>
+							))
+						) : (
+							<div className="flex flex-1 items-center justify-center text-center">
+								<p className="max-w-xs text-sm leading-6 text-[#475F83]">
+									A conversa com {member.name} está pronta. Escreva a primeira mensagem.
+								</p>
+							</div>
+						)}
+					</div>
 
-			<form
-				className="flex items-end gap-2 border-t border-slate-100 bg-white p-4"
-				onSubmit={(event) => {
-					event.preventDefault();
-					onSendMessage();
-				}}
-			>
-				<textarea
-					value={draft}
-					onChange={(event) => onDraftChange(event.target.value)}
-					placeholder={`Mensagem para ${member.name.split(" ")[0]}...`}
-					rows={1}
-					className="max-h-28 min-h-11 flex-1 resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-[#1a2a3a] outline-none transition-colors placeholder:text-slate-400 focus:border-[#002045] focus:bg-white"
-				/>
-				<button
-					type="submit"
-					disabled={!draft.trim()}
-					aria-label="Enviar mensagem"
-					className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#002045] text-white transition-colors hover:bg-[#1E3A8A] disabled:cursor-not-allowed disabled:bg-slate-300"
-				>
-					<Send size={17} />
-				</button>
-			</form>
+					<form
+						className="flex items-end gap-2 border-t border-slate-100 bg-white p-4"
+						onSubmit={(event) => {
+							event.preventDefault();
+							onSendMessage();
+						}}
+					>
+						<textarea
+							value={draft}
+							onChange={(event) => onDraftChange(event.target.value)}
+							placeholder={`Mensagem para ${member.name.split(" ")[0]}...`}
+							rows={1}
+							className="max-h-28 min-h-11 flex-1 resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-[#1a2a3a] outline-none transition-colors placeholder:text-slate-400 focus:border-[#002045] focus:bg-white"
+						/>
+						<button
+							type="submit"
+							disabled={!draft.trim()}
+							aria-label="Enviar mensagem"
+							className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#002045] text-white transition-colors hover:bg-[#1E3A8A] disabled:cursor-not-allowed disabled:bg-slate-300"
+						>
+							<Send size={17} />
+						</button>
+					</form>
+				</>
+			)}
 		</aside>
 	);
 }
@@ -370,6 +405,10 @@ function DashboardPageContent() {
 	const [selectedChatMember, setSelectedChatMember] = useState<Member | null>(null);
 	const [chatDraft, setChatDraft] = useState("");
 	const [chatMessagesByMember, setChatMessagesByMember] = useState<Record<string, ChatMessage[]>>({});
+	const [friends, setFriends] = useState<Member[]>([]);
+	const [friendIds, setFriendIds] = useState<Set<string | number>>(new Set());
+	const [addingFriendIds, setAddingFriendIds] = useState<Set<string | number>>(new Set());
+	const currentUser = useUserStore((state) => state.user);
 
 	const loadOrganizationEvents = useCallback(async (organizationId: string) => {
 		const response = await api.get<EventsResponse>(
@@ -437,11 +476,14 @@ function DashboardPageContent() {
 				setEventsError(null);
 
 				// Chama a função diretamente aqui
-				const [membershipsResult, eventsResult] = await Promise.allSettled([
+				const [membershipsResult, eventsResult, friendsResult] = await Promise.allSettled([
 					api.get<MembershipsResponse>(
 						`/organizations/${nextOrganization.organizationId}/memberships`,
 					),
 					loadOrganizationEvents(nextOrganization.organizationId),
+					api.get<any>(
+						`/organizations/${nextOrganization.organizationId}/chat/friends`,
+					),
 				]);
 
 				if (!active) return;
@@ -456,6 +498,24 @@ function DashboardPageContent() {
 							? membershipsResult.reason.message
 							: "Não foi possível carregar os membros desta organização.",
 					);
+				}
+
+				if (friendsResult.status === "fulfilled") {
+					const friendsData = friendsResult.value;
+					const friendsList: Member[] = (friendsData?.friends ?? []).map((f: any) => {
+						const friend = f.friend ?? f;
+						return {
+							id: friend.id ?? friend.userId ?? "",
+							name: friend.displayName?.trim() || friend.name?.trim() || friend.email || "Membro",
+							role: friend.role ?? "Membro",
+							email: friend.email,
+							avatarUrl: friend.avatarUrl,
+						};
+					});
+					setFriends(friendsList);
+					setFriendIds(new Set(friendsList.map((f) => f.id)));
+				} else {
+					console.warn("Não foi possível carregar os amigos:", friendsResult.reason);
 				}
 
 				if (eventsResult.status === "fulfilled") {
@@ -672,6 +732,58 @@ function DashboardPageContent() {
 		setChatDraft("");
 	}, [chatDraft, selectedChatMember]);
 
+	const handleAddFriend = useCallback(async (memberId: string | number) => {
+		if (!organization || addingFriendIds.has(memberId)) return;
+
+		setAddingFriendIds((prev) => new Set(prev).add(memberId));
+
+		try {
+			const result = await api.post<any>(
+				`/organizations/${organization.organizationId}/chat/friends/${String(memberId)}`,
+				{},
+			);
+
+			// Build friend Member from the response
+			const friendData = result?.friendship?.friend ?? null;
+			if (friendData) {
+				const newFriend: Member = {
+					id: friendData.id ?? friendData.userId ?? String(memberId),
+					name: friendData.displayName?.trim() || friendData.name?.trim() || friendData.email || "Membro",
+					role: friendData.role ?? "Membro",
+					email: friendData.email,
+					avatarUrl: friendData.avatarUrl,
+				};
+				setFriends((prev) => [...prev, newFriend]);
+				setFriendIds((prev) => new Set(prev).add(newFriend.id));
+			} else {
+				// Fallback: use the member from the members list
+				const member = organizationMembers.find((m) => String(m.id) === String(memberId));
+				if (member) {
+					setFriends((prev) => [...prev, member]);
+					setFriendIds((prev) => new Set(prev).add(member.id));
+				}
+			}
+
+			setToast({
+				title: "Amigo adicionado com sucesso!",
+				variant: "success",
+			});
+		} catch (err) {
+			const message = err instanceof Error ? err.message : "Não foi possível adicionar este amigo.";
+			setToast({
+				title: "Erro ao adicionar amigo",
+				description: message,
+				variant: "error",
+			});
+		} finally {
+			setAddingFriendIds((prev) => {
+				const next = new Set(prev);
+				next.delete(memberId);
+				return next;
+			});
+		}
+	}, [addingFriendIds, organization, organizationMembers]);
+
 	if (loading) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-white text-[#002045]">
@@ -856,18 +968,23 @@ function DashboardPageContent() {
 				<section className="grid gap-5 pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.78fr)]">
 					<div>
 						<CommunityMembers
-							title={`Membros de ${organization.name}`}
-							subtitle={
-								membersError
-									? `Não foi possível carregar os membros: ${membersError}`
-									: `Você está a entrar como ${roleLabel}. Clique em um membro para conversar.`
-							}
-							members={organizationMembers}
-							maxVisible={12}
-							onViewAll={() => console.log("Ver todos")}
-							onInvite={() => console.log("Convidar")}
-							onMemberClick={handleMemberChatOpen}
-						/>
+						title={`Membros de ${organization.name}`}
+						subtitle={
+							membersError
+								? `Não foi possível carregar os membros: ${membersError}`
+								: `Você está a entrar como ${roleLabel}. Clique em um membro para conversar.`
+						}
+						members={organizationMembers}
+						friends={friends}
+						friendIds={friendIds}
+						maxVisible={12}
+						onViewAll={() => console.log("Ver todos")}
+						onInvite={() => console.log("Convidar")}
+						onMemberClick={handleMemberChatOpen}
+						onAddFriend={handleAddFriend}
+						addingFriendIds={addingFriendIds}
+						currentUserId={currentUser?.id}
+					/>
 					</div>
 					<MemberChatPanel
 						member={selectedChatMember}
@@ -875,6 +992,8 @@ function DashboardPageContent() {
 						draft={chatDraft}
 						onDraftChange={setChatDraft}
 						onSendMessage={handleSendChatMessage}
+						isFriend={selectedChatMember ? friendIds.has(selectedChatMember.id) : false}
+						onAddFriend={selectedChatMember ? () => handleAddFriend(selectedChatMember.id) : undefined}
 						onClose={() => {
 							setSelectedChatMember(null);
 							setChatDraft("");

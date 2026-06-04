@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Geist } from "next/font/google";
+import { Inter } from "next/font/google";
 import "@/assets/styles/globals.css";
 import { MessagesProvider } from "@/i18n/messages";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -7,11 +7,10 @@ import { defaultLocale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
 const inter = Inter({
 	variable: "--font-inter",
-	subsets: ["latin"]
+	subsets: ["latin"],
+	preload: false,
 })
 
 export const metadata: Metadata = {
@@ -27,7 +26,11 @@ export default async function RootLayout({
 	const messages = await getDictionary(defaultLocale);
 
 	return (
-		<html lang={defaultLocale} className={cn("h-full", "antialiased", inter.variable, "font-sans", geist.variable)} >
+		<html
+			lang={defaultLocale}
+			suppressHydrationWarning
+			className={cn("h-full", "antialiased", inter.variable, "font-sans")}
+		>
 			<body className="min-h-full flex flex-col bg-background text-foreground">
 				<ThemeProvider >
 					<MessagesProvider locale={defaultLocale} messages={messages}>

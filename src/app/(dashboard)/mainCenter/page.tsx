@@ -355,8 +355,8 @@ function MemberChatPanel({
 	}
 
 	return (
-		<aside className="flex min-h-105 flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
-			<header className="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
+		<aside className="flex h-[38rem] max-h-[calc(100vh-7rem)] min-h-105 flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
+			<header className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
 				<div className="flex min-w-0 items-center gap-3">
 					{member.avatarUrl ? (
 						<img
@@ -426,7 +426,7 @@ function MemberChatPanel({
 				</div>
 			) : (
 				<>
-					<div className="flex flex-1 flex-col gap-3 bg-[#F7F9FC] px-5 py-5">
+					<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto bg-[#F7F9FC] px-5 py-5">
 						{isLoadingMessages ? (
 							<div className="flex flex-1 items-center justify-center gap-2 text-sm font-medium text-[#475F83]">
 								<Loader2 size={16} className="animate-spin" />
@@ -470,7 +470,7 @@ function MemberChatPanel({
 					</div>
 
 					<form
-						className="flex items-end gap-2 border-t border-slate-100 bg-white p-4"
+						className="flex shrink-0 items-end gap-2 border-t border-slate-100 bg-white p-4"
 						onSubmit={(event) => {
 							event.preventDefault();
 							onSendMessage();

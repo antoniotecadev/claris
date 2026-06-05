@@ -14,7 +14,8 @@ import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { ChurchModule } from './modules/church/church.module';
 import { EventModule } from './modules/event/event.module';
 import { ChatModule } from './modules/chat/chat.module';
-import { ApiOrganizationsModule } from './api/organizations.module';
+import { ApiOrganizationsModule } from './api/organizations/organizations.module';
+import { apiUsersModule } from './api/user/users.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ApiOrganizationsModule } from './api/organizations.module';
     EventModule,
     ChatModule,
     ApiOrganizationsModule, // API pública para listar organizações
+    apiUsersModule, // API pública para manipular usuarios publicos
   ],
   controllers: [AppController], // Controladores que lidam com as rotas e solicitações HTTP.
   providers: [AppService], // Serviços que contêm a lógica de negócios e são injetados nos controladores.

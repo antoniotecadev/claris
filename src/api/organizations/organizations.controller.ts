@@ -1,8 +1,8 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiSecurity } from '@nestjs/swagger';
-import { ApiKeyGuard } from './api-key.guard';
-import { RateLimitGuard } from './rate-limit.guard';
-import { OrganizationsService } from './organizations.service';
+import { ApiKeyGuard } from '../api-key.guard';
+import { RateLimitGuard } from '../rate-limit.guard';
+import { OrganizationsService } from './organizations.service'
 
 @Controller('public')
 export class OrganizationsController {

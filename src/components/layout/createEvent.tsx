@@ -100,8 +100,17 @@ export function CreateEventDialog({
 			return
 		}
 
-		// Combina data + hora num ISO-8601 (ex: "2026-06-15T19:00:00.000Z")
-		const combinedDate = new Date(`${date}T${time}`)
+				// Combina data + hora (garantindo segundos) e também envia a representação local
+				// Ex: date = "2026-06-15", time = "19:00" -> localDate = "2026-06-15T19:00"
+				const localDateString = `${date}T${time}`;
+				const combinedDate = new Date(`${localDateString}:00`);
+				// Validação: não permitir criar eventos no passado (com margem de 1 minuto)
+				const now = new Date();
+				const marginMs = 60 * 1000; // 1 minuto
+				if (combinedDate.getTime() < now.getTime() - marginMs) {
+					alert("Não é possível criar um evento com data/hora no passado.");
+					return;
+				}
 		if (Number.isNaN(combinedDate.getTime())) {
 			alert("A data ou hora informada é inválida.")
 			return

@@ -18,6 +18,7 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { io, type Socket } from "socket.io-client";
 import { Button } from "@/components/ui/button";
 import SearchBar from "@/components/layout/SeachBar";
 import type { EventCardProps } from "@/components/layout/EventCard";
@@ -134,6 +135,7 @@ type AddFriendResponse = {
 
 type ChatApiMessage = {
 	id?: string;
+	organizationId?: string | null;
 	content?: string | null;
 	text?: string | null;
 	message?: string | null;
@@ -157,6 +159,18 @@ type ChatMessagesResponse =
 type SendMessageResponse = {
 	message?: ChatApiMessage;
 };
+
+type AuthTokenResponse = {
+	token: string | null;
+};
+
+type ChatRealtimePayload =
+	| ChatApiMessage
+	| {
+		message?: ChatApiMessage;
+		data?: ChatApiMessage;
+		result?: ChatApiMessage;
+	};
 
 type ToastState = {
 	title: string;
@@ -195,6 +209,18 @@ function unwrapChatMessagesResponse(response: ChatMessagesResponse): ChatApiMess
 	return [];
 }
 
+function unwrapRealtimeMessage(payload: ChatRealtimePayload): ChatApiMessage | null {
+	if ("content" in payload || "senderId" in payload || "recipientId" in payload) {
+		return payload;
+	}
+
+	return payload.message ?? payload.data ?? payload.result ?? null;
+}
+
+function buildSocketUrl() {
+	return `${SOCKET_BASE_URL.replace(/\/$/, "")}/chat`;
+}
+
 function mapMembershipToMember(membership: MembershipResponseItem): Member {
 	const user = membership.user;
 	const name =
@@ -219,6 +245,9 @@ function mapMembershipToMember(membership: MembershipResponseItem): Member {
 
 const ADMIN_ROLES = new Set(["ADMIN", "SUPER_ADMIN"]);
 const EVENT_IMAGE_FALLBACK = "/igreja.png";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/v1/api";
+const SOCKET_BASE_URL =
+	process.env.NEXT_PUBLIC_SOCKET_URL || API_BASE_URL.replace(/\/v1\/api\/?$/, "");
 
 function formatEventDate(value: string) {
 	const date = new Date(value);
@@ -532,6 +561,22 @@ function DashboardPageContent() {
 	const currentUser = useUserStore((state) => state.user);
 	const currentUserId = currentUser?.id;
 
+	const appendChatMessage = useCallback((memberId: string, message: ChatMessage) => {
+		setChatMessagesByMember((currentMessages) => {
+			const memberMessages = currentMessages[memberId] ?? [];
+			const alreadyExists = memberMessages.some((item) => item.id === message.id);
+
+			if (alreadyExists) {
+				return currentMessages;
+			}
+
+			return {
+				...currentMessages,
+				[memberId]: [...memberMessages, message],
+			};
+		});
+	}, []);
+
 	const loadOrganizationEvents = useCallback(async (organizationId: string) => {
 		const response = await api.get<EventsResponse>(
 			`/organizations/${organizationId}/events`,
@@ -672,6 +717,104 @@ function DashboardPageContent() {
 
 		return () => window.clearTimeout(timeoutId);
 	}, [toast]);
+
+	useEffect(() => {
+		if (!organization) return;
+
+		let active = true;
+		let socket: Socket | null = null;
+
+		async function connectChatSocket() {
+			try {
+				const tokenResponse = await fetch("/api/auth-token");
+
+				if (!tokenResponse.ok) {
+					throw new Error("Token de autenticação indisponível para o chat.");
+				}
+
+				const { token } = (await tokenResponse.json()) as AuthTokenResponse;
+
+				if (!active || !token) return;
+
+				socket = io(buildSocketUrl(), {
+					auth: {
+						token,
+						authorization: `Bearer ${token}`,
+					},
+					query: { token },
+					transports: ["websocket", "polling"],
+				});
+
+				const joinOrganizationRoom = () => {
+					socket?.emit("chat:join", {
+						organizationId: organization.organizationId,
+					});
+					socket?.emit("joinOrganization", {
+						organizationId: organization.organizationId,
+					});
+				};
+
+				const handleRealtimeMessage = (payload: ChatRealtimePayload) => {
+					const message = unwrapRealtimeMessage(payload);
+					if (!message) return;
+
+					if (
+						message.organizationId &&
+						message.organizationId !== organization.organizationId
+					) {
+						return;
+					}
+
+					const senderId =
+						message.senderId ?? message.userId ?? message.sender?.id ?? message.sender?.userId;
+					const recipientId = message.recipientId ?? message.receiverId ?? message.friendId;
+					const memberId =
+						currentUserId && senderId && String(senderId) === String(currentUserId)
+							? recipientId
+							: senderId;
+
+					if (!memberId) return;
+
+					appendChatMessage(
+						String(memberId),
+						mapApiMessageToChatMessage(message, currentUserId, String(memberId)),
+					);
+				};
+
+				socket.on("connect", joinOrganizationRoom);
+				socket.on("chat:connected", joinOrganizationRoom);
+				socket.on("message:new", handleRealtimeMessage);
+				socket.on("chat:message", handleRealtimeMessage);
+				socket.on("chat:message:new", handleRealtimeMessage);
+				socket.on("newMessage", handleRealtimeMessage);
+				socket.on("message", handleRealtimeMessage);
+
+				socket.on("chat:error", (payload: { message?: string }) => {
+					setToast({
+						title: "Erro no chat em tempo real",
+						description: payload.message,
+						variant: "error",
+					});
+				});
+
+				socket.on("connect_error", (error) => {
+					console.warn("Erro ao conectar socket do chat:", error.message);
+				});
+			} catch (error) {
+				console.warn(
+					"Não foi possível iniciar o socket do chat:",
+					error instanceof Error ? error.message : error,
+				);
+			}
+		}
+
+		void connectChatSocket();
+
+		return () => {
+			active = false;
+			socket?.disconnect();
+		};
+	}, [appendChatMessage, currentUserId, organization]);
 
 	useEffect(() => {
 		let active = true;
@@ -902,10 +1045,7 @@ function DashboardPageContent() {
 					createdAt: new Date(),
 				};
 
-			setChatMessagesByMember((currentMessages) => ({
-				...currentMessages,
-				[memberKey]: [...(currentMessages[memberKey] ?? []), nextMessage],
-			}));
+			appendChatMessage(memberKey, nextMessage);
 			setChatDraft("");
 		} catch (error) {
 			const message =
@@ -919,7 +1059,14 @@ function DashboardPageContent() {
 		} finally {
 			setSendingChatMemberId(null);
 		}
-	}, [chatDraft, currentUserId, organization, selectedChatMember, sendingChatMemberId]);
+	}, [
+		appendChatMessage,
+		chatDraft,
+		currentUserId,
+		organization,
+		selectedChatMember,
+		sendingChatMemberId,
+	]);
 
 	const handleAddFriend = useCallback(async (memberId: string | number) => {
 		if (!organization || addingFriendIds.has(memberId)) return;

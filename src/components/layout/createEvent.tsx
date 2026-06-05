@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { getAuthToken } from "@/lib/auth-cookies"
 import { useMessages } from "@/i18n/messages"
+import { FeedbackToast } from "@/components/ui/feedback-toast"
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/v1/api"
 
@@ -35,6 +36,25 @@ export function CreateEventDialog({
 	const { t } = useMessages()
 	const [open, setOpen] = useState(false)
 	const [submitting, setSubmitting] = useState(false)
+
+	// Toast state
+	const [toastOpen, setToastOpen] = useState(false)
+	const [toastTitle, setToastTitle] = useState("")
+	const [toastDescription, setToastDescription] = useState<string | undefined>(undefined)
+	const [toastVariant, setToastVariant] = useState<"success" | "error" | "info">("info")
+
+	const showToast = (title: string, description?: string, variant: "success" | "error" | "info" = "info") => {
+		setToastTitle(title)
+		setToastDescription(description)
+		setToastVariant(variant)
+		setToastOpen(true)
+	}
+
+	useEffect(() => {
+		if (!toastOpen) return
+		const id = window.setTimeout(() => setToastOpen(false), 4200)
+		return () => window.clearTimeout(id)
+	}, [toastOpen])
 
 	// Campos do formulário
 	const [title, setTitle] = useState("")
@@ -92,11 +112,11 @@ export function CreateEventDialog({
 	const handleSubmit = async () => {
 		const cleanTitle = title.trim()
 		if (cleanTitle.length < 2 || cleanTitle.length > 120) {
-			alert("O título deve ter entre 2 e 120 caracteres.")
+			showToast("Título inválido", "O título deve ter entre 2 e 120 caracteres.", "error")
 			return
 		}
 		if (!date || !time) {
-			alert("Data e hora são obrigatórias.")
+			showToast("Data e hora são obrigatórias.", undefined, "error")
 			return
 		}
 
@@ -108,13 +128,13 @@ export function CreateEventDialog({
 				const now = new Date();
 				const marginMs = 60 * 1000; // 1 minuto
 				if (combinedDate.getTime() < now.getTime() - marginMs) {
-					alert("Não é possível criar um evento com data/hora no passado.");
-					return;
+					showToast("Não é possível criar um evento com data/hora no passado.", undefined, "error")
+					return
 				}
-		if (Number.isNaN(combinedDate.getTime())) {
-			alert("A data ou hora informada é inválida.")
-			return
-		}
+			if (Number.isNaN(combinedDate.getTime())) {
+				showToast("A data ou hora informada é inválida.", undefined, "error")
+				return
+			}
 
 		setSubmitting(true)
 		try {
@@ -147,28 +167,30 @@ export function CreateEventDialog({
 				throw new Error(errorMessage)
 			}
 
+			showToast("Evento criado com sucesso", undefined, "success")
 			resetForm()
 			setOpen(false)
 			onSuccess?.()
 		} catch (error) {
-			alert(error instanceof Error ? error.message : "Erro ao criar o evento.")
+			showToast(error instanceof Error ? error.message : "Erro ao criar o evento.", undefined, "error")
 		} finally {
 			setSubmitting(false)
 		}
 	}
 
 	return (
-		<Dialog open={open} onOpenChange={handleOpenChange}>
-			<DialogTrigger asChild>
-				{children ?? (
-					<Button className="h-12 w-fit rounded-2xl bg-[#FFDEA5] px-5 font-bold text-[#5D4201] shadow-sm hover:bg-[#FFD38A]">
-						<Plus size={18} />
-						<span>Criar Evento</span>
-					</Button>
-				)}
-			</DialogTrigger>
+		<>
+			<Dialog open={open} onOpenChange={handleOpenChange}>
+				<DialogTrigger asChild>
+					{children ?? (
+						<Button className="h-12 w-fit rounded-2xl bg-[#FFDEA5] px-5 font-bold text-[#5D4201] shadow-sm hover:bg-[#FFD38A]">
+							<Plus size={18} />
+							<span>Criar Evento</span>
+						</Button>
+					)}
+				</DialogTrigger>
 
-			<DialogContent className="w-full max-h-[92vh] overflow-hidden p-0 sm:max-w-2xl md:max-w-4xl">
+				<DialogContent className="w-full max-h-[92vh] overflow-hidden p-0 sm:max-w-2xl md:max-w-4xl">
 				<DialogHeader className="border-b border-slate-100 bg-linear-to-br from-[#002045] via-[#1E3A8A] to-[#D97706] px-6 py-6 text-white">
 					<div className="flex items-center gap-3">
 						<div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm">
@@ -351,7 +373,15 @@ export function CreateEventDialog({
 						)}
 					</Button>
 				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+				</DialogContent>
+			</Dialog>
+			<FeedbackToast
+				open={toastOpen}
+				title={toastTitle}
+				description={toastDescription}
+				variant={toastVariant}
+				onClose={() => setToastOpen(false)}
+			/>
+		</>
 	)
 }

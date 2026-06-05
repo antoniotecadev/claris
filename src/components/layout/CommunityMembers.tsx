@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Search, X, UserPlus, Users, ChevronRight, Heart, Loader2, UserCheck } from "lucide-react";
+import { Search, X, UserPlus, Users, ChevronRight, Heart, Loader2, UserCheck, UserMinus } from "lucide-react";
 
 /* ── Types ─────────────────────────────────────────────── */
 export type Member = {
@@ -23,7 +23,9 @@ export type CommunityMembersProps = {
   onInvite?: () => void;
   onMemberClick?: (member: Member) => void;
   onAddFriend?: (memberId: string | number) => void;
+  onRemoveFriend?: (memberId: string | number) => void;
   addingFriendIds?: Set<string | number>;
+  removingFriendIds?: Set<string | number>;
   maxVisible?: number;      // how many avatars to show before search
   currentUserId?: string;
 };
@@ -87,7 +89,9 @@ export default function CommunityMembers({
   onInvite,
   onMemberClick,
   onAddFriend,
+  onRemoveFriend,
   addingFriendIds = new Set(),
+  removingFriendIds = new Set(),
   maxVisible = 12,
   currentUserId,
 }: CommunityMembersProps) {
@@ -240,7 +244,9 @@ export default function CommunityMembers({
             const isSelf = currentUserId != null && String(member.id) === String(currentUserId);
             const isFriend = friendIds.has(member.id);
             const isAdding = addingFriendIds.has(member.id);
+            const isRemoving = removingFriendIds.has(member.id);
             const showAddButton = activeTab === "members" && onAddFriend && !isSelf && !isFriend;
+            const showRemoveButton = activeTab === "friends" && onRemoveFriend && !isSelf;
 
             return (
               <div key={member.id} className="flex flex-col items-center gap-1.5 group">
@@ -282,6 +288,21 @@ export default function CommunityMembers({
                       <UserPlus size={10} />
                     )}
                     <span>{isAdding ? "..." : "Amigo"}</span>
+                  </button>
+                )}
+
+                {showRemoveButton && (
+                  <button
+                    onClick={() => onRemoveFriend(member.id)}
+                    disabled={isRemoving}
+                    className="flex h-7 items-center gap-1 rounded-full border border-red-100 bg-white px-2.5 text-[10px] font-semibold text-red-600 shadow-sm transition-all duration-200 hover:border-red-300 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {isRemoving ? (
+                      <Loader2 size={10} className="animate-spin" />
+                    ) : (
+                      <UserMinus size={10} />
+                    )}
+                    <span>{isRemoving ? "..." : "Remover"}</span>
                   </button>
                 )}
               </div>

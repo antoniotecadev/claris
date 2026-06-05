@@ -10,6 +10,7 @@ import {
 	Plus,
 	Send,
 	ShieldCheck,
+	UserMinus,
 	Users,
 	X,
 } from "lucide-react";
@@ -107,10 +108,54 @@ type EventsResponse =
 		events?: ApiEvent[];
 	};
 
-type UpdateEventPayload = {
-	title?: string;
-	description?: string;
-	location?: string;
+type FriendApiUser = {
+	id?: string;
+	userId?: string;
+	displayName?: string | null;
+	name?: string | null;
+	email?: string | null;
+	role?: string | null;
+	avatarUrl?: string | null;
+};
+
+type FriendApiItem = FriendApiUser & {
+	friend?: FriendApiUser | null;
+};
+
+type FriendsResponse = {
+	friends?: FriendApiItem[];
+};
+
+type AddFriendResponse = {
+	friendship?: {
+		friend?: FriendApiUser | null;
+	};
+};
+
+type ChatApiMessage = {
+	id?: string;
+	content?: string | null;
+	text?: string | null;
+	message?: string | null;
+	senderId?: string | null;
+	userId?: string | null;
+	recipientId?: string | null;
+	receiverId?: string | null;
+	friendId?: string | null;
+	createdAt?: string | null;
+	updatedAt?: string | null;
+	sender?: FriendApiUser | null;
+};
+
+type ChatMessagesResponse =
+	| ChatApiMessage[]
+	| {
+		messages?: ChatApiMessage[];
+		result?: ChatApiMessage[] | { messages?: ChatApiMessage[] };
+	};
+
+type SendMessageResponse = {
+	message?: ChatApiMessage;
 };
 
 type ToastState = {
@@ -139,6 +184,14 @@ function unwrapEventsResponse(response: EventsResponse): ApiEvent[] {
 	if (Array.isArray(response.events)) return response.events;
 	if (Array.isArray(response.result)) return response.result;
 	if (response.result && Array.isArray(response.result.events)) return response.result.events;
+	return [];
+}
+
+function unwrapChatMessagesResponse(response: ChatMessagesResponse): ChatApiMessage[] {
+	if (Array.isArray(response)) return response;
+	if (Array.isArray(response.messages)) return response.messages;
+	if (Array.isArray(response.result)) return response.result;
+	if (response.result && Array.isArray(response.result.messages)) return response.result.messages;
 	return [];
 }
 
@@ -212,6 +265,35 @@ function normalizeApiEvent(event: ApiEvent): ApiEvent {
 	};
 }
 
+function mapFriendToMember(item: FriendApiItem): Member {
+	const friend = item.friend ?? item;
+
+	return {
+		id: friend.id ?? friend.userId ?? "",
+		name: friend.displayName?.trim() || friend.name?.trim() || friend.email || "Membro",
+		role: friend.role ?? "Membro",
+		email: friend.email ?? undefined,
+		avatarUrl: friend.avatarUrl ?? undefined,
+	};
+}
+
+function mapApiMessageToChatMessage(
+	message: ChatApiMessage,
+	currentUserId?: string,
+	fallbackFriendId?: string,
+): ChatMessage {
+	const senderId = message.senderId ?? message.userId ?? message.sender?.id ?? message.sender?.userId;
+	const isMine = currentUserId != null && senderId != null && String(senderId) === String(currentUserId);
+	const createdAt = new Date(message.createdAt ?? message.updatedAt ?? Date.now());
+
+	return {
+		id: message.id ?? `${fallbackFriendId ?? "message"}-${createdAt.getTime()}`,
+		text: message.content ?? message.text ?? message.message ?? "",
+		sender: isMine ? "me" : "member",
+		createdAt: Number.isNaN(createdAt.getTime()) ? new Date() : createdAt,
+	};
+}
+
 function getMemberInitials(name: string) {
 	return name
 		.split(" ")
@@ -238,6 +320,11 @@ function MemberChatPanel({
 	onClose,
 	isFriend,
 	onAddFriend,
+	onRemoveFriend,
+	isRemovingFriend,
+	isLoadingMessages,
+	isSendingMessage,
+	messagesError,
 }: {
 	member: Member | null;
 	messages: ChatMessage[];
@@ -247,6 +334,11 @@ function MemberChatPanel({
 	onClose: () => void;
 	isFriend: boolean;
 	onAddFriend?: () => void;
+	onRemoveFriend?: () => void;
+	isRemovingFriend?: boolean;
+	isLoadingMessages?: boolean;
+	isSendingMessage?: boolean;
+	messagesError?: string | null;
 }) {
 	if (!member) {
 		return (
@@ -284,14 +376,27 @@ function MemberChatPanel({
 						</p>
 					</div>
 				</div>
-				<button
-					type="button"
-					onClick={onClose}
-					aria-label="Fechar chat"
-					className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:border-[#002045] hover:text-[#002045]"
-				>
-					<X size={16} />
-				</button>
+				<div className="flex shrink-0 items-center gap-2">
+					{isFriend && onRemoveFriend && (
+						<button
+							type="button"
+							onClick={onRemoveFriend}
+							disabled={isRemovingFriend}
+							aria-label="Remover amigo"
+							className="flex h-9 w-9 items-center justify-center rounded-full border border-red-100 text-red-600 transition-colors hover:border-red-300 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+						>
+							{isRemovingFriend ? <Loader2 size={16} className="animate-spin" /> : <UserMinus size={16} />}
+						</button>
+					)}
+					<button
+						type="button"
+						onClick={onClose}
+						aria-label="Fechar chat"
+						className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:border-[#002045] hover:text-[#002045]"
+					>
+						<X size={16} />
+					</button>
+				</div>
 			</header>
 
 			{!isFriend ? (
@@ -322,7 +427,18 @@ function MemberChatPanel({
 			) : (
 				<>
 					<div className="flex flex-1 flex-col gap-3 bg-[#F7F9FC] px-5 py-5">
-						{messages.length ? (
+						{isLoadingMessages ? (
+							<div className="flex flex-1 items-center justify-center gap-2 text-sm font-medium text-[#475F83]">
+								<Loader2 size={16} className="animate-spin" />
+								<span>A carregar mensagens...</span>
+							</div>
+						) : messagesError ? (
+							<div className="flex flex-1 items-center justify-center text-center">
+								<p className="max-w-xs rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
+									{messagesError}
+								</p>
+							</div>
+						) : messages.length ? (
 							messages.map((message) => (
 								<div
 									key={message.id}
@@ -365,15 +481,16 @@ function MemberChatPanel({
 							onChange={(event) => onDraftChange(event.target.value)}
 							placeholder={`Mensagem para ${member.name.split(" ")[0]}...`}
 							rows={1}
+							disabled={isSendingMessage}
 							className="max-h-28 min-h-11 flex-1 resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-[#1a2a3a] outline-none transition-colors placeholder:text-slate-400 focus:border-[#002045] focus:bg-white"
 						/>
 						<button
 							type="submit"
-							disabled={!draft.trim()}
+							disabled={!draft.trim() || isSendingMessage}
 							aria-label="Enviar mensagem"
 							className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#002045] text-white transition-colors hover:bg-[#1E3A8A] disabled:cursor-not-allowed disabled:bg-slate-300"
 						>
-							<Send size={17} />
+							{isSendingMessage ? <Loader2 size={17} className="animate-spin" /> : <Send size={17} />}
 						</button>
 					</form>
 				</>
@@ -405,10 +522,15 @@ function DashboardPageContent() {
 	const [selectedChatMember, setSelectedChatMember] = useState<Member | null>(null);
 	const [chatDraft, setChatDraft] = useState("");
 	const [chatMessagesByMember, setChatMessagesByMember] = useState<Record<string, ChatMessage[]>>({});
+	const [chatMessagesError, setChatMessagesError] = useState<string | null>(null);
+	const [loadingChatMemberId, setLoadingChatMemberId] = useState<string | null>(null);
+	const [sendingChatMemberId, setSendingChatMemberId] = useState<string | null>(null);
 	const [friends, setFriends] = useState<Member[]>([]);
 	const [friendIds, setFriendIds] = useState<Set<string | number>>(new Set());
 	const [addingFriendIds, setAddingFriendIds] = useState<Set<string | number>>(new Set());
+	const [removingFriendIds, setRemovingFriendIds] = useState<Set<string | number>>(new Set());
 	const currentUser = useUserStore((state) => state.user);
+	const currentUserId = currentUser?.id;
 
 	const loadOrganizationEvents = useCallback(async (organizationId: string) => {
 		const response = await api.get<EventsResponse>(
@@ -481,7 +603,7 @@ function DashboardPageContent() {
 						`/organizations/${nextOrganization.organizationId}/memberships`,
 					),
 					loadOrganizationEvents(nextOrganization.organizationId),
-					api.get<any>(
+					api.get<FriendsResponse>(
 						`/organizations/${nextOrganization.organizationId}/chat/friends`,
 					),
 				]);
@@ -502,16 +624,7 @@ function DashboardPageContent() {
 
 				if (friendsResult.status === "fulfilled") {
 					const friendsData = friendsResult.value;
-					const friendsList: Member[] = (friendsData?.friends ?? []).map((f: any) => {
-						const friend = f.friend ?? f;
-						return {
-							id: friend.id ?? friend.userId ?? "",
-							name: friend.displayName?.trim() || friend.name?.trim() || friend.email || "Membro",
-							role: friend.role ?? "Membro",
-							email: friend.email,
-							avatarUrl: friend.avatarUrl,
-						};
-					});
+					const friendsList = (friendsData?.friends ?? []).map(mapFriendToMember);
 					setFriends(friendsList);
 					setFriendIds(new Set(friendsList.map((f) => f.id)));
 				} else {
@@ -559,6 +672,56 @@ function DashboardPageContent() {
 
 		return () => window.clearTimeout(timeoutId);
 	}, [toast]);
+
+	useEffect(() => {
+		let active = true;
+
+		async function loadChatMessages() {
+			if (!organization || !selectedChatMember || !friendIds.has(selectedChatMember.id)) {
+				return;
+			}
+
+			const friendId = String(selectedChatMember.id);
+
+			setChatMessagesError(null);
+			setLoadingChatMemberId(friendId);
+
+			try {
+				const response = await api.get<ChatMessagesResponse>(
+					`/organizations/${organization.organizationId}/chat/messages/${friendId}?limit=50`,
+				);
+
+				if (!active) return;
+
+				const nextMessages = unwrapChatMessagesResponse(response).map((message) =>
+					mapApiMessageToChatMessage(message, currentUserId, friendId),
+				);
+
+				setChatMessagesByMember((currentMessages) => ({
+					...currentMessages,
+					[friendId]: nextMessages,
+				}));
+			} catch (error) {
+				if (!active) return;
+
+				setChatMessagesError(
+					error instanceof Error
+						? error.message
+						: "Não foi possível carregar as mensagens.",
+				);
+			} finally {
+				if (active) {
+					setLoadingChatMemberId(null);
+				}
+			}
+		}
+
+		void loadChatMessages();
+
+		return () => {
+			active = false;
+		};
+	}, [currentUserId, friendIds, organization, selectedChatMember]);
 
 	const organizationAddress = organization?.address?.trim() || "Endereço não informado";
 	const organizationDescription =
@@ -714,23 +877,49 @@ function DashboardPageContent() {
 		setSelectedChatMember(member);
 		setChatDraft("");
 	}, []);
-	const handleSendChatMessage = useCallback(() => {
-		if (!selectedChatMember || !chatDraft.trim()) return;
+	const handleSendChatMessage = useCallback(async () => {
+		if (!organization || !selectedChatMember || !chatDraft.trim()) return;
 
 		const memberKey = String(selectedChatMember.id);
-		const nextMessage: ChatMessage = {
-			id: `${memberKey}-${Date.now()}`,
-			text: chatDraft.trim(),
-			sender: "me",
-			createdAt: new Date(),
-		};
+		if (sendingChatMemberId === memberKey) return;
 
-		setChatMessagesByMember((currentMessages) => ({
-			...currentMessages,
-			[memberKey]: [...(currentMessages[memberKey] ?? []), nextMessage],
-		}));
-		setChatDraft("");
-	}, [chatDraft, selectedChatMember]);
+		const content = chatDraft.trim();
+		setSendingChatMemberId(memberKey);
+		setChatMessagesError(null);
+
+		try {
+			const response = await api.post<SendMessageResponse>(
+				`/organizations/${organization.organizationId}/chat/messages/${memberKey}`,
+				{ content },
+			);
+
+			const nextMessage = response.message
+				? mapApiMessageToChatMessage(response.message, currentUserId, memberKey)
+				: {
+					id: `${memberKey}-${Date.now()}`,
+					text: content,
+					sender: "me" as const,
+					createdAt: new Date(),
+				};
+
+			setChatMessagesByMember((currentMessages) => ({
+				...currentMessages,
+				[memberKey]: [...(currentMessages[memberKey] ?? []), nextMessage],
+			}));
+			setChatDraft("");
+		} catch (error) {
+			const message =
+				error instanceof Error ? error.message : "Não foi possível enviar a mensagem.";
+			setChatMessagesError(message);
+			setToast({
+				title: "Erro ao enviar mensagem",
+				description: message,
+				variant: "error",
+			});
+		} finally {
+			setSendingChatMemberId(null);
+		}
+	}, [chatDraft, currentUserId, organization, selectedChatMember, sendingChatMemberId]);
 
 	const handleAddFriend = useCallback(async (memberId: string | number) => {
 		if (!organization || addingFriendIds.has(memberId)) return;
@@ -738,7 +927,7 @@ function DashboardPageContent() {
 		setAddingFriendIds((prev) => new Set(prev).add(memberId));
 
 		try {
-			const result = await api.post<any>(
+			const result = await api.post<AddFriendResponse>(
 				`/organizations/${organization.organizationId}/chat/friends/${String(memberId)}`,
 				{},
 			);
@@ -746,13 +935,13 @@ function DashboardPageContent() {
 			// Build friend Member from the response
 			const friendData = result?.friendship?.friend ?? null;
 			if (friendData) {
-				const newFriend: Member = {
-					id: friendData.id ?? friendData.userId ?? String(memberId),
-					name: friendData.displayName?.trim() || friendData.name?.trim() || friendData.email || "Membro",
-					role: friendData.role ?? "Membro",
-					email: friendData.email,
-					avatarUrl: friendData.avatarUrl,
-				};
+					const newFriend: Member = {
+						id: friendData.id ?? friendData.userId ?? String(memberId),
+						name: friendData.displayName?.trim() || friendData.name?.trim() || friendData.email || "Membro",
+						role: friendData.role ?? "Membro",
+						email: friendData.email ?? undefined,
+						avatarUrl: friendData.avatarUrl ?? undefined,
+					};
 				setFriends((prev) => [...prev, newFriend]);
 				setFriendIds((prev) => new Set(prev).add(newFriend.id));
 			} else {
@@ -783,6 +972,48 @@ function DashboardPageContent() {
 			});
 		}
 	}, [addingFriendIds, organization, organizationMembers]);
+
+	const handleRemoveFriend = useCallback(async (friendId: string | number) => {
+		if (!organization || removingFriendIds.has(friendId)) return;
+
+		setRemovingFriendIds((prev) => new Set(prev).add(friendId));
+
+		try {
+			await api.delete(
+				`/organizations/${organization.organizationId}/chat/friends/${String(friendId)}`,
+			);
+
+			setFriends((prev) => prev.filter((friend) => String(friend.id) !== String(friendId)));
+			setFriendIds((prev) => {
+				const next = new Set(prev);
+				for (const id of next) {
+					if (String(id) === String(friendId)) {
+						next.delete(id);
+						break;
+					}
+				}
+				return next;
+			});
+
+			setToast({
+				title: "Amigo removido com sucesso.",
+				variant: "success",
+			});
+		} catch (err) {
+			const message = err instanceof Error ? err.message : "Não foi possível remover este amigo.";
+			setToast({
+				title: "Erro ao remover amigo",
+				description: message,
+				variant: "error",
+			});
+		} finally {
+			setRemovingFriendIds((prev) => {
+				const next = new Set(prev);
+				next.delete(friendId);
+				return next;
+			});
+		}
+	}, [organization, removingFriendIds]);
 
 	if (loading) {
 		return (
@@ -982,8 +1213,10 @@ function DashboardPageContent() {
 						onInvite={() => console.log("Convidar")}
 						onMemberClick={handleMemberChatOpen}
 						onAddFriend={handleAddFriend}
+						onRemoveFriend={handleRemoveFriend}
 						addingFriendIds={addingFriendIds}
-						currentUserId={currentUser?.id}
+						removingFriendIds={removingFriendIds}
+						currentUserId={currentUserId}
 					/>
 					</div>
 					<MemberChatPanel
@@ -994,9 +1227,25 @@ function DashboardPageContent() {
 						onSendMessage={handleSendChatMessage}
 						isFriend={selectedChatMember ? friendIds.has(selectedChatMember.id) : false}
 						onAddFriend={selectedChatMember ? () => handleAddFriend(selectedChatMember.id) : undefined}
+						onRemoveFriend={selectedChatMember ? () => handleRemoveFriend(selectedChatMember.id) : undefined}
+						isRemovingFriend={
+							selectedChatMember ? removingFriendIds.has(selectedChatMember.id) : false
+						}
+						isLoadingMessages={
+							selectedChatMember
+								? loadingChatMemberId === String(selectedChatMember.id)
+								: false
+						}
+						isSendingMessage={
+							selectedChatMember
+								? sendingChatMemberId === String(selectedChatMember.id)
+								: false
+						}
+						messagesError={chatMessagesError}
 						onClose={() => {
 							setSelectedChatMember(null);
 							setChatDraft("");
+							setChatMessagesError(null);
 						}}
 					/>
 				</section>

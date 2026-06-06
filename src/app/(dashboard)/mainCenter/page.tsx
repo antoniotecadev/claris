@@ -147,6 +147,8 @@ type ChatApiMessage = {
 	createdAt?: string | null;
 	updatedAt?: string | null;
 	sender?: FriendApiUser | null;
+	data?: any;
+	result?: any;
 };
 
 type ChatMessagesResponse =
@@ -384,7 +386,7 @@ function MemberChatPanel({
 	}
 
 	return (
-		<aside className="flex h-[38rem] max-h-[calc(100vh-7rem)] min-h-105 flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
+		<aside className="flex h-152 max-h-[calc(100vh-7rem)] min-h-105 flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
 			<header className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
 				<div className="flex min-w-0 items-center gap-3">
 					{member.avatarUrl ? (
@@ -747,10 +749,10 @@ function DashboardPageContent() {
 
 				const joinOrganizationRoom = () => {
 					socket?.emit("chat:join", {
-						organizationId: organization.organizationId,
+						organizationId: organization?.organizationId,
 					});
 					socket?.emit("joinOrganization", {
-						organizationId: organization.organizationId,
+						organizationId: organization?.organizationId,
 					});
 				};
 
@@ -760,7 +762,7 @@ function DashboardPageContent() {
 
 					if (
 						message.organizationId &&
-						message.organizationId !== organization.organizationId
+						message.organizationId !== organization?.organizationId
 					) {
 						return;
 					}
@@ -897,6 +899,16 @@ function DashboardPageContent() {
 			setEventsError(null);
 			setInterestPendingEventIds((currentIds) => new Set(currentIds).add(eventId));
 
+			// Optimistic update: immediately reflect participation state in the UI
+			setOrganizationEvents((events) =>
+				events.map((ev) => {
+					if (ev.id !== eventId) return ev;
+					const nextIsFavorited = !ev.isFavorited;
+					const nextInterestedCount = nextIsFavorited ? ev.interestedCount + 1 : Math.max(0, ev.interestedCount - 1);
+					return { ...ev, isFavorited: nextIsFavorited, interestedCount: nextInterestedCount };
+				}),
+			);
+
 			try {
 				if (wasParticipating) {
 					await api.delete(endpoint);
@@ -904,8 +916,6 @@ function DashboardPageContent() {
 					await api.post(endpoint, {});
 				}
 
-				const freshEvents = await loadOrganizationEvents(organization.organizationId);
-				setOrganizationEvents(freshEvents);
 				setToast({
 					title: wasParticipating
 						? "Você deixou de participar neste evento."
@@ -913,6 +923,17 @@ function DashboardPageContent() {
 					variant: "success",
 				});
 			} catch (error) {
+				// Revert optimistic change on error
+				setOrganizationEvents((events) =>
+					events.map((ev) => {
+						if (ev.id !== eventId) return ev;
+						// restore previous values
+						const prevIsFavorited = wasParticipating;
+						const prevInterestedCount = wasParticipating ? Math.max(0, ev.interestedCount - 1) : ev.interestedCount + 1;
+						return { ...ev, isFavorited: prevIsFavorited, interestedCount: prevInterestedCount };
+					}),
+				);
+
 				const message =
 					error instanceof Error
 						? error.message

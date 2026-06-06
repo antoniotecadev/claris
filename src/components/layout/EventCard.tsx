@@ -151,7 +151,7 @@ export default function EventCard({
               className="flex min-w-20 items-center justify-center gap-1.5 text-[12px] font-semibold tracking-widest uppercase text-blue-600 transition-all duration-200 hover:text-blue-800 hover:tracking-[0.1em] disabled:cursor-wait disabled:text-stone-400"
             >
               {isParticipationPending ? <Loader2 size={12} className="animate-spin" /> : null}
-              {isParticipationPending ? "A guardar" : isFavorited ? "Deixar" : "Participar"}
+              {isParticipationPending ? "A guardar" : isFavorited ? "Deixar de participar" : "Participar"}
             </button>
           )}
         </div>

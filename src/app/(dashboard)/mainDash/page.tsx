@@ -122,10 +122,23 @@ export default function MainDashClient() {
 			const res2 = await api.get<{ organizations: OrganizationRef[]; organizationLength?: number }>("/organizations");
 			const orgs = res2.organizations ?? [];
 			setChurches(orgs);
+		} catch (error) {
+			const status = error instanceof Error ? (error as Error & { status?: number }).status : undefined;
+
+			if (status === 401) {
+				router.replace(addLocaleToPathname("/login", locale));
+				return;
+			}
+
+			setToast({
+				title: "Não foi possível carregar as igrejas.",
+				description: error instanceof Error ? error.message : undefined,
+				variant: "error",
+			});
 		} finally {
 			setLoadingChurches(false);
 		}
-	}, []);
+	}, [locale, router]);
 
 	const handleOrganizationClick = async (organizationId: string) => {
 		if (switchingOrganizationId) return;

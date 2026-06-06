@@ -75,12 +75,12 @@ function Avatar({ member, size = "md" }: { member: Member; size?: "sm" | "md" | 
   }
 
   return (
-    <div
-      className={`${dim} rounded-full ring-2 ring-white flex items-center justify-center font-semibold text-white tracking-wide`}
+    <img
+      src={"/avatar-placeholder.svg"}
+      alt={member.name}
+      className={`${dim} rounded-full object-cover ring-2 ring-white`} 
       style={{ backgroundColor: bg }}
-    >
-      {getInitials(member.name)}
-    </div>
+    />
   );
 }
 

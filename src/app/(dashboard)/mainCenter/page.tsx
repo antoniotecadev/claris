@@ -389,17 +389,11 @@ function MemberChatPanel({
 		<aside className="flex h-152 max-h-[calc(100vh-7rem)] min-h-105 flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
 			<header className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
 				<div className="flex min-w-0 items-center gap-3">
-					{member.avatarUrl ? (
-						<img
-							src={member.avatarUrl}
-							alt={member.name}
-							className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
-						/>
-					) : (
-						<div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#002045] text-sm font-bold text-white">
-							{getMemberInitials(member.name)}
-						</div>
-					)}
+					<img
+					  src={member.avatarUrl ?? "/avatar-placeholder.svg"}
+					  alt={member.name}
+					  className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
+					/>
 					<div className="min-w-0">
 						<h3 className="truncate text-base font-bold text-[#002045]">{member.name}</h3>
 						<p className="truncate text-xs font-semibold uppercase tracking-wide text-[#D97706]">

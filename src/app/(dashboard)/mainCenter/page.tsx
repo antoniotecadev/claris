@@ -560,6 +560,7 @@ function DashboardPageContent() {
 	const [friendIds, setFriendIds] = useState<Set<string | number>>(new Set());
 	const [addingFriendIds, setAddingFriendIds] = useState<Set<string | number>>(new Set());
 	const [removingFriendIds, setRemovingFriendIds] = useState<Set<string | number>>(new Set());
+	const [removingMemberIds, setRemovingMemberIds] = useState<Set<string | number>>(new Set());
 	const currentUser = useUserStore((state) => state.user);
 	const currentUserId = currentUser?.id;
 
@@ -1183,6 +1184,104 @@ function DashboardPageContent() {
 		}
 	}, [organization, removingFriendIds]);
 
+	const handleRemoveMember = useCallback(async (memberId: string | number) => {
+		if (!organization || removingMemberIds.has(memberId)) return;
+
+		const isAdmin = ADMIN_ROLES.has(organization.role?.toUpperCase() ?? "");
+		const isSelf = currentUserId != null && String(memberId) === String(currentUserId);
+
+		if (isAdmin && isSelf) {
+			setToast({
+				title: "Ação não permitida",
+				description: "Administrador não pode remover a si mesmo.",
+				variant: "error",
+			});
+			return;
+		}
+
+		if (!isAdmin && !isSelf) {
+			setToast({
+				title: "Sem permissão",
+				description: "Apenas administradores podem remover outros membros.",
+				variant: "error",
+			});
+			return;
+		}
+
+		setRemovingMemberIds((prev) => new Set(prev).add(memberId));
+
+		try {
+			await api.delete(
+				`/organizations/${organization.organizationId}/memberships/${String(memberId)}`,
+			);
+
+			setOrganizationMembers((prev) =>
+				prev.filter((member) => String(member.id) !== String(memberId)),
+			);
+
+			setFriends((prev) =>
+				prev.filter((friend) => String(friend.id) !== String(memberId)),
+			);
+
+			setFriendIds((prev) => {
+				const next = new Set(prev);
+				for (const id of next) {
+					if (String(id) === String(memberId)) {
+						next.delete(id);
+						break;
+					}
+				}
+				return next;
+			});
+
+			if (selectedChatMember && String(selectedChatMember.id) === String(memberId)) {
+				setSelectedChatMember(null);
+				setChatDraft("");
+				setChatMessagesError(null);
+			}
+
+			if (isSelf) {
+				setToast({
+					title: "Você saiu da organização.",
+					description: "A redirecionar para as suas igrejas...",
+					variant: "success",
+				});
+
+				setTimeout(() => {
+					router.push(addLocaleToPathname("/mainDash", locale));
+				}, 1200);
+			} else {
+				setToast({
+					title: "Membro removido com sucesso.",
+					variant: "success",
+				});
+			}
+		} catch (err) {
+			const message =
+				err instanceof Error
+					? err.message
+					: "Não foi possível remover o membro da organização.";
+			setToast({
+				title: "Erro ao remover membro",
+				description: message,
+				variant: "error",
+			});
+		} finally {
+			setRemovingMemberIds((prev) => {
+				const next = new Set(prev);
+				next.delete(memberId);
+				return next;
+			});
+		}
+	}, [
+		organization,
+		removingMemberIds,
+		currentUserId,
+		selectedChatMember,
+		router,
+		locale,
+	]);
+
 	if (loading) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-white text-[#002045]">
@@ -1382,10 +1481,20 @@ function DashboardPageContent() {
 						onMemberClick={handleMemberChatOpen}
 						onAddFriend={handleAddFriend}
 						onRemoveFriend={handleRemoveFriend}
+							onRemoveMember={handleRemoveMember}
+							canRemoveMember={(member) => {
+								const isAdmin = ADMIN_ROLES.has(organization.role?.toUpperCase() ?? "");
+								const isSelf = currentUserId != null && String(member.id) === String(currentUserId);
+							if (isAdmin && isSelf) return false;
+							return isAdmin || isSelf;
+							}}
 						addingFriendIds={addingFriendIds}
 						removingFriendIds={removingFriendIds}
-						currentUserId={currentUserId}
-					/>
+							removingMemberIds={removingMemberIds}
+							currentUserId={currentUserId}
+							organizationName={organization.name}
+							isCurrentUserAdmin={ADMIN_ROLES.has(organization.role?.toUpperCase() ?? "")}
+						/>
 					</div>
 					<MemberChatPanel
 						member={selectedChatMember}

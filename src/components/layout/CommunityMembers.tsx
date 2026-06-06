@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import { Search, X, UserPlus, Users, ChevronRight, Heart, Loader2, UserCheck, UserMinus } from "lucide-react";
+import { LeaveOrganizationDialog } from "./leaveOrganizationDialog";
 
 /* ── Types ─────────────────────────────────────────────── */
 export type Member = {
@@ -24,10 +25,15 @@ export type CommunityMembersProps = {
   onMemberClick?: (member: Member) => void;
   onAddFriend?: (memberId: string | number) => void;
   onRemoveFriend?: (memberId: string | number) => void;
+  onRemoveMember?: (memberId: string | number) => void;
+  canRemoveMember?: (member: Member) => boolean;
   addingFriendIds?: Set<string | number>;
   removingFriendIds?: Set<string | number>;
+  removingMemberIds?: Set<string | number>;
   maxVisible?: number;      // how many avatars to show before search
   currentUserId?: string;
+  organizationName?: string;
+  isCurrentUserAdmin?: boolean;
 };
 
 type Tab = "members" | "friends";
@@ -90,10 +96,15 @@ export default function CommunityMembers({
   onMemberClick,
   onAddFriend,
   onRemoveFriend,
+  onRemoveMember,
+  canRemoveMember,
   addingFriendIds = new Set(),
   removingFriendIds = new Set(),
+  removingMemberIds = new Set(),
   maxVisible = 12,
   currentUserId,
+  organizationName,
+  isCurrentUserAdmin,
 }: CommunityMembersProps) {
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -245,8 +256,13 @@ export default function CommunityMembers({
             const isFriend = friendIds.has(member.id);
             const isAdding = addingFriendIds.has(member.id);
             const isRemoving = removingFriendIds.has(member.id);
+            const isRemovingMember = removingMemberIds.has(member.id);
             const showAddButton = activeTab === "members" && onAddFriend && !isSelf && !isFriend;
             const showRemoveButton = activeTab === "friends" && onRemoveFriend && !isSelf;
+            const showRemoveMemberButton =
+              activeTab === "members" &&
+              onRemoveMember &&
+              (canRemoveMember ? canRemoveMember(member) : false);
 
             return (
               <div key={member.id} className="flex flex-col items-center gap-1.5 group">
@@ -269,7 +285,7 @@ export default function CommunityMembers({
                     <p className="text-[12px] font-medium text-[#1a2a3a] leading-tight group-hover:text-[#002045] transition-colors duration-150 max-w-18 truncate">
                       {member.name.split(" ")[0]}
                     </p>
-                    <p className="text-[9px] font-semibold tracking-widest text-stone-400 uppercase mt-0.5 max-w-[72px] truncate">
+                    <p className="text-[9px] font-semibold tracking-widest text-stone-400 uppercase mt-0.5 max-w-18 truncate">
                       {member.role}
                     </p>
                   </div>
@@ -304,6 +320,29 @@ export default function CommunityMembers({
                     )}
                     <span>{isRemoving ? "..." : "Remover"}</span>
                   </button>
+                )}
+
+                {showRemoveMemberButton && onRemoveMember && (
+                  <LeaveOrganizationDialog
+                    organizationName={organizationName ?? title}
+                    isAdmin={Boolean(isCurrentUserAdmin)}
+                    onConfirm={async () => {
+                      await onRemoveMember(member.id);
+                    }}
+                  >
+                    <button
+                      type="button"
+                      disabled={isRemovingMember}
+                      className="flex h-7 items-center gap-1 rounded-full border border-red-100 bg-white px-2.5 text-[10px] font-semibold text-red-600 shadow-sm transition-all duration-200 hover:border-red-300 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {isRemovingMember ? (
+                        <Loader2 size={10} className="animate-spin" />
+                      ) : (
+                        <UserMinus size={10} />
+                      )}
+                      <span>{isRemovingMember ? "..." : "Remover"}</span>
+                    </button>
+                  </LeaveOrganizationDialog>
                 )}
               </div>
             );

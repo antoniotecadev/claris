@@ -1,0 +1,86 @@
+// Este arquivo contém as funções e código que precisam ser adicionados ao mainCenter/page.tsx
+
+// ============================================
+// 1. IMPORTS (adicionar no início do arquivo com os outros imports)
+// ============================================
+import { LeaveOrganizationDialog } from "@/components/layout/leaveOrganizationDialog";
+
+// ============================================
+// 2. ESTADOS (adicionar nos estados da função DashboardPageContent)
+// ============================================
+const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
+const [leavingOrganization, setLeavingOrganization] = useState(false);
+
+// ============================================
+// 3. FUNCTION: handleLeaveOrganization
+// ============================================
+// Adicionar APÓS a função handleRemoveFriend (linha ~1186)
+
+const handleLeaveOrganization = useCallback(async () => {
+	if (!organization || leavingOrganization) return;
+
+	setLeavingOrganization(true);
+
+	try {
+		await api.delete(
+			`/organizations/${organization.organizationId}/memberships/leave`,
+		);
+
+		setToast({
+			title: "Você saiu da organização com sucesso.",
+			description: "Será redirecionado em breve...",
+			variant: "success",
+		});
+
+		// Redirect to mainDash after a short delay
+		setTimeout(() => {
+			router.push(addLocaleToPathname("/mainDash", locale));
+		}, 1500);
+	} catch (err) {
+		setLeavingOrganization(false);
+		const message = err instanceof Error ? err.message : "Não foi possível sair da organização.";
+		setToast({
+			title: "Erro ao sair",
+			description: message,
+			variant: "error",
+		});
+	}
+}, [organization, leavingOrganization, router, locale]);
+
+// ============================================
+// 4. HEADER COMPONENT (substituir no return/render section)
+// ============================================
+// ENCONTRAR (por volta da linha 1210):
+/*
+<div className="flex items-center gap-3">
+	<Link
+		href={backHref}
+		className="flex h-10 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-[#002045] shadow-sm transition-colors hover:border-[#1E3A8A]/30 hover:text-[#1E3A8A]"
+	>
+		<ChevronLeft size={16} />
+		Voltar
+	</Link>
+</div>
+*/
+
+// SUBSTITUIR POR:
+<div className="flex items-center gap-2">
+	<LeaveOrganizationDialog
+		organizationName={organization.name}
+		isAdmin={canManageEvents}
+		onConfirm={handleLeaveOrganization}
+	/>
+	<Link
+		href={backHref}
+		className="flex h-10 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-[#002045] shadow-sm transition-colors hover:border-[#1E3A8A]/30 hover:text-[#1E3A8A]"
+	>
+		<ChevronLeft size={16} />
+		Voltar
+	</Link>
+</div>
+
+// ============================================
+// 5. ADICIONAR AO DEPENDENCY ARRAY (se necessário)
+// ============================================
+// A função handleLeaveOrganization depende de: [organization, leavingOrganization, router, locale]
+// Certifique-se que estas variáveis estão disponíveis no escopo

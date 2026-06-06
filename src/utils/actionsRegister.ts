@@ -23,6 +23,20 @@ export async function registerAction(prevState: any, formData: FormData) {
 		return { success: false, error: "A senha deve ter no mínimo 6 caracteres." };
 	}
 
+	// Validar idade mínima de 13 anos
+	if (birthDate) {
+		const birth = new Date(birthDate);
+		const today = new Date();
+		let age = today.getFullYear() - birth.getFullYear();
+		const monthDiff = today.getMonth() - birth.getMonth();
+		if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+			age--;
+		}
+		if (age < 13) {
+			return { success: false, error: "MINIMUM_AGE_ERROR", needsTranslation: true };
+		}
+	}
+
 	try {
 		const data = await api.post<any>("/auth/register", {
 			displayName,

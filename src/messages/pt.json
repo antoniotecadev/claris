@@ -87,6 +87,7 @@
 			"genderPlaceholder": "Selecione...",
 			"genderMale": "Masculino",
 			"genderFemale": "Feminino",
+			"minimumAge": "⚠️ Você deve ter no mínimo 13 anos para se registrar.",
 			"birthDate": "DATA Nasc.",
 			"password": "SENHA",
 			"passwordHint": "Deve ter pelo menos 6 caracteres",

@@ -87,6 +87,7 @@
 			"genderPlaceholder": "Selectionner...",
 			"genderMale": "Masculin",
 			"genderFemale": "Feminin",
+			"minimumAge": "⚠️ Vous devez avoir au moins 13 ans pour vous inscrire.",
 			"birthDate": "Date de naissance",
 			"password": "MOT DE PASSE",
 			"passwordHint": "Au moins 6 caracteres",

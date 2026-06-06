@@ -87,6 +87,7 @@
 			"genderPlaceholder": "Select...",
 			"genderMale": "Male",
 			"genderFemale": "Female",
+			"minimumAge": "⚠️ You must be at least 13 years old to register.",
 			"birthDate": "Birth date",
 			"password": "PASSWORD",
 			"passwordHint": "Must be at least 6 characters",

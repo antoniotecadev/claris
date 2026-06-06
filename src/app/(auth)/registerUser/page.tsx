@@ -28,6 +28,18 @@ export default function RegisterUser() {
 		confirmPassword: "",
 	});
 
+	const calculateAge = (birthDate: string) => {
+		if (!birthDate) return 0;
+		const birth = new Date(birthDate);
+		const today = new Date();
+		let age = today.getFullYear() - birth.getFullYear();
+		const monthDiff = today.getMonth() - birth.getMonth();
+		if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+			age--;
+		}
+		return age;
+	};
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		setFields(prev => ({ ...prev, [e.target.name]: e.target.value }));
 	};
@@ -201,6 +213,11 @@ export default function RegisterUser() {
 										onFocus={() => setFocusedField("birthDate")}
 										onBlur={() => setFocusedField(null)}
 									/>
+									{fields.birthDate && calculateAge(fields.birthDate) < 13 && (
+										<p className="text-red-600 text-[0.7rem] mt-1.5 ml-1 font-medium flex items-center gap-1">
+											{t("auth.register.minimumAge")}
+										</p>
+									)}
 								</div>
 							</div>
 
@@ -292,13 +309,18 @@ export default function RegisterUser() {
 							{state?.error && (
 								<div className="mb-4 flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 animate-shake dark:border-red-400/20 dark:bg-red-500/10" role="alert">
 									<AlertCircle size={16} className="text-red-600 shrink-0" />
-									<p className="text-[0.85rem] font-medium text-red-600 dark:text-red-200">{state.error}</p>
-								</div>
-							)}
+								<p className="text-[0.85rem] font-medium text-red-600 dark:text-red-200">
+									{state.error === "MINIMUM_AGE_ERROR" 
+										? t("auth.register.minimumAge")
+										: state.error
+									}
+								</p>
+							</div>
+						)}
 
-							<button
-								type="submit"
-								disabled={pending}
+						<button
+							type="submit"
+							disabled={pending || (fields.birthDate && calculateAge(fields.birthDate) < 13)}
 								className="mb-6 flex items-center justify-center gap-2 rounded-[14px] border-none bg-slate-950 py-3.5 text-[0.85rem] font-semibold tracking-wide text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-[0_12px_28px_rgba(15,23,42,0.2)] active:translate-y-0 active:scale-[0.98] active:shadow-[0_2px_8px_rgba(15,23,42,0.15)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none dark:bg-amber-300 dark:text-slate-950 dark:hover:bg-amber-200"
 							>
 								{pending ? (

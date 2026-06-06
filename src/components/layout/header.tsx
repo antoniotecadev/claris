@@ -49,7 +49,7 @@ export default function Header() {
 				<nav className='flex justify-between items-center container mx-auto px-4 md:px-6 lg:px-0' >
 					<div className='flex justify-center items-center gap-2 md:gap-4'>
 						<Link href="#inicio" aria-label="Ir para o início">
-							<Image src={icon} alt='Logo' width={40} className="md:w-12" />
+							<Image src={icon} alt='Logo' width={40} className="md:w-12" style={{ height: "auto" }} />
 						</Link>
 					</div>
 

@@ -102,6 +102,7 @@ export default function SettingsPanel({
 
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const avatarPreviewRef = useRef<string | null>(null);
 
   const [passwordFields, setPasswordFields] = useState({
     currentPassword: "",
@@ -163,8 +164,32 @@ export default function SettingsPanel({
     const file = e.target.files?.[0];
     if (!file) return;
     setAvatarFile(file);
-    setAvatarPreview(URL.createObjectURL(file));
+    // revoke previous preview if exists
+    if (avatarPreviewRef.current) {
+      try {
+        URL.revokeObjectURL(avatarPreviewRef.current);
+      } catch (e) {
+        // ignore
+      }
+      avatarPreviewRef.current = null;
+    }
+    const newUrl = URL.createObjectURL(file);
+    avatarPreviewRef.current = newUrl;
+    setAvatarPreview(newUrl);
   };
+
+  useEffect(() => {
+    return () => {
+      if (avatarPreviewRef.current) {
+        try {
+          URL.revokeObjectURL(avatarPreviewRef.current);
+        } catch (e) {
+          // ignore
+        }
+        avatarPreviewRef.current = null;
+      }
+    };
+  }, []);
 
   const handleSave = async () => {
     if (!user?.id) return;

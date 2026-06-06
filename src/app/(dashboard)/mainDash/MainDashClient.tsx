@@ -250,7 +250,7 @@ export default function MainDashClient() {
 					<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 						<div className="flex items-center gap-3">
 							<div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
-								<Image src={icon} alt="Logo" width={30} />
+								<Image src={icon} alt="Logo" width={30} style={{ height: "auto" }} />
 							</div>
 							<div>
 								<h1 className="text-xl font-bold tracking-wide text-[#1E3A8A]">CLARIS</h1>

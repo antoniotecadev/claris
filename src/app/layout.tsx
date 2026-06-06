@@ -29,6 +29,7 @@ export default async function RootLayout({
 		<html
 			lang={defaultLocale}
 			suppressHydrationWarning
+			data-scroll-behavior="smooth"
 			className={cn("h-full", "antialiased", inter.variable, "font-sans")}
 		>
 			<body className="min-h-full flex flex-col bg-background text-foreground">

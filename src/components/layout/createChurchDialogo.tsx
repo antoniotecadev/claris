@@ -26,6 +26,7 @@ type DialogDemoProps = {
 	onOpen?: () => void
 	onSuccess?: () => void  // ← novo: para recarregar lista após criação
 	setOrganizations?: React.Dispatch<React.SetStateAction<OrganizationRef[]>>
+	onToast?: (payload: { title: string; description?: string; variant: "success" | "error" | "info" }) => void
 }
 
 type OrganizationRef = {
@@ -48,6 +49,7 @@ export function DialogDemo({
 	onOpen,
 	onSuccess,
 	setOrganizations,
+	onToast,
 }: DialogDemoProps) {
 	const { t } = useMessages()
 	const [open, setOpen] = useState(false)
@@ -108,7 +110,7 @@ export function DialogDemo({
 
 	const handleSubmit = async () => {
 		if (!name.trim() || !churchId.trim()) {
-			alert(t("church.create.validation"))
+			onToast?.({ title: t("church.create.validation"), variant: "error" });
 			return
 		}
 
@@ -155,10 +157,10 @@ export function DialogDemo({
 			resetForm()
 			setOpen(false)
 			onSuccess?.()  // ← notifica o pai para atualizar a lista
-			alert(t("church.create.success"))
+			onToast?.({ title: t("church.create.success"), variant: "success" })
 			setOrganizations?.((prev) => [...prev, createdOrganization])
 		} catch (error) {
-			alert(error instanceof Error ? error.message : t("church.create.errors.create"))
+			onToast?.({ title: error instanceof Error ? error.message : t("church.create.errors.create"), variant: "error" })
 		} finally {
 			setSubmitting(false)
 		}

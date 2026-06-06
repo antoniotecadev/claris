@@ -332,6 +332,8 @@ export default function MainDashClient() {
 								churches={churchOptions}
 								loadingChurches={loadingChurches}
 								onOpen={loadChurches}
+								onSuccess={() => loadOrganizations()}
+								onToast={(p) => setToast(p)}
 								setOrganizations={setOrganizations}
 							/>
 						</section>

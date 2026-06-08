@@ -6,19 +6,17 @@ import { Church, CalendarDays, MessageSquare, MousePointerClick } from "lucide-r
 import Simple from "./Simple";
 import { useMessages } from "@/i18n/messages";
 import Igreja from "@/assets/images/photo-church.jpg";
-import Pholes from "@/assets/images/photo-fone.jpg";
-import pessoas from "@/assets/images/photo-hand.jpg";
 import Igreja1 from "@/assets/images/photo-church1.jpg";
 
 const featureImages = {
 	members:
 		Igreja,
 	calendar:
-		pessoas,
+		"/assets/photo-hand.avif",
 	donations:
 		Igreja1,
 	communication:
-		Pholes,
+		"/assets/photo-fone.avif",
 };
 
 export default function Fun() {

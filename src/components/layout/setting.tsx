@@ -7,10 +7,10 @@ import {
   Lock, Eye, EyeOff, Users,
 } from "lucide-react";
 import { api } from "@/lib/api";
-import { getAuthToken } from "@/lib/auth-cookies";
 import { useUserStore } from "@/stores/userStore";
 import { addLocaleToPathname } from "@/i18n/routing";
 import { useMessages } from "@/i18n/messages";
+import { normalizeMediaUrl } from "@/lib/media-url";
 
 interface SettingsPanelProps {
   isOpen?: boolean;
@@ -29,6 +29,22 @@ interface MeResponse {
     birthDate?: string;
     googleId?: string;
   };
+}
+
+type AuthTokenResponse = {
+  token?: string | null;
+};
+
+async function getClientAuthToken() {
+  const response = await fetch("/api/auth-token", {
+    cache: "no-store",
+    credentials: "same-origin",
+  });
+
+  if (!response.ok) return null;
+
+  const data = (await response.json()) as AuthTokenResponse;
+  return data.token ?? null;
 }
 
 export default function SettingsPanel({
@@ -139,7 +155,7 @@ export default function SettingsPanel({
             ? profile.birthDate.split("T")[0]
             : "",
         });
-        setAvatarPreview(profile.avatarUrl ?? null);
+        setAvatarPreview(normalizeMediaUrl(profile.avatarUrl) ?? null);
       } catch (err) {
         console.error(err);
         setError(t("settings.errors.loadUser"));
@@ -168,7 +184,7 @@ export default function SettingsPanel({
     if (avatarPreviewRef.current) {
       try {
         URL.revokeObjectURL(avatarPreviewRef.current);
-      } catch (e) {
+      } catch {
         // ignore
       }
       avatarPreviewRef.current = null;
@@ -183,7 +199,7 @@ export default function SettingsPanel({
       if (avatarPreviewRef.current) {
         try {
           URL.revokeObjectURL(avatarPreviewRef.current);
-        } catch (e) {
+        } catch {
           // ignore
         }
         avatarPreviewRef.current = null;
@@ -203,17 +219,14 @@ export default function SettingsPanel({
       if (avatarFile) formData.append("avatarUrl", avatarFile);
 
       // Não passar Content-Type — o browser define multipart/form-data + boundary sozinho
-      const token = await getAuthToken();
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/me`,
-        {
-          method: "PATCH",
-          body: formData,
-          headers: {
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-        }
-      );
+      const token = await getClientAuthToken();
+      const res = await fetch("/api/user/me", {
+        method: "PATCH",
+        body: formData,
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
@@ -224,16 +237,18 @@ export default function SettingsPanel({
       }
 
       const data = await res.json();
-      const updatedProfile = data.profile;
+      const updatedProfile = data.profile ?? data.result?.profile ?? data.user ?? data.result?.user;
+      const nextAvatarUrl = normalizeMediaUrl(updatedProfile.avatarUrl);
 
       setUser({
         ...user,
         displayName: updatedProfile.displayName,
         gender: updatedProfile.gender,
         birthDate: updatedProfile.birthDate,
-        avatarUrl: updatedProfile.avatarUrl,
+        avatarUrl: nextAvatarUrl,
       });
 
+      setAvatarPreview(nextAvatarUrl ?? null);
       setAvatarFile(null);
       setSuccess(true);
     } catch (err) {

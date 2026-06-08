@@ -326,15 +326,6 @@ function mapApiMessageToChatMessage(
 	};
 }
 
-function getMemberInitials(name: string) {
-	return name
-		.split(" ")
-		.slice(0, 2)
-		.map((word) => word[0])
-		.join("")
-		.toUpperCase();
-}
-
 function formatChatTime(date: Date) {
 	return new Intl.DateTimeFormat("pt-PT", {
 		hour: "2-digit",
@@ -359,12 +350,11 @@ function ChatMemberAvatar({ member }: { member: Member }) {
 	}
 
 	return (
-		<div
-			className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E8EEF8] text-sm font-bold text-[#1E3A8A] ring-2 ring-white"
-			aria-label={member.name}
-		>
-			{getMemberInitials(member.name)}
-		</div>
+		<img
+			src="/avatar-placeholder.svg"
+			alt={member.name}
+			className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
+		/>
 	);
 }
 

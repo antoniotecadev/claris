@@ -39,32 +39,10 @@ export type CommunityMembersProps = {
 
 type Tab = "members" | "friends";
 
-/* ── Helpers ────────────────────────────────────────────── */
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase();
-}
-
-const PRESET_COLORS = [
-  "#2d4a7a", "#4a7c6f", "#7a4a2d", "#6b4a7a",
-  "#7a6b2d", "#2d7a6b", "#7a2d4a", "#4a6b7a",
-];
-
-function colorFromName(name: string) {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  return PRESET_COLORS[Math.abs(hash) % PRESET_COLORS.length];
-}
-
 /* ── Avatar ─────────────────────────────────────────────── */
 function Avatar({ member, size = "md" }: { member: Member; size?: "sm" | "md" | "lg" }) {
   const [failedAvatarUrl, setFailedAvatarUrl] = useState<string | null>(null);
   const dim = size === "sm" ? "w-8 h-8 text-[10px]" : size === "lg" ? "w-14 h-14 text-base" : "w-12 h-12 text-[13px]";
-  const bg = member.avatarColor ?? colorFromName(member.name);
   const avatarUrl = normalizeMediaUrl(member.avatarUrl);
 
   if (avatarUrl && avatarUrl !== failedAvatarUrl) {
@@ -79,13 +57,11 @@ function Avatar({ member, size = "md" }: { member: Member; size?: "sm" | "md" | 
   }
 
   return (
-    <div
-      className={`${dim} flex items-center justify-center rounded-full font-bold text-white ring-2 ring-white`}
-      style={{ backgroundColor: bg }}
-      aria-label={member.name}
-    >
-      {getInitials(member.name)}
-    </div>
+    <img
+      src="/avatar-placeholder.svg"
+      alt={member.name}
+      className={`${dim} rounded-full object-cover ring-2 ring-white`}
+    />
   );
 }
 

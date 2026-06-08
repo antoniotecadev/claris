@@ -710,7 +710,7 @@ function DashboardPageContent() {
 
 		const timeoutId = window.setTimeout(() => {
 			setToast(null);
-		}, 4200);
+		}, 5000);
 
 		return () => window.clearTimeout(timeoutId);
 	}, [toast]);
@@ -765,10 +765,10 @@ function DashboardPageContent() {
 					const senderId =
 						message.senderId ?? message.userId ?? message.sender?.id ?? message.sender?.userId;
 					const recipientId = message.recipientId ?? message.receiverId ?? message.friendId;
-					const memberId =
-						currentUserId && senderId && String(senderId) === String(currentUserId)
-							? recipientId
-							: senderId;
+					const isFromCurrentUser = Boolean(
+						currentUserId && senderId && String(senderId) === String(currentUserId),
+					);
+					const memberId = isFromCurrentUser ? recipientId : senderId;
 
 					if (!memberId) return;
 
@@ -776,6 +776,15 @@ function DashboardPageContent() {
 						String(memberId),
 						mapApiMessageToChatMessage(message, currentUserId, String(memberId)),
 					);
+
+					if (!isFromCurrentUser) {
+						const senderName = message.sender?.displayName || message.sender?.name || "Alguém";
+						setToast({
+							title: `Nova mensagem de ${senderName}`,
+							description: message.content ?? message.text ?? message.message ?? "",
+							variant: "info",
+						});
+					}
 				};
 
 				socket.on("connect", joinOrganizationRoom);

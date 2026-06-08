@@ -63,14 +63,24 @@ function colorFromName(name: string) {
 function Avatar({ member, size = "md" }: { member: Member; size?: "sm" | "md" | "lg" }) {
   const dim = size === "sm" ? "w-8 h-8 text-[10px]" : size === "lg" ? "w-14 h-14 text-base" : "w-12 h-12 text-[13px]";
   const bg = member.avatarColor ?? colorFromName(member.name);
-
   if (member.avatarUrl) {
     return (
-      <img
-        src={member.avatarUrl}
-        alt={member.name}
-        className={`${dim} rounded-full object-cover ring-2 ring-white`}
-      />
+      <div>
+        {member.avatarUrl.startsWith("http") ? (
+          <img
+            src={member.avatarUrl}
+            alt={member.name}
+            className={`${dim} rounded-full object-cover ring-2 ring-white`}
+          />
+        ) : (
+          <div
+            className={`${dim} rounded-full flex items-center justify-center font-bold text-white ring-2 ring-white`}
+            style={{ backgroundColor: bg }}
+          >
+            {getInitials(member.name)}
+          </div>
+        )}
+      </div>
     );
   }
 

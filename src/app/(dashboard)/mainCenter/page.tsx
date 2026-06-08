@@ -14,7 +14,7 @@ import {
 	Users,
 	X,
 } from "lucide-react";
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,6 +29,7 @@ import { useMessages } from "@/i18n/messages";
 import { addLocaleToPathname } from "@/i18n/routing";
 import { useUserStore } from "@/stores/userStore";
 import { api } from "@/lib/api";
+import { normalizeMediaUrl } from "@/lib/media-url";
 import Logo from "@/assets/images/logo.png";
 import { FeedbackToast } from "@/components/ui/feedback-toast";
 import { CreateEventDialog } from "@/components/layout/createEvent";
@@ -147,8 +148,8 @@ type ChatApiMessage = {
 	createdAt?: string | null;
 	updatedAt?: string | null;
 	sender?: FriendApiUser | null;
-	data?: any;
-	result?: any;
+	data?: unknown;
+	result?: unknown;
 };
 
 type ChatMessagesResponse =
@@ -342,6 +343,31 @@ function formatChatTime(date: Date) {
 	}).format(date);
 }
 
+function ChatMemberAvatar({ member }: { member: Member }) {
+	const [failedAvatarUrl, setFailedAvatarUrl] = useState<string | null>(null);
+	const avatarUrl = normalizeMediaUrl(member.avatarUrl);
+
+	if (avatarUrl && avatarUrl !== failedAvatarUrl) {
+		return (
+			<img
+				src={avatarUrl}
+				alt={member.name}
+				onError={() => setFailedAvatarUrl(avatarUrl)}
+				className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
+			/>
+		);
+	}
+
+	return (
+		<div
+			className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E8EEF8] text-sm font-bold text-[#1E3A8A] ring-2 ring-white"
+			aria-label={member.name}
+		>
+			{getMemberInitials(member.name)}
+		</div>
+	);
+}
+
 function MemberChatPanel({
 	member,
 	messages,
@@ -371,6 +397,16 @@ function MemberChatPanel({
 	isSendingMessage?: boolean;
 	messagesError?: string | null;
 }) {
+	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+	useEffect(() => {
+		const textarea = textareaRef.current;
+		if (!textarea) return;
+
+		textarea.style.height = "auto";
+		textarea.style.height = `${Math.min(textarea.scrollHeight, 112)}px`;
+	}, [draft]);
+
 	if (!member) {
 		return (
 			<aside className="flex min-h-80 flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-10 text-center shadow-sm">
@@ -389,11 +425,7 @@ function MemberChatPanel({
 		<aside className="flex h-152 max-h-[calc(100vh-7rem)] min-h-105 flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
 			<header className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
 				<div className="flex min-w-0 items-center gap-3">
-					<img
-					  src={member.avatarUrl ?? "/avatar-placeholder.svg"}
-					  alt={member.name}
-					  className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
-					/>
+					<ChatMemberAvatar member={member} />
 					<div className="min-w-0">
 						<h3 className="truncate text-base font-bold text-[#002045]">{member.name}</h3>
 						<p className="truncate text-xs font-semibold uppercase tracking-wide text-[#D97706]">
@@ -451,7 +483,7 @@ function MemberChatPanel({
 				</div>
 			) : (
 				<>
-					<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto bg-[#F7F9FC] px-5 py-5">
+					<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-x-hidden overflow-y-auto bg-[#F7F9FC] px-5 py-5">
 						{isLoadingMessages ? (
 							<div className="flex flex-1 items-center justify-center gap-2 text-sm font-medium text-[#475F83]">
 								<Loader2 size={16} className="animate-spin" />
@@ -467,15 +499,20 @@ function MemberChatPanel({
 							messages.map((message) => (
 								<div
 									key={message.id}
-									className={`flex ${message.sender === "me" ? "justify-end" : "justify-start"}`}
+									className={`flex min-w-0 max-w-full ${message.sender === "me" ? "justify-end" : "justify-start"}`}
 								>
 									<div
-										className={`max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${message.sender === "me"
+										className={`min-w-0 max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${message.sender === "me"
 											? "rounded-br-md bg-[#002045] text-white"
 											: "rounded-bl-md bg-white text-[#1a2a3a] ring-1 ring-slate-200"
 											}`}
 									>
-										<p>{message.text}</p>
+										<p
+											className="max-w-full whitespace-pre-wrap"
+											style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}
+										>
+											{message.text}
+										</p>
 										<p
 											className={`mt-1 text-[10px] font-semibold ${message.sender === "me" ? "text-white/65" : "text-slate-400"
 												}`}
@@ -502,12 +539,14 @@ function MemberChatPanel({
 						}}
 					>
 						<textarea
+							ref={textareaRef}
 							value={draft}
 							onChange={(event) => onDraftChange(event.target.value)}
 							placeholder={`Mensagem para ${member.name.split(" ")[0]}...`}
 							rows={1}
 							disabled={isSendingMessage}
-							className="max-h-28 min-h-11 flex-1 resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-[#1a2a3a] outline-none transition-colors placeholder:text-slate-400 focus:border-[#002045] focus:bg-white"
+							className="max-h-28 min-h-11 flex-1 resize-none overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-[#1a2a3a] outline-none transition-colors placeholder:text-slate-400 focus:border-[#002045] focus:bg-white"
+							style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}
 						/>
 						<button
 							type="submit"

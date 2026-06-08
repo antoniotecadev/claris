@@ -3,6 +3,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { Search, X, UserPlus, Users, ChevronRight, Heart, Loader2, UserCheck, UserMinus } from "lucide-react";
 import { LeaveOrganizationDialog } from "./leaveOrganizationDialog";
+import { normalizeMediaUrl } from "@/lib/media-url";
 
 /* ── Types ─────────────────────────────────────────────── */
 export type Member = {
@@ -61,36 +62,30 @@ function colorFromName(name: string) {
 
 /* ── Avatar ─────────────────────────────────────────────── */
 function Avatar({ member, size = "md" }: { member: Member; size?: "sm" | "md" | "lg" }) {
+  const [failedAvatarUrl, setFailedAvatarUrl] = useState<string | null>(null);
   const dim = size === "sm" ? "w-8 h-8 text-[10px]" : size === "lg" ? "w-14 h-14 text-base" : "w-12 h-12 text-[13px]";
   const bg = member.avatarColor ?? colorFromName(member.name);
-  if (member.avatarUrl) {
+  const avatarUrl = normalizeMediaUrl(member.avatarUrl);
+
+  if (avatarUrl && avatarUrl !== failedAvatarUrl) {
     return (
-      <div>
-        {member.avatarUrl.startsWith("http") ? (
-          <img
-            src={member.avatarUrl}
-            alt={member.name}
-            className={`${dim} rounded-full object-cover ring-2 ring-white`}
-          />
-        ) : (
-          <div
-            className={`${dim} rounded-full flex items-center justify-center font-bold text-white ring-2 ring-white`}
-            style={{ backgroundColor: bg }}
-          >
-            {getInitials(member.name)}
-          </div>
-        )}
-      </div>
+      <img
+        src={avatarUrl}
+        alt={member.name}
+        onError={() => setFailedAvatarUrl(avatarUrl)}
+        className={`${dim} rounded-full object-cover ring-2 ring-white`}
+      />
     );
   }
 
   return (
-    <img
-      src={"/avatar-placeholder.svg"}
-      alt={member.name}
-      className={`${dim} rounded-full object-cover ring-2 ring-white`} 
+    <div
+      className={`${dim} flex items-center justify-center rounded-full font-bold text-white ring-2 ring-white`}
       style={{ backgroundColor: bg }}
-    />
+      aria-label={member.name}
+    >
+      {getInitials(member.name)}
+    </div>
   );
 }
 

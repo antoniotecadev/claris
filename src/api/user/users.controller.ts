@@ -14,25 +14,25 @@ import { ApiKeyGuard } from '../api-key.guard';
 import { RateLimitGuard } from '../rate-limit.guard';
 import { ApiSecurity } from '@nestjs/swagger';
 
-@Controller('public/user')
+@Controller('public')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
-  @Post('register')
+  @Post('user/')
   @UseGuards(ApiKeyGuard, RateLimitGuard)
   @ApiSecurity('api_key')
   async register(@Body() dto: UserDto) {
     return await this.usersService.registerWithEmail(dto);
   }
 
-  @Get('me/:userId')
+  @Get('user/me/:userId')
   @UseGuards(ApiKeyGuard, RateLimitGuard)
   @ApiSecurity('api_key')
   getMyProfile(@Param('userId') userId: string) {
     return this.usersService.getMe(userId);
   }
 
-  @Patch('me/:userId')
+  @Patch('user/me/:userId')
   @UseGuards(ApiKeyGuard, RateLimitGuard)
   @ApiSecurity('api_key')
   updateMyProfile(
@@ -42,7 +42,7 @@ export class UsersController {
     return this.usersService.updateMe(dto, userId);
   }
 
-  @Delete('me/:userId')
+  @Delete('user/me/:userId')
   @UseGuards(ApiKeyGuard, RateLimitGuard)
   @ApiSecurity('api_key')
   deleteMyAccount(@Param('userId') userId: string) {

@@ -35,9 +35,6 @@ export class UsersService {
         id: true,
         email: true,
         displayName: true,
-        gender: true,
-        birthDate: true,
-        avatarUrl: true,
       },
     });
 

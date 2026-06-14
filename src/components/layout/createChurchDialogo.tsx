@@ -280,7 +280,7 @@ export function DialogDemo({
 									name="churchId"
 									churches={churches}
 									loading={loadingChurches}
-									onChange={(value) => setChurchId(value)}  // ← isso já resolve
+									onChange={(value) => setChurchId(value)} 
 								/>
 							</div>
 

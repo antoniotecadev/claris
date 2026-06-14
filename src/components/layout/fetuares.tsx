@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Church, CalendarDays, MessageSquare, MousePointerClick } from "lucide-react";
 
-import Simple from "./Simple";
+
 import { useMessages } from "@/i18n/messages";
 import Igreja from "@/assets/images/photo-church.jpg";
 import Igreja1 from "@/assets/images/photo-church1.jpg";
@@ -144,7 +144,7 @@ export default function Fun() {
 					</div>
 				</div>
 
-				<Simple />
+
 			</div>
 		</div>
 	);

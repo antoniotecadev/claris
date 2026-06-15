@@ -30,11 +30,17 @@ export class UsersService {
         email: dto.email,
         displayName: dto.displayName,
         passwordHash,
+        gender: dto.gender,
+        birthDate: dto.birthDate ? new Date(dto.birthDate) : null,
+        avatarUrl: dto.avatarUrl,
       },
       select: {
         id: true,
         email: true,
         displayName: true,
+        gender: true,
+        birthDate: true,
+        avatarUrl: true,
       },
     });
 
@@ -51,6 +57,9 @@ export class UsersService {
         id: true,
         email: true,
         displayName: true,
+        gender: true,
+        birthDate: true,
+        avatarUrl: true,
       },
     });
 
@@ -81,6 +90,9 @@ export class UsersService {
         id: true,
         email: true,
         displayName: true,
+        gender: true,
+        birthDate: true,
+        avatarUrl: true,
       },
     });
 

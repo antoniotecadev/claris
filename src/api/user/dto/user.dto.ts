@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString,  MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsDateString, IsNotEmpty, IsString,  IsUrl,  MaxLength, MinLength } from 'class-validator';
 
 export class UserDto {
   @IsEmail({}, { message: 'Email inválido' })
@@ -15,4 +15,18 @@ export class UserDto {
   @MinLength(2)
   @MaxLength(80)
   displayName: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(30)
+  gender?: string;
+  
+  @IsOptional()
+  @IsDateString()
+  birthDate?: string;
+  
+  @IsOptional()
+  @IsString()
+  @IsUrl({}, { message: 'avatarUrl deve ser uma URL válida' })
+  avatarUrl?: string;
 }

@@ -57,10 +57,10 @@ export default function CommunityCard({
 						<ShieldCheck size={12} className="shrink-0" />
 						<span className="truncate">{responsable}</span>
 					</span>
-					<span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-[#002045] shadow-sm">
+					{/* <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-[#002045] shadow-sm">
 						<Users size={12} />
 						{membersCount}
-					</span>
+					</span> */}
 				</div>
 			</div>
 

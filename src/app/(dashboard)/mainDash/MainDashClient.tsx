@@ -18,6 +18,7 @@ import { useMessages } from "@/i18n/messages";
 import { addLocaleToPathname } from "@/i18n/routing";
 import { switchOrganization } from "@/utils/actionMain";
 import { FeedbackToast } from "@/components/ui/feedback-toast";
+import { DashboardStatCard } from "@/components/layout/DashboardStatCard";
 
 interface OrganizationRef {
 	id: string;
@@ -295,22 +296,19 @@ export default function MainDashClient() {
 									{t("dashboard.main.subtitle")}
 								</p>
 							</div>
-
+							{/*  */}
 							<div className="mt-8 grid gap-3 sm:grid-cols-2">
-								<div className="rounded-2xl border border-slate-200 bg-[#F8FAFC] p-4">
-									<div className="flex items-center gap-2 text-sm font-medium text-slate-500">
-										<Building2 size={16} className="text-[#1E3A8A]" />
-										{t("dashboard.main.myChurches")}
-									</div>
-									<p className="mt-2 text-3xl font-bold text-[#002045]">{organizations.length}</p>
-								</div>
-								<div className="rounded-2xl border border-slate-200 bg-[#F8FAFC] p-4">
-									<div className="flex items-center gap-2 text-sm font-medium text-slate-500">
-										<Compass size={16} className="text-[#D97706]" />
-										{t("dashboard.main.explore.searchCta")}
-									</div>
-									<p className="mt-2 text-3xl font-bold text-[#002045]">{availableChurches.length}</p>
-								</div>
+								<DashboardStatCard
+									title={t("dashboard.main.myChurches")}
+									value={organizations.length}
+									icon={<Building2 size={16} className="text-[#1E3A8A]" />}
+								/>
+
+								<DashboardStatCard
+									title={t("dashboard.main.explore.searchCta")}
+									value={availableChurches.length}
+									icon={<Compass size={16} className="text-[#D97706]" />}
+								/>
 							</div>
 						</div>
 

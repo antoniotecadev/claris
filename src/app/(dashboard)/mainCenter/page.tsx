@@ -20,7 +20,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { io, type Socket } from "socket.io-client";
 import { Button } from "@/components/ui/button";
-import SearchBar from "@/components/layout/SeachBar";
 import type { EventCardProps } from "@/components/layout/EventCard";
 import EventList from "@/components/layout/EventList";
 import CommunityMembers, { Member } from "@/components/layout/CommunityMembers";
@@ -1504,8 +1503,6 @@ function DashboardPageContent() {
 							friends={friends}
 							friendIds={friendIds}
 							maxVisible={12}
-							onViewAll={() => console.log("Ver todos")}
-							onInvite={() => console.log("Convidar")}
 							onMemberClick={handleMemberChatOpen}
 							onAddFriend={handleAddFriend}
 							onRemoveFriend={handleRemoveFriend}

@@ -21,8 +21,6 @@ export type CommunityMembersProps = {
   members: Member[];
   friends?: Member[];
   friendIds?: Set<string | number>;
-  onViewAll?: () => void;
-  onInvite?: () => void;
   onMemberClick?: (member: Member) => void;
   onAddFriend?: (memberId: string | number) => void;
   onRemoveFriend?: (memberId: string | number) => void;
@@ -39,7 +37,6 @@ export type CommunityMembersProps = {
 
 type Tab = "members" | "friends";
 
-/* ── Avatar ─────────────────────────────────────────────── */
 function Avatar({ member, size = "md" }: { member: Member; size?: "sm" | "md" | "lg" }) {
   const [failedAvatarUrl, setFailedAvatarUrl] = useState<string | null>(null);
   const dim = size === "sm" ? "w-8 h-8 text-[10px]" : size === "lg" ? "w-14 h-14 text-base" : "w-12 h-12 text-[13px]";
@@ -72,8 +69,6 @@ export default function CommunityMembers({
   members,
   friends = [],
   friendIds = new Set(),
-  onViewAll,
-  onInvite,
   onMemberClick,
   onAddFriend,
   onRemoveFriend,
@@ -146,7 +141,7 @@ export default function CommunityMembers({
           </button>
 
           {/* View all */}
-          {onViewAll && (
+          {/* {onViewAll && (
             <button
               onClick={onViewAll}
               className="hidden h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 text-[13px] font-medium text-[#1a2a3a] transition-all duration-200 hover:border-[#002045] hover:text-[#002045] sm:flex"
@@ -154,17 +149,7 @@ export default function CommunityMembers({
               Ver Todos os Membros
               <ChevronRight size={14} />
             </button>
-          )}
-
-          {onInvite && (
-            <button
-              onClick={onInvite}
-              aria-label="Convidar membro"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition-all duration-200 hover:border-[#002045] hover:text-[#002045]"
-            >
-              <UserPlus size={15} />
-            </button>
-          )}
+          )} */}
         </div>
       </div>
 
@@ -272,7 +257,6 @@ export default function CommunityMembers({
                   </div>
                 </button>
 
-                {/* Add friend button */}
                 {showAddButton && (
                   <button
                     onClick={() => onAddFriend(member.id)}

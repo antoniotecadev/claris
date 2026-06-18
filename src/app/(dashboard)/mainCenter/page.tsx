@@ -1136,13 +1136,13 @@ function DashboardPageContent() {
 			// Build friend Member from the response
 			const friendData = result?.friendship?.friend ?? null;
 			if (friendData) {
-					const newFriend: Member = {
-						id: friendData.id ?? friendData.userId ?? String(memberId),
-						name: friendData.displayName?.trim() || friendData.name?.trim() || friendData.email || "Membro",
-						role: friendData.role ?? "Membro",
-						email: friendData.email ?? undefined,
-						avatarUrl: friendData.avatarUrl ?? undefined,
-					};
+				const newFriend: Member = {
+					id: friendData.id ?? friendData.userId ?? String(memberId),
+					name: friendData.displayName?.trim() || friendData.name?.trim() || friendData.email || "Membro",
+					role: friendData.role ?? "Membro",
+					email: friendData.email ?? undefined,
+					avatarUrl: friendData.avatarUrl ?? undefined,
+				};
 				setFriends((prev) => [...prev, newFriend]);
 				setFriendIds((prev) => new Set(prev).add(newFriend.id));
 			} else {
@@ -1456,10 +1456,6 @@ function DashboardPageContent() {
 					</div>
 				</section>
 
-				<div className="flex items-center justify-center">
-					<SearchBar />
-				</div>
-
 				<section className="flex flex-col gap-4">
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
 						<div>
@@ -1498,30 +1494,30 @@ function DashboardPageContent() {
 				<section className="grid gap-5 pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.78fr)]">
 					<div>
 						<CommunityMembers
-						title={`Membros de ${organization.name}`}
-						subtitle={
-							membersError
-								? `Não foi possível carregar os membros: ${membersError}`
-								: `Você está a entrar como ${roleLabel}. Clique em um membro para conversar.`
-						}
-						members={organizationMembers}
-						friends={friends}
-						friendIds={friendIds}
-						maxVisible={12}
-						onViewAll={() => console.log("Ver todos")}
-						onInvite={() => console.log("Convidar")}
-						onMemberClick={handleMemberChatOpen}
-						onAddFriend={handleAddFriend}
-						onRemoveFriend={handleRemoveFriend}
+							title={`Membros de ${organization.name}`}
+							subtitle={
+								membersError
+									? `Não foi possível carregar os membros: ${membersError}`
+									: `Você está a entrar como ${roleLabel}. Clique em um membro para conversar.`
+							}
+							members={organizationMembers}
+							friends={friends}
+							friendIds={friendIds}
+							maxVisible={12}
+							onViewAll={() => console.log("Ver todos")}
+							onInvite={() => console.log("Convidar")}
+							onMemberClick={handleMemberChatOpen}
+							onAddFriend={handleAddFriend}
+							onRemoveFriend={handleRemoveFriend}
 							onRemoveMember={handleRemoveMember}
 							canRemoveMember={(member) => {
 								const isAdmin = ADMIN_ROLES.has(organization.role?.toUpperCase() ?? "");
 								const isSelf = currentUserId != null && String(member.id) === String(currentUserId);
-							if (isAdmin && isSelf) return false;
-							return isAdmin || isSelf;
+								if (isAdmin && isSelf) return false;
+								return isAdmin || isSelf;
 							}}
-						addingFriendIds={addingFriendIds}
-						removingFriendIds={removingFriendIds}
+							addingFriendIds={addingFriendIds}
+							removingFriendIds={removingFriendIds}
 							removingMemberIds={removingMemberIds}
 							currentUserId={currentUserId}
 							organizationName={organization.name}

@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Logo from "@/assets/images/lobo-SE.png";
-import Google from "@/assets/images/SVG.png";
 import { ArrowRight, Eye, EyeOff, Loader2, AlertCircle, Sparkles } from "lucide-react";
+import { GoogleAuthButton } from "@/components/ui/google-auth-button";
 import { loginAction } from "@/utils/actionsLogin";
 import { useActionState } from "react";
 import { useEffect, useState } from "react";
@@ -38,15 +38,11 @@ export default function Login() {
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
 
-			{/* ===== MAIN CARD ===== */}
 			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
 
-				{/* ===== LEFT PANEL — Image + Quote ===== */}
 				<div className="side  w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-200 md:min-h-0 self-stretch">
-					{/* Dark overlay */}
 					<div className="absolute inset-0 bg-linear-to-b from-[rgba(0,32,69,0.15)] to-[rgba(0,32,69,0.45)] pointer-events-none z-0" />
 
-					{/* Logo */}
 					<Link href="/">
 					<div className="flex items-center gap-2.5 relative z-10">
 						<div className="w-9 h-10.5 flex items-center justify-center">
@@ -56,7 +52,6 @@ export default function Login() {
 					</div>
 					</Link>
 
-					{/* Inspirational quote */}
 					<div className="flex flex-col items-center gap-3.5 text-center relative z-10">
 						<div className="inline-flex items-center gap-1.5 bg-[rgba(255,222,165,0.2)] border border-[rgba(255,222,165,0.35)] backdrop-blur-sm px-3.5 py-1.5 rounded-full text-[#ffdea5] text-xs tracking-wide animate-pulse">
 							<Sparkles size={14} />
@@ -91,14 +86,7 @@ export default function Login() {
 						</div>
 
 						{/* Google button */}
-						<a
-							href="http://localhost:3001/v1/api/auth/google"
-							id="google-login-btn"
-							className="flex items-center justify-center gap-2.5 px-4 py-3 border border-black/8 rounded-[14px] bg-white/85 backdrop-blur-sm text-gray-800 text-sm font-medium cursor-pointer transition-all duration-300 ease-out no-underline mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
-						>
-							<Image src={Google} alt="Google" width={18} height={18} />
-							<span>{t("auth.login.google")}</span>
-						</a>
+						<GoogleAuthButton id="google-login-btn" text={t("auth.login.google")} />
 
 						{/* Divider */}
 						<div className="flex items-center gap-4 mb-5">

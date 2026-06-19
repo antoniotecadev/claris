@@ -136,7 +136,7 @@ export default function CommunityMembers({
             className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-200
               ${searchOpen
                 ? "bg-[#002045] border-[#002045] text-white"
-              : "bg-white border-slate-200 text-slate-500 hover:border-[#002045] hover:text-[#002045]"
+                : "bg-white border-slate-200 text-slate-500 hover:border-[#002045] hover:text-[#002045]"
               }`}
           >
             {searchOpen ? <X size={15} /> : <Search size={15} />}
@@ -191,9 +191,8 @@ export default function CommunityMembers({
 
       {/* ── Search bar ── */}
       <div
-        className={`overflow-hidden transition-all duration-300 ${
-          searchOpen ? "max-h-16 mb-4 opacity-100" : "max-h-0 mb-0 opacity-0"
-        }`}
+        className={`overflow-hidden transition-all duration-300 ${searchOpen ? "max-h-16 mb-4 opacity-100" : "max-h-0 mb-0 opacity-0"
+          }`}
       >
         <div className="relative">
           <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
@@ -322,16 +321,16 @@ export default function CommunityMembers({
                   <Heart size={24} />
                 </div>
                 <p className="text-sm font-semibold text-[#475F83]">
-                  {t("community.noFriends")}
+                  {t("community.members.noFriends")}
                 </p>
                 <p className="max-w-xs text-xs text-[#475F83]/70">
-                  {t("community.noFriendsHelp")}
+                  {t("community.members.noFriendsHelp")}
                 </p>
               </>
             ) : (
               <div className="flex items-center gap-2 text-[13px] text-stone-400 py-2">
                 <Users size={15} />
-                <span>{t("community.noMembersFound")}</span>
+                <span>{t("community.members.noMembersFound")}</span>
               </div>
             )}
           </div>

@@ -461,7 +461,7 @@ export default function SettingsPanel({
               onClick={() => setShowDeleteConfirm(true)}
               className="w-full flex items-center justify-center gap-2 text-red-700 hover:bg-red-100 rounded-xl px-4 py-3 transition-colors text-sm font-medium mt-2 border-solid border-red-700 border-2"
             >
-              Eliminar conta
+              {t("settings.delete")}
             </button>
           </div>
 

@@ -9,16 +9,13 @@ import {
 const PUBLIC_ROUTES = [
 	"/",
 	"/login",
-	"/registerAdmim",
+
 	"/registerUser",
-	"/codeAuth",
-	"/select-organization",
 	"/auth/google/callback",
 	"/callback",
 	"/termos-condicoes",
 	"/politica-privacidade",
 	"/contacto-suporte",
-	"/mainCenter",
 	
 ];
 const API_PREFIX = "/api";

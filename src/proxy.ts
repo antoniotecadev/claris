@@ -9,13 +9,7 @@ import {
 const PUBLIC_ROUTES = [
 	"/",
 	"/login",
-	"/registerAdmim",
 	"/registerUser",
-	"/codeAuth",
-	"/select-organization",
-	"/auth/google/callback",
-	"/callback",
-	"/mainCenter",
 	"/termos-condicoes",
 	"/politica-privacidade",
 	"/contacto-suporte",

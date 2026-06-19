@@ -97,9 +97,9 @@ function CodeAuthContent() {
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.16),transparent_28%),linear-gradient(to_bottom,#e5eef9,#dbeafe)] px-4 py-8 text-slate-900 dark:bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_26%),linear-gradient(to_bottom,#020617,#0f172a)] dark:text-slate-50">
+		<div className="min-h-screen flex flex-col items-center justify-center  px-4 py-8 text-slate-900 dark:bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_26%),linear-gradient(to_bottom,#020617,#0f172a)] dark:text-slate-50">
 			<div className="flex w-full max-w-240 flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/80 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur-xl md:flex-row dark:border-white/10 dark:bg-slate-950/70">
-				<div className="side1 relative min-h-75 w-full overflow-hidden bg-slate-900 p-8 md:min-h-155 md:w-[45%] self-stretch">
+				<div className="side1 relative min-h-75 w-full flex flex-col justify-between overflow-hidden bg-slate-900 p-8 md:min-h-155 md:w-[45%] self-stretch">
 					<div className="absolute inset-0 bg-linear-to-b from-[rgba(2,6,23,0.2)] via-[rgba(2,6,23,0.55)] to-[rgba(2,6,23,0.82)] pointer-events-none z-0" />
 					<div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.16),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(56,189,248,0.10),transparent_30%)]" />
 
@@ -128,7 +128,7 @@ function CodeAuthContent() {
 				</div>
 
 				{/* ===== RIGHT PANEL — Form ===== */}
-				<div className="w-full md:w-[55%] flex flex-col items-center justify-center bg-[#fafafa] p-7 md:p-10 self-stretch">
+				<div className="w-full md:w-[55%] flex flex-col items-center justify-center bg-white p-7 md:p-10 self-stretch dark:bg-slate-900">
 					<div className="w-full max-w-100 flex flex-col items-center">
 
 						{/* Heading */}

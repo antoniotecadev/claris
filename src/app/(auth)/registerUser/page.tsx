@@ -345,7 +345,6 @@ export default function RegisterUser() {
 				</div>
 			</div>
 
-			{/* ===== FOOTER ===== */}
 			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
 				<p className="text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
 				<div className="flex gap-5">

@@ -50,6 +50,14 @@ html {
 	--radius-2xl: calc(var(--radius) * 1.8);
 	--radius-3xl: calc(var(--radius) * 2.2);
 	--radius-4xl: calc(var(--radius) * 2.6);
+
+	--color-brand-primary: #002045;
+	--color-brand-foreground: #1a2a3a;
+	--color-brand-muted: #475F83;
+	--color-brand-light: #E8EEF8;
+	--color-brand-bg: #F7F9FC;
+	--color-accent-orange: #D97706;
+	--color-accent-orange-bg: #FFF7ED;
 }
 
 body {

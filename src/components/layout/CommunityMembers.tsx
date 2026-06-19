@@ -38,30 +38,11 @@ export type CommunityMembersProps = {
 
 type Tab = "members" | "friends";
 
-function Avatar({ member, size = "md" }: { member: Member; size?: "sm" | "md" | "lg" }) {
-  const [failedAvatarUrl, setFailedAvatarUrl] = useState<string | null>(null);
-  const dim = size === "sm" ? "w-8 h-8 text-[10px]" : size === "lg" ? "w-14 h-14 text-base" : "w-12 h-12 text-[13px]";
-  const avatarUrl = normalizeMediaUrl(member.avatarUrl);
-
-  if (avatarUrl && avatarUrl !== failedAvatarUrl) {
-    return (
-      <img
-        src={avatarUrl}
-        alt={member.name}
-        onError={() => setFailedAvatarUrl(avatarUrl)}
-        className={`${dim} rounded-full object-cover ring-2 ring-white`}
-      />
-    );
-  }
-
-  return (
-    <img
-      src="/avatar-placeholder.svg"
-      alt={member.name}
-      className={`${dim} rounded-full object-cover ring-2 ring-white`}
-    />
-  );
-}
+import { Avatar } from "@/components/ui/avatar";
+import { BadgeButton } from "@/components/ui/badge-button";
+import { IconButton } from "@/components/ui/icon-button";
+import { SearchInput } from "@/components/ui/search-input";
+import { TabsPill } from "@/components/ui/tabs-pill";
 
 /* ── Main Component ─────────────────────────────────────── */
 export default function CommunityMembers({
@@ -116,95 +97,52 @@ export default function CommunityMembers({
   return (
     <section className="mt-2 w-full rounded-3xl bg-white px-5 py-6 shadow-sm ring-1 ring-slate-200 sm:px-7">
 
-      {/* ── Header ── */}
       <div className="flex items-start justify-between gap-4 mb-5">
         <div className="flex-1 min-w-0">
-          <h2 className="mb-1 text-[20px] font-bold leading-tight text-[#002045]">
+          <h2 className="mb-1 text-[20px] font-bold leading-tight text-brand-primary">
             {title}
           </h2>
-          <p className="text-[13px] leading-snug text-[#475F83]">{subtitle}</p>
+          <p className="text-[13px] leading-snug text-brand-muted">{subtitle}</p>
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
-          {/* Search toggle */}
-          <button
+          <IconButton
+            icon={searchOpen ? <X size={15} /> : <Search size={15} />}
+            isActive={searchOpen}
             onClick={() => {
               setSearchOpen((v) => !v);
               if (searchOpen) setQuery("");
             }}
             aria-label="Pesquisar membros"
-            className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-200
-              ${searchOpen
-                ? "bg-[#002045] border-[#002045] text-white"
-                : "bg-white border-slate-200 text-slate-500 hover:border-[#002045] hover:text-[#002045]"
-              }`}
-          >
-            {searchOpen ? <X size={15} /> : <Search size={15} />}
-          </button>
+          />
         </div>
       </div>
 
-      {/* ── Tabs ── */}
-      <div className="mb-5 flex gap-1.5 rounded-2xl bg-[#F7F9FC] p-1 ring-1 ring-slate-200">
-        {tabs.map((tab) => {
-          const isActive = activeTab === tab.key;
-          return (
-            <button
-              key={tab.key}
-              onClick={() => {
-                setActiveTab(tab.key);
-                setQuery("");
-                setSearchOpen(false);
-              }}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-all duration-200
-                ${isActive
-                  ? "bg-white text-[#002045] shadow-sm ring-1 ring-slate-200"
-                  : "text-[#475F83] hover:text-[#002045]"
-                }`}
-            >
-              {tab.icon}
-              <span>{tab.label}</span>
-              <span
-                className={`ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold
-                  ${isActive
-                    ? "bg-[#002045] text-white"
-                    : "bg-slate-200 text-[#475F83]"
-                  }`}
-              >
-                {tab.count}
-              </span>
-            </button>
-          );
-        })}
+      <div className="mb-5">
+        <TabsPill
+          tabs={tabs}
+          activeTab={activeTab}
+          onChange={(key) => {
+            setActiveTab(key);
+            setQuery("");
+            setSearchOpen(false);
+          }}
+        />
       </div>
 
-      {/* ── Search bar ── */}
       <div
         className={`overflow-hidden transition-all duration-300 ${searchOpen ? "max-h-16 mb-4 opacity-100" : "max-h-0 mb-0 opacity-0"
           }`}
       >
-        <div className="relative">
-          <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={activeTab === "friends" ? "Pesquisar amigos..." : "Pesquisar por nome ou função..."}
-            className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-4 text-[13px] text-stone-700 outline-none transition-colors duration-200 placeholder:text-stone-400 focus:border-[#002045]"
-          />
-          {query && (
-            <button
-              onClick={() => setQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
-            >
-              <X size={13} />
-            </button>
-          )}
-        </div>
+        <SearchInput
+          ref={inputRef}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onClear={() => setQuery("")}
+          placeholder={activeTab === "friends" ? "Pesquisar amigos..." : "Pesquisar por nome ou função..."}
+        />
       </div>
 
-      {/* ── Members / Friends grid ── */}
       <div className="flex items-start gap-5 flex-wrap">
         {visibleMembers.length > 0 ? (
           visibleMembers.map((member) => {
@@ -227,9 +165,9 @@ export default function CommunityMembers({
                   className="flex flex-col items-center gap-1.5 focus:outline-none"
                 >
                   <div className="relative">
-                    <Avatar member={member} size="md" />
-                    {/* hover ring */}
-                    <div className="absolute inset-0 rounded-full ring-2 ring-transparent group-hover:ring-[#002045]/30 transition-all duration-200" />
+                    <Avatar name={member.name} url={member.avatarUrl} size="lg" />
+                    
+                    <div className="absolute inset-0 rounded-full ring-2 ring-transparent group-hover:ring-brand-primary/30 transition-all duration-200" />
                     {/* friend badge */}
                     {isFriend && activeTab === "members" && (
                       <div className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-white ring-2 ring-white">
@@ -238,7 +176,7 @@ export default function CommunityMembers({
                     )}
                   </div>
                   <div className="text-center">
-                    <p className="text-[12px] font-medium text-[#1a2a3a] leading-tight group-hover:text-[#002045] transition-colors duration-150 max-w-18 truncate">
+                    <p className="text-[12px] font-medium text-brand-foreground leading-tight group-hover:text-brand-primary transition-colors duration-150 max-w-18 truncate">
                       {member.name.split(" ")[0]}
                     </p>
                     <p className="text-[9px] font-semibold tracking-widest text-stone-400 uppercase mt-0.5 max-w-18 truncate">
@@ -248,33 +186,26 @@ export default function CommunityMembers({
                 </button>
 
                 {showAddButton && (
-                  <button
+                  <BadgeButton
+                    icon={<UserPlus size={10} />}
+                    loading={isAdding}
+                    loadingText="..."
                     onClick={() => onAddFriend(member.id)}
-                    disabled={isAdding}
-                    className="flex h-7 items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 text-[10px] font-semibold text-[#1E3A8A] shadow-sm transition-all duration-200 hover:border-[#1E3A8A] hover:bg-[#E8EEF8] disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    {isAdding ? (
-                      <Loader2 size={10} className="animate-spin" />
-                    ) : (
-                      <UserPlus size={10} />
-                    )}
-                    <span>{isAdding ? "..." : "Amigo"}</span>
-                  </button>
+                    Amigo
+                  </BadgeButton>
                 )}
 
                 {showRemoveButton && (
-                  <button
+                  <BadgeButton
+                    icon={<UserMinus size={10} />}
+                    loading={isRemoving}
+                    loadingText="..."
+                    variant="danger"
                     onClick={() => onRemoveFriend(member.id)}
-                    disabled={isRemoving}
-                    className="flex h-7 items-center gap-1 rounded-full border border-red-100 bg-white px-2.5 text-[10px] font-semibold text-red-600 shadow-sm transition-all duration-200 hover:border-red-300 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    {isRemoving ? (
-                      <Loader2 size={10} className="animate-spin" />
-                    ) : (
-                      <UserMinus size={10} />
-                    )}
-                    <span>{isRemoving ? "..." : "Remover"}</span>
-                  </button>
+                    Remover
+                  </BadgeButton>
                 )}
 
                 {showRemoveMemberButton && onRemoveMember && (
@@ -285,18 +216,15 @@ export default function CommunityMembers({
                       await onRemoveMember(member.id);
                     }}
                   >
-                    <button
+                    <BadgeButton
+                      icon={<UserMinus size={10} />}
+                      loading={isRemovingMember}
+                      loadingText="..."
+                      variant="danger"
                       type="button"
-                      disabled={isRemovingMember}
-                      className="flex h-7 items-center gap-1 rounded-full border border-red-100 bg-white px-2.5 text-[10px] font-semibold text-red-600 shadow-sm transition-all duration-200 hover:border-red-300 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      {isRemovingMember ? (
-                        <Loader2 size={10} className="animate-spin" />
-                      ) : (
-                        <UserMinus size={10} />
-                      )}
-                      <span>{isRemovingMember ? "..." : "Remover"}</span>
-                    </button>
+                      Remover
+                    </BadgeButton>
                   </LeaveOrganizationDialog>
                 )}
               </div>
@@ -306,13 +234,13 @@ export default function CommunityMembers({
           <div className="flex w-full flex-col items-center gap-3 py-8 text-center">
             {activeTab === "friends" ? (
               <>
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#FFF7ED] text-[#D97706]">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent-orange-bg text-accent-orange">
                   <Heart size={24} />
                 </div>
-                <p className="text-sm font-semibold text-[#475F83]">
+                <p className="text-sm font-semibold text-brand-muted">
                   {t("community.members.noFriends")}
                 </p>
-                <p className="max-w-xs text-xs text-[#475F83]/70">
+                <p className="max-w-xs text-xs text-brand-muted/70">
                   {t("community.members.noFriendsHelp")}
                 </p>
               </>

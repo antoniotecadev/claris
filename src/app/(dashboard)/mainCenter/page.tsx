@@ -23,6 +23,8 @@ import { Button } from "@/components/ui/button";
 import type { EventCardProps } from "@/components/layout/EventCard";
 import EventList from "@/components/layout/EventList";
 import CommunityMembers, { Member } from "@/components/layout/CommunityMembers";
+import { Avatar } from "@/components/ui/avatar";
+import { IconButton } from "@/components/ui/icon-button";
 import { getCurrentUser, getMyOrganizations } from "@/utils/actionMain";
 import { useMessages } from "@/i18n/messages";
 import { addLocaleToPathname } from "@/i18n/routing";
@@ -334,27 +336,7 @@ function formatChatTime(date: Date) {
 }
 
 function ChatMemberAvatar({ member }: { member: Member }) {
-	const [failedAvatarUrl, setFailedAvatarUrl] = useState<string | null>(null);
-	const avatarUrl = normalizeMediaUrl(member.avatarUrl);
-
-	if (avatarUrl && avatarUrl !== failedAvatarUrl) {
-		return (
-			<img
-				src={avatarUrl}
-				alt={member.name}
-				onError={() => setFailedAvatarUrl(avatarUrl)}
-				className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
-			/>
-		);
-	}
-
-	return (
-		<img
-			src="/avatar-placeholder.svg"
-			alt={member.name}
-			className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
-		/>
-	);
+	return <Avatar name={member.name} url={member.avatarUrl} size="md" className="h-11 w-11" />;
 }
 
 	function MemberChatPanel({
@@ -400,11 +382,11 @@ function ChatMemberAvatar({ member }: { member: Member }) {
 	if (!member) {
 		return (
 			<aside className="flex min-h-80 flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-10 text-center shadow-sm">
-				<div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#E8EEF8] text-[#1E3A8A]">
+				<div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-light text-brand-primary">
 					<MessageCircle size={24} />
 				</div>
-				<h3 className="mt-4 text-lg font-bold text-[#002045]">{t("chat.startConversation")}</h3>
-				<p className="mt-2 max-w-xs text-sm leading-6 text-[#475F83]">
+				<h3 className="mt-4 text-lg font-bold text-brand-primary">{t("chat.startConversation")}</h3>
+				<p className="mt-2 max-w-xs text-sm leading-6 text-brand-muted">
 					{t("chat.clickToChat")}
 				</p>
 			</aside>
@@ -417,45 +399,41 @@ function ChatMemberAvatar({ member }: { member: Member }) {
 				<div className="flex min-w-0 items-center gap-3">
 					<ChatMemberAvatar member={member} />
 					<div className="min-w-0">
-						<h3 className="truncate text-base font-bold text-[#002045]">{member.name}</h3>
-						<p className="truncate text-xs font-semibold uppercase tracking-wide text-[#D97706]">
+						<h3 className="truncate text-base font-bold text-brand-primary">{member.name}</h3>
+						<p className="truncate text-xs font-semibold uppercase tracking-wide text-accent-orange">
 							{member.role}
 						</p>
 					</div>
 				</div>
 				<div className="flex shrink-0 items-center gap-2">
 					{isFriend && onRemoveFriend && (
-						<button
-							type="button"
+						<IconButton
+							icon={<UserMinus size={16} />}
 							onClick={onRemoveFriend}
-							disabled={isRemovingFriend}
+							loading={isRemovingFriend}
 							aria-label={t("chat.removeAria")}
-							className="flex h-9 w-9 items-center justify-center rounded-full border border-red-100 text-red-600 transition-colors hover:border-red-300 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							{isRemovingFriend ? <Loader2 size={16} className="animate-spin" /> : <UserMinus size={16} />}
-						</button>
+							variant="danger"
+						/>
 					)}
-					<button
-						type="button"
+					<IconButton
+						icon={<X size={16} />}
 						onClick={onClose}
 						aria-label={t("chat.closeAria")}
-						className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:border-[#002045] hover:text-[#002045]"
-					>
-						<X size={16} />
-					</button>
+						variant="outline"
+					/>
 				</div>
 			</header>
 
 			{!isFriend ? (
-				<div className="flex flex-1 flex-col items-center justify-center gap-4 bg-[#F7F9FC] px-5 py-10 text-center">
-					<div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#FFF7ED] text-[#D97706]">
+				<div className="flex flex-1 flex-col items-center justify-center gap-4 bg-brand-bg px-5 py-10 text-center">
+					<div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent-orange-bg text-accent-orange">
 						<Users size={24} />
 					</div>
 					<div>
-						<p className="text-sm font-semibold text-[#002045]">
+						<p className="text-sm font-semibold text-brand-primary">
 							{t("chat.notFriend", { name: member.name })}
 						</p>
-						<p className="mt-1 max-w-xs text-xs leading-5 text-[#475F83]">
+						<p className="mt-1 max-w-xs text-xs leading-5 text-brand-muted">
 							{t("chat.notFriendDescription")}
 						</p>
 					</div>
@@ -463,7 +441,7 @@ function ChatMemberAvatar({ member }: { member: Member }) {
 						<button
 							type="button"
 							onClick={onAddFriend}
-							className="flex h-10 items-center gap-2 rounded-2xl bg-[#002045] px-5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#1E3A8A]"
+							className="flex h-10 items-center gap-2 rounded-2xl bg-brand-primary px-5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-900"
 						>
 							<Users size={15} />
 							{t("chat.addFriend")}
@@ -472,9 +450,9 @@ function ChatMemberAvatar({ member }: { member: Member }) {
 				</div>
 			) : (
 				<>
-					<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-x-hidden overflow-y-auto bg-[#F7F9FC] px-5 py-5">
+					<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-x-hidden overflow-y-auto bg-brand-bg px-5 py-5">
 						{isLoadingMessages ? (
-							<div className="flex flex-1 items-center justify-center gap-2 text-sm font-medium text-[#475F83]">
+							<div className="flex flex-1 items-center justify-center gap-2 text-sm font-medium text-brand-muted">
 								<Loader2 size={16} className="animate-spin" />
 								<span>{t("chat.loadingMessages")}</span>
 							</div>
@@ -492,8 +470,8 @@ function ChatMemberAvatar({ member }: { member: Member }) {
 								>
 									<div
 										className={`min-w-0 max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${message.sender === "me"
-											? "rounded-br-md bg-[#002045] text-white"
-											: "rounded-bl-md bg-white text-[#1a2a3a] ring-1 ring-slate-200"
+											? "rounded-br-md bg-brand-primary text-white"
+											: "rounded-bl-md bg-white text-brand-foreground ring-1 ring-slate-200"
 											}`}
 									>
 										<p
@@ -513,7 +491,7 @@ function ChatMemberAvatar({ member }: { member: Member }) {
 							))
 						) : (
 							<div className="flex flex-1 items-center justify-center text-center">
-								<p className="max-w-xs text-sm leading-6 text-[#475F83]">
+								<p className="max-w-xs text-sm leading-6 text-brand-muted">
 									{t("chat.conversationReady", { name: member.name })}
 								</p>
 							</div>
@@ -534,17 +512,18 @@ function ChatMemberAvatar({ member }: { member: Member }) {
 							placeholder={t("chat.messagePlaceholder", { name: member.name.split(" ")[0] })}
 							rows={1}
 							disabled={isSendingMessage}
-							className="max-h-28 min-h-11 flex-1 resize-none overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-[#1a2a3a] outline-none transition-colors placeholder:text-slate-400 focus:border-[#002045] focus:bg-white"
+							className="max-h-28 min-h-11 flex-1 resize-none overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-brand-foreground outline-none transition-colors placeholder:text-slate-400 focus:border-brand-primary focus:bg-white"
 							style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}
 						/>
-						<button
+						<IconButton
+							icon={<Send size={17} />}
+							loading={isSendingMessage}
 							type="submit"
 							disabled={!draft.trim() || isSendingMessage}
 							aria-label={t("chat.sendAria")}
-							className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#002045] text-white transition-colors hover:bg-[#1E3A8A] disabled:cursor-not-allowed disabled:bg-slate-300"
-						>
-							{isSendingMessage ? <Loader2 size={17} className="animate-spin" /> : <Send size={17} />}
-						</button>
+							variant="solid"
+							className="h-11 w-11 rounded-2xl"
+						/>
 					</form>
 				</>
 			)}
@@ -931,7 +910,6 @@ function DashboardPageContent() {
 			setEventsError(null);
 			setInterestPendingEventIds((currentIds) => new Set(currentIds).add(eventId));
 
-			// Optimistic update: immediately reflect participation state in the UI
 			setOrganizationEvents((events) =>
 				events.map((ev) => {
 					if (ev.id !== eventId) return ev;

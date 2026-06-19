@@ -141,17 +141,6 @@ export default function CommunityMembers({
           >
             {searchOpen ? <X size={15} /> : <Search size={15} />}
           </button>
-
-          {/* View all */}
-          {/* {onViewAll && (
-            <button
-              onClick={onViewAll}
-              className="hidden h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 text-[13px] font-medium text-[#1a2a3a] transition-all duration-200 hover:border-[#002045] hover:text-[#002045] sm:flex"
-            >
-              Ver Todos os Membros
-              <ChevronRight size={14} />
-            </button>
-          )} */}
         </div>
       </div>
 

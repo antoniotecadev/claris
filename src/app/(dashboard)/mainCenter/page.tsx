@@ -1413,6 +1413,7 @@ function DashboardPageContent() {
 						<div className="flex flex-col justify-end gap-4">
 							<div className="w-full rounded-3xl bg-white/94 p-5 shadow-xl shadow-slate-950/10 ring-1 ring-white/70 backdrop-blur">
 								<div className="flex items-center gap-4">
+
 									{organization.logoUrl ? (
 										<Image
 											src={organization.logoUrl}

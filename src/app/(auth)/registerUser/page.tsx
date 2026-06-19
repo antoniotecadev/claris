@@ -241,7 +241,7 @@ export default function RegisterUser() {
 										type="button"
 										onClick={() => setShowPassword(!showPassword)}
 										className="absolute right-3.5 top-1/2 flex -translate-y-1/2 items-center justify-center rounded-md border-none bg-transparent p-1 text-slate-400 transition-colors duration-200 hover:bg-slate-100 hover:text-sky-800 dark:hover:bg-white/8 dark:hover:text-sky-300"
-										aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+										aria-label={showPassword ? t("auth.login.passwordHide") : t("auth.login.passwordShow")}
 									>
 										{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
 									</button>
@@ -269,7 +269,7 @@ export default function RegisterUser() {
 										type="button"
 										onClick={() => setShowConfirmPassword(!showConfirmPassword)}
 										className="absolute right-3.5 top-1/2 flex -translate-y-1/2 items-center justify-center rounded-md border-none bg-transparent p-1 text-slate-400 transition-colors duration-200 hover:bg-slate-100 hover:text-sky-800 dark:hover:bg-white/8 dark:hover:text-sky-300"
-										aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+										aria-label={showConfirmPassword ? t("auth.login.passwordHide") : t("auth.login.passwordShow")}
 									>
 										{showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
 									</button>
@@ -312,7 +312,7 @@ export default function RegisterUser() {
 								<p className="text-[0.85rem] font-medium text-red-600 dark:text-red-200">
 									{state.error === "MINIMUM_AGE_ERROR" 
 										? t("auth.register.minimumAge")
-										: state.error
+										: t(state.error)
 									}
 								</p>
 							</div>

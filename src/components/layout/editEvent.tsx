@@ -11,6 +11,7 @@ import {
 	PencilLine,
 	Upload,
 } from "lucide-react"
+import { useMessages } from "@/i18n/messages"
 import { Button } from "@/components/ui/button"
 import {
 	Dialog,
@@ -71,6 +72,7 @@ export function EditEventDialog({
 	onOpenChange,
 	onSuccess,
 }: EditEventDialogProps) {
+	const { t } = useMessages()
 	const [submitting, setSubmitting] = useState(false)
 
 	// Form fields
@@ -143,17 +145,17 @@ export function EditEventDialog({
 
 		const cleanTitle = title.trim()
 		if (cleanTitle.length < 2 || cleanTitle.length > 120) {
-			alert("O título deve ter entre 2 e 120 caracteres.")
+			alert(t("events.edit.errors.titleLength"))
 			return
 		}
 		if (!date || !time) {
-			alert("Data e hora são obrigatórias.")
+			alert(t("events.edit.errors.requiredDate"))
 			return
 		}
 
 		const combinedDate = new Date(`${date}T${time}`)
 		if (Number.isNaN(combinedDate.getTime())) {
-			alert("A data ou hora informada é inválida.")
+			alert(t("events.edit.errors.invalidDate"))
 			return
 		}
 
@@ -184,7 +186,7 @@ export function EditEventDialog({
 				const errorJson = await response.json().catch(() => ({}))
 				const errorMessage = Array.isArray(errorJson?.message)
 					? errorJson.message[0]
-					: errorJson?.message || "Erro ao atualizar o evento."
+					: errorJson?.message || t("events.edit.errors.update")
 				throw new Error(errorMessage)
 			}
 
@@ -194,7 +196,7 @@ export function EditEventDialog({
 			alert(
 				error instanceof Error
 					? error.message
-					: "Erro ao atualizar o evento.",
+					: t("events.edit.errors.update"),
 			)
 		} finally {
 			setSubmitting(false)
@@ -211,10 +213,10 @@ export function EditEventDialog({
 						</div>
 						<div>
 							<DialogTitle className="text-xl font-bold">
-								Editar Evento
+								{t("events.edit.title")}
 							</DialogTitle>
 							<DialogDescription className="mt-1 max-w-xl text-sm text-white/80">
-								Atualize as informações do evento
+								{t("events.edit.description")}
 							</DialogDescription>
 						</div>
 					</div>
@@ -228,8 +230,8 @@ export function EditEventDialog({
 								htmlFor="edit-banner"
 								className="text-sm font-semibold text-[#002045]"
 							>
-								Imagem do Evento / Banner
-							</Label>
+							{t("events.edit.fields.banner")}
+						</Label>
 							<label
 								htmlFor="edit-banner"
 								className="group flex aspect-video min-h-64 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border border-dashed border-slate-300 bg-slate-50 text-center transition-colors hover:border-[#1E3A8A] hover:bg-[#1E3A8A]/5"
@@ -246,19 +248,18 @@ export function EditEventDialog({
 											<ImagePlus size={30} />
 										</div>
 										<p className="text-sm font-semibold text-[#002045]">
-											Selecionar Banner
+											{t("events.edit.selectBanner")}
 										</p>
 										<p className="mt-2 text-xs leading-relaxed text-slate-500">
-											PNG, JPG ou WEBP. Imagem recomendada em
-											formato paisagem.
+											{t("events.edit.bannerHint")}
 										</p>
 									</div>
 								)}
 								<span className="mb-4 mt-auto inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[#1E3A8A] shadow-sm transition-transform group-hover:scale-105">
 									<Upload size={14} />
 									{photoPreviewUrl
-										? "Trocar Banner"
-										: "Selecionar Banner"}
+										? t("events.edit.changeBanner")
+										: t("events.edit.selectBanner")}
 								</span>
 							</label>
 							<input
@@ -278,13 +279,13 @@ export function EditEventDialog({
 									htmlFor="edit-event-title"
 									className="text-sm font-semibold text-[#002045]"
 								>
-									Título do Evento *
+									{t("events.edit.fields.title")}
 								</Label>
 								<div className="relative">
 									<Calendar className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
 									<Input
 										id="edit-event-title"
-										placeholder="Ex: Culto de Domingo"
+										placeholder={t("events.edit.placeholders.title")}
 										value={title}
 										onChange={(e) =>
 											setTitle(e.target.value)
@@ -301,7 +302,7 @@ export function EditEventDialog({
 									htmlFor="edit-event-date"
 									className="text-sm font-semibold text-[#002045]"
 								>
-									Data *
+									{t("events.edit.fields.date")}
 								</Label>
 								<div className="relative">
 									<Calendar className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
@@ -323,7 +324,7 @@ export function EditEventDialog({
 									htmlFor="edit-event-time"
 									className="text-sm font-semibold text-[#002045]"
 								>
-									Hora de Início *
+									{t("events.edit.fields.startTime")}
 								</Label>
 								<div className="relative">
 									<Clock className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
@@ -345,13 +346,13 @@ export function EditEventDialog({
 									htmlFor="edit-event-location"
 									className="text-sm font-semibold text-[#002045]"
 								>
-									Local do Evento
+									{t("events.edit.fields.location")}
 								</Label>
 								<div className="relative">
 									<MapPin className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
 									<Input
 										id="edit-event-location"
-										placeholder="Ex: Sala 101, Igreja Principal"
+										placeholder={t("events.edit.placeholders.location")}
 										value={location}
 										onChange={(e) =>
 											setLocation(e.target.value)
@@ -368,13 +369,13 @@ export function EditEventDialog({
 									htmlFor="edit-event-description"
 									className="mb-2 block text-sm font-semibold text-[#002045]"
 								>
-									Descrição
+									{t("events.edit.fields.description")}
 								</Label>
 								<div className="relative">
 									<PencilLine className="absolute left-3 top-3 size-4 text-slate-400" />
 									<Textarea
 										id="edit-event-description"
-										placeholder="Descreva o evento em detalhes..."
+										placeholder={t("events.edit.placeholders.description")}
 										value={description}
 										onChange={(e) =>
 											setDescription(e.target.value)
@@ -391,7 +392,7 @@ export function EditEventDialog({
 				<DialogFooter className="m-0 w-full border-t border-slate-100 bg-slate-50 px-6 py-4">
 					<DialogClose asChild>
 						<Button variant="outline" className="h-10 rounded-xl">
-							Cancelar
+							{t("common.cancel")}
 						</Button>
 					</DialogClose>
 					<Button
@@ -410,12 +411,12 @@ export function EditEventDialog({
 									size={16}
 									className="animate-spin"
 								/>
-								A guardar...
+								{t("common.saving")}
 							</>
 						) : (
 							<>
 								<Check size={16} />
-								Guardar Alterações
+								{t("events.edit.save")}
 							</>
 						)}
 					</Button>

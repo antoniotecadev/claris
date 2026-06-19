@@ -10,7 +10,7 @@ export async function loginAction(_prevState: unknown, formData: FormData): Prom
 	const locale = (formData.get("locale") as string) || defaultLocale;
 
 	if (!email || !password) {
-		return { success: false, error: "Email e senha são obrigatórios." };
+		return { success: false, error: "errors.emailAndPasswordRequired" };
 	}
 
 	let redirectUrl: string | null = null;
@@ -32,7 +32,7 @@ export async function loginAction(_prevState: unknown, formData: FormData): Prom
 		}
 		else if (data?.requireEmailVerification) {
 			if (!data.email) {
-				return { success: false, error: "Email não informado pelo servidor." };
+				return { success: false, error: "errors.emailNotProvided" };
 			}
 			redirectUrl = addLocaleToPathname(
 				`/codeAuth?email=${encodeURIComponent(data.email)}`,
@@ -41,7 +41,7 @@ export async function loginAction(_prevState: unknown, formData: FormData): Prom
 		}
 		else if (data?.requireOrganizationSelection) {
 			if (!data.selectionToken) {
-				return { success: false, error: "Token de seleção não informado pelo servidor." };
+				return { success: false, error: "errors.selectionTokenNotProvided" };
 			}
 			redirectUrl = addLocaleToPathname(
 				`/select-organization?selectionToken=${encodeURIComponent(
@@ -51,17 +51,17 @@ export async function loginAction(_prevState: unknown, formData: FormData): Prom
 			);
 		}
 		else {
-			return { success: false, error: "Resposta inesperada do servidor." };
+			return { success: false, error: "errors.unexpectedResponse" };
 		}
 
 	} catch (error: unknown) {
-		const errorMessage = error instanceof Error ? error.message : "Erro inesperado. Tente novamente.";
+		const errorMessage = error instanceof Error ? error.message : "errors.unexpected";
 
 		return { success: false, error: errorMessage };
 	}
 
 	if (!redirectUrl) {
-		return { success: false, error: "URL de redirecionamento não determinado." };
+		return { success: false, error: "errors.redirectNotDetermined" };
 	}
 
 	return { success: true, redirectUrl };

@@ -228,16 +228,50 @@
 	"common": {
 		"cancel": "Cancelar",
 		"saving": "A guardar...",
-		"saveChanges": "Guardar alterações"
+		"saveChanges": "Guardar alterações",
+		"loading": "A carregar...",
+		"logoAlt": "Logo",
+		"search": "Pesquisa",
+		"filters": "Filtros",
+		"explore": "Explorar",
+		"noDescription": "Sem descrição disponível.",
+		"noLocation": "Local a definir",
+		"back": "Voltar",
+		"send": "Enviar",
+		"confirm": "Confirmar",
+		"delete": "Eliminar",
+		"save": "Guardar",
+		"close": "Fechar",
+		"remove": "Remover"
 	},
-	"community": {
-		"noLogo": "Sem Logo",
-		"enter": "Entrar",
-		"communityLabel": "Comunidade",
-		"member": "membro",
-		"members": "membros",
-		"requestJoin": "Pedir para participar",
-		"logoAlt": "Logotipo de {{name}}"
+	"theme": {
+		"toggle": "Alternar tema",
+		"light": "Claro",
+		"dark": "Escuro",
+		"system": "Sistema"
+	},
+	"notifications": {
+		"close": "Fechar notificação"
+	},
+	"errors": {
+		"generic": "Ocorreu um erro ao carregar os dados.",
+		"unexpected": "Erro inesperado. Tente novamente.",
+		"unexpectedResponse": "Resposta inesperada do servidor.",
+		"required": "Preencha todos os campos obrigatórios.",
+		"emailAndPasswordRequired": "Email e senha são obrigatórios.",
+		"codeAndEmailRequired": "Código e email são obrigatórios.",
+		"emailNotProvided": "Email não informado pelo servidor.",
+		"selectionTokenNotProvided": "Token de seleção não informado pelo servidor.",
+		"redirectNotDetermined": "URL de redirecionamento não determinado.",
+		"passwordsNotMatch": "As senhas não coincidem.",
+		"passwordMinLength": "A senha deve ter no mínimo 6 caracteres.",
+		"accountCreationError": "Erro ao criar conta.",
+		"organizationsLoad": "Não foi possível carregar as igrejas.",
+		"organizationNotFound": "Não foi possível encontrar os dados desta organização.",
+		"organizationDataNotFound": "Organização não encontrada.",
+		"membersLoad": "Não foi possível carregar os membros desta organização.",
+		"eventsLoad": "Não foi possível carregar os eventos desta organização.",
+		"tokenUnavailable": "Token de autenticação indisponível para o chat."
 	},
 	"events": {
 		"participant": "participante",
@@ -276,6 +310,95 @@
 			},
 			"submit": "Criar Evento",
 			"submitted": "Evento Criado!"
+		},
+		"createEventTitle": "Criar Evento",
+		"card": {
+			"edit": "Editar",
+			"delete": "Eliminar",
+			"confirmDelete": "Confirmar?",
+			"participants": "{{count}} participantes",
+			"saving": "A guardar",
+			"leave": "Deixar de participar",
+			"participate": "Participar",
+			"ariaEdit": "Editar evento",
+			"ariaDelete": "Eliminar evento",
+			"ariaLeave": "Deixar de participar no evento",
+			"ariaParticipate": "Participar no evento"
+		},
+		"list": {
+			"showLess": "Mostrar menos",
+			"loadMore": "Carregar mais eventos"
+		},
+		"edit": {
+			"title": "Editar Evento",
+			"description": "Atualize as informações do evento",
+			"fields": {
+				"banner": "Imagem do Evento / Banner",
+				"title": "Título do Evento *",
+				"date": "Data *",
+				"startTime": "Hora de Início *",
+				"location": "Local do Evento",
+				"description": "Descrição"
+			},
+			"placeholders": {
+				"title": "Ex: Culto de Domingo",
+				"location": "Ex: Sala 101, Igreja Principal",
+				"description": "Descreva o evento em detalhes..."
+			},
+			"bannerHint": "PNG, JPG ou WEBP. Imagem recomendada em formato paisagem.",
+			"selectBanner": "Selecionar Banner",
+			"changeBanner": "Trocar Banner",
+			"save": "Guardar Alterações",
+			"errors": {
+				"titleLength": "O título deve ter entre 2 e 120 caracteres.",
+				"requiredDate": "Data e hora são obrigatórias.",
+				"invalidDate": "A data ou hora informada é inválida.",
+				"update": "Erro ao atualizar o evento."
+			}
+		},
+		"toast": {
+			"createSuccess": "Evento criado com sucesso",
+			"createError": "Erro ao criar o evento.",
+			"invalidTitle": "Título inválido",
+			"titleLengthError": "O título deve ter entre 2 e 120 caracteres.",
+			"requiredDateTime": "Data e hora são obrigatórias.",
+			"pastDate": "Não é possível criar um evento com data/hora no passado.",
+			"invalidDateTime": "A data ou hora informada é inválida.",
+			"participationAdded": "Você está a participar neste evento.",
+			"participationRemoved": "Você deixou de participar neste evento.",
+			"participationError": "Não foi possível atualizar a sua participação.",
+			"participationUpdateError": "Não foi possível atualizar a participação.",
+			"deleteError": "Não foi possível eliminar este evento."
+		}
+	},
+	"community": {
+		"noLogo": "Sem Logo",
+		"enter": "Entrar",
+		"communityLabel": "Comunidade",
+		"member": "membro",
+		"members": "membros",
+		"requestJoin": "Pedir para participar",
+		"logoAlt": "Logotipo de {{name}}",
+		"announcements": {
+			"title": "Comunicados",
+			"description": "Envie mensagens inspiradoras para toda a congregação instantaneamente.",
+			"placeholder": "Compor nova mensagem...",
+			"deviceCount": "Envia para {{count}} dispositivos",
+			"send": "ENVIAR AGORA"
+		},
+		"members": {
+			"title": "Corações em Comunhão",
+			"subtitle": "Pessoas que caminham ao seu lado nesta jornada espiritual.",
+			"tabMembers": "Membros",
+			"tabFriends": "Amigos",
+			"searchPlaceholder": "Pesquisar por nome ou função...",
+			"searchFriendsPlaceholder": "Pesquisar amigos...",
+			"searchAria": "Pesquisar membros",
+			"addFriend": "Amigo",
+			"remove": "Remover",
+			"noFriends": "Ainda não tens amigos nesta organização.",
+			"noFriendsHelp": "Vai ao separador \"Membros\" e clica em \"Amigo\" para adicionar pessoas.",
+			"noMembersFound": "Nenhum membro encontrado."
 		}
 	},
 	"church": {
@@ -411,5 +534,86 @@
 			"passwordUpdate": "Erro ao alterar password.",
 			"deleteAccount": "Erro ao eliminar conta."
 		}
+	},
+	"search": {
+		"placeholder": "Buscar por nome do evento, tema ou local...",
+		"filters": "Filtros",
+		"explore": "Explorar"
+	},
+	"organization": {
+		"select": {
+			"loading": "A carregar...",
+			"placeholder": "Selecionar organização"
+		},
+		"leave": {
+			"trigger": "Sair da Igreja",
+			"title": "Sair de {{name}}",
+			"description": "Esta ação é irreversível",
+			"confirmQuestion": "Tem a certeza que deseja sair de {{name}}?",
+			"adminWarning": "Atenção: Você é administrador",
+			"adminWarningDetail": "Como administrador, ao sair a organização pode ficar sem gestão. Certifique-se de atribuir outro administrador antes de sair.",
+			"accessWarning": "Depois de sair, deixará de ter acesso aos eventos, mensagens e membros desta organização.",
+			"cancel": "Cancelar",
+			"leaving": "A sair...",
+			"confirm": "Sair"
+		},
+		"center": {
+			"label": "Organização atual",
+			"roleMember": "Membro",
+			"address": "Endereço não informado",
+			"defaultDescription": "Centro da comunidade selecionada.",
+			"backToChurches": "Voltar para as Igrejas",
+			"loading": "A carregar centro da organização...",
+			"loadingPage": "A carregar o centro da organização...",
+			"stats": {
+				"members": "Membros",
+				"events": "Eventos",
+				"participants": "Participantes"
+			},
+			"communityAgenda": "Agenda da comunidade",
+			"upcomingEvents": "Próximos Encontros",
+			"joinDescription": "Junte-se à comunidade {{name}} em momentos de reflexão, música e serviço.",
+			"eventCount": "{{count}} eventos",
+			"noEvents": "Ainda não existem eventos publicados nesta organização.",
+			"membersTitle": "Membros de {{name}}",
+			"membersSubtitle": "Você está a entrar como {{role}}. Clique em um membro para conversar.",
+			"membersError": "Não foi possível carregar os membros: {{error}}"
+		}
+	},
+	"chat": {
+		"startConversation": "Iniciar conversa",
+		"clickToChat": "Clique em um amigo para abrir o chat com essa pessoa.",
+		"notFriend": "{{name}} ainda não é teu amigo",
+		"notFriendDescription": "Adiciona como amigo para iniciar uma conversa.",
+		"addFriend": "Adicionar amigo",
+		"loadingMessages": "A carregar mensagens...",
+		"conversationReady": "A conversa com {{name}} está pronta. Escreva a primeira mensagem.",
+		"messagePlaceholder": "Mensagem para {{name}}...",
+		"sendAria": "Enviar mensagem",
+		"someone": "Alguém",
+		"newMessage": "Nova mensagem de {{name}}",
+		"errorTitle": "Erro no chat em tempo real",
+		"errorLoadingMessages": "Não foi possível carregar as mensagens.",
+		"errorSendingMessage": "Não foi possível enviar a mensagem.",
+		"errorSendingTitle": "Erro ao enviar mensagem",
+		"friendAdded": "Amigo adicionado com sucesso!",
+		"friendAddError": "Não foi possível adicionar este amigo.",
+		"friendAddErrorTitle": "Erro ao adicionar amigo",
+		"friendRemoved": "Amigo removido com sucesso.",
+		"friendRemoveError": "Não foi possível remover este amigo.",
+		"friendRemoveErrorTitle": "Erro ao remover amigo",
+		"removeAria": "Remover amigo",
+		"closeAria": "Fechar chat"
+	},
+	"toast": {
+		"actionNotAllowed": "Ação não permitida",
+		"adminCannotRemoveSelf": "Administrador não pode remover a si mesmo.",
+		"noPermission": "Sem permissão",
+		"onlyAdminCanRemove": "Apenas administradores podem remover outros membros.",
+		"youLeftOrganization": "Você saiu da organização.",
+		"redirectingToChurches": "A redirecionar para as suas igrejas...",
+		"memberRemoved": "Membro removido com sucesso.",
+		"memberRemoveError": "Não foi possível remover o membro da organização.",
+		"memberRemoveErrorTitle": "Erro ao remover membro"
 	}
 }

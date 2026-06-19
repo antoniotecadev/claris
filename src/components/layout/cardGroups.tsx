@@ -1,4 +1,7 @@
+"use client";
+
 import { MoreVertical, LucideIcon } from "lucide-react";
+import { useMessages } from "@/i18n/messages";
 
 interface MissionCardProps {
   title: string;
@@ -40,6 +43,7 @@ export default function MissionCard({
   members = [],
   className,
 }: MissionCardProps) {
+  const { t } = useMessages();
   const selectedTheme = themes[theme];
 
   return (
@@ -83,7 +87,7 @@ export default function MissionCard({
         <p
           className={`mt-2 text-[10px] ${selectedTheme.textSecondary}`}
         >
-          {activeMembers} membros ativos
+          {t("organization.center.stats.members")}: {activeMembers}
         </p>
       </div>
 

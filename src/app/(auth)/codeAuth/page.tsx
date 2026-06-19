@@ -151,7 +151,7 @@ function CodeAuthContent() {
 						{error && (
 							<div className="mb-6 mt-8 flex w-full items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 animate-shake dark:border-red-400/20 dark:bg-red-500/10" role="alert">
 								<AlertCircle size={16} className="text-red-600 shrink-0" />
-								<p className="text-[0.85rem] font-medium text-red-600 dark:text-red-200">{error}</p>
+								<p className="text-[0.85rem] font-medium text-red-600 dark:text-red-200">{t(error)}</p>
 							</div>
 						)}
 
@@ -194,9 +194,9 @@ function CodeAuthContent() {
 			<footer className="mt-0 flex w-full max-w-240 flex-col items-center justify-between gap-3 rounded-b-2xl border border-t-0 border-white/60 bg-white/80 px-7 py-4 shadow-[0_4px_12px_rgba(15,23,42,0.04)] backdrop-blur-xl md:flex-row md:gap-0 dark:border-white/10 dark:bg-slate-950/70">
 				<p className="text-[0.8rem] font-semibold italic tracking-wide text-slate-800 dark:text-slate-100">CLARIS</p>
 				<div className="flex gap-5">
-					<Link href="/politica-privacidade" className="text-[0.72rem] tracking-wide text-slate-400 no-underline transition-colors duration-200 hover:text-sky-800 dark:hover:text-sky-300">Política de Privacidade</Link>
-					<Link href="/termos-condicoes" className="text-[0.72rem] tracking-wide text-slate-400 no-underline transition-colors duration-200 hover:text-sky-800 dark:hover:text-sky-300">Termos de serviço</Link>
-					<Link href="/contacto-suporte" className="text-[0.72rem] tracking-wide text-slate-400 no-underline transition-colors duration-200 hover:text-sky-800 dark:hover:text-sky-300">Contactos</Link>
+					<Link href="/politica-privacidade" className="text-[0.72rem] tracking-wide text-slate-400 no-underline transition-colors duration-200 hover:text-sky-800 dark:hover:text-sky-300">{t("footer.privacy")}</Link>
+					<Link href="/termos-condicoes" className="text-[0.72rem] tracking-wide text-slate-400 no-underline transition-colors duration-200 hover:text-sky-800 dark:hover:text-sky-300">{t("footer.terms")}</Link>
+					<Link href="/contacto-suporte" className="text-[0.72rem] tracking-wide text-slate-400 no-underline transition-colors duration-200 hover:text-sky-800 dark:hover:text-sky-300">{t("footer.support")}</Link>
 				</div>
 				<p className="text-[0.72rem] tracking-wide text-slate-400">© 2024 CLARIS ORGANIZATION</p>
 			</footer>
@@ -205,12 +205,13 @@ function CodeAuthContent() {
 }
 
 export default function CodeAuth() {
+	const { t } = useMessages();
 	return (
 		<Suspense
 			fallback={
 				<div className="flex min-h-screen items-center justify-center bg-[#e8eaed] text-[#002045]">
 					<Loader2 className="mr-2 animate-spin" size={20} />
-					<span>A carregar verificação...</span>
+					<span>{t("common.loading")}</span>
 				</div>
 			}
 		>

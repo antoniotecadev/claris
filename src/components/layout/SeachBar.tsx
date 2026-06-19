@@ -1,7 +1,11 @@
+"use client";
+
 import React from 'react';
-import { Search, SlidersHorizontal } from 'lucide-react'; // Importa os ícones limpos
+import { Search, SlidersHorizontal } from 'lucide-react';
+import { useMessages } from "@/i18n/messages";
 
 export default function SearchBar() {
+  const { t } = useMessages();
   return (
     <div className="flex w-full max-w-5xl flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-3 shadow-sm sm:flex-row sm:items-center">
       
@@ -11,7 +15,7 @@ export default function SearchBar() {
         
         <input 
           type="text" 
-          placeholder="Buscar por nome do evento, tema ou local..." 
+          placeholder={t("search.placeholder")} 
           className="h-11 min-w-0 w-full bg-transparent text-sm text-[#002045] outline-none placeholder:text-slate-400"
         />
       </div>
@@ -21,11 +25,11 @@ export default function SearchBar() {
       <button className="flex h-11 items-center justify-center rounded-2xl bg-slate-50 px-4 text-sm font-semibold text-[#475F83] transition-colors hover:bg-slate-100">
         {/* Substituindo também o ícone do botão de filtros por um limpo */}
         <SlidersHorizontal className="mr-2 h-4 w-4 text-[#1E3A8A]" />
-        Filtros
+        {t("search.filters")}
       </button>
 
       <button className="h-11 rounded-2xl bg-[#002045] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#1E3A8A]">
-        Explorar
+        {t("search.explore")}
       </button>
 
     </div>

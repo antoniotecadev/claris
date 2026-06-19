@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { Search, X, UserPlus, Users, ChevronRight, Heart, Loader2, UserCheck, UserMinus } from "lucide-react";
 import { LeaveOrganizationDialog } from "./leaveOrganizationDialog";
 import { normalizeMediaUrl } from "@/lib/media-url";
+import { useMessages } from "@/i18n/messages";
 
 /* ── Types ─────────────────────────────────────────────── */
 export type Member = {
@@ -82,6 +83,7 @@ export default function CommunityMembers({
   organizationName,
   isCurrentUserAdmin,
 }: CommunityMembersProps) {
+  const { t } = useMessages();
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("members");
@@ -320,16 +322,16 @@ export default function CommunityMembers({
                   <Heart size={24} />
                 </div>
                 <p className="text-sm font-semibold text-[#475F83]">
-                  Ainda não tens amigos nesta organização.
+                  {t("community.noFriends")}
                 </p>
                 <p className="max-w-xs text-xs text-[#475F83]/70">
-                  Vai ao separador &quot;Membros&quot; e clica em &quot;Amigo&quot; para adicionar pessoas.
+                  {t("community.noFriendsHelp")}
                 </p>
               </>
             ) : (
               <div className="flex items-center gap-2 text-[13px] text-stone-400 py-2">
                 <Users size={15} />
-                <span>Nenhum membro encontrado.</span>
+                <span>{t("community.noMembersFound")}</span>
               </div>
             )}
           </div>

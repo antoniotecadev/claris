@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Loader2, Pencil, Trash2, Heart, MapPin, Users } from "lucide-react";
+import { useMessages } from "@/i18n/messages";
 
 export type EventCardProps = {
   id: string | number;
@@ -36,6 +37,7 @@ export default function EventCard({
   onFavorite,
   isParticipationPending = false,
 }: EventCardProps) {
+  const { t } = useMessages();
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleFavorite = () => {
@@ -66,11 +68,11 @@ export default function EventCard({
           {onEdit && (
             <button
               onClick={() => onEdit(id)}
-              aria-label="Editar evento"
+              aria-label={t("events.card.ariaEdit")}
               className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/85 backdrop-blur-sm text-stone-700 shadow-sm transition-all duration-150 hover:bg-white hover:scale-[0.97]"
             >
               <Pencil size={11} />
-              Editar
+              {t("events.card.edit")}
             </button>
           )}
 
@@ -78,7 +80,7 @@ export default function EventCard({
             <button
               onClick={handleDelete}
               onBlur={() => setConfirmDelete(false)}
-              aria-label="Eliminar evento"
+              aria-label={t("events.card.ariaDelete")}
               className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium backdrop-blur-sm shadow-sm transition-all duration-150 hover:scale-[0.97]
                 ${confirmDelete
                   ? "bg-red-700/95 text-white animate-pulse"
@@ -86,7 +88,7 @@ export default function EventCard({
                 }`}
             >
               <Trash2 size={11} />
-              {confirmDelete ? "Confirmar?" : "Eliminar"}
+              {confirmDelete ? t("events.card.confirmDelete") : t("events.card.delete")}
             </button>
           )}
         </div>
@@ -96,7 +98,7 @@ export default function EventCard({
           <button
             onClick={handleFavorite}
             disabled={isParticipationPending}
-            aria-label={isFavorited ? "Deixar de participar no evento" : "Participar no evento"}
+            aria-label={isFavorited ? t("events.card.ariaLeave") : t("events.card.ariaParticipate")}
             className="absolute top-2.5 right-2.5 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/85 backdrop-blur-sm shadow-sm transition-transform duration-200 hover:scale-110 disabled:cursor-wait"
           >
             <Heart
@@ -141,7 +143,7 @@ export default function EventCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-[11.5px] text-stone-400">
             <Users size={12} className="shrink-0" />
-            <span>{interestedCount} participantes</span>
+            <span>{t("events.card.participants", { count: interestedCount })}</span>
           </div>
 
           {onParticipate && (
@@ -151,7 +153,7 @@ export default function EventCard({
               className="flex min-w-20 items-center justify-center gap-1.5 text-[12px] font-semibold tracking-widest uppercase text-blue-600 transition-all duration-200 hover:text-blue-800 hover:tracking-[0.1em] disabled:cursor-wait disabled:text-stone-400"
             >
               {isParticipationPending ? <Loader2 size={12} className="animate-spin" /> : null}
-              {isParticipationPending ? "A guardar" : isFavorited ? "Deixar de participar" : "Participar"}
+              {isParticipationPending ? t("events.card.saving") : isFavorited ? t("events.card.leave") : t("events.card.participate")}
             </button>
           )}
         </div>

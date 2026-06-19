@@ -13,7 +13,7 @@ export async function sendCodeAction(
 	locale: string = defaultLocale,
 ): Promise<ActionResult> {
 	if (!code || !email) {
-		return { success: false, error: "Código e email são obrigatórios." };
+		return { success: false, error: "errors.codeAndEmailRequired" };
 	}
 	let redirecionarUrl: string | null = null;
 
@@ -29,11 +29,11 @@ export async function sendCodeAction(
 			redirecionarUrl = addLocaleToPathname("/mainDash", locale);
 		
 		} else {
-			return { success: false, error: "Resposta inesperada do servidor." };
+			return { success: false, error: "errors.unexpectedResponse" };
 		}
 
 	} catch (error: unknown) {
-		const errorMessage = error instanceof Error ? error.message : "Erro inesperado. Tente novamente.";
+		const errorMessage = error instanceof Error ? error.message : "errors.unexpected";
 
 		return { success: false, error: errorMessage };
 	}

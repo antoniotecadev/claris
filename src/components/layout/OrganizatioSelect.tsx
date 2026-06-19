@@ -1,5 +1,7 @@
 "use client"
 
+import { useMessages } from "@/i18n/messages"
+
 export interface ChurchOption {
   id: string
   name: string
@@ -20,6 +22,7 @@ export default function OrganizatioSelect({
   loading = false,
   onChange,  // ← adiciona isso
 }: Props) {
+  const { t } = useMessages();
   return (
     <select
       id={id}
@@ -29,7 +32,7 @@ export default function OrganizatioSelect({
       className="mt-1 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:bg-[#212121] dark:text-[#999999] text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] disabled:opacity-50"
     >
       <option value="">
-        {loading ? "A carregar..." : "Selecionar organização"}
+        {loading ? t("organization.select.loading") : t("organization.select.placeholder")}
       </option>
       {churches.map((church) => (
         <option key={church.id} value={church.id}>

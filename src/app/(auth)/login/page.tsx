@@ -162,7 +162,7 @@ export default function Login() {
 							{state?.error && (
 								<div className="flex items-center gap-2 px-3.5 py-2.5 bg-red-50 border border-red-200 rounded-xl mb-4 animate-shake" role="alert">
 									<AlertCircle size={16} className="text-red-600 shrink-0" />
-									<p className="text-red-600 text-[0.85rem] font-medium">{state.error}</p>
+									<p className="text-red-600 text-[0.85rem] font-medium">{t(state.error)}</p>
 								</div>
 							)}
 

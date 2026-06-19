@@ -1,6 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
+import { useMessages } from "@/i18n/messages";
 
 type MessageToastProps = {
 	open: boolean;
@@ -34,6 +35,7 @@ export function MessageToast({
 	onClose,
 	onClick,
 }: MessageToastProps) {
+	const { t } = useMessages();
 	if (!open) return null;
 
 	const handleClick = () => {
@@ -87,7 +89,7 @@ export function MessageToast({
 							onClose();
 						}}
 						className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100 hover:text-[#002045]"
-						aria-label="Fechar notificacao"
+						aria-label={t("notifications.close")}
 					>
 						<X size={16} />
 					</button>

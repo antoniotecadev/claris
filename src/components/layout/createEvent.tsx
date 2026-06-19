@@ -112,27 +112,24 @@ export function CreateEventDialog({
 	const handleSubmit = async () => {
 		const cleanTitle = title.trim()
 		if (cleanTitle.length < 2 || cleanTitle.length > 120) {
-			showToast("Título inválido", "O título deve ter entre 2 e 120 caracteres.", "error")
+			showToast(t("events.toast.invalidTitle"), t("events.toast.titleLengthError"), "error")
 			return
 		}
 		if (!date || !time) {
-			showToast("Data e hora são obrigatórias.", undefined, "error")
+			showToast(t("events.toast.requiredDateTime"), undefined, "error")
 			return
 		}
 
-				// Combina data + hora (garantindo segundos) e também envia a representação local
-				// Ex: date = "2026-06-15", time = "19:00" -> localDate = "2026-06-15T19:00"
 				const localDateString = `${date}T${time}`;
 				const combinedDate = new Date(`${localDateString}:00`);
-				// Validação: não permitir criar eventos no passado (com margem de 1 minuto)
 				const now = new Date();
-				const marginMs = 60 * 1000; // 1 minuto
+				const marginMs = 60 * 1000;
 				if (combinedDate.getTime() < now.getTime() - marginMs) {
-					showToast("Não é possível criar um evento com data/hora no passado.", undefined, "error")
+					showToast(t("events.toast.pastDate"), undefined, "error")
 					return
 				}
 			if (Number.isNaN(combinedDate.getTime())) {
-				showToast("A data ou hora informada é inválida.", undefined, "error")
+				showToast(t("events.toast.invalidDateTime"), undefined, "error")
 				return
 			}
 
@@ -163,16 +160,16 @@ export function CreateEventDialog({
 				const errorJson = await response.json().catch(() => ({}))
 				const errorMessage = Array.isArray(errorJson?.message)
 					? errorJson.message[0]
-					: errorJson?.message || "Erro ao criar o evento."
+					: errorJson?.message || t("events.toast.createError")
 				throw new Error(errorMessage)
 			}
 
-			showToast("Evento criado com sucesso", undefined, "success")
+			showToast(t("events.toast.createSuccess"), undefined, "success")
 			resetForm()
 			setOpen(false)
 			onSuccess?.()
 		} catch (error) {
-			showToast(error instanceof Error ? error.message : "Erro ao criar o evento.", undefined, "error")
+			showToast(error instanceof Error ? error.message : t("events.toast.createError"), undefined, "error")
 		} finally {
 			setSubmitting(false)
 		}
@@ -185,7 +182,7 @@ export function CreateEventDialog({
 					{children ?? (
 						<Button className="h-12 w-fit rounded-2xl bg-[#FFDEA5] px-5 font-bold text-[#5D4201] shadow-sm hover:bg-[#FFD38A]">
 							<Plus size={18} />
-							<span>Criar Evento</span>
+							<span>{t("events.create.submit")}</span>
 						</Button>
 					)}
 				</DialogTrigger>
@@ -212,7 +209,7 @@ export function CreateEventDialog({
 						{/* Coluna do Banner */}
 						<div className="space-y-3">
 							<Label htmlFor="banner" className="text-sm font-semibold text-[#002045]">
-								Imagem do Evento / Banner
+								{t("events.edit.fields.banner")}
 							</Label>
 							<label
 								htmlFor="banner"
@@ -230,16 +227,16 @@ export function CreateEventDialog({
 											<ImagePlus size={30} />
 										</div>
 										<p className="text-sm font-semibold text-[#002045]">
-											Selecionar Banner
+											{t("events.edit.selectBanner")}
 										</p>
 										<p className="mt-2 text-xs leading-relaxed text-slate-500">
-											PNG, JPG ou WEBP. Imagem recomendada em formato paisagem.
+											{t("events.edit.bannerHint")}
 										</p>
 									</div>
 								)}
 								<span className="mb-4 mt-auto inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[#1E3A8A] shadow-sm transition-transform group-hover:scale-105">
 									<Upload size={14} />
-									{photoPreviewUrl ? "Trocar Banner" : "Selecionar Banner"}
+									{photoPreviewUrl ? t("events.edit.changeBanner") : t("events.edit.selectBanner")}
 								</span>
 							</label>
 							<input

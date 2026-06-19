@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowRight } from "lucide-react";
+import { useMessages } from "@/i18n/messages";
 
 
 interface CommunityCardProps {
@@ -23,6 +26,7 @@ export default function CommunityCard({
   onClick,
   className = '',
 }: CommunityCardProps) {
+  const { t } = useMessages();
   return (
     <div className={`bg-white w-148 h-63.5 rounded-lg shadow-md  cursor-pointer flex ${className}`} onClick={onClick}>
       <div className="w-73.75 ">
@@ -30,7 +34,7 @@ export default function CommunityCard({
           <img src={logoUrl} alt={`${name} logo`} className="w-full h-full object-cover rounded-lg" />
         ) : (
           <div className="w-73.75 h-full bg-gray-200 flex items-center justify-center rounded-lg">
-            <span className="text-gray-500">No Logo</span>
+            <span className="text-gray-500">{t("community.noLogo")}</span>
           </div>
         )}
       </div>
@@ -41,9 +45,9 @@ export default function CommunityCard({
           <p className="text-[#475F83] text-[14px]">{local  }</p>
         </div>
         <div className="flex justify-between items-center mt-6">
-          <span className="text-sm text-gray-500">{membersCount} members</span>
+          <span className="text-sm text-gray-500">{membersCount} {t("community.members")}</span>
           <button className="flex items-center text-[#1E3A8A] p-2 hover:rounded-2xl cursor-pointer   hover:bg-[#1E3A8A] hover:text-white" onClick={onClick}>
-            <span className="text-sm ">Entrar</span>
+            <span className="text-sm ">{t("community.enter")}</span>
             <ArrowRight size={16} className=" ml-1" />
           </button>
         </div>

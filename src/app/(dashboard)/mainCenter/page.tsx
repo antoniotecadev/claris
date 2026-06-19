@@ -357,7 +357,7 @@ function ChatMemberAvatar({ member }: { member: Member }) {
 	);
 }
 
-function MemberChatPanel({
+	function MemberChatPanel({
 	member,
 	messages,
 	draft,
@@ -386,6 +386,7 @@ function MemberChatPanel({
 	isSendingMessage?: boolean;
 	messagesError?: string | null;
 }) {
+	const { t } = useMessages();
 	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
 	useEffect(() => {
@@ -402,9 +403,9 @@ function MemberChatPanel({
 				<div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#E8EEF8] text-[#1E3A8A]">
 					<MessageCircle size={24} />
 				</div>
-				<h3 className="mt-4 text-lg font-bold text-[#002045]">Iniciar conversa</h3>
+				<h3 className="mt-4 text-lg font-bold text-[#002045]">{t("chat.startConversation")}</h3>
 				<p className="mt-2 max-w-xs text-sm leading-6 text-[#475F83]">
-					Clique em um amigo para abrir o chat com essa pessoa.
+					{t("chat.clickToChat")}
 				</p>
 			</aside>
 		);
@@ -428,7 +429,7 @@ function MemberChatPanel({
 							type="button"
 							onClick={onRemoveFriend}
 							disabled={isRemovingFriend}
-							aria-label="Remover amigo"
+							aria-label={t("chat.removeAria")}
 							className="flex h-9 w-9 items-center justify-center rounded-full border border-red-100 text-red-600 transition-colors hover:border-red-300 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
 						>
 							{isRemovingFriend ? <Loader2 size={16} className="animate-spin" /> : <UserMinus size={16} />}
@@ -437,7 +438,7 @@ function MemberChatPanel({
 					<button
 						type="button"
 						onClick={onClose}
-						aria-label="Fechar chat"
+						aria-label={t("chat.closeAria")}
 						className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:border-[#002045] hover:text-[#002045]"
 					>
 						<X size={16} />
@@ -446,17 +447,16 @@ function MemberChatPanel({
 			</header>
 
 			{!isFriend ? (
-				/* ── Not a friend: show prompt to add ── */
 				<div className="flex flex-1 flex-col items-center justify-center gap-4 bg-[#F7F9FC] px-5 py-10 text-center">
 					<div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#FFF7ED] text-[#D97706]">
 						<Users size={24} />
 					</div>
 					<div>
 						<p className="text-sm font-semibold text-[#002045]">
-							{member.name} ainda não é teu amigo
+							{t("chat.notFriend", { name: member.name })}
 						</p>
 						<p className="mt-1 max-w-xs text-xs leading-5 text-[#475F83]">
-							Adiciona como amigo para iniciar uma conversa.
+							{t("chat.notFriendDescription")}
 						</p>
 					</div>
 					{onAddFriend && (
@@ -466,7 +466,7 @@ function MemberChatPanel({
 							className="flex h-10 items-center gap-2 rounded-2xl bg-[#002045] px-5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#1E3A8A]"
 						>
 							<Users size={15} />
-							Adicionar amigo
+							{t("chat.addFriend")}
 						</button>
 					)}
 				</div>
@@ -476,7 +476,7 @@ function MemberChatPanel({
 						{isLoadingMessages ? (
 							<div className="flex flex-1 items-center justify-center gap-2 text-sm font-medium text-[#475F83]">
 								<Loader2 size={16} className="animate-spin" />
-								<span>A carregar mensagens...</span>
+								<span>{t("chat.loadingMessages")}</span>
 							</div>
 						) : messagesError ? (
 							<div className="flex flex-1 items-center justify-center text-center">
@@ -514,7 +514,7 @@ function MemberChatPanel({
 						) : (
 							<div className="flex flex-1 items-center justify-center text-center">
 								<p className="max-w-xs text-sm leading-6 text-[#475F83]">
-									A conversa com {member.name} está pronta. Escreva a primeira mensagem.
+									{t("chat.conversationReady", { name: member.name })}
 								</p>
 							</div>
 						)}
@@ -531,7 +531,7 @@ function MemberChatPanel({
 							ref={textareaRef}
 							value={draft}
 							onChange={(event) => onDraftChange(event.target.value)}
-							placeholder={`Mensagem para ${member.name.split(" ")[0]}...`}
+							placeholder={t("chat.messagePlaceholder", { name: member.name.split(" ")[0] })}
 							rows={1}
 							disabled={isSendingMessage}
 							className="max-h-28 min-h-11 flex-1 resize-none overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-[#1a2a3a] outline-none transition-colors placeholder:text-slate-400 focus:border-[#002045] focus:bg-white"
@@ -540,7 +540,7 @@ function MemberChatPanel({
 						<button
 							type="submit"
 							disabled={!draft.trim() || isSendingMessage}
-							aria-label="Enviar mensagem"
+							aria-label={t("chat.sendAria")}
 							className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#002045] text-white transition-colors hover:bg-[#1E3A8A] disabled:cursor-not-allowed disabled:bg-slate-300"
 						>
 							{isSendingMessage ? <Loader2 size={17} className="animate-spin" /> : <Send size={17} />}
@@ -553,7 +553,7 @@ function MemberChatPanel({
 }
 
 function DashboardPageContent() {
-	const { locale } = useMessages();
+	const { locale, t } = useMessages();
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const selectedOrganizationId = searchParams.get("org");
@@ -652,7 +652,7 @@ function DashboardPageContent() {
 				}
 
 				if (!nextOrganization) {
-					setError("Não foi possível encontrar os dados desta organização.");
+					setError(t("errors.organizationNotFound"));
 					setOrganizationMembers([]);
 					setMembersError(null);
 					setOrganizationEvents([]);
@@ -688,7 +688,7 @@ function DashboardPageContent() {
 					setMembersError(
 						membershipsResult.reason instanceof Error
 							? membershipsResult.reason.message
-							: "Não foi possível carregar os membros desta organização.",
+							: t("errors.membersLoad"),
 					);
 				}
 
@@ -707,7 +707,7 @@ function DashboardPageContent() {
 					setEventsError(
 						eventsResult.reason instanceof Error
 							? eventsResult.reason.message
-							: "Não foi possível carregar os eventos desta organização.",
+							: t("errors.eventsLoad"),
 					);
 				}
 
@@ -721,7 +721,7 @@ function DashboardPageContent() {
 				}
 			} catch (err) {
 				console.error(err);
-				setError("Ocorreu um erro ao carregar os dados.");
+				setError(t("errors.generic"));
 			} finally {
 				setLoading(false);
 			}
@@ -731,7 +731,7 @@ function DashboardPageContent() {
 		return () => {
 			active = false;
 		};
-	}, [loadOrganizationEvents, selectedOrganizationId, locale, router, setUser]);
+	}, [loadOrganizationEvents, selectedOrganizationId, locale, router, setUser, t]);
 
 	useEffect(() => {
 		if (!toast) return;
@@ -754,7 +754,7 @@ function DashboardPageContent() {
 				const tokenResponse = await fetch("/api/auth-token");
 
 				if (!tokenResponse.ok) {
-					throw new Error("Token de autenticação indisponível para o chat.");
+					throw new Error(t("errors.tokenUnavailable"));
 				}
 
 				const { token } = (await tokenResponse.json()) as AuthTokenResponse;
@@ -806,9 +806,9 @@ function DashboardPageContent() {
 					);
 
 					if (!isFromCurrentUser) {
-						const senderName = message.sender?.displayName || message.sender?.name || "Alguém";
+						const senderName = message.sender?.displayName || message.sender?.name || t("chat.someone");
 						setToast({
-							title: `Nova mensagem de ${senderName}`,
+							title: t("chat.newMessage", { name: senderName }),
 							description: message.content ?? message.text ?? message.message ?? "",
 							variant: "info",
 						});
@@ -825,7 +825,7 @@ function DashboardPageContent() {
 
 				socket.on("chat:error", (payload: { message?: string }) => {
 					setToast({
-						title: "Erro no chat em tempo real",
+						title: t("chat.errorTitle"),
 						description: payload.message,
 						variant: "error",
 					});
@@ -848,7 +848,7 @@ function DashboardPageContent() {
 			active = false;
 			socket?.disconnect();
 		};
-	}, [appendChatMessage, currentUserId, organization]);
+	}, [appendChatMessage, currentUserId, organization, t]);
 
 	useEffect(() => {
 		let active = true;
@@ -884,7 +884,7 @@ function DashboardPageContent() {
 				setChatMessagesError(
 					error instanceof Error
 						? error.message
-						: "Não foi possível carregar as mensagens.",
+						: t("chat.errorLoadingMessages"),
 				);
 			} finally {
 				if (active) {
@@ -898,11 +898,11 @@ function DashboardPageContent() {
 		return () => {
 			active = false;
 		};
-	}, [currentUserId, friendIds, organization, selectedChatMember]);
+	}, [currentUserId, friendIds, organization, selectedChatMember, t]);
 
-	const organizationAddress = organization?.address?.trim() || "Endereço não informado";
+	const organizationAddress = organization?.address?.trim() || t("organization.center.address");
 	const organizationDescription =
-		organization?.description?.trim() || "Centro da comunidade selecionada.";
+		organization?.description?.trim() || t("organization.center.defaultDescription");
 	const organizationMemberCount =
 		organization?.memberCount ?? organization?.membersCount ?? organizationMembers.length;
 	const totalParticipants = organizationEvents.reduce(
@@ -910,13 +910,13 @@ function DashboardPageContent() {
 		0,
 	);
 	const organizationInitial = organization?.name?.[0]?.toUpperCase() ?? "C";
-	const roleLabel = organization?.role?.replaceAll("_", " ") ?? "Membro";
+	const roleLabel = organization?.role?.replaceAll("_", " ") ?? t("organization.center.roleMember");
 	const backHref = addLocaleToPathname("/mainDash", locale);
 	const canManageEvents = ADMIN_ROLES.has(organization?.role?.toUpperCase() ?? "");
 	const centerStats = [
-		{ label: "Membros", value: organizationMemberCount, icon: Users },
-		{ label: "Eventos", value: organizationEvents.length, icon: CalendarDays },
-		{ label: "Participantes", value: totalParticipants, icon: ShieldCheck },
+		{ label: t("organization.center.stats.members"), value: organizationMemberCount, icon: Users },
+		{ label: t("organization.center.stats.events"), value: organizationEvents.length, icon: CalendarDays },
+		{ label: t("organization.center.stats.participants"), value: totalParticipants, icon: ShieldCheck },
 	];
 	const handleToggleEventInterest = useCallback(
 		async (eventId: EventCardProps["id"]) => {
@@ -950,8 +950,8 @@ function DashboardPageContent() {
 
 				setToast({
 					title: wasParticipating
-						? "Você deixou de participar neste evento."
-						: "Você está a participar neste evento.",
+						? t("events.toast.participationRemoved")
+						: t("events.toast.participationAdded"),
 					variant: "success",
 				});
 			} catch (error) {
@@ -969,10 +969,10 @@ function DashboardPageContent() {
 				const message =
 					error instanceof Error
 						? error.message
-						: "Não foi possível actualizar a sua participação.";
+						: t("events.toast.participationError");
 				setEventsError(message);
 				setToast({
-					title: "Não foi possível actualizar a participação.",
+					title: t("events.toast.participationUpdateError"),
 					description: message,
 					variant: "error",
 				});
@@ -984,7 +984,7 @@ function DashboardPageContent() {
 				});
 			}
 		},
-		[interestPendingEventIds, loadOrganizationEvents, organization, organizationEvents],
+		[interestPendingEventIds, loadOrganizationEvents, organization, organizationEvents, t],
 	);
 
 	const handleRefreshEvents = useCallback(async () => {
@@ -1015,11 +1015,11 @@ function DashboardPageContent() {
 				setEventsError(
 					error instanceof Error
 						? error.message
-						: "Não foi possível eliminar este evento.",
+						: t("events.toast.deleteError"),
 				);
 			}
 		},
-		[organization],
+		[organization, t],
 	);
 	const handleUpdateEvent = useCallback(
 		(eventId: EventCardProps["id"]) => {
@@ -1102,10 +1102,10 @@ function DashboardPageContent() {
 			setChatDraft("");
 		} catch (error) {
 			const message =
-				error instanceof Error ? error.message : "Não foi possível enviar a mensagem.";
+				error instanceof Error ? error.message : t("chat.errorSendingMessage");
 			setChatMessagesError(message);
 			setToast({
-				title: "Erro ao enviar mensagem",
+				title: t("chat.errorSendingTitle"),
 				description: message,
 				variant: "error",
 			});
@@ -1119,6 +1119,7 @@ function DashboardPageContent() {
 		organization,
 		selectedChatMember,
 		sendingChatMemberId,
+		t,
 	]);
 
 	const handleAddFriend = useCallback(async (memberId: string | number) => {
@@ -1154,13 +1155,13 @@ function DashboardPageContent() {
 			}
 
 			setToast({
-				title: "Amigo adicionado com sucesso!",
+				title: t("chat.friendAdded"),
 				variant: "success",
 			});
 		} catch (err) {
-			const message = err instanceof Error ? err.message : "Não foi possível adicionar este amigo.";
+			const message = err instanceof Error ? err.message : t("chat.friendAddError");
 			setToast({
-				title: "Erro ao adicionar amigo",
+				title: t("chat.friendAddErrorTitle"),
 				description: message,
 				variant: "error",
 			});
@@ -1171,7 +1172,7 @@ function DashboardPageContent() {
 				return next;
 			});
 		}
-	}, [addingFriendIds, organization, organizationMembers]);
+	}, [addingFriendIds, organization, organizationMembers, t]);
 
 	const handleRemoveFriend = useCallback(async (friendId: string | number) => {
 		if (!organization || removingFriendIds.has(friendId)) return;
@@ -1196,13 +1197,13 @@ function DashboardPageContent() {
 			});
 
 			setToast({
-				title: "Amigo removido com sucesso.",
+				title: t("chat.friendRemoved"),
 				variant: "success",
 			});
 		} catch (err) {
-			const message = err instanceof Error ? err.message : "Não foi possível remover este amigo.";
+			const message = err instanceof Error ? err.message : t("chat.friendRemoveError");
 			setToast({
-				title: "Erro ao remover amigo",
+				title: t("chat.friendRemoveErrorTitle"),
 				description: message,
 				variant: "error",
 			});
@@ -1213,7 +1214,7 @@ function DashboardPageContent() {
 				return next;
 			});
 		}
-	}, [organization, removingFriendIds]);
+	}, [organization, removingFriendIds, t]);
 
 	const handleRemoveMember = useCallback(async (memberId: string | number) => {
 		if (!organization || removingMemberIds.has(memberId)) return;
@@ -1223,8 +1224,8 @@ function DashboardPageContent() {
 
 		if (isAdmin && isSelf) {
 			setToast({
-				title: "Ação não permitida",
-				description: "Administrador não pode remover a si mesmo.",
+				title: t("toast.actionNotAllowed"),
+				description: t("toast.adminCannotRemoveSelf"),
 				variant: "error",
 			});
 			return;
@@ -1232,8 +1233,8 @@ function DashboardPageContent() {
 
 		if (!isAdmin && !isSelf) {
 			setToast({
-				title: "Sem permissão",
-				description: "Apenas administradores podem remover outros membros.",
+				title: t("toast.noPermission"),
+				description: t("toast.onlyAdminCanRemove"),
 				variant: "error",
 			});
 			return;
@@ -1273,8 +1274,8 @@ function DashboardPageContent() {
 
 			if (isSelf) {
 				setToast({
-					title: "Você saiu da organização.",
-					description: "A redirecionar para as suas igrejas...",
+					title: t("toast.youLeftOrganization"),
+					description: t("toast.redirectingToChurches"),
 					variant: "success",
 				});
 
@@ -1283,7 +1284,7 @@ function DashboardPageContent() {
 				}, 1200);
 			} else {
 				setToast({
-					title: "Membro removido com sucesso.",
+					title: t("toast.memberRemoved"),
 					variant: "success",
 				});
 			}
@@ -1291,9 +1292,9 @@ function DashboardPageContent() {
 			const message =
 				err instanceof Error
 					? err.message
-					: "Não foi possível remover o membro da organização.";
+					: t("toast.memberRemoveError");
 			setToast({
-				title: "Erro ao remover membro",
+				title: t("toast.memberRemoveErrorTitle"),
 				description: message,
 				variant: "error",
 			});
@@ -1311,13 +1312,14 @@ function DashboardPageContent() {
 		selectedChatMember,
 		router,
 		locale,
+		t,
 	]);
 
 	if (loading) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-white text-[#002045]">
 				<Loader2 className="mr-2 animate-spin" size={20} />
-				<span>A carregar o centro da organização...</span>
+				<span>{t("organization.center.loading")}</span>
 			</div>
 		);
 	}
@@ -1326,9 +1328,9 @@ function DashboardPageContent() {
 		return (
 			<div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-center text-[#002045]">
 				<Building2 size={34} className="text-[#D97706]" />
-				<p className="text-lg font-semibold">{error ?? "Organização não encontrada."}</p>
+				<p className="text-lg font-semibold">{error ?? t("errors.organizationDataNotFound")}</p>
 				<Link href={backHref} className="rounded-xl bg-[#002045] px-5 py-2.5 text-sm font-semibold text-white">
-					Voltar para minhas igrejas
+					{t("organization.center.backToChurches")}
 				</Link>
 			</div>
 		);
@@ -1346,9 +1348,9 @@ function DashboardPageContent() {
 			<header className="sticky top-0 z-40 border-b border-white/70 bg-[#F7F9FC]/85 px-4 py-3 backdrop-blur-md sm:px-6 lg:px-8">
 				<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 					<Link href={backHref} className="flex items-center justify-center gap-3">
-						<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
-							<Image src={Logo} alt="Logo" width={34} height={34} />
-						</span>
+										<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+											<Image src={Logo} alt={t("common.logoAlt")} width={34} height={34} />
+										</span>
 					</Link>
 					<div className="flex items-center gap-3">
 						<Link
@@ -1356,7 +1358,7 @@ function DashboardPageContent() {
 							className="flex h-10 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-[#002045] shadow-sm transition-colors hover:border-[#1E3A8A]/30 hover:text-[#1E3A8A]"
 						>
 							<ChevronLeft size={16} />
-							Voltar
+							{t("common.back")}
 						</Link>
 					</div>
 				</div>
@@ -1402,7 +1404,7 @@ function DashboardPageContent() {
 								>
 									<Button className="h-12 w-fit rounded-2xl bg-[#FFDEA5] px-5 font-bold text-[#5D4201] shadow-sm hover:bg-[#FFD38A]">
 										<Plus size={18} />
-										<span>Criar Evento</span>
+										<span>{t("events.createEventTitle")}</span>
 									</Button>
 								</CreateEventDialog>
 							) : null}
@@ -1414,7 +1416,7 @@ function DashboardPageContent() {
 									{organization.logoUrl ? (
 										<Image
 											src={organization.logoUrl}
-											alt={`Logo de ${organization.name}`}
+											alt={t("community.logoAlt", { name: organization.name })}
 											width={72}
 											height={72}
 											unoptimized
@@ -1427,7 +1429,7 @@ function DashboardPageContent() {
 									)}
 									<div className="min-w-0">
 										<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
-											Organização atual
+											{t("organization.center.label")}
 										</p>
 										<p className="mt-1 truncate text-xl font-bold text-[#002045]">
 											{organization.name}
@@ -1459,18 +1461,18 @@ function DashboardPageContent() {
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
 						<div>
 							<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
-								Agenda da comunidade
+								{t("organization.center.communityAgenda")}
 							</p>
 							<h2 className="mt-1 text-3xl font-bold tracking-tight text-[#002045] sm:text-4xl">
-								Próximos Encontros
+								{t("organization.center.upcomingEvents")}
 							</h2>
 							<p className="mt-3 max-w-2xl text-base leading-7 text-[#475F83]">
-								Junte-se à comunidade {organization.name} em momentos de reflexão, música e serviço.
+								{t("organization.center.joinDescription", { name: organization.name })}
 							</p>
 						</div>
 						<div className="flex h-11 w-fit items-center gap-2 rounded-2xl bg-white px-4 text-sm font-semibold text-[#1E3A8A] shadow-sm ring-1 ring-slate-200">
 							<CalendarDays size={16} />
-							{organizationEvents.length} eventos
+							{t("organization.center.eventCount", { count: organizationEvents.length })}
 						</div>
 					</div>
 
@@ -1484,7 +1486,7 @@ function DashboardPageContent() {
 						<div className="flex min-h-48 flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center shadow-sm">
 							<CalendarDays size={32} className="text-[#1E3A8A]/50" />
 							<p className="mt-4 text-lg font-semibold text-[#475F83]">
-								Ainda não existem eventos publicados nesta organização.
+								{t("organization.center.noEvents")}
 							</p>
 						</div>
 					)}
@@ -1493,11 +1495,11 @@ function DashboardPageContent() {
 				<section className="grid gap-5 pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.78fr)]">
 					<div>
 						<CommunityMembers
-							title={`Membros de ${organization.name}`}
+							title={t("organization.center.membersTitle", { name: organization.name })}
 							subtitle={
 								membersError
-									? `Não foi possível carregar os membros: ${membersError}`
-									: `Você está a entrar como ${roleLabel}. Clique em um membro para conversar.`
+									? t("organization.center.membersError", { error: membersError })
+									: t("organization.center.membersSubtitle", { role: roleLabel })
 							}
 							members={organizationMembers}
 							friends={friends}
@@ -1567,16 +1569,19 @@ function DashboardPageContent() {
 	);
 }
 
+function DashboardFallback() {
+	const { t } = useMessages();
+	return (
+		<div className="flex min-h-screen items-center justify-center bg-[#F7F9FC] text-[#002045]">
+			<Loader2 className="mr-2 animate-spin" size={20} />
+			<span>{t("organization.center.loadingPage")}</span>
+		</div>
+	);
+}
+
 export default function DashboardPage() {
 	return (
-		<Suspense
-			fallback={
-				<div className="flex min-h-screen items-center justify-center bg-[#F7F9FC] text-[#002045]">
-					<Loader2 className="mr-2 animate-spin" size={20} />
-					<span>A carregar o centro da organização...</span>
-				</div>
-			}
-		>
+		<Suspense fallback={<DashboardFallback />}>
 			<DashboardPageContent />
 		</Suspense>
 	);

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ArrowRight, ArrowUp } from "lucide-react";
 import EventCard, { EventCardProps } from "./EventCard";
+import { useMessages } from "@/i18n/messages";
 
 type EventListProps = {
   events: EventCardProps[];
@@ -10,6 +11,7 @@ type EventListProps = {
 };
 
 export default function EventList({ events, initialCount = 3 }: EventListProps) {
+  const { t } = useMessages();
   const [showAll, setShowAll] = useState(false);
 
   const visible = showAll ? events : events.slice(0, initialCount);
@@ -38,7 +40,7 @@ export default function EventList({ events, initialCount = 3 }: EventListProps) 
             onClick={() => setShowAll((prev) => !prev)}
             className="flex h-12 w-full max-w-xs items-center justify-center gap-2 rounded-2xl border border-[#002045] bg-white px-6 py-3 text-sm font-bold text-[#002045] shadow-sm transition-all duration-200 hover:bg-[#002045] hover:text-white"
           >
-            <span>{showAll ? "Mostrar menos" : "Carregar mais eventos"}</span>
+            <span>{showAll ? t("events.list.showLess") : t("events.list.loadMore")}</span>
             {showAll ? <ArrowUp size={20} /> : <ArrowRight size={20} />}
           </button>
         </div>

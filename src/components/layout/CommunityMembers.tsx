@@ -46,8 +46,8 @@ import { TabsPill } from "@/components/ui/tabs-pill";
 
 /* ── Main Component ─────────────────────────────────────── */
 export default function CommunityMembers({
-  title = "Corações em Comunhão",
-  subtitle = "Pessoas que caminham ao seu lado nesta jornada espiritual.",
+  title,
+  subtitle,
   members,
   friends = [],
   friendIds = new Set(),
@@ -90,8 +90,8 @@ export default function CommunityMembers({
   const visibleMembers = searchOpen ? filtered : filtered.slice(0, maxVisible);
 
   const tabs: { key: Tab; label: string; count: number; icon: React.ReactNode }[] = [
-    { key: "members", label: "Membros", count: members.length, icon: <Users size={14} /> },
-    { key: "friends", label: "Amigos", count: friends.length, icon: <Heart size={14} /> },
+    { key: "members", label: t("community.members.tabMembers"), count: members.length, icon: <Users size={14} /> },
+    { key: "friends", label: t("community.members.tabFriends"), count: friends.length, icon: <Heart size={14} /> },
   ];
 
   return (
@@ -100,9 +100,9 @@ export default function CommunityMembers({
       <div className="flex items-start justify-between gap-4 mb-5">
         <div className="flex-1 min-w-0">
           <h2 className="mb-1 text-[20px] font-bold leading-tight text-brand-primary">
-            {title}
+            {title || t("community.members.title")}
           </h2>
-          <p className="text-[13px] leading-snug text-brand-muted">{subtitle}</p>
+          <p className="text-[13px] leading-snug text-brand-muted">{subtitle || t("community.members.subtitle")}</p>
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
@@ -113,7 +113,7 @@ export default function CommunityMembers({
               setSearchOpen((v) => !v);
               if (searchOpen) setQuery("");
             }}
-            aria-label="Pesquisar membros"
+            aria-label={t("community.members.searchAria")}
           />
         </div>
       </div>
@@ -139,7 +139,7 @@ export default function CommunityMembers({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onClear={() => setQuery("")}
-          placeholder={activeTab === "friends" ? "Pesquisar amigos..." : "Pesquisar por nome ou função..."}
+          placeholder={activeTab === "friends" ? t("community.members.searchFriendsPlaceholder") : t("community.members.searchPlaceholder")}
         />
       </div>
 
@@ -192,7 +192,7 @@ export default function CommunityMembers({
                     loadingText="..."
                     onClick={() => onAddFriend(member.id)}
                   >
-                    Amigo
+                    {t("community.members.addFriend")}
                   </BadgeButton>
                 )}
 
@@ -204,13 +204,13 @@ export default function CommunityMembers({
                     variant="danger"
                     onClick={() => onRemoveFriend(member.id)}
                   >
-                    Remover
+                    {t("community.members.remove")}
                   </BadgeButton>
                 )}
 
                 {showRemoveMemberButton && onRemoveMember && (
                   <LeaveOrganizationDialog
-                    organizationName={organizationName ?? title}
+                    organizationName={organizationName ?? (title || t("community.members.title"))}
                     isAdmin={Boolean(isCurrentUserAdmin)}
                     onConfirm={async () => {
                       await onRemoveMember(member.id);
@@ -223,7 +223,7 @@ export default function CommunityMembers({
                       variant="danger"
                       type="button"
                     >
-                      Remover
+                      {t("community.members.remove")}
                     </BadgeButton>
                   </LeaveOrganizationDialog>
                 )}

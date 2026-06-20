@@ -222,12 +222,12 @@ export function DialogDemo({
 										<p className="mt-2 text-xs leading-relaxed text-slate-500">
 											{t("church.create.imageHint")}
 										</p>
+										<span className="mb-4 mt-8 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[#1E3A8A] shadow-sm transition-transform group-hover:scale-105">
+											<Upload size={14} />
+											{logoPreviewUrl ? t("church.create.changeImage") : t("church.create.selectImage")}
+										</span>
 									</div>
 								)}
-								<span className="mb-4 mt-auto inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[#1E3A8A] shadow-sm transition-transform group-hover:scale-105">
-									<Upload size={14} />
-									{logoPreviewUrl ? t("church.create.changeImage") : t("church.create.selectImage")}
-								</span>
 							</label>
 							<input
 								id="logo"
@@ -280,7 +280,7 @@ export function DialogDemo({
 									name="churchId"
 									churches={churches}
 									loading={loadingChurches}
-									onChange={(value) => setChurchId(value)} 
+									onChange={(value) => setChurchId(value)}
 								/>
 							</div>
 

@@ -17,7 +17,6 @@ export default function AnnouncementCard() {
 		h-140
       "
     >
-      {/* Title */}
       <h2 className="text-[20px] font-bold">
         {t("community.announcements.title")}
       </h2>
@@ -26,7 +25,6 @@ export default function AnnouncementCard() {
         {t("community.announcements.description")}
       </p>
 
-      {/* Text Area */}
       <div
         className="
           mt-6
@@ -52,7 +50,6 @@ export default function AnnouncementCard() {
         />
       </div>
 
-      {/* Info */}
       <div className="mt-5 flex items-center gap-2">
         <div
           className="
@@ -76,7 +73,6 @@ export default function AnnouncementCard() {
         </span>
       </div>
 
-      {/* Button */}
       <button
         className="
           mt-5

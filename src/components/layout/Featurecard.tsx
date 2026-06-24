@@ -27,22 +27,22 @@ export function FeatureCard({
   return (
     <div
       className={[
-        "group flex min-h-90 flex-col overflow-hidden rounded-2xl bg-[#F1F5F9] p-6 shadow-sm",
+        "group flex min-h-90 flex-col overflow-hidden rounded-2xl bg-[#F1F5F9] dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)] p-6 shadow-sm",
         "ring-1 ring-slate-200/70 transition duration-300 hover:-translate-y-1",
         "hover:shadow-xl hover:shadow-slate-900/10 md:p-8",
         className,
       ].join(" ")}
     >
       <div className="flex flex-1 flex-col gap-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#BDD6FF]">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl dark:bg-amber-200 bg-[#BDD6FF]">
           <Icon size={24} className="text-[#1A365D]" />
         </div>
 
-        <p className="text-xl font-semibold text-[#1A365D] md:text-2xl">
+        <p className="text-xl font-semibold dark:text-slate-50 text-[#1A365D] md:text-2xl">
           {title}
         </p>
 
-        <p className="text-base leading-relaxed text-[#475569] md:text-lg">
+        <p className="text-base leading-relaxed dark:text-slate-300 text-[#475569] md:text-lg">
           {description}
         </p>
 

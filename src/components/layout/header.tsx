@@ -23,7 +23,7 @@ function NavLink({ href, children, className }: NavLinkProps) {
 			className={`
 				text-slate-600 dark:text-slate-300
 				border-b-2 border-transparent
-				hover:text-slate-950 dark:hover:text-white hover:font-semibold
+				hover:text-slate-950 dark:hover:text-black hover:font-semibold
 				hover:border-amber-300
 				transition-all duration-300
 				hover:scale-105
@@ -59,7 +59,7 @@ export default function Header() {
 					</div>
 
 					<div className='flex gap-2'>
-						<NavLink href={loginHref} className="px-2 md:px-6 py-2 md:py-2 text-[#261900] rounded-lg md:rounded-2xl bg-[#FFDEA5] text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50">
+						<NavLink href={loginHref} className="px-2 md:px-6 py-2 md:py-2 dark:text-slate-950/70 text-[#261900] rounded-lg md:rounded-2xl bg-[#FFDEA5] text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#FFDEA5]/50">
 							{t("header.start")}
 						</NavLink>
 						<ModeToggle />

@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import icon from "@/assets/images/logoSem.png";
+import iconDark from "@/assets/images/lobo-SE.png";
 import heroImg from "@/assets/images/create.png";
 import { Bell, Building2, Compass, Search, Settings, Sparkles, X } from "lucide-react";
 import CommunityCard from "@/components/layout/commityCard";
@@ -194,7 +195,7 @@ export default function MainDashClient() {
 	const firstName = displayName?.split(" ")[0];
 
 	return (
-		<div className="min-h-screen bg-[#F7F9FC] text-[#002045]">
+		<div className="min-h-screen bg-[#F7F9FC] text-[#002045] dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]" >
 			<FeedbackToast
 				open={Boolean(toast)}
 				title={toast?.title ?? ""}
@@ -247,24 +248,27 @@ export default function MainDashClient() {
 				</div>
 			)}
 			<div className="mx-auto flex w-full max-w-7xl flex-col px-4 py-4 sm:px-6 lg:px-8">
-				<header className="sticky top-0 z-30 -mx-4 border-b border-white/70 bg-[#F7F9FC]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+				<header className="sticky top-0 z-30 -mx-4 border-b border-white/70 dark:border-slate-700 bg-[#F7F9FC]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8
+				dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]">
 					<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 						<div className="flex items-center gap-3">
-							<div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
-								<Image src={icon} alt="Logo" width={30} style={{ height: "auto" }} />
+							<div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white dark:bg-[#00000000] shadow-sm ring-1 ring-slate-200 dark:ring-slate-800">
+								<Image src={icon} alt="Logo" width={30} className="block dark:hidden" style={{ height: "auto" }} />
+								{/* Imagem para Modo Escuro */}
+								<Image src={iconDark} alt="Logo" width={30} className="hidden dark:block" style={{ height: "auto" }} />
 							</div>
 							<div>
-								<h1 className="text-xl font-bold tracking-wide text-[#1E3A8A]">CLARIS</h1>
-								<p className="hidden text-xs text-slate-500 sm:block">
+								<h1 className="text-xl font-bold tracking-wide text-[#1E3A8A] dark:text-slate-50">CLARIS</h1>
+								<p className="hidden text-xs text-slate-500 dark:text-slate-200 sm:block">
 									{user?.email ?? t("dashboard.main.welcome")}
 								</p>
 							</div>
 						</div>
-						<div className="flex items-center gap-2 sm:gap-3">
+						<div className="flex items-center gap-2 sm:gap-3 dark:text-slate-50">
 
 							<Link
 								href={addLocaleToPathname("/settings", locale)}
-								className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-[#1E3A8A] shadow-sm transition-colors hover:border-[#D97706]/40 hover:text-[#D97706]"
+								className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#00000000]  text-blue-900  shadow-sm transition-colors hover:border-[#D97706]/40 hover:text-[#f1b064] dark:hover:text-slate-200"
 								aria-label="Settings"
 							>
 								<Settings size={16} />
@@ -277,21 +281,21 @@ export default function MainDashClient() {
 
 				<main className="flex flex-col gap-8 py-8">
 					<section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-						<div className="flex min-h-80 flex-col justify-between rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8">
+						<div className="flex min-h-80 flex-col justify-between rounded-3xl  dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)] bg-white p-6 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 sm:p-8">
 							<div>
-								<div className="inline-flex items-center gap-2 rounded-full bg-[#1E3A8A]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#1E3A8A]">
+								<div className="inline-flex items-center gap-2 rounded-full bg-[#1E3A8A]/10 dark:bg-slate-800 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#1E3A8A] dark:text-slate-50">
 									<Sparkles size={14} />
 									{firstName ? `${t("dashboard.main.welcome")}, ${firstName}` : t("dashboard.main.welcome")}
 								</div>
-								<h2 className="mt-5 max-w-3xl text-4xl font-bold leading-tight text-[#002045] sm:text-5xl lg:text-6xl">
+								<h2 className="mt-5 max-w-3xl text-4xl font-bold leading-tight text-[#002045] dark:text-slate-50 sm:text-5xl lg:text-6xl">
 									{t("dashboard.main.title")}
 								</h2>
-								<p className="mt-4 max-w-2xl text-base leading-7 text-[#475F83] sm:text-lg">
+								<p className="mt-4 max-w-2xl text-base leading-7 text-[#475F83] dark:text-slate-500 sm:text-lg">
 									{t("dashboard.main.subtitle")}
 								</p>
 							</div>
 							{/*  */}
-							<div className="mt-8 grid gap-3 sm:grid-cols-2">
+							<div className="mt-8 grid gap-3 sm:grid-cols-2 ">
 								<DashboardStatCard
 									title={t("dashboard.main.myChurches")}
 									value={organizations.length}
@@ -310,7 +314,7 @@ export default function MainDashClient() {
 							style={{
 								backgroundImage: `linear-gradient(to right, rgba(0,32,69,0.96) 10%, rgba(30,58,138,0.82) 54%, rgba(217,119,6,0.45) 100%), url(${heroImg.src})`,
 							}}
-							className="flex min-h-80 flex-col justify-between overflow-hidden rounded-3xl bg-cover bg-center p-6 shadow-sm sm:p-8"
+							className="flex min-h-80 flex-col justify-between overflow-hidden rounded-3xl bg-cover bg-center p-6 shadow-sm  sm:p-8"
 						>
 							<div>
 								<p className="text-sm font-semibold uppercase tracking-wide text-[#FFDEA5]">
@@ -331,13 +335,13 @@ export default function MainDashClient() {
 						</section>
 					</section>
 
-					<section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200 sm:p-6">
+					<section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 sm:p-6 dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]">
 						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 							<div>
 								<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
 									{t("dashboard.main.myChurches")}
 								</p>
-								<h3 className="mt-1 text-2xl font-bold text-[#002045]">
+								<h3 className="mt-1 text-2xl font-bold text-[#002045] dark:text-slate-50">
 									{organizations.length} {t("community.communityLabel").toLowerCase()}
 								</h3>
 							</div>
@@ -345,7 +349,7 @@ export default function MainDashClient() {
 						</div>
 
 						{organizations.length === 0 ? (
-							<div className="mt-6 flex min-h-48 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+							<div className="mt-6 flex min-h-48 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center ">
 								<Building2 size={32} className="text-[#1E3A8A]/50" />
 								<p className="mt-4 text-lg font-semibold text-[#475F83]">{t("dashboard.main.empty.title")}</p>
 								<p className="mt-2 text-sm text-slate-400">{t("dashboard.main.empty.subtitle")}</p>

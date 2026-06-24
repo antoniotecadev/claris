@@ -25,10 +25,10 @@ export default function Fun() {
 	const communicationQuoteSource = t("features.communicationQuoteSource");
 
 	return (
-		<div className="bg-white py-4">
+		<div className="bg-white py-4 dark:bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]">
 			<div className="container mx-auto px-4">
 				<div className="flex flex-col items-center space-y-4 py-14 text-center md:py-16">
-					<h5 className="text-2xl font-bold text-[#1A365D] md:text-4xl">
+					<h5 className="text-2xl font-bold text-[#1A365D] dark:text-slate-50 md:text-4xl">
 						{t("features.title")}
 					</h5>
 					<div className="h-1 w-24 bg-amber-300" />

@@ -98,6 +98,7 @@ type ApiEvent = {
 	location: string | null;
 	photoUrl: string | null;
 	createdAt?: string;
+	interested?: boolean;
 	interests?: { id: string }[];
 	_count?: {
 		interests?: number;
@@ -284,7 +285,7 @@ function mapApiEventToCard(event: ApiEvent): EventCardProps {
 		location: event.location?.trim() || "Local a definir",
 		interestedCount: getEventInterestedCount(event),
 		imageUrl: event.photoUrl || EVENT_IMAGE_FALLBACK,
-		isFavorited: Boolean(event.interests?.length),
+		isFavorited: event.interested ?? Boolean(event.interests?.length),
 	};
 }
 

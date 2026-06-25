@@ -929,7 +929,7 @@ function DashboardPageContent() {
 					const participe: any = await api.get(`/organizations/${organization.organizationId}/events/${eventId}`);
 					if (participe.event.interested) {
 						isPartivipante = true;
-					}else{
+					} else {
 						await api.post(endpoint, {});
 					}
 				}
@@ -1396,8 +1396,8 @@ function DashboardPageContent() {
 							) : null}
 						</div>
 
-						<div className="flex flex-col justify-end gap-4">
-							<div className="w-full rounded-3xl bg-white/94 p-5 shadow-xl shadow-slate-950/10 ring-1 ring-white/70 backdrop-blur">
+						<div className="flex flex-col justify-end gap-4 min-w-0">
+							<div className="w-full rounded-3xl bg-white/94 p-5 shadow-xl shadow-slate-950/10 ring-1 ring-white/70 backdrop-blur min-w-0">
 								<div className="flex items-center gap-4">
 
 									{organization.logoUrl ? (
@@ -1407,14 +1407,14 @@ function DashboardPageContent() {
 											width={72}
 											height={72}
 											unoptimized
-											className="h-18 w-18 rounded-2xl object-contain ring-1 ring-slate-200"
+											className="h-18 w-18 shrink-0 rounded-2xl object-contain ring-1 ring-slate-200"
 										/>
 									) : (
-										<div className="flex h-18 w-18 items-center justify-center rounded-2xl bg-[#002045] text-2xl font-bold text-white">
+										<div className="flex shrink-0 h-18 w-18 items-center justify-center rounded-2xl bg-[#002045] text-2xl font-bold text-white">
 											{organizationInitial}
 										</div>
 									)}
-									<div className="min-w-0">
+									<div className="min-w-0 flex-1">
 										<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
 											{t("organization.center.label")}
 										</p>

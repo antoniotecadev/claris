@@ -72,11 +72,11 @@ export default function CommunityJoin({
           {/* Header */}
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <h3 className="text-[#002045] text-base font-semibold leading-snug truncate">
+              <h3 className="text-[#002045] text-base font-semibold leading-snug line-clamp-2 break-words">
                 {name}
               </h3>
               {church?.name && (
-                <p className="mt-0.5 text-xs text-gray-400 font-medium truncate">
+                <p className="mt-0.5 text-xs text-gray-400 font-medium truncate break-words">
                   {church.name}
                 </p>
               )}
@@ -91,7 +91,7 @@ export default function CommunityJoin({
 
           {/* Description */}
           {description && (
-            <p className="text-sm text-gray-500 leading-relaxed truncate">
+            <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 break-words">
               {description}
 			</p>
           )}
@@ -108,7 +108,7 @@ export default function CommunityJoin({
               <Users size={12} className="shrink-0" />
               <span>
                 {membersCount + " "}
-                {membersCount === 1 ? t("community.member") : t("community.members")}
+                {membersCount === 1 ? t("community.member") : t("community.members.tabMembers")}
               </span>
             </span>
           </div>

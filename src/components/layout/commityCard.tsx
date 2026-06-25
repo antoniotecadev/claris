@@ -67,16 +67,16 @@ export default function CommunityCard({
 						{t("community.communityLabel")}
 					</div>
 					<div className="text-right text-[11px] font-medium text-slate-400">
-						{membersCount === 1 ? t("community.member") : t("community.members")}
+						{membersCount === 1 ? t("community.member") : t("community.members.tabMembers")}
 					</div>
 				</div>
 
 				<div className="flex flex-1 flex-col">
-					<h3 className="line-clamp-2 text-lg font-bold leading-snug text-[#002045]">
+					<h3 className="line-clamp-2 text-lg font-bold leading-snug text-[#002045] break-words">
 						{name}
 					</h3>
 
-					<p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-500">
+					<p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-500 break-words">
 						{descriptionText}
 					</p>
 

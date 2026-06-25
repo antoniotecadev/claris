@@ -36,6 +36,7 @@ import { FeedbackToast } from "@/components/ui/feedback-toast";
 import { CreateEventDialog } from "@/components/layout/createEvent";
 import { EditEventDialog } from "@/components/layout/editEvent";
 import type { EditEventData } from "@/components/layout/editEvent";
+import { boolean } from "zod";
 
 interface OrganizationRef {
 	id?: string;
@@ -97,6 +98,7 @@ type ApiEvent = {
 	location: string | null;
 	photoUrl: string | null;
 	createdAt?: string;
+	interested?: boolean;
 	interests?: { id: string }[];
 	_count?: {
 		interests?: number;
@@ -283,7 +285,7 @@ function mapApiEventToCard(event: ApiEvent): EventCardProps {
 		location: event.location?.trim() || "Local a definir",
 		interestedCount: getEventInterestedCount(event),
 		imageUrl: event.photoUrl || EVENT_IMAGE_FALLBACK,
-		isFavorited: Boolean(event.interests?.length),
+		isFavorited: event.interested ?? Boolean(event.interests?.length),
 	};
 }
 
@@ -339,7 +341,7 @@ function ChatMemberAvatar({ member }: { member: Member }) {
 	return <Avatar name={member.name} url={member.avatarUrl} size="md" className="h-11 w-11" />;
 }
 
-	function MemberChatPanel({
+function MemberChatPanel({
 	member,
 	messages,
 	draft,
@@ -920,17 +922,23 @@ function DashboardPageContent() {
 			);
 
 			try {
+				let isPartivipante = false;
 				if (wasParticipating) {
 					await api.delete(endpoint);
 				} else {
-					await api.post(endpoint, {});
+					const participe: any = await api.get(`/organizations/${organization.organizationId}/events/${eventId}`);
+					if (participe.event.interested) {
+						isPartivipante = true;
+					}else{
+						await api.post(endpoint, {});
+					}
 				}
 
 				setToast({
 					title: wasParticipating
 						? t("events.toast.participationRemoved")
-						: t("events.toast.participationAdded"),
-					variant: "success",
+						: isPartivipante ? t("events.toast.participationUpdateError") : t("events.toast.participationAdded"),
+					variant: isPartivipante ? "error" : "success",
 				});
 			} catch (error) {
 				// Revert optimistic change on error
@@ -1326,9 +1334,9 @@ function DashboardPageContent() {
 			<header className="sticky top-0 z-40 border-b border-white/70 bg-[#F7F9FC]/85 px-4 py-3 backdrop-blur-md sm:px-6 lg:px-8">
 				<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 					<Link href={backHref} className="flex items-center justify-center gap-3">
-										<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
-											<Image src={Logo} alt={t("common.logoAlt")} width={34} height={34} />
-										</span>
+						<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+							<Image src={Logo} alt={t("common.logoAlt")} width={34} height={34} />
+						</span>
 					</Link>
 					<div className="flex items-center gap-3">
 						<Link

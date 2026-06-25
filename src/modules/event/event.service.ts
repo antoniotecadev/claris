@@ -16,7 +16,7 @@ export class EventService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly cloudinaryService: CloudinaryService,
-  ) {}
+  ) { }
 
   async listEvents(
     currentUser: JwtPayload,
@@ -99,6 +99,39 @@ export class EventService {
     return {
       success: true,
       event: this.formatEventDetail(event),
+    };
+  }
+
+  async isInterested(
+    currentUser: JwtPayload,
+    organizationId: string | undefined,
+    eventId: string,
+  ) {
+    await this.assertIsOrganizationMember(
+      currentUser.id,
+      organizationId,
+    );
+
+    await this.assertEventBelongsToOrganization(
+      organizationId!,
+      eventId,
+    );
+
+    const interest = await this.prisma.eventInterest.findUnique({
+      where: {
+        eventId_userId: {
+          eventId,
+          userId: currentUser.id,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return {
+      success: true,
+      interested: !!interest,
     };
   }
 

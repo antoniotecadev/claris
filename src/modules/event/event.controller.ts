@@ -21,7 +21,7 @@ import { EventService } from './event.service';
 @UseGuards(JwtAuthGuard)
 @Controller('organizations/:organizationId/events')
 export class EventController {
-  constructor(private readonly eventService: EventService) {}
+  constructor(private readonly eventService: EventService) { }
 
   @Get()
   listEvents(
@@ -49,6 +49,19 @@ export class EventController {
     @Param('eventId') eventId: string,
   ) {
     return this.eventService.getEvent(user, organizationId, eventId);
+  }
+
+  @Get(':eventId/interests/me')
+  isInterested(
+    @CurrentUser() user: JwtPayload,
+    @Param('organizationId') organizationId: string,
+    @Param('eventId') eventId: string,
+  ) {
+    return this.eventService.isInterested(
+      user,
+      organizationId,
+      eventId,
+    );
   }
 
   @Patch(':eventId')

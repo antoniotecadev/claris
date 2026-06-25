@@ -250,6 +250,7 @@ export function DialogDemo({
 										placeholder={t("church.create.placeholders.name")}
 										value={name}
 										onChange={(e) => setName(e.target.value)}
+										maxLength={50}
 										className="h-11 rounded-xl bg-white pl-10"
 									/>
 								</div>
@@ -295,6 +296,7 @@ export function DialogDemo({
 										placeholder={t("church.create.placeholders.description")}
 										value={description}
 										onChange={(e) => setDescription(e.target.value)}
+										maxLength={100}
 										className="min-h-32 rounded-xl bg-white pl-10"
 									/>
 								</div>

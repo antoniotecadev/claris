@@ -34,10 +34,10 @@ export default function CommunityCard({
 
 	return (
 		<article
-			className={`group h-full min-h-80 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#D97706]/30 hover:shadow-xl cursor-pointer ${className}`}
+			className={`group h-full min-h-80 w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800  bg-white dark:bg-slate-950 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#D97706]/30 hover:shadow-xl cursor-pointer ${className}`}
 			onClick={onClick}
 		>
-			<div className="relative h-40 overflow-hidden bg-slate-100">
+			<div className="relative h-40 overflow-hidden bg-slate-100 dark:bg-slate-300">
 				{logoUrl ? (
 					<img
 						src={logoUrl}
@@ -46,7 +46,7 @@ export default function CommunityCard({
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center bg-linear-to-br from-[#002045] via-[#1E3A8A] to-[#D97706]">
-						<span className="text-4xl font-bold text-white/90">
+						<span className="text-4xl font-bold text-white/90 dark:text-slate-950/70 ">
 							{initials || t("community.communityLabel")[0]}
 						</span>
 					</div>
@@ -66,17 +66,17 @@ export default function CommunityCard({
 					<div className="text-[11px] font-semibold uppercase tracking-wide text-[#D97706]">
 						{t("community.communityLabel")}
 					</div>
-					<div className="text-right text-[11px] font-medium text-slate-400">
+					<div className="text-right text-[11px] font-medium text-slate-500  dark:text-slate-400">
 						{membersCount === 1 ? t("community.member") : t("community.members.tabMembers")}
 					</div>
 				</div>
 
 				<div className="flex flex-1 flex-col">
-					<h3 className="line-clamp-2 text-lg font-bold leading-snug text-[#002045] break-words">
+					<h3 className="line-clamp-2 text-lg font-bold leading-snug text-[#002045] break-words dark:text-slate-50">
 						{name}
 					</h3>
 
-					<p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-500 break-words">
+					<p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-500 break-words dark:text-slate-400">
 						{descriptionText}
 					</p>
 

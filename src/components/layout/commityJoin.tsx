@@ -46,11 +46,11 @@ export default function CommunityJoin({
 
   return (
     <article
-      className={`group w-full max-w-115 h-full flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden cursor-pointer ${className}`}
+      className={`group w-full max-w-115 h-full flex flex-col dark:bg-slate-900 bg-white rounded-2xl border dark:border-slate-800 border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden cursor-pointer ${className}`}
     >
       <div className="flex flex-col sm:flex-row">
         {/* Logo / Thumbnail */}
-        <div className="sm:w-36 w-full h-36 sm:h-auto shrink-0 bg-gray-50 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-gray-100">
+        <div className="sm:w-36 w-full h-36 sm:h-auto shrink-0 dark:bg-slate-900 bg-gray-50 flex items-center justify-center border-b sm:border-b-0 sm:border-r dark:border-slate-800 border-gray-100">
           {logoUrl ? (
             <img
               src={logoUrl}
@@ -72,7 +72,7 @@ export default function CommunityJoin({
           {/* Header */}
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <h3 className="text-[#002045] text-base font-semibold leading-snug line-clamp-2 break-words">
+              <h3 className="text-[#002045] dark:text-slate-50 text-base font-semibold leading-snug line-clamp-2 break-words">
                 {name}
               </h3>
               {church?.name && (
@@ -82,7 +82,7 @@ export default function CommunityJoin({
               )}
             </div>
             {formattedDate && (
-              <div className="shrink-0 flex items-center gap-1 text-[11px] text-gray-400 bg-gray-50 px-2 py-1 rounded-full border border-gray-100">
+              <div className="shrink-0 flex items-center gap-1 text-[11px] dark:bg-slate-900 text-gray-400 bg-gray-50 px-2 py-1 rounded-full border dark:border-slate-800 border-gray-100">
                 <Calendar size={11} />
                 <span>{formattedDate}</span>
               </div>
@@ -117,7 +117,7 @@ export default function CommunityJoin({
           <div>
             <button
               onClick={onClick}
-              className="inline-flex items-center gap-2 text-xs font-semibold text-[#002045] bg-[#002045]/5 hover:bg-[#002045]/10 px-4 py-2 rounded-full transition-colors duration-150"
+              className="inline-flex items-center gap-2 text-xs font-semibold dark:text-slate-50 text-[#002045] dark:bg-slate-800 bg-[#002045]/5 dark:hover:bg-slate-950/65 hover:bg-[#002045]/10 px-4 py-2 rounded-full transition-colors duration-150"
             >
               {t("community.requestJoin")}
               <ArrowRight

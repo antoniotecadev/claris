@@ -205,12 +205,12 @@ export default function MainDashClient() {
 			/>
 			{pendingJoinChurch && (
 				<div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
-					<div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
-						<h2 className="text-lg font-semibold text-[#002045]">
+					<div className="w-full max-w-sm rounded-2xl dark:bg-slate-900 bg-white p-6 shadow-2xl">
+						<h2 className="text-lg font-semibold text-[#002045] dark:text-slate-50">
 							{t("dashboard.main.joinConfirm.title", { name: pendingJoinChurch.name })}
 						</h2>
 
-						<p className="mt-2 text-sm leading-6 text-[#475F83]">
+						<p className="mt-2 text-sm leading-6 text-[#475F83] dark:text-slate-300">
 							{t("dashboard.main.joinConfirm.description")}
 						</p>
 
@@ -228,7 +228,7 @@ export default function MainDashClient() {
 									setPendingJoinChurch(null);
 									setJoinError(null);
 								}}
-								className="flex-1 rounded-xl border border-zinc-200 py-3 text-sm font-medium hover:bg-zinc-50"
+								className="flex-1 rounded-xl border border-zinc-200 dark:bg-slate-50 py-3 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-slate-200"
 							>
 								{t("common.cancel")}
 							</button>
@@ -345,7 +345,7 @@ export default function MainDashClient() {
 									{organizations.length} {t("community.communityLabel").toLowerCase()}
 								</h3>
 							</div>
-							<div className="h-px bg-slate-200 sm:w-1/3" />
+							<div className="h-px bg-slate-200 dark:bg-slate-800 sm:w-1/3" />
 						</div>
 
 						{organizations.length === 0 ? (
@@ -381,29 +381,29 @@ export default function MainDashClient() {
 						)}
 					</section>
 
-					<section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200 sm:p-6">
+					<section className="rounded-3xl bg-white dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)] dark:ring-slate-800 p-5 shadow-sm ring-1 ring-slate-200 sm:p-6">
 						<div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
 							<div>
 								<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
 									{t("dashboard.main.explore.searchCta")}
 								</p>
-								<h3 className="mt-1 text-2xl font-bold text-[#002045]">
+								<h3 className="mt-1 text-2xl font-bold text-[#002045] dark:text-slate-50">
 									{t("dashboard.main.explore.title", { count: filteredAvailableChurches.length })}
 								</h3>
-								<p className="mt-2 max-w-2xl text-sm leading-6 text-[#475F83] sm:text-base">
+								<p className="mt-2 max-w-2xl text-sm leading-6 text-[#475F83] dark:text-slate-400 sm:text-base">
 									{t("dashboard.main.explore.subtitle")}
 								</p>
 							</div>
 
-							<div className="flex w-full max-w-md items-center rounded-2xl border border-slate-200 bg-white p-1.5 text-[#74777F] shadow-sm transition-colors focus-within:border-[#1E3A8A]/40 focus-within:shadow-md lg:w-auto">
+							<div className="flex w-full max-w-md items-center rounded-2xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900 bg-white p-1.5 text-[#74777F] shadow-sm transition-colors focus-within:border-[#1E3A8A]/40 focus-within:shadow-md lg:w-auto">
 								<div className="flex min-w-0 flex-1 items-center gap-2 px-3">
-									<Search size={18} className="shrink-0 text-[#1E3A8A]" />
+									<Search size={18} className="shrink-0 text-[#1E3A8A] dark:text-slate-50" />
 									<input
 										type="search"
 										placeholder={t("dashboard.main.explore.searchPlaceholder")}
 										value={searchTerm}
 										onChange={(event) => setSearchTerm(event.target.value)}
-										className="h-10 min-w-0 flex-1 bg-transparent text-sm text-[#002045] placeholder:text-slate-400 focus:outline-none"
+										className="h-10 min-w-0 flex-1 bg-transparent text-sm text-[#002045] dark:text-slate-50 placeholder:text-slate-400 focus:outline-none"
 									/>
 								</div>
 								{searchTerm ? (
@@ -411,13 +411,13 @@ export default function MainDashClient() {
 										type="button"
 										onClick={() => setSearchTerm("")}
 										aria-label={t("dashboard.main.explore.clearSearch")}
-										className="mr-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100 hover:text-[#002045]"
+										className="mr-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-color dark:hover:bg-slate-800 hover:bg-slate-100 dark:hover:text-slate-400 hover:text-[#002045]"
 									>
 										<X size={16} />
 									</button>
 								) : null}
-								<div className="hidden h-8 w-px bg-slate-200 sm:block" />
-								<div className="hidden px-3 text-xs font-semibold text-[#1E3A8A] sm:block">
+								<div className="hidden h-8 w-px bg-slate-200 dark:bg-slate-800 sm:block" />
+								<div className="hidden px-3 text-xs font-semibold text-[#1E3A8A] sm:block dark:text-slate-50">
 									{filteredAvailableChurches.length}
 								</div>
 							</div>
@@ -425,7 +425,7 @@ export default function MainDashClient() {
 
 						<div className="mt-6 grid gap-4 lg:grid-cols-2">
 							{filteredAvailableChurches.length === 0 ? (
-								<div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center text-[#475F83]">
+								<div className="rounded-2xl border border-dashed dark:border-slate-800 border-slate-300 dark:bg-slate-900 bg-slate-50 px-6 py-10 text-center text-[#475F83] dark:text-slate-300">
 									{t("dashboard.main.explore.empty")}
 								</div>
 							) : (

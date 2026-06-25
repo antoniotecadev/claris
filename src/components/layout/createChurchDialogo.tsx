@@ -171,17 +171,17 @@ export function DialogDemo({
 			<DialogTrigger asChild>
 				<Button
 					variant="outline"
-					className="mt-8 h-12 w-56 rounded-2xl border-0 bg-[#FFDEA5] px-6 text-[#261900] shadow-sm hover:bg-[#FFD38A] hover:text-[#261900]"
+					className="mt-8 h-12 w-56 rounded-2xl border-0 dark:bg-[#FFDEA5] bg-[#FFDEA5] px-6 text-[#261900] shadow-sm dark:hover:bg-[#FFDE8A]  hover:bg-[#FFD38A] hover:text-[#261900]"
 				>
 					<Building2 size={18} />
 					{t("church.create.title")}
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="w-full max-h-[92vh] overflow-hidden p-0 sm:max-w-2xl md:max-w-4xl">
-				<DialogHeader className="border-b border-slate-100 bg-linear-to-br from-[#002045] via-[#1E3A8A] to-[#D97706] px-6 py-6 text-white">
+			<DialogContent className="w-full max-h-[92vh] overflow-hidden p-0 sm:max-w-2xl md:max-w-4xl dark:bg-slate-900">
+				<DialogHeader className="border-b dark:border-slate-800 dark:via-slate-900  border-slate-100 bg-linear-to-br from-[#002045] via-[#1E3A8A] to-[#D97706] px-6 py-6 text-white">
 					<div className="flex items-center gap-3">
-						<div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm">
+						<div className="flex h-11 w-11 items-center justify-center rounded-xl  bg-white/15 backdrop-blur-sm">
 							<Building2 size={22} />
 						</div>
 						<div>
@@ -195,15 +195,15 @@ export function DialogDemo({
 					</div>
 				</DialogHeader>
 
-				<div className="max-h-[calc(92vh-11rem)] overflow-auto px-6 py-6">
-					<div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+				<div className="max-h-[calc(92vh-11rem)] overflow-auto px-6 py-6 dark:bg-slate-900">
+					<div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.85fr_1.15fr] ">
 						<div className="space-y-3">
-							<Label htmlFor="logo" className="text-sm font-semibold text-[#002045]">
+							<Label htmlFor="logo" className="text-sm font-semibold dark:text-slate-50 text-[#002045]">
 								{t("church.create.fields.logo")}
 							</Label>
 							<label
 								htmlFor="logo"
-								className="group flex min-h-72 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border border-dashed border-slate-300 bg-slate-50 text-center transition-colors hover:border-[#1E3A8A] hover:bg-[#1E3A8A]/5"
+								className="group flex min-h-72 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border border-dashed dark:bg-slate-800 border-slate-300 bg-slate-50 text-center transition-colors hover:border-[#1E3A8A] hover:bg-[#1E3A8A]/5"
 							>
 								{logoPreviewUrl ? (
 									<img
@@ -213,16 +213,16 @@ export function DialogDemo({
 									/>
 								) : (
 									<div className="flex flex-col items-center px-8">
-										<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-[#1E3A8A] shadow-sm">
+										<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl dark:bg-slate-700 dark:text-slate-50 bg-white text-[#1E3A8A] shadow-sm">
 											<ImagePlus size={30} />
 										</div>
-										<p className="text-sm font-semibold text-[#002045]">
+										<p className="text-sm font-semibold text-[#002045] dark:text-slate-50">
 											{t("church.create.fields.logo")}
 										</p>
 										<p className="mt-2 text-xs leading-relaxed text-slate-500">
 											{t("church.create.imageHint")}
 										</p>
-										<span className="mb-4 mt-8 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[#1E3A8A] shadow-sm transition-transform group-hover:scale-105">
+										<span className="mb-4 mt-8 inline-flex items-center gap-2 rounded-full dark:bg-slate-700 dark:text-slate-50 bg-white px-4 py-2 text-xs font-semibold text-[#1E3A8A] shadow-sm transition-transform group-hover:scale-105">
 											<Upload size={14} />
 											{logoPreviewUrl ? t("church.create.changeImage") : t("church.create.selectImage")}
 										</span>
@@ -240,7 +240,7 @@ export function DialogDemo({
 
 						<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 							<div className="flex flex-col gap-2">
-								<Label htmlFor="church-name" className="text-sm font-semibold text-[#002045]">
+								<Label htmlFor="church-name" className="text-sm font-semibold dark:text-slate-50 text-[#002045]">
 									{t("church.create.fields.name")}
 								</Label>
 								<div className="relative">
@@ -257,7 +257,7 @@ export function DialogDemo({
 							</div>
 
 							<div className="flex flex-col gap-2">
-								<Label htmlFor="church-address" className="text-sm font-semibold text-[#002045]">
+								<Label htmlFor="church-address" className="text-sm font-semibold dark:text-slate-50 text-[#002045]">
 									{t("church.create.fields.address")}
 								</Label>
 								<div className="relative">
@@ -273,7 +273,7 @@ export function DialogDemo({
 							</div>
 
 							<div className="flex flex-col gap-2 md:col-span-2">
-								<Label htmlFor="churchId" className="text-sm font-semibold text-[#002045]">
+								<Label htmlFor="churchId" className="text-sm font-semibold dark:text-slate-50 text-[#002045]">
 									{t("church.create.fields.church")}
 								</Label>
 								<OrganizatioSelect
@@ -286,7 +286,7 @@ export function DialogDemo({
 							</div>
 
 							<div className="md:col-span-2">
-								<Label htmlFor="description" className="mb-2 block text-sm font-semibold text-[#002045]">
+								<Label htmlFor="description" className="mb-2 block text-sm font-semibold dark:text-slate-50 text-[#002045]">
 									{t("church.create.fields.description")}
 								</Label>
 								<div className="relative">
@@ -305,15 +305,15 @@ export function DialogDemo({
 					</div>
 				</div>
 
-				<DialogFooter className="m-0 w-full border-t border-slate-100 bg-slate-50 px-6 py-4">
+				<DialogFooter className="m-0 w-full border-t dark:border-slate-800 border-slate-100 dark:bg-slate-900 bg-slate-50 px-6 py-4">
 					<DialogClose asChild>
-						<Button variant="outline" className="h-10 rounded-xl" onClick={resetForm}>
+						<Button variant="outline" className="h-10 rounded-xl dark:text-slate-50 dark:bg-slate-800" onClick={resetForm}>
 							{t("common.cancel")}
 						</Button>
 					</DialogClose>
 					<Button
 						type="button"
-						className="h-10 rounded-xl bg-[#1E3A8A] px-5 hover:bg-[#002045]"
+						className="h-10 rounded-xl bg-[#1E3A8A] dark:text-slate-50 px-5 hover:bg-[#002045] dark:hover:bg-[#0b2fcf]"
 						disabled={submitting}
 						onClick={(e) => {
 							e.preventDefault()

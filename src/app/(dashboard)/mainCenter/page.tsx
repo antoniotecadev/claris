@@ -1323,7 +1323,7 @@ function DashboardPageContent() {
 	}
 
 	return (
-		<div className="min-h-screen bg-[#F7F9FC] text-[#002045]">
+		<div className="min-h-screen bg-[#F7F9FC] text-[#002045]  dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]">
 			<FeedbackToast
 				open={Boolean(toast)}
 				title={toast?.title ?? ""}

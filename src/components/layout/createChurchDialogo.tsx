@@ -178,7 +178,7 @@ export function DialogDemo({
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="w-full max-h-[92vh] overflow-hidden p-0 sm:max-w-2xl md:max-w-4xl dark:bg-slate-900">
+			<DialogContent onInteractOutside={(e) => e.preventDefault()} className="w-full max-h-[92vh] overflow-hidden p-0 sm:max-w-2xl md:max-w-4xl dark:bg-slate-900">
 				<DialogHeader className="border-b dark:border-slate-800 dark:via-slate-900  border-slate-100 bg-linear-to-br from-[#002045] via-[#1E3A8A] to-[#D97706] px-6 py-6 text-white">
 					<div className="flex items-center gap-3">
 						<div className="flex h-11 w-11 items-center justify-center rounded-xl  bg-white/15 backdrop-blur-sm">

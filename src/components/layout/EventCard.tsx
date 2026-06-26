@@ -53,7 +53,7 @@ export default function EventCard({
     }
   };
   return (
-    <article className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/10">
+    <article className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl dark:bg-slate-900 dark:ring-slate-800  bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/10">
 
       {/* ── Image ── */}
       <div className="relative aspect-video w-full overflow-hidden bg-slate-200">
@@ -116,32 +116,32 @@ export default function EventCard({
       <div className="flex flex-1 flex-col px-[18px] pt-4 pb-[18px]">
 
         {/* Date & time */}
-        <p className="text-[11px] font-medium tracking-widest text-stone-400 uppercase mb-1.5">
+        <p className="text-[11px] font-medium tracking-widest dark:text-slate-300  text-stone-400 uppercase mb-1.5">
           {date} &bull; {time}
         </p>
 
         {/* Title */}
-        <h2 className="font-serif text-[19px] leading-snug text-stone-900 mb-2">
+        <h2 className="font-serif text-[19px] leading-snug dark:text-slate-50  text-stone-900 mb-2">
           {title}
         </h2>
 
         {/* Description */}
-        <p className="mb-3 line-clamp-3 text-[13px] leading-relaxed text-stone-500">
+        <p className="mb-3 line-clamp-3 text-[13px] leading-relaxed dark:text-slate-300  text-stone-500">
           {description}
         </p>
 
         {/* Location */}
-        <div className="mb-3.5 mt-auto flex items-center gap-1.5 text-[12px] text-stone-400">
-          <MapPin size={12} className="shrink-0 text-stone-400" />
+        <div className="mb-3.5 mt-auto flex items-center gap-1.5 text-[12px] dark:text-slate-300  text-stone-400">
+          <MapPin size={12} className="shrink-0 dark:text-slate-300  text-stone-400" />
           <span>{location}</span>
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-stone-200 mb-3.5" />
+        <div className="h-px dark:bg-slate-800  bg-stone-200 mb-3.5" />
 
         {/* Footer */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-[11.5px] text-stone-400">
+          <div className="flex items-center gap-1.5 text-[11.5px] dark:text-slate-300  text-stone-400">
             <Users size={12} className="shrink-0" />
             <span>{t("events.card.participants", { count: interestedCount })}</span>
           </div>

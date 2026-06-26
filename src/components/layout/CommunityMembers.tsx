@@ -95,14 +95,14 @@ export default function CommunityMembers({
   ];
 
   return (
-    <section className="mt-2 w-full rounded-3xl bg-white px-5 py-6 shadow-sm ring-1 ring-slate-200 sm:px-7">
+    <section className="mt-2 w-full rounded-3xl dark:bg-slate-900  bg-white px-5 py-6 shadow-sm ring-1 dark:ring-slate-800  ring-slate-200 sm:px-7">
 
       <div className="flex items-start justify-between gap-4 mb-5">
         <div className="flex-1 min-w-0">
-          <h2 className="mb-1 text-[20px] font-bold leading-tight text-brand-primary">
+          <h2 className="mb-1 text-[20px] font-bold leading-tight dark:text-slate-50  text-brand-primary">
             {title || t("community.members.title")}
           </h2>
-          <p className="text-[13px] leading-snug text-brand-muted">{subtitle || t("community.members.subtitle")}</p>
+          <p className="text-[13px] leading-snug dark:text-slate-300  text-brand-muted">{subtitle || t("community.members.subtitle")}</p>
         </div>
 
         <div className="flex shrink-0 items-center gap-2">

@@ -17,7 +17,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           ref={ref}
           type="text"
           value={value}
-          className={`h-10 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-4 text-[13px] text-stone-700 outline-none transition-colors duration-200 placeholder:text-stone-400 focus:border-brand-primary ${className}`}
+          className={`h-10 w-full rounded-xl border dark:bg-slate-900  dark:border-slate-800 dark:text-stone-400   border-slate-200 bg-slate-50 pl-9 pr-4 text-[13px] text-stone-700 outline-none transition-colors duration-200 placeholder:text-stone-400 focus:border-brand-primary ${className}`}
           {...props}
         />
         {hasValue && onClear && (

@@ -32,6 +32,7 @@ import { useUserStore } from "@/stores/userStore";
 import { api } from "@/lib/api";
 import { normalizeMediaUrl } from "@/lib/media-url";
 import Logo from "@/assets/images/logo.png";
+import LogoDark from "@/assets/images/logoBr.png";
 import { FeedbackToast } from "@/components/ui/feedback-toast";
 import { CreateEventDialog } from "@/components/layout/createEvent";
 import { EditEventDialog } from "@/components/layout/editEvent";
@@ -1331,17 +1332,18 @@ function DashboardPageContent() {
 				variant={toast?.variant}
 				onClose={() => setToast(null)}
 			/>
-			<header className="sticky top-0 z-40 border-b border-white/70 bg-[#F7F9FC]/85 px-4 py-3 backdrop-blur-md sm:px-6 lg:px-8">
+			<header className="sticky top-0 z-40 border-b dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)] dark:border-slate-800 border-white/70 bg-[#F7F9FC]/85 px-4 py-3 backdrop-blur-md sm:px-6 lg:px-8">
 				<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 					<Link href={backHref} className="flex items-center justify-center gap-3">
-						<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
-							<Image src={Logo} alt={t("common.logoAlt")} width={34} height={34} />
+						<span className="flex h-11 w-11 items-center justify-center rounded-2xl dark:ring-slate-800 dark:bg-slate-900  bg-white shadow-sm ring-1 ring-slate-200">
+							<Image src={Logo} className="block dark:hidden" alt={t("common.logoAlt")} width={34} height={34} />
+							<Image src={LogoDark} className="hidden dark:block" alt={t("common.logoAlt")} width={34} height={34} />
 						</span>
 					</Link>
 					<div className="flex items-center gap-3">
 						<Link
 							href={backHref}
-							className="flex h-10 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-[#002045] shadow-sm transition-colors hover:border-[#1E3A8A]/30 hover:text-[#1E3A8A]"
+							className="flex h-10 items-center justify-center gap-2 rounded-2xl border dark:border-slate-800  border-slate-200 dark:bg-slate-900  bg-white px-4 text-sm font-semibold dark:text-slate-50  text-[#002045] shadow-sm transition-colors hover:border-[#1E3A8A]/30 hover:text-[#1E3A8A]"
 						>
 							<ChevronLeft size={16} />
 							{t("common.back")}
@@ -1397,7 +1399,7 @@ function DashboardPageContent() {
 						</div>
 
 						<div className="flex flex-col justify-end gap-4 min-w-0">
-							<div className="w-full rounded-3xl bg-white/94 p-5 shadow-xl shadow-slate-950/10 ring-1 ring-white/70 backdrop-blur min-w-0">
+							<div className="w-full rounded-3xl bg-white/94 dark:bg-slate-900/100  p-5 shadow-xl shadow-slate-950/10 ring-1 dark:ring-slate-800  ring-white/70 backdrop-blur min-w-0">
 								<div className="flex items-center gap-4">
 
 									{organization.logoUrl ? (
@@ -1407,10 +1409,10 @@ function DashboardPageContent() {
 											width={72}
 											height={72}
 											unoptimized
-											className="h-18 w-18 shrink-0 rounded-2xl object-contain ring-1 ring-slate-200"
+											className="h-18 w-18 shrink-0 rounded-2xl object-contain ring-1 dark:ring-slate-800  ring-slate-200"
 										/>
 									) : (
-										<div className="flex shrink-0 h-18 w-18 items-center justify-center rounded-2xl bg-[#002045] text-2xl font-bold text-white">
+										<div className="flex shrink-0 h-18 w-18 items-center justify-center rounded-2xl  bg-[#002045] text-2xl font-bold text-white">
 											{organizationInitial}
 										</div>
 									)}
@@ -1418,7 +1420,7 @@ function DashboardPageContent() {
 										<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
 											{t("organization.center.label")}
 										</p>
-										<p className="mt-1 truncate text-xl font-bold text-[#002045]">
+										<p className="mt-1 truncate text-xl font-bold dark:text-slate-50  text-[#002045]">
 											{organization.name}
 										</p>
 									</div>
@@ -1429,12 +1431,12 @@ function DashboardPageContent() {
 										const Icon = stat.icon;
 
 										return (
-											<div key={stat.label} className="rounded-2xl bg-[#F7F9FC] p-3 ring-1 ring-slate-200">
-												<div className="flex items-center gap-1.5 text-xs font-semibold text-[#475F83]">
-													<Icon size={14} className="text-[#1E3A8A]" />
+											<div key={stat.label} className="rounded-2xl dark:bg-slate-900  dark:ring-slate-800  bg-[#F7F9FC] p-3 ring-1 ring-slate-200">
+												<div className="flex items-center gap-1.5 text-xs font-semibold dark:text-slate-50  text-[#475F83]">
+													<Icon size={14} className="text-[#1E3A8A] dark:text-slate-50 " />
 													<span className="truncate">{stat.label}</span>
 												</div>
-												<p className="mt-2 text-2xl font-bold text-[#002045]">{stat.value}</p>
+												<p className="mt-2 text-2xl font-bold dark:text-slate-50  text-[#002045]">{stat.value}</p>
 											</div>
 										);
 									})}
@@ -1450,29 +1452,29 @@ function DashboardPageContent() {
 							<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
 								{t("organization.center.communityAgenda")}
 							</p>
-							<h2 className="mt-1 text-3xl font-bold tracking-tight text-[#002045] sm:text-4xl">
+							<h2 className="mt-1 text-3xl font-bold tracking-tight dark:text-slate-50  text-[#002045] sm:text-4xl">
 								{t("organization.center.upcomingEvents")}
 							</h2>
-							<p className="mt-3 max-w-2xl text-base leading-7 text-[#475F83]">
+							<p className="mt-3 max-w-2xl text-base leading-7 dark:text-slate-500  text-[#475F83]">
 								{t("organization.center.joinDescription", { name: organization.name })}
 							</p>
 						</div>
-						<div className="flex h-11 w-fit items-center gap-2 rounded-2xl bg-white px-4 text-sm font-semibold text-[#1E3A8A] shadow-sm ring-1 ring-slate-200">
+						<div className="flex h-11 w-fit items-center gap-2 rounded-2xl bg-white dark:bg-slate-900  dark:text-slate-50  px-4 text-sm font-semibold text-[#1E3A8A] shadow-sm ring-1 dark:ring-slate-800  ring-slate-200">
 							<CalendarDays size={16} />
 							{t("organization.center.eventCount", { count: organizationEvents.length })}
 						</div>
 					</div>
 
 					{eventsError ? (
-						<p className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+						<p className="rounded-2xl border dark:border-slate-800  border-red-100 dark:bg-slate-900  bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
 							{eventsError}
 						</p>
 					) : visibleEvents.length ? (
 						<EventList events={visibleEvents} initialCount={3} />
 					) : (
-						<div className="flex min-h-48 flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center shadow-sm">
-							<CalendarDays size={32} className="text-[#1E3A8A]/50" />
-							<p className="mt-4 text-lg font-semibold text-[#475F83]">
+						<div className="flex min-h-48 flex-col items-center justify-center rounded-3xl border border-dashed dark:border-slate-800  border-slate-300 bg-white dark:bg-slate-900  dark:text-slate-50 px-6 py-12 text-center shadow-sm">
+							<CalendarDays size={32} className="text-[#1E3A8A]/50 dark:text-slate-50/50" />
+							<p className="mt-4 text-lg font-semibold text-[#475F83] dark:text-slate-50">
 								{t("organization.center.noEvents")}
 							</p>
 						</div>

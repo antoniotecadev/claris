@@ -13,7 +13,7 @@ export function IconButton({
   isActive, 
   loading,
   variant = "outline",
-  className = "",
+  className = "dark:bg-slate-900 dark:border-slate-800 dark:hover:text-slate-200",
   ...props 
 }: IconButtonProps) {
   const baseClasses = "flex items-center justify-center rounded-full transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50";

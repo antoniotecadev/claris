@@ -384,12 +384,12 @@ function MemberChatPanel({
 
 	if (!member) {
 		return (
-			<aside className="flex min-h-80 flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-10 text-center shadow-sm">
-				<div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-light text-brand-primary">
+			<aside className="flex min-h-80 flex-col items-center justify-center rounded-3xl border border-dashed dark:bg-slate-900 dark:border-slate-800 border-slate-300 bg-white px-6 py-10 text-center shadow-sm">
+				<div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-light dark:bg-slate-800 dark:text-slate-300 text-brand-primary">
 					<MessageCircle size={24} />
 				</div>
-				<h3 className="mt-4 text-lg font-bold text-brand-primary">{t("chat.startConversation")}</h3>
-				<p className="mt-2 max-w-xs text-sm leading-6 text-brand-muted">
+				<h3 className="mt-4 text-lg font-bold dark:text-slate-50 text-brand-primary">{t("chat.startConversation")}</h3>
+				<p className="mt-2 max-w-xs text-sm leading-6 dark:text-slate-500 text-brand-muted">
 					{t("chat.clickToChat")}
 				</p>
 			</aside>
@@ -397,12 +397,12 @@ function MemberChatPanel({
 	}
 
 	return (
-		<aside className="flex h-152 max-h-[calc(100vh-7rem)] min-h-105 flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
-			<header className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
+		<aside className="flex h-152 max-h-[calc(100vh-7rem)] min-h-105 flex-col overflow-hidden rounded-3xl dark:bg-slate-900 dark:ring-slate-800 bg-white shadow-sm ring-1 ring-slate-200">
+			<header className="flex shrink-0 items-center justify-between gap-3 border-b dark:border-slate-800 border-slate-100 px-5 py-4">
 				<div className="flex min-w-0 items-center gap-3">
 					<ChatMemberAvatar member={member} />
 					<div className="min-w-0">
-						<h3 className="truncate text-base font-bold text-brand-primary">{member.name}</h3>
+						<h3 className="truncate text-base font-bold dark:text-slate-50 text-brand-primary">{member.name}</h3>
 						<p className="truncate text-xs font-semibold uppercase tracking-wide text-accent-orange">
 							{member.role}
 						</p>
@@ -428,15 +428,15 @@ function MemberChatPanel({
 			</header>
 
 			{!isFriend ? (
-				<div className="flex flex-1 flex-col items-center justify-center gap-4 bg-brand-bg px-5 py-10 text-center">
-					<div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent-orange-bg text-accent-orange">
+				<div className="flex flex-1 flex-col items-center justify-center gap-4 dark:bg-slate-900 bg-brand-bg px-5 py-10 text-center">
+					<div className="flex h-14 w-14 items-center justify-center rounded-full dark:bg-slate-800 bg-accent-orange-bg text-accent-orange">
 						<Users size={24} />
 					</div>
 					<div>
-						<p className="text-sm font-semibold text-brand-primary">
+						<p className="text-sm font-semibold dark:bg-slate-900 dark:text-slate-50 text-brand-primary">
 							{t("chat.notFriend", { name: member.name })}
 						</p>
-						<p className="mt-1 max-w-xs text-xs leading-5 text-brand-muted">
+						<p className="mt-1 max-w-xs text-xs leading-5 dark:text-slate-500 text-brand-muted">
 							{t("chat.notFriendDescription")}
 						</p>
 					</div>
@@ -453,9 +453,9 @@ function MemberChatPanel({
 				</div>
 			) : (
 				<>
-					<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-x-hidden overflow-y-auto bg-brand-bg px-5 py-5">
+					<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-x-hidden overflow-y-auto dark:bg-slate-900 bg-brand-bg px-5 py-5">
 						{isLoadingMessages ? (
-							<div className="flex flex-1 items-center justify-center gap-2 text-sm font-medium text-brand-muted">
+							<div className="flex flex-1 items-center justify-center gap-2 text-sm font-medium dark:text-slate-500 text-brand-muted">
 								<Loader2 size={16} className="animate-spin" />
 								<span>{t("chat.loadingMessages")}</span>
 							</div>
@@ -473,8 +473,8 @@ function MemberChatPanel({
 								>
 									<div
 										className={`min-w-0 max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${message.sender === "me"
-											? "rounded-br-md bg-brand-primary text-white"
-											: "rounded-bl-md bg-white text-brand-foreground ring-1 ring-slate-200"
+											? "rounded-br-md bg-brand-primary dark:bg-slate-400 dark:text-slate-900 text-white"
+											: "rounded-bl-md bg-white dark:bg-slate-800 dark:text-slate-50 text-brand-foreground ring-1 dark:ring-slate-800 ring-slate-200"
 											}`}
 									>
 										<p
@@ -484,7 +484,7 @@ function MemberChatPanel({
 											{message.text}
 										</p>
 										<p
-											className={`mt-1 text-[10px] font-semibold ${message.sender === "me" ? "text-white/65" : "text-slate-400"
+											className={`mt-1 text-[10px] font-semibold ${message.sender === "me" ? "dark:text-slate-600 text-white/65" : "  text-slate-400"
 												}`}
 										>
 											{formatChatTime(message.createdAt)}
@@ -502,7 +502,7 @@ function MemberChatPanel({
 					</div>
 
 					<form
-						className="flex shrink-0 items-end gap-2 border-t border-slate-100 bg-white p-4"
+						className="flex shrink-0 items-end gap-2 border-t dark:bg-slate-900 dark:border-slate-800 border-slate-100 bg-white p-4"
 						onSubmit={(event) => {
 							event.preventDefault();
 							onSendMessage();
@@ -515,7 +515,7 @@ function MemberChatPanel({
 							placeholder={t("chat.messagePlaceholder", { name: member.name.split(" ")[0] })}
 							rows={1}
 							disabled={isSendingMessage}
-							className="max-h-28 min-h-11 flex-1 resize-none overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-brand-foreground outline-none transition-colors placeholder:text-slate-400 focus:border-brand-primary focus:bg-white"
+							className="max-h-28 min-h-11 flex-1 resize-none overflow-y-auto rounded-2xl border dark:bg-slate-800 dark:border-slate-800 dark:text-slate-50 border-slate-200 bg-slate-50 px-4 py-3 text-sm text-brand-foreground outline-none transition-colors placeholder:text-slate-400 focus:border-brand-primary focus:bg-white"
 							style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}
 						/>
 						<IconButton
@@ -1304,7 +1304,7 @@ function DashboardPageContent() {
 
 	if (loading) {
 		return (
-			<div className="flex min-h-screen items-center justify-center bg-white text-[#002045]">
+			<div className="flex min-h-screen items-center justify-center dark:text-slate-50 dark:bg-slate-900 bg-white text-[#002045]">
 				<Loader2 className="mr-2 animate-spin" size={20} />
 				<span>{t("organization.center.loading")}</span>
 			</div>
@@ -1313,7 +1313,7 @@ function DashboardPageContent() {
 
 	if (error || !organization) {
 		return (
-			<div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-center text-[#002045]">
+			<div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-center text-[#002045] dark:bg-slate-900 dark:text-slate-50">
 				<Building2 size={34} className="text-[#D97706]" />
 				<p className="text-lg font-semibold">{error ?? t("errors.organizationDataNotFound")}</p>
 				<Link href={backHref} className="rounded-xl bg-[#002045] px-5 py-2.5 text-sm font-semibold text-white">
@@ -1337,7 +1337,10 @@ function DashboardPageContent() {
 					<Link href={backHref} className="flex items-center justify-center gap-3">
 						<span className="flex h-11 w-11 items-center justify-center rounded-2xl dark:ring-slate-800 dark:bg-slate-900  bg-white shadow-sm ring-1 ring-slate-200">
 							<Image src={Logo} className="block dark:hidden" alt={t("common.logoAlt")} width={34} height={34} />
-							<Image src={LogoDark} className="hidden dark:block" alt={t("common.logoAlt")} width={34} height={34} />
+							<Image src={LogoDark} className="hidden dark:block" alt={t("common.logoAlt")} width={34} height={34} style={{
+								width: "34px",
+								height: "34px",
+							}} />
 						</span>
 					</Link>
 					<div className="flex items-center gap-3">

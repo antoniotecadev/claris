@@ -109,6 +109,7 @@ export default function CommunityMembers({
           <IconButton
             icon={searchOpen ? <X size={15} /> : <Search size={15} />}
             isActive={searchOpen}
+            className="dark:bg-slate-900 dark:border-slate-800"
             onClick={() => {
               setSearchOpen((v) => !v);
               if (searchOpen) setQuery("");
@@ -143,7 +144,7 @@ export default function CommunityMembers({
         />
       </div>
 
-      <div className="flex items-start gap-5 flex-wrap">
+      <div className="flex items-start gap-5 flex-wrap ">
         {visibleMembers.length > 0 ? (
           visibleMembers.map((member) => {
             const isSelf = currentUserId != null && String(member.id) === String(currentUserId);
@@ -176,7 +177,7 @@ export default function CommunityMembers({
                     )}
                   </div>
                   <div className="text-center">
-                    <p className="text-[12px] font-medium text-brand-foreground leading-tight group-hover:text-brand-primary transition-colors duration-150 max-w-18 truncate">
+                    <p className="text-[12px] font-medium dark:text-slate-50 text-brand-foreground leading-tight group-hover:text-brand-primary transition-colors duration-150 max-w-18 truncate">
                       {member.name.split(" ")[0]}
                     </p>
                     <p className="text-[9px] font-semibold tracking-widest text-stone-400 uppercase mt-0.5 max-w-18 truncate">
@@ -231,10 +232,10 @@ export default function CommunityMembers({
             );
           })
         ) : (
-          <div className="flex w-full flex-col items-center gap-3 py-8 text-center">
+          <div className="flex w-full flex-col items-center gap-3 py-8 text-center ">
             {activeTab === "friends" ? (
               <>
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent-orange-bg text-accent-orange">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full  bg-accent-orange-bg text-accent-orange">
                   <Heart size={24} />
                 </div>
                 <p className="text-sm font-semibold text-brand-muted">

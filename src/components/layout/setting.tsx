@@ -96,7 +96,7 @@ export default function SettingsPanel({
 
   const handleLogout = async () => {
     try {
-      console.log("Initiating logout...");
+      //console.log("Initiating logout...");
       // 1. apagar cookie no servidor
       await fetch("/api/logout", {
         method: "POST",
@@ -146,7 +146,7 @@ export default function SettingsPanel({
       try {
         setLoadingUser(true);
         const { profile } = await api.get<MeResponse>("/user/me");
-        console.log("Loaded user profile:", profile);
+       // console.log("Loaded user profile:", profile);
         setUser(profile);
         setFields({
           displayName: profile.displayName ?? "",

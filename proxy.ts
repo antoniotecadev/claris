@@ -38,7 +38,7 @@ const getPreferredLocale = (request: NextRequest) => {
 
 export function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
-	console.log("Pathname: ", pathname);
+	//console.log("Pathname: ", pathname);
 
 	const localeInPath = getLocaleFromPathname(pathname);
 	if (!localeInPath) {
@@ -58,8 +58,8 @@ export function proxy(request: NextRequest) {
 
 	const token = request.cookies.get("auth_token")?.value;
 
-	console.log("Token: ", token);
-	console.log("Is Public Route2: ", isPublicRoute);
+	//console.log("Token: ", token);
+	//console.log("Is Public Route2: ", isPublicRoute);
 
 	if (!token && !isPublicRoute) {
 		return NextResponse.redirect(

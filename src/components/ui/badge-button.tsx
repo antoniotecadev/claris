@@ -14,7 +14,7 @@ export function BadgeButton({
   loading, 
   loadingText = "...", 
   variant = "primary",
-  className = "",
+  className = "dark:bg-slate-300 dark:border-slate-800 ",
   ...props 
 }: BadgeButtonProps) {
   const baseClasses = "flex h-7 items-center gap-1 rounded-full px-2.5 text-[10px] font-semibold shadow-sm transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50";

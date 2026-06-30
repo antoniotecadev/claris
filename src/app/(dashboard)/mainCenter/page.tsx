@@ -252,9 +252,9 @@ function mapMembershipToMember(membership: MembershipResponseItem): Member {
 
 const ADMIN_ROLES = new Set(["ADMIN", "SUPER_ADMIN"]);
 const EVENT_IMAGE_FALLBACK = "/igreja.png";
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/v1/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
 const SOCKET_BASE_URL =
-	process.env.NEXT_PUBLIC_SOCKET_URL || API_BASE_URL.replace(/\/v1\/api\/?$/, "");
+	process.env.NEXT_PUBLIC_SOCKET_URL || API_BASE_URL.replace(/\/api\/v1\/?$/, "");
 
 function formatEventDate(value: string) {
 	const date = new Date(value);

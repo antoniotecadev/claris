@@ -20,7 +20,7 @@ import { getAuthToken } from "@/lib/auth-cookies"
 import { useMessages } from "@/i18n/messages"
 import { FeedbackToast } from "@/components/ui/feedback-toast"
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/v1/api"
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1"
 
 type CreateEventDialogProps = {
 	organizationId: string
@@ -360,25 +360,4 @@ export function CreateEventDialog({
 						{submitting ? (
 							<>
 								<Loader2 size={16} className="animate-spin" />
-								{t("common.saving") || "A guardar..."}
-							</>
-						) : (
-							<>
-								<Check size={16} />
-								{t("events.create.submit") || "Criar Evento"}
-							</>
-						)}
-					</Button>
-				</DialogFooter>
-				</DialogContent>
-			</Dialog>
-			<FeedbackToast
-				open={toastOpen}
-				title={toastTitle}
-				description={toastDescription}
-				variant={toastVariant}
-				onClose={() => setToastOpen(false)}
-			/>
-		</>
-	)
-}
+								{t("common.saving") ||

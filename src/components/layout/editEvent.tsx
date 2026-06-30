@@ -28,7 +28,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { getAuthToken } from "@/lib/auth-cookies"
 
 const BASE_URL =
-	process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/v1/api"
+	process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1"
 
 export type EditEventData = {
 	id: string

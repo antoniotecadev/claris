@@ -128,7 +128,7 @@ export function DialogDemo({
 
 			const token = await getAuthToken();
 
-			const response = await fetch("http://localhost:3001/v1/api/organizations", {
+			const response = await fetch("http://localhost:3001/api/v1/organizations", {
 				method: "POST",
 				body: formData,
 				headers: {

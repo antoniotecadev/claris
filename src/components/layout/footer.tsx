@@ -28,7 +28,7 @@ export default function Footer() {
 
        
                     <div>
-                        <h3 className="font-semibold text-[#1A365D] mb-3">
+                        <h3 className="font-semibold dark:text-slate-50 text-[#1A365D] mb-3">
                             {t("footer.legalTitle")}
                         </h3>
                         <ul className="space-y-2 text-sm text-slate-500 dark:text-slate-400">

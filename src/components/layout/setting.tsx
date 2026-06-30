@@ -294,52 +294,52 @@ export default function SettingsPanel({
 
   const initials = user?.displayName?.[0]?.toUpperCase() ?? "U";
   const shellClassName = isPage
-    ? "min-h-screen bg-[#F7F9FC] text-[#002045]"
-    : "fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col animate-slide-in";
+    ? "min-h-screen  bg-[#F7F9FC] text-[#002045] dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]"
+    : "fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col animate-slide-in dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]";
   const contentClassName = isPage
-    ? "mx-auto flex min-h-screen w-full max-w-4xl flex-col px-4 py-6 sm:px-6 lg:px-8"
+    ? "mx-auto flex min-h-screen w-full max-w-4xl flex-col px-4 py-6 sm:px-6 lg:px-8 "
     : "flex h-full flex-col";
   const bodyClassName = isPage
-    ? "flex-1 rounded-2xl bg-white shadow-sm ring-1 ring-slate-200"
-    : "flex min-h-0 flex-1 flex-col";
+    ? "flex-1 rounded-2xl bg-white shadow-sm ring-1 dark:ring-slate-800 ring-slate-200 dark:bg-slate-900"
+    : "flex min-h-0 flex-1 flex-col dark:bg-slate-900";
 
   return (
     <>
       {/* Overlay */}
       {!isPage && (
         <div
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+          className="fixed inset-0    bg-black/30 backdrop-blur-sm z-40"
           onClick={onClose}
         />
       )}
 
-      <section className={shellClassName}>
+      <section className={shellClassName} >
         <div className={contentClassName}>
           <div className={bodyClassName}>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-100">
-          <p className="text-[#002045] font-semibold text-lg">{t("settings.title")}</p>
+        <div className="flex items-center  justify-between px-6 py-5 border-b dark:border-slate-800 border-zinc-100">
+          <p className="text-[#002045] dark:text-slate-50 font-semibold text-lg">{t("settings.title")}</p>
           <button
             onClick={() => (isPage ? router.back() : onClose?.())}
-            className="p-2 rounded-xl hover:bg-zinc-100 transition-colors"
+            className="p-2 rounded-xl dark:hover:bg-slate-800 hover:bg-zinc-100 transition-colors"
             aria-label={isPage ? "Voltar" : "Fechar"}
           >
             {isPage ? (
-              <ArrowLeft size={18} className="text-zinc-500" />
+              <ArrowLeft size={18} className="dark:text-slate-50 text-zinc-500" />
             ) : (
-              <X size={18} className="text-zinc-500" />
+              <X size={18} className="dark:text-slate-50 text-zinc-500" />
             )}
           </button>
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-zinc-100 px-6">
+        <div className="flex border-b dark:border-slate-800 border-zinc-100 px-6">
           <button
             onClick={() => setActiveTab("profile")}
             className={`py-3 px-4 text-sm font-medium border-b-2 transition-colors ${activeTab === "profile"
-              ? "border-[#002045] text-[#002045]"
-              : "border-transparent text-[#475F83] hover:text-[#002045]"
+              ? "border-[#002045] dark:border-slate-50 dark:text-slate-50 text-[#002045]"
+              : "border-transparent text-[#475F83] dark:text-slate-500 dark:hover:text-slate-800 hover:text-[#002045]"
               }`}
           >
             {t("settings.tabs.profile")}
@@ -348,8 +348,8 @@ export default function SettingsPanel({
             <button
               onClick={() => setActiveTab("password")}
               className={`py-3 px-4 text-sm font-medium border-b-2 transition-colors ${activeTab === "password"
-                ? "border-[#002045] text-[#002045]"
-                : "border-transparent text-[#475F83] hover:text-[#002045]"
+                ? "border-[#002045] dark:border-slate-50 dark:text-slate-50 text-[#002045]"
+                : "border-transparent text-[#475F83] dark:text-slate-500 dark:hover:text-slate-800 hover:text-[#002045]"
                 }`}
             >
               {t("settings.tabs.password")}
@@ -392,34 +392,35 @@ export default function SettingsPanel({
                   onChange={handleAvatarChange}
                 />
               </div>
-              <p className="text-[#002045] font-medium">{user?.displayName}</p>
-              <p className="text-[#475F83] text-sm">{user?.email}</p>
+              <p className="text-[#002045] dark:text-slate-50 font-medium">{user?.displayName}</p>
+              <p className="text-[#475F83] dark:text-slate-300 text-sm">{user?.email}</p>
             </div>
 
             {/* Campos */}
             <div className="flex flex-col gap-4">
-              <p className="text-[#002045] text-xs font-semibold tracking-widest uppercase">
+              <p className="text-[#002045] dark:text-slate-50 text-xs font-semibold tracking-widest uppercase">
                 {t("settings.profile.sectionTitle")}
               </p>
 
               {/* Nome */}
               <div className="flex flex-col gap-1">
-                <label className="text-[#43474E] text-sm flex items-center gap-2">
+                <label className="text-[#43474E] dark:text-slate-300 text-sm flex items-center gap-2">
                   <User size={14} />
                   {t("settings.profile.name")}
                 </label>
                 <input
                   type="text"
                   name="displayName"
+                  placeholder="Nome"
                   value={fields.displayName}
                   onChange={handleChange}
-                  className="bg-[#F8F9FA] border border-zinc-200 rounded-xl px-4 py-3 text-[#1A1C1C] focus:outline-none focus:border-[#1E3A8A] transition-colors"
+                  className="bg-[#F8F9FA]  dark:bg-slate-900 dark:text-slate-300 dark:border-slate-300 border border-zinc-200 rounded-xl px-4 py-3 text-[#1A1C1C] focus:outline-none focus:border-[#1E3A8A] transition-colors"
                 />
               </div>
 
               {/* Género */}
               <div className="flex flex-col gap-1">
-                <label className="text-[#43474E] text-sm flex items-center gap-2">
+                <label className="text-[#43474E] dark:text-slate-300 text-sm flex items-center gap-2">
                   <Users size={14} />
                   {t("settings.profile.gender")}
                 </label>
@@ -427,7 +428,7 @@ export default function SettingsPanel({
                   name="gender"
                   value={fields.gender}
                   onChange={handleChange}
-                  className="bg-[#F8F9FA] border border-zinc-200 rounded-xl px-4 py-3 text-[#1A1C1C] focus:outline-none focus:border-[#1E3A8A] transition-colors"
+                  className="bg-[#F8F9FA] dark:bg-slate-900 dark:text-slate-300 dark:border-slate-300 border border-zinc-200 rounded-xl px-4 py-3 text-[#1A1C1C] focus:outline-none focus:border-[#1E3A8A] transition-colors"
                 >
                   <option value="">{t("settings.profile.genderSelect")}</option>
                   <option value="MALE">{t("settings.profile.genderMale")}</option>
@@ -438,12 +439,12 @@ export default function SettingsPanel({
 
             {/* Feedback */}
             {success && (
-              <p className="text-sm text-green-600 font-medium bg-green-50 px-4 py-2 rounded-xl">
+              <p className="text-sm text-green-600 font-medium dark:bg-slate-900 bg-green-50 px-4 py-2 rounded-xl">
                 ✓ {t("settings.profile.saved")}
               </p>
             )}
             {error && (
-              <p className="text-sm text-red-600 font-medium bg-red-50 px-4 py-2 rounded-xl">
+              <p className="text-sm text-red-600 dark:bg-slate-900 font-medium bg-red-50 px-4 py-2 rounded-xl">
                 {error}
               </p>
             )}
@@ -459,7 +460,7 @@ export default function SettingsPanel({
             </button>
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="w-full flex items-center justify-center gap-2 text-red-700 hover:bg-red-100 rounded-xl px-4 py-3 transition-colors text-sm font-medium mt-2 border-solid border-red-700 border-2"
+              className="w-full flex items-center justify-center gap-2 text-red-700 dark:hover:bg-red-300 hover:bg-red-100 rounded-xl px-4 py-3 transition-colors text-sm font-medium mt-2 border-solid border-red-700 border-2"
             >
               {t("settings.delete")}
             </button>
@@ -574,10 +575,10 @@ export default function SettingsPanel({
         )}
 
         {/* Footer */}
-        <div className="px-6 py-5 border-t border-zinc-100">
+        <div className="px-6 py-5 border-t dark:border-slate-800 border-zinc-100">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 text-red-500 hover:bg-red-50 rounded-xl px-4 py-3 transition-colors text-sm font-medium"
+            className="w-full flex items-center justify-center gap-2 text-red-500 dark:hover:bg-red-300 hover:bg-red-50 rounded-xl px-4 py-3 transition-colors text-sm font-medium"
           >
             <LogOut size={16} />
             {t("settings.logout")}
@@ -588,19 +589,19 @@ export default function SettingsPanel({
 
         {showDeleteConfirm && (
           <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
-              <h2 className="text-lg font-semibold text-[#002045]">
+            <div className="bg-white rounded-2xl dark:bg-slate-900 p-6 w-full max-w-sm shadow-2xl">
+              <h2 className="text-lg font-semibold dark:text-slate-50 text-[#002045]">
                 {t("settings.deleteConfirm.title")}
               </h2>
 
-              <p className="text-sm text-[#475F83] mt-2">
+              <p className="text-sm dark:text-slate-300 text-[#475F83] mt-2">
                 {t("settings.deleteConfirm.description")}
               </p>
 
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={() => setShowDeleteConfirm(false)}
-                  className="flex-1 border border-zinc-200 rounded-xl py-3 text-sm font-medium hover:bg-zinc-50"
+                  className="flex-1 border border-zinc-200 rounded-xl py-3 text-sm dark:bg-slate-800 font-medium hover:bg-zinc-50"
                 >
                   {t("common.cancel")}
                 </button>

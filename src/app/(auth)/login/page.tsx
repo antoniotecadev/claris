@@ -36,9 +36,9 @@ export default function Login() {
 	}, [state, router, locale]);
 
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6">
+		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6 dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]">
 
-			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
+			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-t-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
 
 				<div className="side  w-full md:w-[45%] flex flex-col justify-between p-8 relative overflow-hidden min-h-200 md:min-h-0 self-stretch">
 					<div className="absolute inset-0 bg-linear-to-b from-[rgba(0,32,69,0.15)] to-[rgba(0,32,69,0.45)] pointer-events-none z-0" />
@@ -188,8 +188,8 @@ export default function Login() {
 			</div>
 
 			{/* ===== FOOTER ===== */}
-			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
-				<p className="text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
+			<footer className="flex dark:bg-slate-900 flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
+				<p className=" dark:text-slate-50 text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
 				<div className="flex gap-5">
 					<Link href={privacyHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
 						{t("footer.privacy")}

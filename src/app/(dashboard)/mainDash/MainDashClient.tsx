@@ -349,10 +349,10 @@ export default function MainDashClient() {
 						</div>
 
 						{organizations.length === 0 ? (
-							<div className="mt-6 flex min-h-48 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center ">
-								<Building2 size={32} className="text-[#1E3A8A]/50" />
-								<p className="mt-4 text-lg font-semibold text-[#475F83]">{t("dashboard.main.empty.title")}</p>
-								<p className="mt-2 text-sm text-slate-400">{t("dashboard.main.empty.subtitle")}</p>
+							<div className="mt-6 flex min-h-48 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 dark:bg-slate-900 bg-slate-50 px-6 py-12 text-center ">
+								<Building2 size={32} className="text-[#1E3A8A]/50 dark:text-slate-50" />
+								<p className="mt-4 text-lg font-semibold dark:text-slate-200 text-[#475F83]">{t("dashboard.main.empty.title")}</p>
+								<p className="mt-2 text-sm text-slate-400 dark:text-slate-400">{t("dashboard.main.empty.subtitle")}</p>
 							</div>
 						) : filteredOrganizations.length === 0 ? (
 							<div className="mt-6 flex min-h-48 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">

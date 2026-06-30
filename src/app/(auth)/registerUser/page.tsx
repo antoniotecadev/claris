@@ -75,7 +75,7 @@ export default function RegisterUser() {
 
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.16),transparent_28%),linear-gradient(to_bottom,#e5eef9,#dbeafe)] px-4 py-8 text-slate-900 dark:bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_26%),linear-gradient(to_bottom,#020617,#0f172a)] dark:text-slate-50">
-			<div className="flex w-full max-w-240 flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/80 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur-xl md:flex-row dark:border-white/10 dark:bg-slate-950/70">
+			<div className="flex w-full max-w-240 flex-col overflow-hidden rounded-t-2xl border border-white/60 bg-white/80 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur-xl md:flex-row dark:border-white/10 dark:bg-slate-950/70">
 				<div className="side2 relative min-h-75 w-full flex flex-col justify-between overflow-hidden bg-slate-900 p-8 md:min-h-175 md:w-[45%] self-stretch">
 					<div className="absolute inset-0 bg-linear-to-b from-[rgba(2,6,23,0.2)] via-[rgba(2,6,23,0.56)] to-[rgba(2,6,23,0.84)] pointer-events-none z-0" />
 					<div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.16),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(56,189,248,0.10),transparent_30%)]" />
@@ -107,7 +107,7 @@ export default function RegisterUser() {
 					</div>
 				</div>
 
-				<div className="w-full md:w-[55%] flex flex-col justify-center bg-[linear-gradient(180deg,rgba(248,250,252,0.92),rgba(241,245,249,0.95))] p-7 self-stretch md:p-10 dark:bg-[linear-gradient(180deg,rgba(15,23,42,0.92),rgba(2,6,23,0.96))]">
+				<div className="w-full md:w-[55%] flex items-center justify-center gradientes p-7 md:p-10 self-stretch">
 					<div className="mx-auto flex w-full max-w-100 flex-col">
 						<div className="mb-6">
 							<p className="text-[1.65rem] font-bold text-gray-900 font-serif italic mb-1.5">
@@ -345,8 +345,8 @@ export default function RegisterUser() {
 				</div>
 			</div>
 
-			<footer className="flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
-				<p className="text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
+			<footer className="dark:bg-slate-900 flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
+				<p className="dark:text-slate-50 text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
 				<div className="flex gap-5">
 					<Link href={privacyHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
 						{t("footer.privacy")}

@@ -18,11 +18,4 @@ export class OrganizationsController {
     async getOrganizations() {
         return this.OrganizationsService.listAllOrganizations();
     }
-    @Get('organizations/current/:organizationId')
-    @UseGuards(ApiKeyGuard, RateLimitGuard)
-    @ApiOperation({ summary: 'Obter organização actual', description: 'Retorna dados da organização indicada' })
-    @ApiSecurity('api_key')
-    async getCurrentOrganization(@Param('organizationId') organizationId: string) {
-        return await this.OrganizationsService.getCurrentOrganization(organizationId);
-    }
 }

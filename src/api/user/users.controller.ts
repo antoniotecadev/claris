@@ -12,14 +12,18 @@ import { UsersService } from './users.service';
 import { UserDto } from './dto/user.dto';
 import { ApiKeyGuard } from '../api-key.guard';
 import { RateLimitGuard } from '../rate-limit.guard';
-import { ApiSecurity } from '@nestjs/swagger';
+import { ApiOperation, ApiSecurity } from '@nestjs/swagger';
 
 @Controller('public')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Post('user/')
   @UseGuards(ApiKeyGuard, RateLimitGuard)
+  @ApiOperation({
+    summary: 'Registar um novo utilizador',
+    description: 'Cria uma nova conta de utilizador utilizando o e-mail e os dados fornecidos.'
+  })
   @ApiSecurity('api_key')
   async register(@Body() dto: UserDto) {
     return await this.usersService.registerWithEmail(dto);
@@ -27,6 +31,10 @@ export class UsersController {
 
   @Get('user/me/:userId')
   @UseGuards(ApiKeyGuard, RateLimitGuard)
+  @ApiOperation({
+    summary: 'Obter perfil do utilizador',
+    description: 'Retorna os dados do perfil do utilizador identificado pelo ID informado.'
+  })
   @ApiSecurity('api_key')
   getMyProfile(@Param('userId') userId: string) {
     return this.usersService.getMe(userId);
@@ -34,6 +42,10 @@ export class UsersController {
 
   @Patch('user/me/:userId')
   @UseGuards(ApiKeyGuard, RateLimitGuard)
+  @ApiOperation({
+    summary: 'Atualizar perfil do utilizador',
+    description: 'Atualiza as informações do perfil do utilizador identificado pelo ID informado.'
+  })
   @ApiSecurity('api_key')
   updateMyProfile(
     @Param('userId') userId: string,
@@ -44,6 +56,10 @@ export class UsersController {
 
   @Delete('user/me/:userId')
   @UseGuards(ApiKeyGuard, RateLimitGuard)
+  @ApiOperation({
+    summary: 'Eliminar conta do utilizador',
+    description: 'Remove permanentemente a conta do utilizador identificado pelo ID informado.'
+  })
   @ApiSecurity('api_key')
   deleteMyAccount(@Param('userId') userId: string) {
     return this.usersService.deleteMyAccount(userId);

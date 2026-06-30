@@ -8,15 +8,17 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { UserDto } from './dto/user.dto';
+import { CreateUserDto } from './dto/user.dto';
 import { ApiKeyGuard } from '../api-key.guard';
 import { RateLimitGuard } from '../rate-limit.guard';
 import { ApiOperation, ApiSecurity } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('public')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post('user/')
   @UseGuards(ApiKeyGuard, RateLimitGuard)
@@ -24,8 +26,8 @@ export class UsersController {
     summary: 'Registar um novo utilizador',
     description: 'Cria uma nova conta de utilizador utilizando o e-mail e os dados fornecidos.'
   })
-  @ApiSecurity('api_key')
-  async register(@Body() dto: UserDto) {
+  @ApiSecurity('api_key') // Mostra no Swagger que precisa de chave
+  async register(@Body() dto: CreateUserDto) {
     return await this.usersService.registerWithEmail(dto);
   }
 
@@ -49,7 +51,7 @@ export class UsersController {
   @ApiSecurity('api_key')
   updateMyProfile(
     @Param('userId') userId: string,
-    @Body() dto: UserDto,
+    @Body() dto: CreateUserDto,
   ) {
     return this.usersService.updateMe(dto, userId);
   }

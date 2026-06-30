@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module'; // Onde os controladores e serviços são definidos.
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ApiOrganizationsModule } from './api/organizations/organizations.module';
+import { ApiUsersModule } from './api/user/users.module';
 
 // Ponto de entrada da aplicação,
 // onde o aplicativo é criado e configurado para ouvir as solicitações na porta especificada (padrão 3000).
@@ -10,7 +12,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('/v1/api'); // Todas as rotas terão prefixo /v1/api
+  app.setGlobalPrefix('/api/v1'); // Todas as rotas terão prefixo /api/api
   app.enableCors({
     origin: 'http://localhost:3000', // Permite solicitações do frontend local
     credentials: true, // Permite envio de cookies e credenciais
@@ -29,24 +31,30 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Claris API')
-    .setDescription('Documentação da API para os Membros B, C e D')
-    .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'JWT',
-        description: 'Insira o seu token JWT',
-        in: 'header',
-      },
-      'access-token', // Este é o nome da referência para usarmos nos controllers
-    )
-    .build();
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+    .setTitle('Claris Public API')
+    .setDescription('Public API secured with API Key',)
+    .setVersion('1.0.0')
+    .addApiKey(
+      {
+        type: 'apiKey',
+        in: 'header',
+        name: 'x-api-key',
+        description: 'Public API Key',
+      },
+      'api_key',
+    ).build();
+
+  const document = SwaggerModule.createDocument(app, config,
+    {
+      include: [
+        ApiUsersModule,
+        ApiOrganizationsModule,
+      ],
+    },
+  );
+
+  SwaggerModule.setup('public/docs', app, document,);
 
   await app.listen(process.env.PORT ?? 3001);
 }

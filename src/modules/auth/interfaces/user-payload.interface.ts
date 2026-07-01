@@ -1,9 +1,13 @@
-export interface UserPayload{
-	id: string | undefined,
-	email: string | undefined,
-	displayName: string | undefined,
-	gender?: string | null,
-	birthDate?: Date | null,
-	avatarUrl?: string | null ;
-	role?: string;
-};
+
+export interface UserPayload {
+  id: string;
+  email: string;
+  displayName: string; 
+  gender?: string | null;
+  birthDate?: Date | null;
+  avatarUrl?: string | null; 
+  organizationId?: string; 
+  role?: string; 
+  lastSeen?: Date | null;
+  createdAt?: Date | null;
+}

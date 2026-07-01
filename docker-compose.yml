@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: church-saas-db
+    container_name: claris-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USER}
@@ -19,4 +19,4 @@ services:
 
 volumes:
   postgres_data:
-    name: church-saas-postgres-data
+    name: claris-postgres-data

@@ -4,7 +4,7 @@
 
 ```bash
 # via Docker (container do projeto)
-docker exec -it church-saas-db psql -U $DB_USER -d $DB_NAME
+docker exec -it claris-db psql -U $DB_USER -d $DB_NAME
 
 # via host local
 psql -h localhost -p 5432 -U postgres -d postgres

@@ -360,4 +360,25 @@ export function CreateEventDialog({
 						{submitting ? (
 							<>
 								<Loader2 size={16} className="animate-spin" />
-								{t("common.saving") ||
+								{t("common.saving") || "Salvando..."}
+							</>
+						) : (
+							<>
+								<Check size={16} />
+								{t("events.create.submit") || "Criar Evento"}
+							</>
+						)}
+					</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
+		<FeedbackToast
+			open={toastOpen}
+			onOpenChange={setToastOpen}
+			title={toastTitle}
+			description={toastDescription}
+			variant={toastVariant}
+		/>
+		</>
+	)
+}

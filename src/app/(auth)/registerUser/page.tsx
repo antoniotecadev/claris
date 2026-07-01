@@ -82,7 +82,7 @@ export default function RegisterUser() {
 
 					<div className="relative z-10 flex items-center gap-2.5">
 						<div className="w-9 h-10.5 flex items-center justify-center">
-							<Image src={Logo} alt="Claris Logo" className="w-full h-full object-contain" />
+							<Image src={Logo} alt="Claris Logo" loading="eager" className="w-full h-full object-contain" />
 						</div>
 						<p className="text-white text-2xl font-semibold tracking-wider">CLARIS</p>
 					</div>

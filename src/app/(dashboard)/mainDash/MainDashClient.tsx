@@ -253,9 +253,9 @@ export default function MainDashClient() {
 					<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 						<div className="flex items-center gap-3">
 							<div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white dark:bg-[#00000000] shadow-sm ring-1 ring-slate-200 dark:ring-slate-800">
-								<Image src={icon} alt="Logo" loading="eager"  width={30} className="block dark:hidden" style={{ height: "auto" }} />
+								<img src={icon.src} alt="Logo" className="block dark:hidden w-[30px] h-[30px]" />
 								{/* Imagem para Modo Escuro */}
-								<Image src={iconDark} alt="Logo"  loading="eager" width={30} className="hidden dark:block" style={{ height: "auto" }} />
+								<img src={iconDark.src} alt="Logo" className="hidden dark:block w-[30px] h-[30px]" />
 							</div>
 							<div>
 								<h1 className="text-xl font-bold tracking-wide text-[#1E3A8A] dark:text-slate-50">CLARIS</h1>

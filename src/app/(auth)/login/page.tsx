@@ -46,7 +46,7 @@ export default function Login() {
 					<Link href="/">
 					<div className="flex items-center gap-2.5 relative z-10">
 						<div className="w-9 h-10.5 flex items-center justify-center">
-							<Image src={Logo} loading="eager" alt="Claris Logo" className="w-full h-full object-contain" />
+							<img src={Logo.src} alt="Claris Logo" className="w-full h-full object-contain" />
 						</div>
 						<p className="text-white text-2xl font-semibold tracking-wider">CLARIS</p>
 					</div>

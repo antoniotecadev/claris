@@ -42,6 +42,7 @@ export default function CommunityCard({
 					<img
 						src={logoUrl}
 						alt={t("community.logoAlt", { name })}
+						loading="eager"
 						className="h-full w-full object-contain p-3 transition-transform duration-300 group-hover:scale-105"
 					/>
 				) : (

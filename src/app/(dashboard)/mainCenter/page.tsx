@@ -1336,11 +1336,8 @@ function DashboardPageContent() {
 				<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 					<Link href={backHref} className="flex items-center justify-center gap-3">
 						<span className="flex h-11 w-11 items-center justify-center rounded-2xl dark:ring-slate-800 dark:bg-slate-900  bg-white shadow-sm ring-1 ring-slate-200">
-							<Image src={Logo} className="block dark:hidden" alt={t("common.logoAlt")} width={34} height={34} />
-							<Image src={LogoDark} className="hidden dark:block" alt={t("common.logoAlt")} width={34} height={34} style={{
-								width: "34px",
-								height: "34px",
-							}} />
+							<img src={Logo.src} className="block dark:hidden w-[34px] h-[34px]" alt={t("common.logoAlt")} />
+							<img src={LogoDark.src} className="hidden dark:block w-[34px] h-[34px]" alt={t("common.logoAlt")} />
 						</span>
 					</Link>
 					<div className="flex items-center gap-3">
@@ -1412,6 +1409,7 @@ function DashboardPageContent() {
 											width={72}
 											height={72}
 											unoptimized
+											priority
 											className="h-18 w-18 shrink-0 rounded-2xl object-contain ring-1 dark:ring-slate-800  ring-slate-200"
 										/>
 									) : (

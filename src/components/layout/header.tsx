@@ -49,9 +49,9 @@ export default function Header() {
 			<header className='sticky top-0 z-40 border-b border-white/70 bg-white/75 py-3 text-slate-900 shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-50'>
 				<nav className='flex justify-between items-center container mx-auto px-4 md:px-6 lg:px-0' >
 					<div className='flex justify-center items-center gap-2 md:gap-4'>
-						<Link href="#inicio" aria-label="Ir para o início">
-							<Image src={icon} alt='Logo' width={40} className="md:w-12 block dark:hidden" style={{ height: "auto" }} />
-							<Image src={iconDark} alt='Logo' width={40} className="md:w-12 hidden dark:block" style={{ height: "auto" }} />
+						<Link href="#inicio" aria-label="Ir para o início" className="w-10 md:w-12 block">
+							<img src={icon.src} alt='Logo' className="block dark:hidden w-full h-auto" />
+							<img src={iconDark.src} alt='Logo' className="hidden dark:block w-full h-auto" />
 						</Link>
 					</div>
 

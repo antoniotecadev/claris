@@ -55,6 +55,7 @@ export default function CommunityJoin({
             <img
               src={logoUrl}
               alt={t("community.logoAlt", { name })}
+              loading="eager"
               className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-sm"
             />
           ) : (

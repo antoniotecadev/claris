@@ -64,15 +64,6 @@ export default function RegisterUser() {
 		}
 	}, [state, router, setUser, locale]);
 
-	const handleLegalNavigation = (
-		event: React.MouseEvent<HTMLAnchorElement>,
-		href: string,
-	) => {
-		event.preventDefault();
-		event.stopPropagation();
-		router.push(href);
-	};
-
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.16),transparent_28%),linear-gradient(to_bottom,#e5eef9,#dbeafe)] px-4 py-8 text-slate-900 dark:bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_26%),linear-gradient(to_bottom,#020617,#0f172a)] dark:text-slate-50">
 			<div className="flex w-full max-w-240 flex-col overflow-hidden rounded-t-2xl border border-white/60 bg-white/80 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur-xl md:flex-row dark:border-white/10 dark:bg-slate-950/70">
@@ -284,7 +275,7 @@ export default function RegisterUser() {
 									</label>
 									<Link
 										href={termsHref}
-										onClick={(event) => handleLegalNavigation(event, termsHref)}
+										target="_blank"
 										className="text-[#002045] font-semibold hover:underline"
 									>
 										{t("auth.register.terms")}
@@ -292,7 +283,7 @@ export default function RegisterUser() {
 									<span>{t("auth.register.and")} </span>
 									<Link
 										href={privacyHref}
-										onClick={(event) => handleLegalNavigation(event, privacyHref)}
+										target="_blank"
 										className="text-[#002045] font-semibold hover:underline"
 									>
 										{t("auth.register.privacy")}
@@ -348,13 +339,13 @@ export default function RegisterUser() {
 			<footer className="dark:bg-slate-900 flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
 				<p className="dark:text-slate-50 text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
 				<div className="flex gap-5">
-					<Link href={privacyHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+					<Link href={privacyHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
 						{t("footer.privacy")}
 					</Link>
-					<Link href={termsHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+					<Link href={termsHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
 						{t("footer.terms")}
 					</Link>
-					<Link href={supportHref} className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+					<Link href={supportHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
 						{t("footer.support")}
 					</Link>
 				</div>

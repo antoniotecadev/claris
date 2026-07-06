@@ -33,12 +33,10 @@ export default function SelectOrganizationPage() {
     setSelecting(true);
     try {
       const data = await selectOrganization(selectionToken, organizationId);
-      const accessToken = data?.user?.token?.access_token;
+      const accessToken = data?.user?.token?.access_token ?? data?.token?.access_token;
 
       if (accessToken) {
-        // Guardar token e redirecionar
-        localStorage.setItem("access_token", accessToken);
-        router.push("/dashboard");
+        router.push("/mainDash");
       } else {
         setError("Erro ao selecionar organização.");
       }

@@ -1,43 +1,47 @@
 "use server"
-import axios from "axios";
 import { redirect } from "next/navigation";
+import { api } from "@/lib/api";
+import { setAuthToken } from "@/lib/auth-cookies";
+import type { ActionResult, VerifyCodeResponse } from "@/types/auth.types";
 
 
-export async function sendCodeAction(prevState: any, code: string, email: string) {
+export async function sendCodeAction(_prevState: unknown, code: string, email: string): Promise<ActionResult> {
 	if (!code || !email) {
 		return { success: false, error: "Código e email são obrigatórios." };
 	}
 	let redirecionarUrl: string | null = null;
 
 	try {
-		const res = await axios.post(
-			"http://localhost:3001/v1/api/auth/email/verify",
-			{ email, code }
-		);
-
-		const data = res.data?.result ?? res.data;
+		const res = await api.post<{ result?: VerifyCodeResponse } & VerifyCodeResponse>("/auth/email/verify", { email, code });
+		const data = res?.result ?? res;
 		console.log("Resposta da verificação -> ", data);
 
-		if (data?.success) {
-			redirecionarUrl = `/mainDash?token=${encodeURIComponent(
-				data?.token,
+		const accessToken = data?.user?.token?.access_token ?? data?.token?.access_token;
+		if (accessToken) {
+			await setAuthToken(accessToken);
+			redirecionarUrl = "/mainDash";
+		} else if (data?.requireOrganizationSelection) {
+			if (!data.selectionToken) {
+				return { success: false, error: "Token de seleção não informado pelo servidor." };
+			}
+			redirecionarUrl = `/select-organization?selectionToken=${encodeURIComponent(
+				data.selectionToken,
 			)}`;
-			
+		} else if (data?.success) {
+			redirecionarUrl = "/mainDash";
 
 		} else {
 			return { success: false, error: "Resposta inesperada do servidor." };
 		}
 
-	} catch (error: any) {
-
-		const messages = error?.response?.data?.message;
-		const errorMessage = Array.isArray(messages)
-			? messages[0]
-			: messages || "Erro inesperado. Tente novamente.";
+	} catch (error: unknown) {
+		const errorMessage = error instanceof Error ? error.message : "Erro inesperado. Tente novamente.";
 
 		return { success: false, error: errorMessage };
 	}
 	if (redirecionarUrl) {
 		redirect(redirecionarUrl);
 	}
+
+	return { success: true };
 }

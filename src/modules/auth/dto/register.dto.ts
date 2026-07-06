@@ -1,33 +1,32 @@
-import { IsString, IsEmail, IsNotEmpty, IsOptional, IsDateString, IsUrl, MaxLength, MinLength, isString } from "class-validator";
-import { PatchUndefined } from "generated/prisma/internal/prismaNamespace";
+import { IsDateString, IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl, MaxLength, MinLength } from 'class-validator';
 
-export class RegisterDto{
-	@IsEmail({}, { message: 'Email inválido' })
-	@IsNotEmpty({ message: 'O Email é obrigatório' })
-	email: string | undefined
+export class RegisterDto {
+  @IsEmail({}, { message: 'Email inválido' })
+  @IsNotEmpty({ message: 'Email é obrigatório' })
+  email: string;
 
-	@IsString()
-	@IsNotEmpty({ message: 'A senha é obrigatória' })
-	@MinLength(6, { message: 'A senha deve ter no mínimo 6 caracteres' })
-	password: string | undefined
+  @IsString()
+  @IsNotEmpty({ message: 'Senha é obrigatória' })
+  @MinLength(6, { message: 'A senha deve ter no mínimo 6 caracteres' })
+  password: string;
 
-	@IsString()
-	@IsNotEmpty({ message: 'O nome é obrigatório' })
-	@MinLength(2)
-	@MaxLength(80)
-	displayName: string | undefined
+  @IsString()
+  @IsNotEmpty({ message: 'Nome é obrigatório' })
+  @MinLength(2)
+  @MaxLength(80)
+  displayName: string;
 
-	@IsOptional()
-	@IsString()
-	@MaxLength(9)
-	gender? : string
+  @IsOptional()
+  @IsString()
+  @MaxLength(30)
+  gender?: string;
 
-	@IsOptional()
-	@IsDateString()
-	BirthDate: string | undefined
+  @IsOptional()
+  @IsDateString()
+  birthDate?: string;
 
-	@IsOptional()
-	@IsString()
-	@IsUrl({}, { message: 'Este campo deve ser uma URL válida' })
-	avatarUrl? : string
+  @IsOptional()
+  @IsString()
+  @IsUrl({}, { message: 'avatarUrl deve ser uma URL válida' })
+  avatarUrl?: string;
 }

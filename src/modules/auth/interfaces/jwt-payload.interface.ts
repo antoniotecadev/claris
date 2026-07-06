@@ -1,6 +1,7 @@
-export interface JwtPayload{
-	id: string | undefined;
-	email: string | undefined;
-	organizationId?: string;
-	role?: string
+
+export interface JwtPayload {
+  id: string;
+  email: string;
+  organizationId?: string;
+  role?: string;
 }

@@ -1,9 +1,21 @@
+"use client";
 import Image from "next/image";
 import Logo from "@/assets/images/lobo-SE.png"
 import Google from "@/assets/images/SVG.png"
 import { ArrowRight } from "lucide-react";
+import { loginAction } from "@/utils/actionsLogin";
+import { useActionState } from "react";
 
 export default function Login() {
+
+	const initialState = {
+		error: undefined,
+		success: false,
+		message: "",
+	};
+
+	const [state, formAction, pending] = useActionState(loginAction, initialState)
+
 	return (
 		<div >
 			<div >
@@ -29,28 +41,35 @@ export default function Login() {
 								<div className="w-94 h-181 flex flex-col ">
 									<p className="text-3xl text-black font-serif italic mb-4">BEM VINDO DE VOLTA</p>
 									<p className="text-[#43474E] mb-10">Insira os seus dados para aceder ao portal do Claris.</p>
-									<button className="p-4 bg-white text-black flex gap-2 hover:cursor-pointer items-center justify-center rounded-2xl mb-10">
+									<a href="http://localhost:3001/v1/api/auth/google" className="p-4 bg-white text-black flex gap-2 hover:cursor-pointer items-center justify-center rounded-2xl mb-10">
 										<Image src={Google} alt="Google" className="w-5 h-5" />
 										<p>Continue with Google</p>
-									</button>
+									</a>
 									<div className="flex gap-3 items-center justify-center mb-8">
 										<div className="w-31.5 h-px bg-gray-400"></div>
 										<p className="text-gray-500 text-[12px]">OR USE EMAIL</p>
 										<div className="w-31.5 h-px bg-gray-400"></div>
 									</div>
-									<form action="" className="flex flex-col">
+									<form action={formAction} className="flex flex-col">
 										<label htmlFor="email" className="text-[#43474E] mb-2.25">EMAIL ADDRESS</label>
-										<input type="email" id="email" placeholder="ex pastor@claris.org " className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-6" />
+										<input type="email" name="email" required id="email" placeholder="ex pastor@claris.org " className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-6" />
 										<label htmlFor="pss" className="text-[#43474E] flex justify-between mb-2.25">
 											<p>SENHA</p>
 											<p className="text-[#002045] hover:cursor-pointer">Esqueceu sua senha?</p>
 										</label>
-										<input type="password" id="pss" placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-6" />
-
-										<button className="bg-[#002045] flex justify-center items-center gap-2 text-white h-14 rounded-2xl mb-10 hover:cursor-pointer">
-											<p>ENTRAR</p>
+										<input type="password" id="pss" name="password" required placeholder="........" className="text-[#74777F] bg-white rounded-2xl h-13.5 p-4 mb-6" />
+										{state?.error && (
+											<div className="mb-3  ">
+												<p className="text-sm text-red-600 font-medium flex items-center gap-2">
+													{state.error}
+												</p>
+											</div>
+										)}
+										<button type="submit" disabled={pending} className="bg-[#002045] flex justify-center items-center gap-2 text-white h-14 rounded-2xl mb-10 hover:cursor-pointer">
+											<p >ENTRAR</p>
 											<ArrowRight size={20} />
 										</button>
+
 										<div className="w-full h-px bg-gray-400 mb-10"></div>
 										<p className="text-[#43474E] text-center mb-12 ">Primeira vez aqui ?<span className="text-[#002045] hover:cursor-pointer">Criar conta.</span> </p>
 									</form>

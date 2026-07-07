@@ -1,0 +1,619 @@
+{
+	"languageSelector": {
+		"label": "Selecionar idioma",
+		"available": "Idiomas disponíveis",
+		"languages": {
+			"pt": "Português",
+			"en": "Inglês",
+			"fr": "Francês"
+		}
+	},
+	"header": {
+		"features": "Funcionalidades",
+		"about": "Sobre",
+		"start": "Começar"
+	},
+	"hero": {
+		"quotePrimary": "Pois Deus não é Deus de desordem, mas de paz.",
+		"badge": "Tecnologia com propósito",
+		"title": "Modernize sua administração",
+		"titleAccent": "com graça.",
+		"description": "Simplifique o ministério para focar no que realmente importa: as pessoas. Uma plataforma completa desenhada para a igreja moderna.",
+		"quoteSecondary": "Lâmpada para os meus pés é tua palavra, e luz para o meu caminho.",
+		"quoteSecondarySource": "— Salmos 119:105"
+	},
+	"features": {
+		"title": "Funcionalidades simples para a comunidade",
+		"membersTitle": "Diferentes igrejas",
+		"membersDescription": "Veja igrejas cadastradas, conheça suas informações principais e acompanhe o que cada comunidade publica.",
+		"calendarTitle": "Eventos da igreja",
+		"calendarDescription": "Acompanhe eventos publicados pelas igrejas, veja detalhes importantes e mantenha-se atualizado.",
+		"donationsTitle": "Participação em eventos",
+		"donationsDescription": "Clique para participar nos eventos disponíveis e acompanhe as atividades da sua comunidade.",
+		"communicationTitle": "Mensagens entre usuários",
+		"communicationDescription": "Troque mensagens com outros usuários e mantenha a comunicação da comunidade mais próxima.",
+		"communicationQuote": "Um espaço simples para conectar pessoas e comunidades.",
+		"communicationQuoteSource": ""
+	},
+	"join": {
+		"title": "Junte-se ao futuro do ministério hoje",
+		"description": "Experimente o santuário digital que ajuda a sua igreja a prosperar na era moderna.",
+		"cta": "Comece agora"
+	},
+	"footer": {
+		"description": "Empoderando igrejas modernas com tecnologia pensada para comunidade e crescimento.",
+		"legalTitle": "Legal",
+		"privacy": "Política de Privacidade",
+		"terms": "Termos e Condições",
+		"rights": "© 2026 Claris. Todos os direitos reservados.",
+		"support": "Contactar Suporte"
+	},
+	"trust": {
+		"title": "Confiado por congregações modernas"
+	},
+	"auth": {
+		"login": {
+			"scriptureLabel": "Escrituras para hoje",
+			"scriptureText": "A tua palavra é lâmpada para os meus pés e luz para o meu caminho.",
+			"scriptureSource": "— Salmos 119:105",
+			"welcomeTitle": "Bem-vindo de volta",
+			"welcomeSubtitle": "Insira os seus dados para aceder ao portal do Claris.",
+			"google": "Continuar com Google",
+			"divider": "OU USE EMAIL",
+			"emailLabel": "EMAIL",
+			"emailPlaceholder": "pastor@claris.org",
+			"passwordLabel": "SENHA",
+			"forgot": "Esqueceu sua senha?",
+			"passwordShow": "Mostrar senha",
+			"passwordHide": "Ocultar senha",
+			"submit": "ENTRAR",
+			"submitting": "A entrar...",
+			"firstTime": "Primeira vez aqui?",
+			"createAccount": "Criar conta"
+		},
+		"register": {
+			"scriptureLabel": "Um novo amanhecer",
+			"scriptureTitle": "Comece a sua jornada sagrada.",
+			"scriptureDescription": "Junte-se a uma comunidade global dedicada à reflexão silenciosa, ao ministério digital e ao crescimento espiritual.",
+			"title": "Criar uma conta.",
+			"subtitle": "Entre no Santuário Digital. O seu caminho começa aqui.",
+			"google": "Registar com Google",
+			"divider": "OU USE EMAIL",
+			"fullName": "NOME COMPLETO",
+			"fullNamePlaceholder": "Delson Pedro",
+			"email": "E-MAIL",
+			"emailPlaceholder": "ex. delson@church.com",
+			"gender": "GÉNERO",
+			"genderPlaceholder": "Selecione...",
+			"genderMale": "Masculino",
+			"genderFemale": "Feminino",
+			"minimumAge": "⚠️ Você deve ter no mínimo 13 anos para se registrar.",
+			"birthDate": "DATA Nasc.",
+			"password": "SENHA",
+			"passwordHint": "Deve ter pelo menos 6 caracteres",
+			"confirmPassword": "CONFIRMAR SENHA",
+			"termsPrefix": "Estou de acordo com os",
+			"terms": "termos e condições",
+			"and": "e a",
+			"privacy": "política de privacidade",
+			"submit": "CRIAR CONTA",
+			"submitting": "A criar conta...",
+			"already": "Já tens uma conta?",
+			"login": "Entrar"
+		},
+		"code": {
+			"label": "Momento de Reflexão",
+			"quote": "A paz é o silêncio da alma em harmonia com o eterno.",
+			"title": "Confirme sua Identidade",
+			"subtitle": "Para garantir a segurança do seu Claris, enviamos um código de verificação para:",
+			"verify": "VERIFICAR CÓDIGO",
+			"verifying": "A verificar...",
+			"resend": "Reenviar Código",
+			"resendCountdown": "Reenviar Código ({{time}})",
+			"footerQuote": "Tudo o que fizerem, façam de todo o coração.",
+			"footerSource": "— Colossenses 3:23"
+		},
+		"selectOrg": {
+			"title": "Selecionar Igreja",
+			"subtitle": "Escolha a organização à qual pretende aceder.",
+			"loading": "A carregar...",
+			"errorSelect": "Erro ao selecionar organização.",
+			"errorUnexpected": "Erro inesperado."
+		},
+		"adminRegister": {
+			"scriptureLabel": "Escrituras para hoje",
+			"scriptureText": "com decência e ordem",
+			"scriptureQuote": "Que tudo seja feito com decência e ordem",
+			"scriptureSource": "— 1 Coríntios 14:40",
+			"title": "Comece sua jornada de gestão.",
+			"subtitle": "Crie uma conta administrativa para gerenciar a presença digital da sua igreja.",
+			"steps": {
+				"personal": "Dados pessoais",
+				"church": "Dados da igreja"
+			},
+			"fields": {
+				"fullName": "Nome completo",
+				"password": "Senha",
+				"confirmPassword": "Confirmar senha",
+				"email": "E-mail",
+				"phone": "Telefone",
+				"photo": "Foto",
+				"churchName": "Nome da igreja",
+				"location": "Localização",
+				"churchEmail": "E-mail",
+				"logo": "Logo"
+			},
+			"submit": "CRIAR CONTA",
+			"already": "Já tens uma conta na Claris?",
+			"login": "Entrar",
+			"footer": {
+				"privacy": "PRIVACIDADE",
+				"terms": "TERMOS",
+				"support": "SUPORTE",
+				"contacts": "CONTACTOS"
+			}
+		},
+		"callback": {
+			"authenticating": "Autenticando..."
+		}
+	},
+	"legal": {
+		"terms": {
+			"title": "Termos e Condições",
+			"updated": "Atualizado em 27 de maio de 2026",
+			"sections": {
+				"acceptTitle": "1. Aceitação dos termos",
+				"acceptText": "Ao utilizar a plataforma Claris, você concorda com estes termos e com a nossa Política de Privacidade.",
+				"useTitle": "2. Uso da plataforma",
+				"useItems": [
+					"Você é responsável pelas informações fornecidas.",
+					"Não é permitido uso ilegal, abusivo ou não autorizado.",
+					"Você deve manter credenciais seguras e confidenciais."
+				],
+				"contentTitle": "3. Conteúdos e propriedade intelectual",
+				"contentText": "Todo conteúdo e marcas da Claris pertencem aos seus respectivos proprietários. Você mantém direitos sobre seus conteúdos enviados.",
+				"suspensionTitle": "4. Suspensão e encerramento",
+				"suspensionText": "Podemos suspender ou encerrar contas em caso de violação destes termos ou para proteger a segurança da plataforma.",
+				"liabilityTitle": "5. Limitação de responsabilidade",
+				"liabilityText": "A Claris não se responsabiliza por perdas indiretas decorrentes do uso ou indisponibilidade do serviço, dentro dos limites legais aplicáveis.",
+				"contactTitle": "6. Contato",
+				"contactText": "Para dúvidas sobre estes termos, entre em contato com o suporte."
+			}
+		},
+		"privacy": {
+			"title": "Política de Privacidade",
+			"updated": "Atualizado em 27 de maio de 2026",
+			"sections": {
+				"overviewTitle": "1. Visão geral",
+				"overviewText": "A Claris respeita a sua privacidade e está comprometida em proteger os seus dados pessoais. Esta política descreve como coletamos, utilizamos e protegemos as informações quando você utiliza a plataforma.",
+				"dataTitle": "2. Dados que coletamos",
+				"dataItems": [
+					"Dados de conta: nome, email, telefone e organização."
+				],
+				"usageTitle": "3. Como usamos seus dados",
+				"usageItems": [
+					"Fornecer e melhorar os serviços da plataforma.",
+					"Personalizar sua experiência e recomendações.",
+					"Comunicar atualizações, suporte e informações relevantes.",
+					"Garantir segurança, prevenção de fraudes e compliance."
+				],
+				"sharingTitle": "4. Compartilhamento de dados",
+				"sharingText": "Não vendemos seus dados pessoais. Podemos compartilhar informações com fornecedores essenciais para operação da plataforma, sempre sob contratos de confidencialidade e segurança.",
+				"retentionTitle": "5. Retenção e segurança",
+				"retentionText": "Mantemos seus dados pelo tempo necessário para cumprir as finalidades descritas nesta política e para atender obrigações legais. Aplicamos medidas técnicas e organizacionais para proteger suas informações.",
+				"rightsTitle": "6. Seus direitos",
+				"rightsItems": [
+					"Acessar, corrigir ou excluir seus dados pessoais.",
+					"Revogar consentimentos a qualquer momento."
+				],
+				"contactTitle": "7. Contato",
+				"contactText": "Se tiver dúvidas, entre em contato através do nosso suporte."
+			}
+		}
+	},
+	"support": {
+		"title": "Contacto de Suporte",
+		"subtitle": "Estamos aqui para ajudar. Responderemos o mais breve possível.",
+		"channelsTitle": "Canais de contacto",
+		"channelsEmail": "Email:",
+		"channelsPhone": "Telefone:",
+		"channelsHours": "Horário:",
+		"channelsHoursValue": "Seg–Sex, 09:00–18:00",
+		"helpfulTitle": "Informações úteis",
+		"helpfulText": "Para acelerar o atendimento, envie o máximo de detalhes possível, como organização, descrição do problema e capturas de ecrã.",
+		"statusTitle": "Status do serviço",
+		"statusText": "Verifique atualizações e manutenções programadas no nosso painel de status antes de abrir um pedido.",
+		"statusCta": "Ver status"
+	},
+	"common": {
+		"cancel": "Cancelar",
+		"saving": "A guardar...",
+		"saveChanges": "Guardar alterações",
+		"loading": "A carregar...",
+		"logoAlt": "Logo",
+		"search": "Pesquisa",
+		"filters": "Filtros",
+		"explore": "Explorar",
+		"noDescription": "Sem descrição disponível.",
+		"noLocation": "Local a definir",
+		"back": "Voltar",
+		"send": "Enviar",
+		"confirm": "Confirmar",
+		"delete": "Eliminar",
+		"save": "Guardar",
+		"close": "Fechar",
+		"remove": "Remover"
+	},
+	"theme": {
+		"toggle": "Alternar tema",
+		"light": "Claro",
+		"dark": "Escuro",
+		"system": "Sistema"
+	},
+	"notifications": {
+		"close": "Fechar notificação"
+	},
+	"errors": {
+		"generic": "Ocorreu um erro ao carregar os dados.",
+		"unexpected": "Erro inesperado. Tente novamente.",
+		"unexpectedResponse": "Resposta inesperada do servidor.",
+		"required": "Preencha todos os campos obrigatórios.",
+		"emailAndPasswordRequired": "Email e senha são obrigatórios.",
+		"codeAndEmailRequired": "Código e email são obrigatórios.",
+		"emailNotProvided": "Email não informado pelo servidor.",
+		"selectionTokenNotProvided": "Token de seleção não informado pelo servidor.",
+		"redirectNotDetermined": "URL de redirecionamento não determinado.",
+		"passwordsNotMatch": "As senhas não coincidem.",
+		"passwordMinLength": "A senha deve ter no mínimo 6 caracteres.",
+		"accountCreationError": "Erro ao criar conta.",
+		"organizationsLoad": "Não foi possível carregar as igrejas.",
+		"organizationNotFound": "Não foi possível encontrar os dados desta organização.",
+		"organizationDataNotFound": "Organização não encontrada.",
+		"membersLoad": "Não foi possível carregar os membros desta organização.",
+		"eventsLoad": "Não foi possível carregar os eventos desta organização.",
+		"tokenUnavailable": "Token de autenticação indisponível para o chat."
+	},
+	"events": {
+		"participant": "participante",
+		"participants": "participantes",
+		"of": "de {{count}}",
+		"actions": {
+			"edit": "Editar",
+			"delete": "Eliminar",
+			"viewDetails": "Ver Detalhes"
+		},
+		"categories": {
+			"culto": "Culto",
+			"reuniao": "Reunião",
+			"treinamento": "Treinamento",
+			"social": "Social",
+			"outro": "Outro"
+		},
+		"create": {
+			"title": "Criar Evento",
+			"subtitle": "Organize e compartilhe eventos com a comunidade",
+			"fields": {
+				"title": "Título do Evento *",
+				"description": "Descrição *",
+				"date": "Data *",
+				"category": "Categoria *",
+				"startTime": "Hora de Início *",
+				"endTime": "Hora de Término *",
+				"location": "Local do Evento",
+				"maxAttendees": "Máximo de Participantes"
+			},
+			"placeholders": {
+				"title": "Ex: Culto de Domingo",
+				"description": "Descreva o evento em detalhes...",
+				"location": "Ex: Sala 101, Igreja Principal",
+				"maxAttendees": "Ex: 100"
+			},
+			"submit": "Criar Evento",
+			"submitted": "Evento Criado!"
+		},
+		"createEventTitle": "Criar Evento",
+		"card": {
+			"edit": "Editar",
+			"delete": "Eliminar",
+			"confirmDelete": "Confirmar?",
+			"participants": "{{count}} participantes",
+			"saving": "A guardar",
+			"leave": "Deixar de participar",
+			"participate": "Participar",
+			"ariaEdit": "Editar evento",
+			"ariaDelete": "Eliminar evento",
+			"ariaLeave": "Deixar de participar no evento",
+			"ariaParticipate": "Participar no evento"
+		},
+		"list": {
+			"showLess": "Mostrar menos",
+			"loadMore": "Carregar mais eventos"
+		},
+		"edit": {
+			"title": "Editar Evento",
+			"description": "Atualize as informações do evento",
+			"fields": {
+				"banner": "Imagem do Evento / Banner",
+				"title": "Título do Evento *",
+				"date": "Data *",
+				"startTime": "Hora de Início *",
+				"location": "Local do Evento",
+				"description": "Descrição"
+			},
+			"placeholders": {
+				"title": "Ex: Culto de Domingo",
+				"location": "Ex: Sala 101, Igreja Principal",
+				"description": "Descreva o evento em detalhes..."
+			},
+			"bannerHint": "PNG, JPG ou WEBP. Imagem recomendada em formato paisagem.",
+			"selectBanner": "Selecionar Banner",
+			"changeBanner": "Trocar Banner",
+			"save": "Guardar Alterações",
+			"errors": {
+				"titleLength": "O título deve ter entre 2 e 120 caracteres.",
+				"requiredDate": "Data e hora são obrigatórias.",
+				"invalidDate": "A data ou hora informada é inválida.",
+				"update": "Erro ao atualizar o evento."
+			}
+		},
+		"toast": {
+			"createSuccess": "Evento criado com sucesso",
+			"createError": "Erro ao criar o evento.",
+			"invalidTitle": "Título inválido",
+			"titleLengthError": "O título deve ter entre 2 e 120 caracteres.",
+			"requiredDateTime": "Data e hora são obrigatórias.",
+			"pastDate": "Não é possível criar um evento com data/hora no passado.",
+			"invalidDateTime": "A data ou hora informada é inválida.",
+			"participationAdded": "Você está a participar neste evento.",
+			"participationRemoved": "Você deixou de participar neste evento.",
+			"participationError": "Não foi possível atualizar a sua participação.",
+			"participationUpdateError": "Não foi possível atualizar a participação.",
+			"deleteError": "Não foi possível eliminar este evento."
+		}
+	},
+	"community": {
+		"noLogo": "Sem Logo",
+		"enter": "Entrar",
+		"communityLabel": "Comunidade",
+		"member": "membro",
+		"members": "membros",
+		"requestJoin": "Pedir para participar",
+		"logoAlt": "Logotipo de {{name}}",
+		"announcements": {
+			"title": "Comunicados",
+			"description": "Envie mensagens inspiradoras para toda a congregação instantaneamente.",
+			"placeholder": "Compor nova mensagem...",
+			"deviceCount": "Envia para {{count}} dispositivos",
+			"send": "ENVIAR AGORA"
+		},
+		"members": {
+			"title": "Corações em Comunhão",
+			"subtitle": "Pessoas que caminham ao seu lado nesta jornada espiritual.",
+			"tabMembers": "Membros",
+			"tabFriends": "Amigos",
+			"searchPlaceholder": "Pesquisar por nome ou função...",
+			"searchFriendsPlaceholder": "Pesquisar amigos...",
+			"searchAria": "Pesquisar membros",
+			"addFriend": "Amigo",
+			"remove": "Remover",
+			"noFriends": "Ainda não tens amigos nesta organização.",
+			"noFriendsHelp": "Vai ao separador \"Membros\" e clica em \"Amigo\" para adicionar pessoas.",
+			"noMembersFound": "Nenhum membro encontrado."
+		}
+	},
+	"church": {
+		"create": {
+			"title": "Criar Igreja",
+			"description": "Preencha os detalhes da sua igreja aqui. Clique em salvar quando terminar.",
+			"validation": "Preencha o nome e selecione a igreja.",
+			"success": "Organização criada com sucesso!",
+			"imageHint": "PNG, JPG ou WEBP. A imagem aparece completa no cartão da igreja.",
+			"selectImage": "Selecionar imagem",
+			"changeImage": "Trocar imagem",
+			"errors": {
+				"create": "Erro ao criar organização"
+			},
+			"fields": {
+				"name": "Nome da igreja",
+				"address": "Endereço",
+				"church": "Igreja",
+				"logo": "Foto da igreja / Logo",
+				"description": "Descrição da igreja"
+			},
+			"placeholders": {
+				"name": "Ex: Igreja Vida",
+				"address": "Cidade, Estado",
+				"description": "Uma breve descrição da igreja"
+			}
+		}
+	},
+	"dashboard": {
+		"main": {
+			"welcome": "BEM VINDO DE VOLTA",
+			"title": "Escolhe a sua Igreja",
+			"subtitle": "Reconecte-se com o seu lar espiritual ou explore novas comunidades de fé e devoção.",
+			"myChurches": "MINHAS IGREJAS",
+			"empty": {
+				"title": "Não pertence a nenhuma igreja ainda.",
+				"subtitle": "Crie uma nova ou explore as disponíveis."
+			},
+			"searchEmpty": {
+				"title": "Nenhuma igreja corresponde à pesquisa.",
+				"subtitle": "Tente outro nome ou limpe a pesquisa."
+			},
+			"banner": {
+				"title": "Manifesta a tua visão",
+				"subtitle": "Crie a sua igreja e comece hoje a construir uma comunidade de fé vibrante e acolhedora."
+			},
+			"explore": {
+				"title": "Explorar novas igrejas ({{count}})",
+				"subtitle": "Congregações perto de si ou alinhadas com a sua jornada.",
+				"searchPlaceholder": "encontrar a tua igreja...",
+				"searchCta": "Pesquisa",
+				"clearSearch": "Limpar pesquisa",
+				"empty": "Nenhuma igreja disponível."
+			},
+			"joinSuccess": "Pedido enviado com sucesso",
+			"joinError": "Erro ao enviar pedido.",
+			"openOrganizationError": "Erro ao abrir a organização.",
+			"joinConfirm": {
+				"title": "Participar em {{name}}?",
+				"description": "Se aceitar, entrarás nesta igreja, verás os eventos publicados, farás parte da comunidade e outras pessoas poderão interagir contigo.",
+				"confirm": "Aceitar",
+				"joining": "A entrar..."
+			}
+		},
+		"center": {
+			"hero": {
+				"label": "PAINEL ADMINISTRATIVO",
+				"title": "Bem-vindo ao Santuário Digital",
+				"subtitle": "Visualize, gerencie e conecte-se com os membros da sua comunidade de fé."
+			},
+			"events": {
+				"title": "Eventos Criados",
+				"count": "({{count}} eventos)",
+				"empty": "Nenhum evento criado ainda",
+				"confirmDelete": "Tem certeza que deseja eliminar este evento?"
+			},
+			"members": {
+				"title": "Membros da Igreja",
+				"count": "{{count}} membros cadastrados",
+				"export": "Exportar",
+				"loading": "Carregando membros...",
+				"empty": "Nenhum membro cadastrado ainda.",
+				"defaultRole": "Membro",
+				"delete": "Eliminar",
+				"confirmDelete": "Tem certeza que deseja remover este membro?",
+				"table": {
+					"member": "Membro",
+					"phone": "Telefone",
+					"role": "Função",
+					"joined": "Data de Entrada",
+					"actions": "Ações"
+				}
+			}
+		}
+	},
+	"settings": {
+		"title": "Definições",
+		"tabs": {
+			"profile": "Perfil",
+			"password": "Password"
+		},
+		"loading": "Carregando utilizador...",
+		"profile": {
+			"sectionTitle": "Informações pessoais",
+			"name": "Nome completo",
+			"gender": "Género",
+			"genderSelect": "Selecionar",
+			"genderMale": "Masculino",
+			"genderFemale": "Feminino",
+			"saved": "Alterações guardadas com sucesso."
+		},
+		"password": {
+			"sectionTitle": "Alterar password",
+			"current": "Password atual",
+			"new": "Nova password",
+			"confirm": "Confirmar nova password",
+			"saved": "Password alterada com sucesso.",
+			"change": "Alterar password"
+		},
+		"logout": "Terminar sessão",
+		"delete": "Eliminar conta",
+		"deleteConfirm": {
+			"title": "Eliminar conta?",
+			"description": "Esta ação é permanente e não poderá ser desfeita.",
+			"confirm": "Eliminar",
+			"deleting": "Eliminando..."
+		},
+		"errors": {
+			"loadUser": "Erro ao carregar utilizador.",
+			"saveProfile": "Erro ao guardar alterações.",
+			"passwordMismatch": "As passwords não coincidem.",
+			"passwordLength": "A nova password deve ter pelo menos 6 caracteres.",
+			"passwordUpdate": "Erro ao alterar password.",
+			"deleteAccount": "Erro ao eliminar conta."
+		}
+	},
+	"search": {
+		"placeholder": "Buscar por nome do evento, tema ou local...",
+		"filters": "Filtros",
+		"explore": "Explorar"
+	},
+	"organization": {
+		"select": {
+			"loading": "A carregar...",
+			"placeholder": "Selecionar organização"
+		},
+		"leave": {
+			"trigger": "Sair da Igreja",
+			"title": "Sair de {{name}}",
+			"description": "Esta ação é irreversível",
+			"confirmQuestion": "Tem a certeza que deseja sair de {{name}}?",
+			"adminWarning": "Atenção: Você é administrador",
+			"adminWarningDetail": "Como administrador, ao sair a organização pode ficar sem gestão. Certifique-se de atribuir outro administrador antes de sair.",
+			"accessWarning": "Depois de sair, deixará de ter acesso aos eventos, mensagens e membros desta organização.",
+			"cancel": "Cancelar",
+			"leaving": "A sair...",
+			"confirm": "Sair"
+		},
+		"center": {
+			"label": "Organização atual",
+			"roleMember": "Membro",
+			"address": "Endereço não informado",
+			"defaultDescription": "Centro da comunidade selecionada.",
+			"backToChurches": "Voltar para as Igrejas",
+			"loading": "A carregar centro da organização...",
+			"loadingPage": "A carregar o centro da organização...",
+			"stats": {
+				"members": "Membros",
+				"events": "Eventos",
+				"participants": "Participantes"
+			},
+			"communityAgenda": "Agenda da comunidade",
+			"upcomingEvents": "Próximos Encontros",
+			"joinDescription": "Junte-se à comunidade {{name}} em momentos de reflexão, música e serviço.",
+			"eventCount": "{{count}} eventos",
+			"noEvents": "Ainda não existem eventos publicados nesta organização.",
+			"membersTitle": "Membros de {{name}}",
+			"membersSubtitle": "Você está a entrar como {{role}}. Clique em um membro para conversar.",
+			"membersError": "Não foi possível carregar os membros: {{error}}"
+		}
+	},
+	"chat": {
+		"startConversation": "Iniciar conversa",
+		"clickToChat": "Clique em um amigo para abrir o chat com essa pessoa.",
+		"notFriend": "{{name}} ainda não é teu amigo",
+		"notFriendDescription": "Adiciona como amigo para iniciar uma conversa.",
+		"addFriend": "Adicionar amigo",
+		"loadingMessages": "A carregar mensagens...",
+		"conversationReady": "A conversa com {{name}} está pronta. Escreva a primeira mensagem.",
+		"messagePlaceholder": "Mensagem para {{name}}...",
+		"sendAria": "Enviar mensagem",
+		"someone": "Alguém",
+		"newMessage": "Nova mensagem de {{name}}",
+		"errorTitle": "Erro no chat em tempo real",
+		"errorLoadingMessages": "Não foi possível carregar as mensagens.",
+		"errorSendingMessage": "Não foi possível enviar a mensagem.",
+		"errorSendingTitle": "Erro ao enviar mensagem",
+		"friendAdded": "Amigo adicionado com sucesso!",
+		"friendAddError": "Não foi possível adicionar este amigo.",
+		"friendAddErrorTitle": "Erro ao adicionar amigo",
+		"friendRemoved": "Amigo removido com sucesso.",
+		"friendRemoveError": "Não foi possível remover este amigo.",
+		"friendRemoveErrorTitle": "Erro ao remover amigo",
+		"removeAria": "Remover amigo",
+		"closeAria": "Fechar chat"
+	},
+	"toast": {
+		"actionNotAllowed": "Ação não permitida",
+		"adminCannotRemoveSelf": "Administrador não pode remover a si mesmo.",
+		"noPermission": "Sem permissão",
+		"onlyAdminCanRemove": "Apenas administradores podem remover outros membros.",
+		"youLeftOrganization": "Você saiu da organização.",
+		"redirectingToChurches": "A redirecionar para as suas igrejas...",
+		"memberRemoved": "Membro removido com sucesso.",
+		"memberRemoveError": "Não foi possível remover o membro da organização.",
+		"memberRemoveErrorTitle": "Erro ao remover membro"
+	}
+}

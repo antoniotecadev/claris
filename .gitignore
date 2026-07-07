@@ -1,0 +1,29 @@
+# ##############################################################################
+# GLOBAL / MONOREPO
+# ##############################################################################
+.env
+.env.local
+.env.production
+dist/
+build/
+node_modules/
+.DS_Store
+
+# ##############################################################################
+# BACKEND (NestJS & Prisma)
+# ##############################################################################
+/claris-backend/.env
+/claris-backend/dist
+/claris-backend/node_modules
+
+# ##############################################################################
+# FRONTEND (Next.js)
+# ##############################################################################
+/claris-frontend/.env
+/claris-frontend/.env.local
+/claris-frontend/.env.development.local
+/claris-frontend/.env.test.local
+/claris-frontend/.env.production.local
+/claris-frontend/.next/
+/claris-frontend/node_modules
+/claris-frontend/out/

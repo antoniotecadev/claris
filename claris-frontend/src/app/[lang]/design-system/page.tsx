@@ -135,7 +135,7 @@ export default function DesignSystemPage() {
 			/>
 
 			{/* Decorative dynamic top bar */}
-			<div className="h-1.5 w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 shadow-sm" />
+			<div className="h-1.5 w-full bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 shadow-sm" />
 
 			{/* Header */}
 			<header className="border-b border-border bg-card/60 backdrop-blur-md sticky top-0 z-40">
@@ -148,7 +148,7 @@ export default function DesignSystemPage() {
 							<ArrowLeft size={16} />
 						</Link>
 						<div>
-							<h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
+							<h1 className="text-xl font-bold tracking-tight bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
 								<Sparkles size={20} className="text-blue-600 animate-pulse" />
 								Claris Design System
 							</h1>

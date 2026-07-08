@@ -24,6 +24,8 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           <button
             type="button"
             onClick={onClear}
+            aria-label="Limpar pesquisa"
+            title="Limpar pesquisa"
             className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
           >
             <X size={13} />

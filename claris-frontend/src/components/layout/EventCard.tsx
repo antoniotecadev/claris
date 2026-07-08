@@ -148,8 +148,10 @@ export default function EventCard({
 
           {onParticipate && (
             <button
+              type="button"
               onClick={() => onParticipate(id)}
               disabled={isParticipationPending}
+              aria-label={isFavorited ? t("events.card.ariaLeave") : t("events.card.ariaParticipate")}
               className="flex min-w-20 items-center justify-center gap-1.5 text-[12px] font-semibold tracking-widest uppercase text-blue-600 transition-all duration-200 hover:text-blue-800 hover:tracking-widest disabled:cursor-wait disabled:text-stone-400"
             >
               {isParticipationPending ? <Loader2 size={12} className="animate-spin" /> : null}

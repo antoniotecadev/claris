@@ -46,7 +46,9 @@ export function MessageToast({
 	return (
 		<div className="fixed right-4 top-4 z-70 w-[calc(100vw-2rem)] max-w-sm animate-in slide-in-from-top-2 fade-in duration-200 sm:right-6 sm:top-6">
 			<div
-				role={onClick ? "button" : undefined}
+				role={onClick ? "button" : "status"}
+				aria-live="polite"
+				aria-atomic="true"
 				tabIndex={onClick ? 0 : undefined}
 				onClick={onClick ? handleClick : undefined}
 				onKeyDown={

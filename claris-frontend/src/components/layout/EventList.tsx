@@ -16,10 +16,11 @@ export default function EventList({ events, initialCount = 3 }: EventListProps) 
 
   const visible = showAll ? events : events.slice(0, initialCount);
   const hasMore = events.length > initialCount;
+  const eventsGridId = "events-list-grid";
   return (
     <div className="w-full">
       {/* Grid */}
-      <div className="mt-6 grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+      <div id={eventsGridId} className="mt-6 grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
         {visible.map((event, i) => (
           <div
             key={`${event.id}-${i}`}
@@ -37,7 +38,11 @@ export default function EventList({ events, initialCount = 3 }: EventListProps) 
       {hasMore && (
         <div className="mt-6 flex items-center justify-center">
           <button
+            type="button"
             onClick={() => setShowAll((prev) => !prev)}
+            aria-expanded={showAll}
+            aria-controls={eventsGridId}
+            aria-label={showAll ? t("events.list.showLess") : t("events.list.loadMore")}
             className="flex h-12 w-full max-w-xs items-center justify-center gap-2 rounded-2xl border border-brand-primary bg-white px-6 py-3 text-sm font-bold text-brand-primary shadow-sm transition-all duration-200 hover:bg-brand-primary hover:text-white"
           >
             <span>{showAll ? t("events.list.showLess") : t("events.list.loadMore")}</span>

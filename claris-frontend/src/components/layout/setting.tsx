@@ -62,6 +62,44 @@ export default function SettingsPanel({
   const [deletingAccount, setDeletingAccount] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
+  const cancelDeleteButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!showDeleteConfirm) {
+      return;
+    }
+
+    cancelDeleteButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setShowDeleteConfirm(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showDeleteConfirm]);
+
+  useEffect(() => {
+    if (isPage || !isOpen) {
+      return;
+    }
+
+    panelRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose?.();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, isPage, onClose]);
 
   const handleDeleteAccount = async () => {
     try {
@@ -313,13 +351,22 @@ export default function SettingsPanel({
         />
       )}
 
-      <section className={shellClassName} >
+      <section
+        ref={panelRef}
+        className={shellClassName}
+        tabIndex={isPage ? undefined : -1}
+        role={isPage ? undefined : "dialog"}
+        aria-modal={isPage ? undefined : true}
+        aria-labelledby={isPage ? undefined : "settings-title"}
+      >
         <div className={contentClassName}>
           <div className={bodyClassName}>
 
         {/* Header */}
         <div className="flex items-center  justify-between px-6 py-5 border-b dark:border-slate-800 border-zinc-100">
-          <p className="text-brand-primary dark:text-slate-50 font-semibold text-lg">{t("settings.title")}</p>
+          <h2 id="settings-title" className="text-brand-primary dark:text-slate-50 font-semibold text-lg">
+            {t("settings.title")}
+          </h2>
           <button
             onClick={() => (isPage ? router.back() : onClose?.())}
             className="p-2 rounded-xl dark:hover:bg-slate-800 hover:bg-zinc-100 transition-colors"
@@ -379,7 +426,9 @@ export default function SettingsPanel({
                   )}
                 </div>
                 <button
+                  type="button"
                   onClick={handleAvatarClick}
+                  aria-label={t("settings.profile.changeAvatar")}
                   className="absolute bottom-0 right-0 bg-[#FFDEA5] p-1.5 rounded-full shadow hover:bg-[#ffd080] transition-colors"
                 >
                   <Camera size={14} className="text-[#261900]" />
@@ -493,6 +542,7 @@ export default function SettingsPanel({
                   <button
                     type="button"
                     onClick={() => setShowPasswords((p) => ({ ...p, current: !p.current }))}
+                    aria-label={showPasswords.current ? t("auth.login.passwordHide") : t("auth.login.passwordShow")}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
                   >
                     {showPasswords.current ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -518,6 +568,7 @@ export default function SettingsPanel({
                   <button
                     type="button"
                     onClick={() => setShowPasswords((p) => ({ ...p, new: !p.new }))}
+                    aria-label={showPasswords.new ? t("auth.login.passwordHide") : t("auth.login.passwordShow")}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
                   >
                     {showPasswords.new ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -543,6 +594,7 @@ export default function SettingsPanel({
                   <button
                     type="button"
                     onClick={() => setShowPasswords((p) => ({ ...p, confirm: !p.confirm }))}
+                    aria-label={showPasswords.confirm ? t("auth.login.passwordHide") : t("auth.login.passwordShow")}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
                   >
                     {showPasswords.confirm ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -589,17 +641,25 @@ export default function SettingsPanel({
 
         {showDeleteConfirm && (
           <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl dark:bg-slate-900 p-6 w-full max-w-sm shadow-2xl">
-              <h2 className="text-lg font-semibold dark:text-slate-50 text-brand-primary">
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="delete-account-title"
+              aria-describedby="delete-account-description"
+              tabIndex={-1}
+              className="bg-white rounded-2xl dark:bg-slate-900 p-6 w-full max-w-sm shadow-2xl"
+            >
+              <h2 id="delete-account-title" className="text-lg font-semibold dark:text-slate-50 text-brand-primary">
                 {t("settings.deleteConfirm.title")}
               </h2>
 
-              <p className="text-sm dark:text-slate-300 text-brand-muted mt-2">
+              <p id="delete-account-description" className="text-sm dark:text-slate-300 text-brand-muted mt-2">
                 {t("settings.deleteConfirm.description")}
               </p>
 
               <div className="flex gap-3 mt-6">
                 <button
+                  ref={cancelDeleteButtonRef}
                   onClick={() => setShowDeleteConfirm(false)}
                   className="flex-1 border border-zinc-200 rounded-xl py-3 text-sm dark:bg-slate-800 font-medium hover:bg-zinc-50"
                 >

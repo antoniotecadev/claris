@@ -408,6 +408,7 @@
 			"validation": "Remplissez le nom et sélectionnez l'Église.",
 			"success": "Organisation créée avec succès !",
 			"imageHint": "PNG, JPG ou WEBP. L'image apparaît en entier sur la carte de l'Église.",
+			"logoPreviewAlt": "Aperçu de l'image téléchargée pour l'Église",
 			"selectImage": "Sélectionner une image",
 			"changeImage": "Changer l'image",
 			"errors": {

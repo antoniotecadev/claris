@@ -144,7 +144,7 @@ function CodeAuthContent() {
 
 						<div className="flex w-full justify-center gap-2 sm:gap-3" dir="ltr">
 							{digits.map((digit, idx) => (
-								<input key={idx} ref={(el) => { inputRefs.current[idx] = el; }} type="text" inputMode="numeric" maxLength={1} value={digit} onChange={(e) => handleChange(e.target.value, idx)} onKeyDown={(e) => handleKeyDown(e, idx)} onPaste={handlePaste} className="h-14 w-12 rounded-[14px] border-[1.5px] border-slate-200 bg-white px-4 text-center text-[1.5rem] font-medium text-slate-800 outline-none transition-all duration-300 ease-out focus:-translate-y-1 focus:border-sky-700 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.12)] sm:h-16 sm:w-14 dark:border-white/10 dark:bg-white/5 dark:text-slate-100" />
+								<input key={idx} ref={(el) => { inputRefs.current[idx] = el; }} type="text" inputMode="numeric" maxLength={1} value={digit} aria-label={`${t("auth.code.label")} ${idx + 1}`} onChange={(e) => handleChange(e.target.value, idx)} onKeyDown={(e) => handleKeyDown(e, idx)} onPaste={handlePaste} className="h-14 w-12 rounded-[14px] border-[1.5px] border-slate-200 bg-white px-4 text-center text-[1.5rem] font-medium text-slate-800 outline-none transition-all duration-300 ease-out focus:-translate-y-1 focus:border-sky-700 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.12)] sm:h-16 sm:w-14 dark:border-white/10 dark:bg-white/5 dark:text-slate-100" />
 							))}
 						</div>
 
@@ -155,7 +155,7 @@ function CodeAuthContent() {
 							</div>
 						)}
 
-						<button onClick={handleVerify} disabled={getCode().length < 6 || pending} className="mt-8 mb-4 flex w-full items-center justify-center gap-2 rounded-[14px] border-none bg-slate-950 py-3.5 text-[0.85rem] font-semibold tracking-wide text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-[0_12px_28px_rgba(15,23,42,0.2)] active:translate-y-0 active:scale-[0.98] active:shadow-[0_2px_8px_rgba(15,23,42,0.15)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none dark:bg-amber-300 dark:text-slate-950 dark:hover:bg-amber-200">
+						<button type="button" onClick={handleVerify} disabled={getCode().length < 6 || pending} className="mt-8 mb-4 flex w-full items-center justify-center gap-2 rounded-[14px] border-none bg-slate-950 py-3.5 text-[0.85rem] font-semibold tracking-wide text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-[0_12px_28px_rgba(15,23,42,0.2)] active:translate-y-0 active:scale-[0.98] active:shadow-[0_2px_8px_rgba(15,23,42,0.15)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none dark:bg-amber-300 dark:text-slate-950 dark:hover:bg-amber-200">
 							{pending ? (
 								<>
 									<Loader2 size={18} className="animate-spin" />
@@ -171,6 +171,7 @@ function CodeAuthContent() {
 
 						{/* Resend Button */}
 						<button
+							type="button"
 							onClick={handleResend}
 							disabled={countdown > 0}
 							className="flex items-center justify-center w-full py-3.5 border border-gray-200 rounded-[14px] bg-white text-brand-primary text-[0.85rem] font-semibold tracking-wide cursor-pointer transition-all duration-300 ease-out mb-8 hover:bg-gray-50 hover:shadow-sm active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50"

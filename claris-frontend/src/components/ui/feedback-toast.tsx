@@ -46,7 +46,7 @@ export function FeedbackToast({
 
 	return (
 		<div className="fixed right-4 top-4 z-70 w-[calc(100vw-2rem)] max-w-sm animate-in slide-in-from-top-2 fade-in duration-200 sm:right-6 sm:top-6">
-			<div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+			<div role="status" aria-live="polite" aria-atomic="true" className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
 				<div className={`h-1 w-full ${style.accentClassName}`} />
 				<div className="flex gap-3 p-4">
 					<div className="mt-0.5 shrink-0">

@@ -408,6 +408,7 @@
 			"validation": "Fill in the name and select the church.",
 			"success": "Organization created successfully!",
 			"imageHint": "PNG, JPG or WEBP. The image appears fully on the church card.",
+			"logoPreviewAlt": "Preview of the uploaded church image",
 			"selectImage": "Select image",
 			"changeImage": "Change image",
 			"errors": {

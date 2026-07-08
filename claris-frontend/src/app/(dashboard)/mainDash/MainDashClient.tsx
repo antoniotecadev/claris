@@ -8,7 +8,7 @@ import { Bell, Building2, Compass, Search, Settings, Sparkles, X } from "lucide-
 import CommunityCard from "@/components/layout/commityCard";
 import CommunityJoin from "@/components/layout/commityJoin";
 import { api } from "@/lib/api";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/userStore";
 import { DialogDemo } from "@/components/layout/createChurchDialogo";
@@ -54,6 +54,7 @@ export default function MainDashClient() {
 	const [joinError, setJoinError] = useState<string | null>(null);
 	const [toast, setToast] = useState<ToastState>(null);
 	const [searchTerm, setSearchTerm] = useState("");
+	const cancelJoinButtonRef = useRef<HTMLButtonElement>(null);
 	const user = useUserStore((state) => state.user);
 	const setUser = useUserStore((state) => state.setUser);
 
@@ -191,6 +192,25 @@ export default function MainDashClient() {
 		return () => window.clearTimeout(timeoutId);
 	}, [toast]);
 
+	useEffect(() => {
+		if (!pendingJoinChurch) {
+			return;
+		}
+
+		cancelJoinButtonRef.current?.focus();
+
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape") {
+				setPendingJoinChurch(null);
+				setJoinError(null);
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [pendingJoinChurch]);
+
 	const displayName = user?.displayName?.trim();
 	const firstName = displayName?.split(" ")[0];
 
@@ -205,12 +225,19 @@ export default function MainDashClient() {
 			/>
 			{pendingJoinChurch && (
 				<div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
-					<div className="w-full max-w-sm rounded-2xl dark:bg-slate-900 bg-white p-6 shadow-2xl">
-						<h2 className="text-lg font-semibold text-brand-primary dark:text-slate-50">
+					<div
+						role="dialog"
+						aria-modal="true"
+						aria-labelledby="join-church-title"
+						aria-describedby="join-church-description"
+						tabIndex={-1}
+						className="w-full max-w-sm rounded-2xl dark:bg-slate-900 bg-white p-6 shadow-2xl"
+					>
+						<h2 id="join-church-title" className="text-lg font-semibold text-brand-primary dark:text-slate-50">
 							{t("dashboard.main.joinConfirm.title", { name: pendingJoinChurch.name })}
 						</h2>
 
-						<p className="mt-2 text-sm leading-6 text-brand-muted dark:text-slate-300">
+						<p id="join-church-description" className="mt-2 text-sm leading-6 text-brand-muted dark:text-slate-300">
 							{t("dashboard.main.joinConfirm.description")}
 						</p>
 
@@ -223,6 +250,7 @@ export default function MainDashClient() {
 						<div className="mt-6 flex gap-3">
 							<button
 								type="button"
+								ref={cancelJoinButtonRef}
 								onClick={() => {
 									if (joiningChurch) return;
 									setPendingJoinChurch(null);
@@ -253,9 +281,9 @@ export default function MainDashClient() {
 					<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 						<div className="flex items-center gap-3">
 							<div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white dark:bg-[#00000000] shadow-sm ring-1 ring-slate-200 dark:ring-slate-800">
-								<img src={icon.src} alt="Logo" className="block dark:hidden w-[30px] h-[30px]" />
+								<img src={icon.src} alt={t("common.logoAlt")} className="block dark:hidden w-[30px] h-[30px]" />
 								{/* Imagem para Modo Escuro */}
-								<img src={iconDark.src} alt="Logo" className="hidden dark:block w-[30px] h-[30px]" />
+								<img src={iconDark.src} alt={t("common.logoAlt")} className="hidden dark:block w-[30px] h-[30px]" />
 							</div>
 							<div>
 								<h1 className="text-xl font-bold tracking-wide text-[#1E3A8A] dark:text-slate-50">CLARIS</h1>
@@ -269,7 +297,7 @@ export default function MainDashClient() {
 							<Link
 								href={addLocaleToPathname("/settings", locale)}
 								className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#00000000]  text-blue-900  shadow-sm transition-colors hover:border-accent-orange/40 hover:text-[#f1b064] dark:hover:text-slate-200"
-								aria-label="Settings"
+								aria-label={t("settings.title")}
 							>
 								<Settings size={16} />
 							</Link>
@@ -400,6 +428,7 @@ export default function MainDashClient() {
 									<Search size={18} className="shrink-0 text-[#1E3A8A] dark:text-slate-50" />
 									<input
 										type="search"
+										aria-label={t("dashboard.main.explore.searchPlaceholder")}
 										placeholder={t("dashboard.main.explore.searchPlaceholder")}
 										value={searchTerm}
 										onChange={(event) => setSearchTerm(event.target.value)}

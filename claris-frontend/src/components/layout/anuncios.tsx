@@ -17,11 +17,11 @@ export default function AnnouncementCard() {
 		h-140
       "
     >
-      <h2 className="text-[20px] font-bold">
+      <h2 id="announcements-title" className="text-[20px] font-bold">
         {t("community.announcements.title")}
       </h2>
 
-      <p className="mt-4 text-sm leading-6 text-[#A9B5CC]">
+      <p id="announcements-description" className="mt-4 text-sm leading-6 text-[#A9B5CC]">
         {t("community.announcements.description")}
       </p>
 
@@ -36,6 +36,7 @@ export default function AnnouncementCard() {
         "
       >
         <textarea
+          aria-labelledby="announcements-title announcements-description"
           placeholder={t("community.announcements.placeholder")}
           className="
             h-full
@@ -74,6 +75,7 @@ export default function AnnouncementCard() {
       </div>
 
       <button
+        type="button"
         className="
           mt-5
           flex

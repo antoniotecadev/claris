@@ -34,10 +34,10 @@ export default function Hero() {
 								{t("hero.badge")}
 							</span>
 						</div>
-						<p className="text-white text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
+						<h1 className="text-white text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
 							{t("hero.title")} <br />
 							<span className="text-[#FFDEA5] font-bold">{t("hero.titleAccent")}</span>
-						</p>
+						</h1>
 						<p className="text-[#DBEAFE] text-sm md:text-base lg:text-lg max-w-xl">
 							{t("hero.description")}
 						</p>

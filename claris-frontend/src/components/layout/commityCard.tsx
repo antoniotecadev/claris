@@ -32,10 +32,21 @@ export default function CommunityCard({
 		.join("")
 		.toUpperCase();
 
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+		if (event.key === "Enter" || event.key === " ") {
+			event.preventDefault();
+			onClick();
+		}
+	};
+
 	return (
 		<article
+			role="button"
+			tabIndex={0}
+			aria-label={`${t("community.enter")} ${name}`}
 			className={`group h-full min-h-80 w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800  bg-white dark:bg-slate-950 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#D97706]/30 hover:shadow-xl cursor-pointer ${className}`}
 			onClick={onClick}
+			onKeyDown={handleKeyDown}
 		>
 			<div className="relative h-40 overflow-hidden bg-slate-100 dark:bg-slate-300">
 				{logoUrl ? (
@@ -88,6 +99,7 @@ export default function CommunityCard({
 							event.stopPropagation();
 							onClick();
 						}}
+						aria-label={`${t("community.enter")} ${name}`}
 					>
 						<span>{t("community.enter")}</span>
 						<ArrowRight

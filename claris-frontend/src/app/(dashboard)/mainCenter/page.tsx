@@ -453,7 +453,13 @@ function MemberChatPanel({
 				</div>
 			) : (
 				<>
-					<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-x-hidden overflow-y-auto dark:bg-slate-900 bg-brand-bg px-5 py-5">
+					<div
+						role="log"
+						aria-live="polite"
+						aria-relevant="additions text"
+						aria-atomic="false"
+						className="flex min-h-0 flex-1 flex-col gap-3 overflow-x-hidden overflow-y-auto dark:bg-slate-900 bg-brand-bg px-5 py-5"
+					>
 						{isLoadingMessages ? (
 							<div className="flex flex-1 items-center justify-center gap-2 text-sm font-medium dark:text-slate-500 text-brand-muted">
 								<Loader2 size={16} className="animate-spin" />
@@ -475,7 +481,7 @@ function MemberChatPanel({
 										className={`min-w-0 max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${message.sender === "me"
 											? "rounded-br-md bg-brand-primary dark:bg-slate-400 dark:text-slate-900 text-white"
 											: "rounded-bl-md bg-white dark:bg-slate-800 dark:text-slate-50 text-brand-foreground ring-1 dark:ring-slate-800 ring-slate-200"
-											}`}
+										}`}
 									>
 										<p
 											className="max-w-full whitespace-pre-wrap"
@@ -484,8 +490,7 @@ function MemberChatPanel({
 											{message.text}
 										</p>
 										<p
-											className={`mt-1 text-[10px] font-semibold ${message.sender === "me" ? "dark:text-slate-600 text-white/65" : "  text-slate-400"
-												}`}
+											className={`mt-1 text-[10px] font-semibold ${message.sender === "me" ? "dark:text-slate-600 text-white/65" : "  text-slate-400"}`}
 										>
 											{formatChatTime(message.createdAt)}
 										</p>

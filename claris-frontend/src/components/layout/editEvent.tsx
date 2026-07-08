@@ -239,7 +239,7 @@ export function EditEventDialog({
 								{photoPreviewUrl ? (
 									<img
 										src={photoPreviewUrl}
-										alt="preview banner"
+													alt={t("events.edit.fields.banner")}
 										className="h-full w-full object-cover"
 									/>
 								) : (

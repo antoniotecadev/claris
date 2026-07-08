@@ -218,7 +218,7 @@ export function CreateEventDialog({
 								{photoPreviewUrl ? (
 									<img
 										src={photoPreviewUrl}
-										alt="preview banner"
+													alt={t("events.edit.fields.banner")}
 										className="h-full w-full object-cover"
 									/>
 								) : (
@@ -374,7 +374,6 @@ export function CreateEventDialog({
 		</Dialog>
 		<FeedbackToast
 			open={toastOpen}
-			onOpenChange={setToastOpen}
 			title={toastTitle}
 			description={toastDescription}
 			variant={toastVariant}

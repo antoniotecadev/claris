@@ -33,12 +33,12 @@ export default function Footer() {
                         </h3>
                         <ul className="space-y-2 text-sm text-slate-500 dark:text-slate-400">
                             <li>
-                                <Link className="hover:text-[#1A365D]" href={privacyHref} target="_blank">
+                                <Link className="hover:text-[#1A365D]" href={privacyHref} target="_blank" rel="noopener noreferrer">
                                     {t("footer.privacy")}
                                 </Link>
                             </li>
                             <li>
-                                <Link className="hover:text-[#1A365D]" href={termsHref} target="_blank">
+                                <Link className="hover:text-[#1A365D]" href={termsHref} target="_blank" rel="noopener noreferrer">
                                     {t("footer.terms")}
                                 </Link>
                             </li>

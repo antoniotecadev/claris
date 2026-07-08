@@ -208,7 +208,7 @@ export function DialogDemo({
 								{logoPreviewUrl ? (
 									<img
 										src={logoPreviewUrl}
-										alt="preview"
+										alt={t("church.create.logoPreviewAlt")}
 										className="h-full max-h-72 w-full object-contain p-4"
 									/>
 								) : (

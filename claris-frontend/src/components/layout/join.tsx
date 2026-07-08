@@ -23,6 +23,7 @@ export default function Join() {
 					</p>
 
 					<button
+						type="button"
 						className="bg-white dark:bg-amber-100 text-brand-primary px-6 py-3 md:px-8 md:py-4 font-bold rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-white/50"
 						onClick={() => window.location.href = loginHref}
 					>

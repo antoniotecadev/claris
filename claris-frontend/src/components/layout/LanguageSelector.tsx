@@ -24,6 +24,7 @@ export default function LanguageSelector({
 	const router = useRouter();
 	const pathname = usePathname();
 	const [isOpen, setIsOpen] = useState(false);
+	const [activeIndex, setActiveIndex] = useState(0);
 	const effectiveLocale = currentLocale || locale;
 	const languageOptions = useMemo(
 		() =>
@@ -37,6 +38,7 @@ export default function LanguageSelector({
 		languageOptions.find((l) => l.code === effectiveLocale) || languageOptions[0]
 	);
 	const ref = useRef<HTMLDivElement>(null);
+		const optionRefs = useRef<Array<HTMLLIElement | null>>([]);
 
 	// Close on outside click
 	useEffect(() => {
@@ -61,7 +63,13 @@ export default function LanguageSelector({
 	useEffect(() => {
 		const next = languageOptions.find((l) => l.code === effectiveLocale) || languageOptions[0];
 		setSelected(next);
+		setActiveIndex(languageOptions.findIndex((l) => l.code === next.code) || 0);
 	}, [effectiveLocale, languageOptions]);
+
+	useEffect(() => {
+		if (!isOpen) return;
+		optionRefs.current[activeIndex]?.focus();
+	}, [activeIndex, isOpen]);
 
 	const handleSelect = (lang: (typeof languageOptions)[0]) => {
 		setSelected(lang);
@@ -78,7 +86,17 @@ export default function LanguageSelector({
 		<div ref={ref} className="relative inline-block">
 			{/* Trigger button */}
 			<button
-				onClick={() => setIsOpen((prev) => !prev)}
+				onClick={() => {
+					setIsOpen((prev) => !prev);
+					setActiveIndex(languageOptions.findIndex((lang) => lang.code === selected.code) || 0);
+				}}
+				onKeyDown={(event) => {
+					if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+						event.preventDefault();
+						setIsOpen(true);
+						setActiveIndex(languageOptions.findIndex((lang) => lang.code === selected.code) || 0);
+					}
+				}}
 				aria-haspopup="listbox"
 				aria-expanded={isOpen}
 				aria-label={t("languageSelector.label")}
@@ -129,14 +147,54 @@ export default function LanguageSelector({
 				>
 					{languageOptions.map((lang) => {
 						const isActive = lang.code === selected.code;
+							const optionIndex = languageOptions.findIndex((item) => item.code === lang.code);
 						return (
 							<li
 								key={lang.code}
 								role="option"
 								aria-selected={isActive}
-								tabIndex={0}
-								onClick={() => handleSelect(lang)}
-								onKeyDown={(e) => e.key === "Enter" && handleSelect(lang)}
+									tabIndex={activeIndex === optionIndex ? 0 : -1}
+									ref={(element) => {
+										optionRefs.current[optionIndex] = element;
+									}}
+									onClick={() => handleSelect(lang)}
+									onKeyDown={(event) => {
+										if (event.key === "Enter" || event.key === " ") {
+											event.preventDefault();
+											handleSelect(lang);
+											return;
+										}
+
+										if (event.key === "ArrowDown") {
+											event.preventDefault();
+											setActiveIndex((optionIndex + 1) % languageOptions.length);
+											return;
+										}
+
+										if (event.key === "ArrowUp") {
+											event.preventDefault();
+											setActiveIndex((optionIndex - 1 + languageOptions.length) % languageOptions.length);
+											return;
+										}
+
+										if (event.key === "Home") {
+											event.preventDefault();
+											setActiveIndex(0);
+											return;
+										}
+
+										if (event.key === "End") {
+											event.preventDefault();
+											setActiveIndex(languageOptions.length - 1);
+											return;
+										}
+
+										if (event.key === "Escape") {
+											event.preventDefault();
+											setIsOpen(false);
+											return;
+										}
+									}}
 								className={`
                   flex items-center gap-2.5 px-2.5 py-2 rounded-lg
                   text-sm cursor-pointer outline-none

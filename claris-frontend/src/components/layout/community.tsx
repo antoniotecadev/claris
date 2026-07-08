@@ -27,8 +27,23 @@ export default function CommunityCard({
   className = '',
 }: CommunityCardProps) {
   const { t } = useMessages();
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onClick();
+    }
+  };
+
   return (
-    <div className={`bg-white w-148 h-63.5 rounded-lg shadow-md  cursor-pointer flex ${className}`} onClick={onClick}>
+    <article
+      role="button"
+      tabIndex={0}
+      aria-label={`${t("community.enter")} ${name}`}
+      className={`bg-white w-148 h-63.5 rounded-lg shadow-md  cursor-pointer flex ${className}`}
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
+    >
       <div className="w-73.75 ">
         {logoUrl ? (
           <img src={logoUrl} alt={`${name} logo`} className="w-full h-full object-cover rounded-lg" />
@@ -46,12 +61,20 @@ export default function CommunityCard({
         </div>
         <div className="flex justify-between items-center mt-6">
           <span className="text-sm text-gray-500">{membersCount} {t("community.members")}</span>
-          <button className="flex items-center text-[#1E3A8A] p-2 hover:rounded-2xl cursor-pointer   hover:bg-[#1E3A8A] hover:text-white" onClick={onClick}>
+          <button
+            type="button"
+            className="flex items-center text-[#1E3A8A] p-2 hover:rounded-2xl cursor-pointer   hover:bg-[#1E3A8A] hover:text-white"
+            onClick={(event) => {
+              event.stopPropagation();
+              onClick();
+            }}
+            aria-label={`${t("community.enter")} ${name}`}
+          >
             <span className="text-sm ">{t("community.enter")}</span>
             <ArrowRight size={16} className=" ml-1" />
           </button>
         </div>
       </div>
-    </div>
+    </article>
   )
 }

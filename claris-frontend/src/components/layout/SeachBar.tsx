@@ -14,7 +14,8 @@ export default function SearchBar() {
         <Search className="mr-3 h-5 w-5 shrink-0 text-[#1E3A8A]" />
         
         <input 
-          type="text" 
+          type="search" 
+          aria-label={t("search.placeholder")} 
           placeholder={t("search.placeholder")} 
           className="h-11 min-w-0 w-full bg-transparent text-sm text-brand-primary outline-none placeholder:text-slate-400"
         />
@@ -22,13 +23,13 @@ export default function SearchBar() {
 
       <div className="hidden min-w-[50px] flex-1 sm:block" />
 
-      <button className="flex h-11 items-center justify-center rounded-2xl bg-slate-50 px-4 text-sm font-semibold text-brand-muted transition-colors hover:bg-slate-100">
+      <button type="button" className="flex h-11 items-center justify-center rounded-2xl bg-slate-50 px-4 text-sm font-semibold text-brand-muted transition-colors hover:bg-slate-100">
         {/* Substituindo também o ícone do botão de filtros por um limpo */}
         <SlidersHorizontal className="mr-2 h-4 w-4 text-[#1E3A8A]" />
         {t("search.filters")}
       </button>
 
-      <button className="h-11 rounded-2xl bg-brand-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-[#1E3A8A]">
+      <button type="button" className="h-11 rounded-2xl bg-brand-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-[#1E3A8A]">
         {t("search.explore")}
       </button>
 

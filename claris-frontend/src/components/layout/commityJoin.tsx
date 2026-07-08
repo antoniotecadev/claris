@@ -117,7 +117,9 @@ export default function CommunityJoin({
           {/* CTA */}
           <div>
             <button
+              type="button"
               onClick={onClick}
+              aria-label={`${t("community.requestJoin")} ${name}`}
               className="inline-flex items-center gap-2 text-xs font-semibold dark:text-slate-50 text-[#002045] dark:bg-slate-800 bg-[#002045]/5 dark:hover:bg-slate-950/65 hover:bg-[#002045]/10 px-4 py-2 rounded-full transition-colors duration-150"
             >
               {t("community.requestJoin")}

@@ -18,7 +18,7 @@ export function DashboardStatCard({
 				{title}
 			</div>
 
-			<p className="mt-2 text-3xl font-bold text-[#002045] dark:text-slate-50">
+			<p className="mt-2 text-3xl font-bold text-brand-primary dark:text-slate-50">
 				{value}
 			</p>
 		</div>

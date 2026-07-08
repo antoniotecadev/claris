@@ -206,7 +206,7 @@ export function EditEventDialog({
 	return (
 		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogContent className="w-full max-h-[92vh] overflow-hidden p-0 sm:max-w-2xl md:max-w-4xl">
-				<DialogHeader className="border-b border-slate-100 bg-linear-to-br from-[#002045] via-[#1E3A8A] to-[#D97706] px-6 py-6 text-white">
+				<DialogHeader className="border-b border-slate-100 bg-linear-to-br from-brand-primary via-[#1E3A8A] to-accent-orange px-6 py-6 text-white">
 					<div className="flex items-center gap-3">
 						<div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm">
 							<PencilLine size={22} />
@@ -228,7 +228,7 @@ export function EditEventDialog({
 						<div className="space-y-3">
 							<Label
 								htmlFor="edit-banner"
-								className="text-sm font-semibold text-[#002045]"
+								className="text-sm font-semibold text-brand-primary"
 							>
 							{t("events.edit.fields.banner")}
 						</Label>
@@ -247,7 +247,7 @@ export function EditEventDialog({
 										<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-[#1E3A8A] shadow-sm">
 											<ImagePlus size={30} />
 										</div>
-										<p className="text-sm font-semibold text-[#002045]">
+										<p className="text-sm font-semibold text-brand-primary">
 											{t("events.edit.selectBanner")}
 										</p>
 										<p className="mt-2 text-xs leading-relaxed text-slate-500">
@@ -277,7 +277,7 @@ export function EditEventDialog({
 							<div className="flex flex-col gap-2 md:col-span-2">
 								<Label
 									htmlFor="edit-event-title"
-									className="text-sm font-semibold text-[#002045]"
+									className="text-sm font-semibold text-brand-primary"
 								>
 									{t("events.edit.fields.title")}
 								</Label>
@@ -300,7 +300,7 @@ export function EditEventDialog({
 							<div className="flex flex-col gap-2">
 								<Label
 									htmlFor="edit-event-date"
-									className="text-sm font-semibold text-[#002045]"
+									className="text-sm font-semibold text-brand-primary"
 								>
 									{t("events.edit.fields.date")}
 								</Label>
@@ -322,7 +322,7 @@ export function EditEventDialog({
 							<div className="flex flex-col gap-2">
 								<Label
 									htmlFor="edit-event-time"
-									className="text-sm font-semibold text-[#002045]"
+									className="text-sm font-semibold text-brand-primary"
 								>
 									{t("events.edit.fields.startTime")}
 								</Label>
@@ -344,7 +344,7 @@ export function EditEventDialog({
 							<div className="flex flex-col gap-2 md:col-span-2">
 								<Label
 									htmlFor="edit-event-location"
-									className="text-sm font-semibold text-[#002045]"
+									className="text-sm font-semibold text-brand-primary"
 								>
 									{t("events.edit.fields.location")}
 								</Label>
@@ -367,7 +367,7 @@ export function EditEventDialog({
 							<div className="md:col-span-2">
 								<Label
 									htmlFor="edit-event-description"
-									className="mb-2 block text-sm font-semibold text-[#002045]"
+									className="mb-2 block text-sm font-semibold text-brand-primary"
 								>
 									{t("events.edit.fields.description")}
 								</Label>
@@ -397,7 +397,7 @@ export function EditEventDialog({
 					</DialogClose>
 					<Button
 						type="button"
-						className="h-10 rounded-xl bg-[#1E3A8A] px-5 hover:bg-[#002045]"
+						className="h-10 rounded-xl bg-[#1E3A8A] px-5 hover:bg-brand-primary"
 						disabled={submitting}
 						onClick={(e) => {
 							e.preventDefault()

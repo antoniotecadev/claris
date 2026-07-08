@@ -6,7 +6,7 @@ export default function TermosCondicoesPage() {
 	const { t } = useMessages();
 
 	return (
-		<main className="min-h-screen bg-gray-50 dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]">
+		<main className="min-h-screen bg-gray-50 dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.16),transparent_32%),linear-gradient(to_bottom,#0f172a,#020617)]">
 			<section className="container mx-auto px-4 md:px-6 py-12 md:py-16">
 				<div className="max-w-3xl">
 					<h1 className="text-3xl md:text-4xl font-bold dark:text-slate-50 text-[#1A365D]">

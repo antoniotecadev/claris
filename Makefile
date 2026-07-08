@@ -52,10 +52,10 @@ logs:
 	$(COMPOSE) logs -f
 
 logs-frontend:
-	$(COMPOSE) logs frontend
+	$(COMPOSE) logs frontend -f
 
 logs-backend:
-	$(COMPOSE) logs backend
+	$(COMPOSE) logs backend -f
 
 start-frontend:
 	$(COMPOSE) start frontend

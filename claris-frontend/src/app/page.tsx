@@ -3,6 +3,14 @@ import Hero from "@/components/layout/hero";
 import Fun from "@/components/layout/fetuares";
 import Join from "@/components/layout/join";
 import Footer from "@/components/layout/footer";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata = buildPageMetadata({
+	title: "Modernize sua administração com graça",
+	description:
+		"Simplifique o ministério para focar no que realmente importa: as pessoas. Uma plataforma completa desenhada para a igreja moderna.",
+	pathname: "/",
+});
 
 export default function LandingPage() {
 	return (

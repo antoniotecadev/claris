@@ -1,13 +1,6 @@
-import type { Metadata } from "next";
 import { MessagesProvider } from "@/i18n/messages";
 import { getDictionary } from "@/i18n/dictionaries";
 import { locales, type Locale } from "@/i18n/routing";
-
-export const metadata: Metadata = {
-	title: "Claris",
-	description:
-		"Claris é uma plataforma de gestão de comunidades e igrejas, projetada para facilitar a comunicação, organização e engajamento dos membros. Com recursos como gerenciamento de eventos, comunicação em grupo, compartilhamento de recursos e muito mais, o Claris é a solução ideal para líderes comunitários e religiosos que desejam fortalecer suas comunidades e promover um ambiente colaborativo.",
-};
 
 export async function generateStaticParams() {
 	return locales.map((lang) => ({ lang }));

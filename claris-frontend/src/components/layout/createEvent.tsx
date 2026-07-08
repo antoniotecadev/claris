@@ -188,7 +188,7 @@ export function CreateEventDialog({
 				</DialogTrigger>
 
 				<DialogContent className="w-full max-h-[92vh] overflow-hidden p-0 sm:max-w-2xl md:max-w-4xl">
-				<DialogHeader className="border-b border-slate-100 bg-linear-to-br from-[#002045] via-[#1E3A8A] to-[#D97706] px-6 py-6 text-white">
+				<DialogHeader className="border-b border-slate-100 bg-linear-to-br from-brand-primary via-[#1E3A8A] to-accent-orange px-6 py-6 text-white">
 					<div className="flex items-center gap-3">
 						<div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm">
 							<Calendar size={22} />
@@ -208,7 +208,7 @@ export function CreateEventDialog({
 					<div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.85fr_1.15fr]">
 						{/* Coluna do Banner */}
 						<div className="space-y-3">
-							<Label htmlFor="banner" className="text-sm font-semibold text-[#002045]">
+							<Label htmlFor="banner" className="text-sm font-semibold text-brand-primary">
 								{t("events.edit.fields.banner")}
 							</Label>
 							<label
@@ -226,7 +226,7 @@ export function CreateEventDialog({
 										<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-[#1E3A8A] shadow-sm">
 											<ImagePlus size={30} />
 										</div>
-										<p className="text-sm font-semibold text-[#002045]">
+										<p className="text-sm font-semibold text-brand-primary">
 											{t("events.edit.selectBanner")}
 										</p>
 										<p className="mt-2 text-xs leading-relaxed text-slate-500">
@@ -252,7 +252,7 @@ export function CreateEventDialog({
 						<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 							{/* Título */}
 							<div className="flex flex-col gap-2 md:col-span-2">
-								<Label htmlFor="event-title" className="text-sm font-semibold text-[#002045]">
+								<Label htmlFor="event-title" className="text-sm font-semibold text-brand-primary">
 									{t("events.create.fields.title") || "Título do Evento *"}
 								</Label>
 								<div className="relative">
@@ -270,7 +270,7 @@ export function CreateEventDialog({
 
 							{/* Data */}
 							<div className="flex flex-col gap-2">
-								<Label htmlFor="event-date" className="text-sm font-semibold text-[#002045]">
+								<Label htmlFor="event-date" className="text-sm font-semibold text-brand-primary">
 									{t("events.create.fields.date") || "Data *"}
 								</Label>
 								<div className="relative">
@@ -287,7 +287,7 @@ export function CreateEventDialog({
 
 							{/* Hora */}
 							<div className="flex flex-col gap-2">
-								<Label htmlFor="event-time" className="text-sm font-semibold text-[#002045]">
+								<Label htmlFor="event-time" className="text-sm font-semibold text-brand-primary">
 									{t("events.create.fields.startTime") || "Hora de Início *"}
 								</Label>
 								<div className="relative">
@@ -304,7 +304,7 @@ export function CreateEventDialog({
 
 							{/* Local */}
 							<div className="flex flex-col gap-2 md:col-span-2">
-								<Label htmlFor="event-location" className="text-sm font-semibold text-[#002045]">
+								<Label htmlFor="event-location" className="text-sm font-semibold text-brand-primary">
 									{t("events.create.fields.location") || "Local do Evento"}
 								</Label>
 								<div className="relative">
@@ -322,7 +322,7 @@ export function CreateEventDialog({
 
 							{/* Descrição */}
 							<div className="md:col-span-2">
-								<Label htmlFor="event-description" className="mb-2 block text-sm font-semibold text-[#002045]">
+								<Label htmlFor="event-description" className="mb-2 block text-sm font-semibold text-brand-primary">
 									{t("events.create.fields.description") || "Descrição"}
 								</Label>
 								<div className="relative">
@@ -349,7 +349,7 @@ export function CreateEventDialog({
 					</DialogClose>
 					<Button
 						type="button"
-						className="h-10 rounded-xl bg-[#1E3A8A] px-5 hover:bg-[#002045]"
+						className="h-10 rounded-xl bg-[#1E3A8A] px-5 hover:bg-brand-primary"
 						disabled={submitting}
 						onClick={(e) => {
 							e.preventDefault()

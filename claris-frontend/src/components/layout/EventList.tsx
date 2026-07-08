@@ -38,7 +38,7 @@ export default function EventList({ events, initialCount = 3 }: EventListProps) 
         <div className="mt-6 flex items-center justify-center">
           <button
             onClick={() => setShowAll((prev) => !prev)}
-            className="flex h-12 w-full max-w-xs items-center justify-center gap-2 rounded-2xl border border-[#002045] bg-white px-6 py-3 text-sm font-bold text-[#002045] shadow-sm transition-all duration-200 hover:bg-[#002045] hover:text-white"
+            className="flex h-12 w-full max-w-xs items-center justify-center gap-2 rounded-2xl border border-brand-primary bg-white px-6 py-3 text-sm font-bold text-brand-primary shadow-sm transition-all duration-200 hover:bg-brand-primary hover:text-white"
           >
             <span>{showAll ? t("events.list.showLess") : t("events.list.loadMore")}</span>
             {showAll ? <ArrowUp size={20} /> : <ArrowRight size={20} />}

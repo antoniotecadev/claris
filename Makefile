@@ -14,10 +14,13 @@ help:
 	@echo "  make logs           Follow logs of all services"
 	@echo "  make logs-frontend  Follow logs of frontend service"
 	@echo "  make logs-backend   Follow logs of backend service"
+	@echo "  make start          Start all services"
 	@echo "  make start-frontend Start frontend service"
 	@echo "  make start-backend  Start backend service"
+	@echo "  make stop           Stop all services"
 	@echo "  make stop-frontend  Stop frontend service"
 	@echo "  make stop-backend   Stop backend service"
+	@echo "  make restart        Restart all services"
 	@echo "  make restart-frontend Restart frontend service"
 	@echo "  make restart-backend  Restart backend service"
 	@echo "  make ps             Show running containers"
@@ -60,17 +63,26 @@ logs-frontend:
 logs-backend:
 	$(COMPOSE) logs backend -f
 
+start:
+	$(COMPOSE) start
+
 start-frontend:
 	$(COMPOSE) start frontend
 
 start-backend:
 	$(COMPOSE) start backend
 
+stop:
+	$(COMPOSE) stop
+
 stop-frontend:
 	$(COMPOSE) stop frontend
 
 stop-backend:
 	$(COMPOSE) stop backend
+
+restart:
+	$(COMPOSE) restart
 
 restart-frontend:
 	$(COMPOSE) restart frontend

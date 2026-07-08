@@ -179,7 +179,7 @@ export function DialogDemo({
 			</DialogTrigger>
 
 			<DialogContent onInteractOutside={(e) => e.preventDefault()} className="w-full max-h-[92vh] overflow-hidden p-0 sm:max-w-2xl md:max-w-4xl dark:bg-slate-900">
-				<DialogHeader className="border-b dark:border-slate-800 dark:via-slate-900  border-slate-100 bg-linear-to-br from-[#002045] via-[#1E3A8A] to-[#D97706] px-6 py-6 text-white">
+				<DialogHeader className="border-b dark:border-slate-800 dark:via-slate-900  border-slate-100 bg-linear-to-br from-brand-primary via-[#1E3A8A] to-accent-orange px-6 py-6 text-white">
 					<div className="flex items-center gap-3">
 						<div className="flex h-11 w-11 items-center justify-center rounded-xl  bg-white/15 backdrop-blur-sm">
 							<Building2 size={22} />
@@ -198,7 +198,7 @@ export function DialogDemo({
 				<div className="max-h-[calc(92vh-11rem)] overflow-auto px-6 py-6 dark:bg-slate-900">
 					<div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.85fr_1.15fr] ">
 						<div className="space-y-3">
-							<Label htmlFor="logo" className="text-sm font-semibold dark:text-slate-50 text-[#002045]">
+							<Label htmlFor="logo" className="text-sm font-semibold dark:text-slate-50 text-brand-primary">
 								{t("church.create.fields.logo")}
 							</Label>
 							<label
@@ -216,7 +216,7 @@ export function DialogDemo({
 										<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl dark:bg-slate-700 dark:text-slate-50 bg-white text-[#1E3A8A] shadow-sm">
 											<ImagePlus size={30} />
 										</div>
-										<p className="text-sm font-semibold text-[#002045] dark:text-slate-50">
+										<p className="text-sm font-semibold text-brand-primary dark:text-slate-50">
 											{t("church.create.fields.logo")}
 										</p>
 										<p className="mt-2 text-xs leading-relaxed text-slate-500">
@@ -240,7 +240,7 @@ export function DialogDemo({
 
 						<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 							<div className="flex flex-col gap-2">
-								<Label htmlFor="church-name" className="text-sm font-semibold dark:text-slate-50 text-[#002045]">
+								<Label htmlFor="church-name" className="text-sm font-semibold dark:text-slate-50 text-brand-primary">
 									{t("church.create.fields.name")}
 								</Label>
 								<div className="relative">
@@ -257,7 +257,7 @@ export function DialogDemo({
 							</div>
 
 							<div className="flex flex-col gap-2">
-								<Label htmlFor="church-address" className="text-sm font-semibold dark:text-slate-50 text-[#002045]">
+								<Label htmlFor="church-address" className="text-sm font-semibold dark:text-slate-50 text-brand-primary">
 									{t("church.create.fields.address")}
 								</Label>
 								<div className="relative">
@@ -273,7 +273,7 @@ export function DialogDemo({
 							</div>
 
 							<div className="flex flex-col gap-2 md:col-span-2">
-								<Label htmlFor="churchId" className="text-sm font-semibold dark:text-slate-50 text-[#002045]">
+								<Label htmlFor="churchId" className="text-sm font-semibold dark:text-slate-50 text-brand-primary">
 									{t("church.create.fields.church")}
 								</Label>
 								<OrganizatioSelect
@@ -286,7 +286,7 @@ export function DialogDemo({
 							</div>
 
 							<div className="md:col-span-2">
-								<Label htmlFor="description" className="mb-2 block text-sm font-semibold dark:text-slate-50 text-[#002045]">
+								<Label htmlFor="description" className="mb-2 block text-sm font-semibold dark:text-slate-50 text-brand-primary">
 									{t("church.create.fields.description")}
 								</Label>
 								<div className="relative">
@@ -313,7 +313,7 @@ export function DialogDemo({
 					</DialogClose>
 					<Button
 						type="button"
-						className="h-10 rounded-xl bg-[#1E3A8A] dark:text-slate-50 px-5 hover:bg-[#002045] dark:hover:bg-[#0b2fcf]"
+						className="h-10 rounded-xl bg-[#1E3A8A] dark:text-slate-50 px-5 hover:bg-brand-primary dark:hover:bg-[#0b2fcf]"
 						disabled={submitting}
 						onClick={(e) => {
 							e.preventDefault()

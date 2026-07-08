@@ -59,8 +59,8 @@ export default function CommunityJoin({
               className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-sm"
             />
           ) : (
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-[#002045]/5 rounded-xl flex flex-col items-center justify-center gap-1">
-              <Users size={24} className="text-[#002045]/30" />
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-brand-primary/5 rounded-xl flex flex-col items-center justify-center gap-1">
+              <Users size={24} className="text-brand-primary/30" />
               <span className="text-[10px] text-gray-400 font-medium tracking-wide uppercase">
                 {t("community.communityLabel")}
               </span>
@@ -73,11 +73,11 @@ export default function CommunityJoin({
           {/* Header */}
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <h3 className="text-[#002045] dark:text-slate-50 text-base font-semibold leading-snug line-clamp-2 break-words">
+              <h3 className="text-brand-primary dark:text-slate-50 text-base font-semibold leading-snug line-clamp-2 wrap-break-word">
                 {name}
               </h3>
               {church?.name && (
-                <p className="mt-0.5 text-xs text-gray-400 font-medium truncate break-words">
+                <p className="mt-0.5 text-xs text-gray-400 font-medium truncate wrap-break-word">
                   {church.name}
                 </p>
               )}
@@ -92,7 +92,7 @@ export default function CommunityJoin({
 
           {/* Description */}
           {description && (
-            <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 break-words">
+            <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 wrap-break-word">
               {description}
 			</p>
           )}
@@ -120,7 +120,7 @@ export default function CommunityJoin({
               type="button"
               onClick={onClick}
               aria-label={`${t("community.requestJoin")} ${name}`}
-              className="inline-flex items-center gap-2 text-xs font-semibold dark:text-slate-50 text-[#002045] dark:bg-slate-800 bg-[#002045]/5 dark:hover:bg-slate-950/65 hover:bg-[#002045]/10 px-4 py-2 rounded-full transition-colors duration-150"
+              className="inline-flex items-center gap-2 text-xs font-semibold dark:text-slate-50 text-brand-primary dark:bg-slate-800 bg-brand-primary/5 dark:hover:bg-slate-950/65 hover:bg-brand-primary/10 px-4 py-2 rounded-full transition-colors duration-150"
             >
               {t("community.requestJoin")}
               <ArrowRight

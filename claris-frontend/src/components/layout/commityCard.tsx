@@ -44,7 +44,7 @@ export default function CommunityCard({
 			role="button"
 			tabIndex={0}
 			aria-label={`${t("community.enter")} ${name}`}
-			className={`group h-full min-h-80 w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800  bg-white dark:bg-slate-950 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#D97706]/30 hover:shadow-xl cursor-pointer ${className}`}
+			className={`group h-full min-h-80 w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800  bg-white dark:bg-slate-950 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-accent-orange/30 hover:shadow-xl cursor-pointer ${className}`}
 			onClick={onClick}
 			onKeyDown={handleKeyDown}
 		>
@@ -57,7 +57,7 @@ export default function CommunityCard({
 						className="h-full w-full object-contain p-3 transition-transform duration-300 group-hover:scale-105"
 					/>
 				) : (
-					<div className="flex h-full w-full items-center justify-center bg-linear-to-br from-[#002045] via-[#1E3A8A] to-[#D97706]">
+					<div className="flex h-full w-full items-center justify-center bg-linear-to-br from-brand-primary via-[#1E3A8A] to-accent-orange">
 						<span className="text-4xl font-bold text-white/90 dark:text-slate-950/70 ">
 							{initials || t("community.communityLabel")[0]}
 						</span>
@@ -75,7 +75,7 @@ export default function CommunityCard({
 
 			<div className="flex flex-1 flex-col p-4">
 				<div className="mb-3 flex items-center justify-between gap-3">
-					<div className="text-[11px] font-semibold uppercase tracking-wide text-[#D97706]">
+					<div className="text-[11px] font-semibold uppercase tracking-wide text-accent-orange">
 						{t("community.communityLabel")}
 					</div>
 					<div className="text-right text-[11px] font-medium text-slate-500  dark:text-slate-400">
@@ -84,17 +84,17 @@ export default function CommunityCard({
 				</div>
 
 				<div className="flex flex-1 flex-col">
-					<h3 className="line-clamp-2 text-lg font-bold leading-snug text-[#002045] break-words dark:text-slate-50">
+					<h3 className="line-clamp-2 text-lg font-bold leading-snug text-brand-primary wrap-break-word dark:text-slate-50">
 						{name}
 					</h3>
 
-					<p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-500 break-words dark:text-slate-400">
+					<p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-500 wrap-break-word dark:text-slate-400">
 						{descriptionText}
 					</p>
 
 					<button
 						type="button"
-						className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#002045] px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-[#1E3A8A]"
+						className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-[#1E3A8A]"
 						onClick={(event) => {
 							event.stopPropagation();
 							onClick();

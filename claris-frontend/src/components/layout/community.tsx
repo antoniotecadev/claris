@@ -56,8 +56,8 @@ export default function CommunityCard({
       <div className="w-73.75  flex flex-col p-8 justify-between">
         <div className="flex flex-col">
           <p className="text-sm text-[#1A1C1C] uppercase tracking-wide text-[10px]">{responsable}</p>
-          <h3 className="text-lg font-bold text-[#002045] text-[24px]">{name}</h3>
-          <p className="text-[#475F83] text-[14px]">{local  }</p>
+          <h3 className="text-lg font-bold text-brand-primary text-[24px]">{name}</h3>
+          <p className="text-brand-muted text-[14px]">{local  }</p>
         </div>
         <div className="flex justify-between items-center mt-6">
           <span className="text-sm text-gray-500">{membersCount} {t("community.members")}</span>

@@ -136,7 +136,7 @@ export default function RegisterUser() {
 									onChange={handleChange}
 									required
 									placeholder={t("auth.register.fullNamePlaceholder")}
-									className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-brand-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 									onFocus={() => setFocusedField("displayName")}
 									onBlur={() => setFocusedField(null)}
 								/>
@@ -154,7 +154,7 @@ export default function RegisterUser() {
 									onChange={handleChange}
 									required
 									placeholder={t("auth.register.emailPlaceholder")}
-									className="w-full px-4 py-2.5 border-[1.5px] border-black/[0.08] rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									className="w-full px-4 py-2.5 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-brand-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 									onFocus={() => setFocusedField("email")}
 									onBlur={() => setFocusedField(null)}
 									autoComplete="email"
@@ -276,7 +276,7 @@ export default function RegisterUser() {
 									<Link
 										href={termsHref}
 										target="_blank"
-										className="text-[#002045] font-semibold hover:underline"
+										className="text-brand-primary font-semibold hover:underline"
 									>
 										{t("auth.register.terms")}
 									</Link>{" "}
@@ -284,7 +284,7 @@ export default function RegisterUser() {
 									<Link
 										href={privacyHref}
 										target="_blank"
-										className="text-[#002045] font-semibold hover:underline"
+										className="text-brand-primary font-semibold hover:underline"
 									>
 										{t("auth.register.privacy")}
 									</Link>.
@@ -325,7 +325,7 @@ export default function RegisterUser() {
 								<div className="flex-1 h-px bg-[#c9c9c9]" />
 								<p className="text-gray-500 text-sm">
 									{t("auth.register.already")} {" "}
-									<Link href={loginHref} className="text-[#002045] font-semibold no-underline ml-1 transition-all duration-200 hover:text-[#003066] hover:underline">
+									<Link href={loginHref} className="text-brand-primary font-semibold no-underline ml-1 transition-all duration-200 hover:text-[#003066] hover:underline">
 										{t("auth.register.login")}
 									</Link>
 								</p>
@@ -337,15 +337,15 @@ export default function RegisterUser() {
 			</div>
 
 			<footer className="dark:bg-slate-900 flex flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
-				<p className="dark:text-slate-50 text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
+				<p className="dark:text-slate-50 text-brand-primary italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
 				<div className="flex gap-5">
-					<Link href={privacyHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+					<Link href={privacyHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-brand-primary">
 						{t("footer.privacy")}
 					</Link>
-					<Link href={termsHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+					<Link href={termsHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-brand-primary">
 						{t("footer.terms")}
 					</Link>
-					<Link href={supportHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+					<Link href={supportHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-brand-primary">
 						{t("footer.support")}
 					</Link>
 				</div>

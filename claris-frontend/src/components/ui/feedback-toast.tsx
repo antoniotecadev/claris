@@ -53,15 +53,15 @@ export function FeedbackToast({
 						<Icon size={20} className={style.iconClassName} />
 					</div>
 					<div className="min-w-0 flex-1">
-						<p className="text-sm font-semibold text-[#002045]">{title}</p>
+						<p className="text-sm font-semibold text-brand-primary">{title}</p>
 						{description ? (
-							<p className="mt-1 text-sm leading-5 text-[#475F83]">{description}</p>
+							<p className="mt-1 text-sm leading-5 text-brand-muted">{description}</p>
 						) : null}
 					</div>
 					<button
 						type="button"
 						onClick={onClose}
-						className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100 hover:text-[#002045]"
+						className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100 hover:text-brand-primary"
 						aria-label={t("notifications.close")}
 					>
 						<X size={16} />

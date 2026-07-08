@@ -36,7 +36,7 @@ export default function Login() {
 	}, [state, router, locale]);
 
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6 dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]">
+		<div className="min-h-screen flex flex-col items-center justify-center bg-[#e8eaed] p-6 dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.16),transparent_32%),linear-gradient(to_bottom,#0f172a,#020617)]">
 
 			<div className="flex flex-col md:flex-row w-full max-w-240 rounded-t-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,20,60,0.12),0_4px_20px_rgba(0,20,60,0.06)]">
 
@@ -111,7 +111,7 @@ export default function Login() {
 									required
 									id="email"
 										placeholder={t("auth.login.emailPlaceholder")}
-									className="w-full px-4 py-3 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+									className="w-full px-4 py-3 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-brand-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 									onFocus={() => setFocusedField("email")}
 									onBlur={() => setFocusedField(null)}
 									autoComplete="email"
@@ -130,7 +130,7 @@ export default function Login() {
 										name="password"
 										required
 										placeholder="••••••••"
-										className="w-full px-4 py-3 pr-12 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-[#002045] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
+										className="w-full px-4 py-3 pr-12 border-[1.5px] border-black/8 rounded-[14px] bg-white/80 backdrop-blur-xs text-[0.9rem] text-gray-800 outline-none transition-all duration-300 ease-out placeholder:text-gray-400 focus:border-brand-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,32,69,0.08)]"
 										onFocus={() => setFocusedField("password")}
 										onBlur={() => setFocusedField(null)}
 										autoComplete="current-password"
@@ -138,7 +138,7 @@ export default function Login() {
 									<button
 										type="button"
 										onClick={() => setShowPassword(!showPassword)}
-										className="absolute right-3.5 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-400 p-1 flex items-center justify-center transition-colors duration-200 rounded-md hover:text-[#002045] hover:bg-[rgba(0,32,69,0.06)]"
+										className="absolute right-3.5 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-400 p-1 flex items-center justify-center transition-colors duration-200 rounded-md hover:text-brand-primary hover:bg-[rgba(0,32,69,0.06)]"
 											aria-label={showPassword ? t("auth.login.passwordHide") : t("auth.login.passwordShow")}
 									>
 										{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -159,7 +159,7 @@ export default function Login() {
 								type="submit"
 								disabled={pending}
 								id="login-submit-btn"
-								className="flex items-center justify-center gap-2 py-3.5 border-none rounded-[14px] bg-[#002045] text-white text-[0.85rem] font-semibold tracking-wide cursor-pointer transition-all duration-300 ease-out mb-6 hover:bg-[#003066] hover:shadow-[0_6px_24px_rgba(0,32,69,0.25)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,32,69,0.15)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+								className="flex items-center justify-center gap-2 py-3.5 border-none rounded-[14px] bg-brand-primary text-white text-[0.85rem] font-semibold tracking-wide cursor-pointer transition-all duration-300 ease-out mb-6 hover:bg-[#003066] hover:shadow-[0_6px_24px_rgba(0,32,69,0.25)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,32,69,0.15)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
 							>
 								{pending ? (
 									<>
@@ -178,7 +178,7 @@ export default function Login() {
 							<div className="w-full h-px bg-gray-300 mb-5" />
 							<p className="text-center text-gray-500 text-sm">
 								{t("auth.login.firstTime")} {" "}
-								<Link href={registerHref} className="text-[#002045] font-semibold no-underline ml-1 transition-all duration-200 hover:text-[#003066] hover:underline">
+								<Link href={registerHref} className="text-brand-primary font-semibold no-underline ml-1 transition-all duration-200 hover:text-[#003066] hover:underline">
 									{t("auth.login.createAccount")}
 								</Link>
 							</p>
@@ -189,15 +189,15 @@ export default function Login() {
 
 			{/* ===== FOOTER ===== */}
 			<footer className="flex dark:bg-slate-900 flex-col md:flex-row items-center justify-between w-full max-w-240 px-7 py-4 mt-0 bg-white rounded-b-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] gap-3 md:gap-0">
-				<p className=" dark:text-slate-50 text-[#002045] italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
+				<p className=" dark:text-slate-50 text-brand-primary italic font-semibold text-[0.8rem] tracking-wide">CLARIS</p>
 				<div className="flex gap-5">
-					<Link href={privacyHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+					<Link href={privacyHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-brand-primary">
 						{t("footer.privacy")}
 					</Link>
-					<Link href={termsHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+					<Link href={termsHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-brand-primary">
 						{t("footer.terms")}
 					</Link>
-					<Link href={supportHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-[#002045]">
+					<Link href={supportHref} target="_blank" className="text-gray-400 text-[0.72rem] no-underline tracking-wide transition-colors duration-200 hover:text-brand-primary">
 						{t("footer.support")}
 					</Link>
 				</div>

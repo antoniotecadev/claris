@@ -27,6 +27,9 @@ help:
 	@echo "  make studio         Open Prisma Studio from inside backend container"
 
 up:
+	@echo "A preparar o ambiente para a defesa..."
+	@cp -n .env.example .env 2>/dev/null || true
+	@echo "A iniciar os containers da Claris..."
 	$(COMPOSE) up -d --build
 
 up-frontend:

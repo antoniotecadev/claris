@@ -30,25 +30,8 @@ services:
       - ./claris-backend:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/dist
-    environment:
-      - PORT_NEST=${PORT_NEST}
-      - PORT_PRISMA=${PORT_PRISMA}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_CONTAINER=${DB_CONTAINER}
-      - DATABASE_URL=${DATABASE_URL}
-      - JWT_SECRET=${JWT_SECRET}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-      - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}
-      - FRONTEND_URL=${FRONTEND_URL}
-      - PUBLIC_API_KEY=${PUBLIC_API_KEY}
-      - RESEND_API_KEY=${RESEND_API_KEY}
-      - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL}
-      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
-      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
-      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+    env_file:
+      - .env
     depends_on:
       postgres:
         condition: service_healthy

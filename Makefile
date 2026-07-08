@@ -5,11 +5,21 @@ COMPOSE = docker compose
 help:
 	@echo "Available commands:"
 	@echo "  make up             Build and start all containers (Monorepo)"
+	@echo "  make up-frontend    Build and start frontend service"
+	@echo "  make up-backend     Build and start backend service"
 	@echo "  make down           Stop containers"
+	@echo "  make down-frontend  Stop frontend service"
+	@echo "  make down-backend   Stop backend service"
 	@echo "  make down-volumes   Stop + remove volumes (clean database)"
 	@echo "  make logs           Follow logs of all services"
 	@echo "  make logs-frontend  Follow logs of frontend service"
 	@echo "  make logs-backend   Follow logs of backend service"
+	@echo "  make start-frontend Start frontend service"
+	@echo "  make start-backend  Start backend service"
+	@echo "  make stop-frontend  Stop frontend service"
+	@echo "  make stop-backend   Stop backend service"
+	@echo "  make restart-frontend Restart frontend service"
+	@echo "  make restart-backend  Restart backend service"
 	@echo "  make ps             Show running containers"
 	@echo "  make psql           Open PostgreSQL shell inside the container"
 	@echo "  make env            Show loaded environment variables"
@@ -19,8 +29,21 @@ help:
 up:
 	$(COMPOSE) up -d --build
 
+up-frontend:
+	$(COMPOSE) up -d --build frontend
+
+up-backend:
+	$(COMPOSE) up -d --build backend
+
 down:
 	$(COMPOSE) down
+
+down-frontend:
+	$(COMPOSE) down frontend
+
+down-backend:
+	$(COMPOSE) down backend
+
 
 down-volumes:
 	$(COMPOSE) down -v
@@ -33,6 +56,24 @@ logs-frontend:
 
 logs-backend:
 	$(COMPOSE) logs backend
+
+start-frontend:
+	$(COMPOSE) start frontend
+
+start-backend:
+	$(COMPOSE) start backend
+
+stop-frontend:
+	$(COMPOSE) stop frontend
+
+stop-backend:
+	$(COMPOSE) stop backend
+
+restart-frontend:
+	$(COMPOSE) restart frontend
+
+restart-backend:
+	$(COMPOSE) restart backend
 
 ps:
 	$(COMPOSE) ps

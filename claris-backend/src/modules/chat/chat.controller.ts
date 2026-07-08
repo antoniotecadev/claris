@@ -8,7 +8,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { CurrentUser } from 'src/common/decorator/current-user.decorator';
+import { CurrentUser } from '@/common/decorator/current-user.decorator';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ChatHistoryQueryDto } from './dto/chat-history-query.dto';

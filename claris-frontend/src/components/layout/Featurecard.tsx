@@ -27,7 +27,7 @@ export function FeatureCard({
   return (
     <div
       className={[
-        "group flex min-h-90 flex-col overflow-hidden rounded-2xl bg-[#F1F5F9] dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)] p-6 shadow-sm",
+        "group flex min-h-90 flex-col overflow-hidden rounded-2xl bg-[#F1F5F9] dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.16),transparent_32%),linear-gradient(to_bottom,#0f172a,#020617)] p-6 shadow-sm",
         "ring-1 ring-slate-200/70 transition duration-300 hover:-translate-y-1",
         "hover:shadow-xl hover:shadow-slate-900/10 md:p-8",
         className,

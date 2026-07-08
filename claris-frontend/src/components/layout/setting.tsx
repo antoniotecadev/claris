@@ -319,7 +319,7 @@ export default function SettingsPanel({
 
         {/* Header */}
         <div className="flex items-center  justify-between px-6 py-5 border-b dark:border-slate-800 border-zinc-100">
-          <p className="text-[#002045] dark:text-slate-50 font-semibold text-lg">{t("settings.title")}</p>
+          <p className="text-brand-primary dark:text-slate-50 font-semibold text-lg">{t("settings.title")}</p>
           <button
             onClick={() => (isPage ? router.back() : onClose?.())}
             className="p-2 rounded-xl dark:hover:bg-slate-800 hover:bg-zinc-100 transition-colors"
@@ -338,8 +338,8 @@ export default function SettingsPanel({
           <button
             onClick={() => setActiveTab("profile")}
             className={`py-3 px-4 text-sm font-medium border-b-2 transition-colors ${activeTab === "profile"
-              ? "border-[#002045] dark:border-slate-50 dark:text-slate-50 text-[#002045]"
-              : "border-transparent text-[#475F83] dark:text-slate-500 dark:hover:text-slate-800 hover:text-[#002045]"
+              ? "border-brand-primary dark:border-slate-50 dark:text-slate-50 text-brand-primary"
+              : "border-transparent text-brand-muted dark:text-slate-500 dark:hover:text-slate-800 hover:text-brand-primary"
               }`}
           >
             {t("settings.tabs.profile")}
@@ -348,8 +348,8 @@ export default function SettingsPanel({
             <button
               onClick={() => setActiveTab("password")}
               className={`py-3 px-4 text-sm font-medium border-b-2 transition-colors ${activeTab === "password"
-                ? "border-[#002045] dark:border-slate-50 dark:text-slate-50 text-[#002045]"
-                : "border-transparent text-[#475F83] dark:text-slate-500 dark:hover:text-slate-800 hover:text-[#002045]"
+                ? "border-brand-primary dark:border-slate-50 dark:text-slate-50 text-brand-primary"
+                : "border-transparent text-brand-muted dark:text-slate-500 dark:hover:text-slate-800 hover:text-brand-primary"
                 }`}
             >
               {t("settings.tabs.password")}
@@ -359,7 +359,7 @@ export default function SettingsPanel({
         {/* Loading */}
         {loadingUser ? (
           <div className="flex-1 flex items-center justify-center">
-            <p className="text-[#475F83] animate-pulse">{t("settings.loading")}</p>
+            <p className="text-brand-muted animate-pulse">{t("settings.loading")}</p>
           </div>
         ) : activeTab === "profile" ? (
           <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-6">
@@ -392,13 +392,13 @@ export default function SettingsPanel({
                   onChange={handleAvatarChange}
                 />
               </div>
-              <p className="text-[#002045] dark:text-slate-50 font-medium">{user?.displayName}</p>
-              <p className="text-[#475F83] dark:text-slate-300 text-sm">{user?.email}</p>
+              <p className="text-brand-primary dark:text-slate-50 font-medium">{user?.displayName}</p>
+              <p className="text-brand-muted dark:text-slate-300 text-sm">{user?.email}</p>
             </div>
 
             {/* Campos */}
             <div className="flex flex-col gap-4">
-              <p className="text-[#002045] dark:text-slate-50 text-xs font-semibold tracking-widest uppercase">
+              <p className="text-brand-primary dark:text-slate-50 text-xs font-semibold tracking-widest uppercase">
                 {t("settings.profile.sectionTitle")}
               </p>
 
@@ -453,7 +453,7 @@ export default function SettingsPanel({
             <button
               onClick={handleSave}
               disabled={saving}
-              className="bg-[#002045] text-white rounded-xl px-4 py-3 flex items-center justify-center gap-2 hover:bg-[#003066] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 disabled:hover:translate-y-0"
+              className="bg-brand-primary text-white rounded-xl px-4 py-3 flex items-center justify-center gap-2 hover:bg-[#003066] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 disabled:hover:translate-y-0"
             >
               <Save size={16} />
               {saving ? t("common.saving") : t("common.saveChanges")}
@@ -471,7 +471,7 @@ export default function SettingsPanel({
 
           <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-6">
             <div className="flex flex-col gap-4">
-              <p className="text-[#002045] text-xs font-semibold tracking-widest uppercase">
+              <p className="text-brand-primary text-xs font-semibold tracking-widest uppercase">
                 {t("settings.password.sectionTitle")}
               </p>
 
@@ -566,7 +566,7 @@ export default function SettingsPanel({
             <button
               onClick={handlePasswordSave}
               disabled={passwordSuccess}
-              className="bg-[#002045] text-white rounded-xl px-4 py-3 flex items-center justify-center gap-2  "
+              className="bg-brand-primary text-white rounded-xl px-4 py-3 flex items-center justify-center gap-2  "
             >
               <Lock size={16} />
               {t("settings.password.change")}
@@ -590,11 +590,11 @@ export default function SettingsPanel({
         {showDeleteConfirm && (
           <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
             <div className="bg-white rounded-2xl dark:bg-slate-900 p-6 w-full max-w-sm shadow-2xl">
-              <h2 className="text-lg font-semibold dark:text-slate-50 text-[#002045]">
+              <h2 className="text-lg font-semibold dark:text-slate-50 text-brand-primary">
                 {t("settings.deleteConfirm.title")}
               </h2>
 
-              <p className="text-sm dark:text-slate-300 text-[#475F83] mt-2">
+              <p className="text-sm dark:text-slate-300 text-brand-muted mt-2">
                 {t("settings.deleteConfirm.description")}
               </p>
 

@@ -138,7 +138,7 @@ function CodeAuthContent() {
 							</p>
 							<p className="text-gray-500 text-[0.9rem] leading-relaxed">
 								{t("auth.code.subtitle")} <br/>
-								<strong className="text-[#002045] block mt-1">{email}</strong>
+								<strong className="text-brand-primary block mt-1">{email}</strong>
 							</p>
 						</div>
 
@@ -173,7 +173,7 @@ function CodeAuthContent() {
 						<button
 							onClick={handleResend}
 							disabled={countdown > 0}
-							className="flex items-center justify-center w-full py-3.5 border border-gray-200 rounded-[14px] bg-white text-[#002045] text-[0.85rem] font-semibold tracking-wide cursor-pointer transition-all duration-300 ease-out mb-8 hover:bg-gray-50 hover:shadow-sm active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50"
+							className="flex items-center justify-center w-full py-3.5 border border-gray-200 rounded-[14px] bg-white text-brand-primary text-[0.85rem] font-semibold tracking-wide cursor-pointer transition-all duration-300 ease-out mb-8 hover:bg-gray-50 hover:shadow-sm active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50"
 						>
 							{countdown > 0
 								? t("auth.code.resendCountdown", { time: formatCountdown() })
@@ -184,7 +184,7 @@ function CodeAuthContent() {
 						<div className="mt-auto pt-4 w-full border-t border-gray-200 text-center">
 							<p className="text-gray-500 text-sm italic">
 									&quot;{t("auth.code.footerQuote")}&quot; <br/>
-								<span className="text-[#002045] font-medium not-italic block mt-1">{t("auth.code.footerSource")}</span>
+								<span className="text-brand-primary font-medium not-italic block mt-1">{t("auth.code.footerSource")}</span>
 							</p>
 						</div>
 					</div>
@@ -209,7 +209,7 @@ export default function CodeAuth() {
 	return (
 		<Suspense
 			fallback={
-				<div className="flex min-h-screen items-center justify-center bg-[#e8eaed] text-[#002045]">
+				<div className="flex min-h-screen items-center justify-center bg-[#e8eaed] text-brand-primary">
 					<Loader2 className="mr-2 animate-spin" size={20} />
 					<span>{t("common.loading")}</span>
 				</div>

@@ -71,14 +71,14 @@ export function MessageToast({
 								className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
 							/>
 						) : (
-							<div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E8EEF8] text-xs font-bold text-[#1E3A8A] ring-2 ring-white">
+							<div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-light text-xs font-bold text-[#1E3A8A] ring-2 ring-white">
 								{getInitials(senderName)}
 							</div>
 						)}
 					</div>
 					<div className="min-w-0 flex-1">
-						<p className="truncate text-sm font-semibold text-[#002045]">{senderName}</p>
-						<p className="mt-1 line-clamp-2 text-sm leading-5 text-[#475F83]">
+						<p className="truncate text-sm font-semibold text-brand-primary">{senderName}</p>
+						<p className="mt-1 line-clamp-2 text-sm leading-5 text-brand-muted">
 							{truncateMessage(message)}
 						</p>
 					</div>
@@ -88,7 +88,7 @@ export function MessageToast({
 							event.stopPropagation();
 							onClose();
 						}}
-						className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100 hover:text-[#002045]"
+						className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100 hover:text-brand-primary"
 						aria-label={t("notifications.close")}
 					>
 						<X size={16} />

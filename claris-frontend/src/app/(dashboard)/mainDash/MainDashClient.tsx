@@ -195,7 +195,7 @@ export default function MainDashClient() {
 	const firstName = displayName?.split(" ")[0];
 
 	return (
-		<div className="min-h-screen bg-[#F7F9FC] text-[#002045] dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]" >
+		<div className="min-h-screen bg-brand-bg text-brand-primary dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.16),transparent_32%),linear-gradient(to_bottom,#0f172a,#020617)]" >
 			<FeedbackToast
 				open={Boolean(toast)}
 				title={toast?.title ?? ""}
@@ -206,11 +206,11 @@ export default function MainDashClient() {
 			{pendingJoinChurch && (
 				<div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
 					<div className="w-full max-w-sm rounded-2xl dark:bg-slate-900 bg-white p-6 shadow-2xl">
-						<h2 className="text-lg font-semibold text-[#002045] dark:text-slate-50">
+						<h2 className="text-lg font-semibold text-brand-primary dark:text-slate-50">
 							{t("dashboard.main.joinConfirm.title", { name: pendingJoinChurch.name })}
 						</h2>
 
-						<p className="mt-2 text-sm leading-6 text-[#475F83] dark:text-slate-300">
+						<p className="mt-2 text-sm leading-6 text-brand-muted dark:text-slate-300">
 							{t("dashboard.main.joinConfirm.description")}
 						</p>
 
@@ -237,7 +237,7 @@ export default function MainDashClient() {
 								type="button"
 								onClick={requestToJoin}
 								disabled={joiningChurch}
-								className="flex-1 rounded-xl bg-[#002045] py-3 text-sm font-medium text-white hover:bg-[#1E3A8A] disabled:opacity-60"
+								className="flex-1 rounded-xl bg-brand-primary py-3 text-sm font-medium text-white hover:bg-[#1E3A8A] disabled:opacity-60"
 							>
 								{joiningChurch
 									? t("dashboard.main.joinConfirm.joining")
@@ -248,8 +248,8 @@ export default function MainDashClient() {
 				</div>
 			)}
 			<div className="mx-auto flex w-full max-w-7xl flex-col px-4 py-4 sm:px-6 lg:px-8">
-				<header className="sticky top-0 z-30 -mx-4 border-b border-white/70 dark:border-slate-700 bg-[#F7F9FC]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8
-				dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]">
+				<header className="sticky top-0 z-30 -mx-4 border-b border-white/70 dark:border-slate-700 bg-brand-bg/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8
+				dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.16),transparent_32%),linear-gradient(to_bottom,#0f172a,#020617)]">
 					<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 						<div className="flex items-center gap-3">
 							<div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white dark:bg-[#00000000] shadow-sm ring-1 ring-slate-200 dark:ring-slate-800">
@@ -268,7 +268,7 @@ export default function MainDashClient() {
 
 							<Link
 								href={addLocaleToPathname("/settings", locale)}
-								className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#00000000]  text-blue-900  shadow-sm transition-colors hover:border-[#D97706]/40 hover:text-[#f1b064] dark:hover:text-slate-200"
+								className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#00000000]  text-blue-900  shadow-sm transition-colors hover:border-accent-orange/40 hover:text-[#f1b064] dark:hover:text-slate-200"
 								aria-label="Settings"
 							>
 								<Settings size={16} />
@@ -281,16 +281,16 @@ export default function MainDashClient() {
 
 				<main className="flex flex-col gap-8 py-8">
 					<section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-						<div className="flex min-h-80 flex-col justify-between rounded-3xl  dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)] bg-white p-6 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 sm:p-8">
+						<div className="flex min-h-80 flex-col justify-between rounded-3xl  dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.16),transparent_32%),linear-gradient(to_bottom,#0f172a,#020617)] bg-white p-6 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 sm:p-8">
 							<div>
 								<div className="inline-flex items-center gap-2 rounded-full bg-[#1E3A8A]/10 dark:bg-slate-800 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#1E3A8A] dark:text-slate-50">
 									<Sparkles size={14} />
 									{firstName ? `${t("dashboard.main.welcome")}, ${firstName}` : t("dashboard.main.welcome")}
 								</div>
-								<h2 className="mt-5 max-w-3xl text-4xl font-bold leading-tight text-[#002045] dark:text-slate-50 sm:text-5xl lg:text-6xl">
+								<h2 className="mt-5 max-w-3xl text-4xl font-bold leading-tight text-brand-primary dark:text-slate-50 sm:text-5xl lg:text-6xl">
 									{t("dashboard.main.title")}
 								</h2>
-								<p className="mt-4 max-w-2xl text-base leading-7 text-[#475F83] dark:text-slate-500 sm:text-lg">
+								<p className="mt-4 max-w-2xl text-base leading-7 text-brand-muted dark:text-slate-500 sm:text-lg">
 									{t("dashboard.main.subtitle")}
 								</p>
 							</div>
@@ -305,7 +305,7 @@ export default function MainDashClient() {
 								<DashboardStatCard
 									title={t("dashboard.main.explore.searchCta")}
 									value={availableChurches.length}
-									icon={<Compass size={16} className="text-[#D97706]" />}
+									icon={<Compass size={16} className="text-accent-orange" />}
 								/>
 							</div>
 						</div>
@@ -335,13 +335,13 @@ export default function MainDashClient() {
 						</section>
 					</section>
 
-					<section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 sm:p-6 dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]">
+					<section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 sm:p-6 dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.16),transparent_32%),linear-gradient(to_bottom,#0f172a,#020617)]">
 						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 							<div>
-								<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
+								<p className="text-xs font-semibold uppercase tracking-wide text-accent-orange">
 									{t("dashboard.main.myChurches")}
 								</p>
-								<h3 className="mt-1 text-2xl font-bold text-[#002045] dark:text-slate-50">
+								<h3 className="mt-1 text-2xl font-bold text-brand-primary dark:text-slate-50">
 									{organizations.length} {t("community.communityLabel").toLowerCase()}
 								</h3>
 							</div>
@@ -351,12 +351,12 @@ export default function MainDashClient() {
 						{organizations.length === 0 ? (
 							<div className="mt-6 flex min-h-48 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 dark:bg-slate-900 bg-slate-50 px-6 py-12 text-center ">
 								<Building2 size={32} className="text-[#1E3A8A]/50 dark:text-slate-50" />
-								<p className="mt-4 text-lg font-semibold dark:text-slate-200 text-[#475F83]">{t("dashboard.main.empty.title")}</p>
+								<p className="mt-4 text-lg font-semibold dark:text-slate-200 text-brand-muted">{t("dashboard.main.empty.title")}</p>
 								<p className="mt-2 text-sm text-slate-400 dark:text-slate-400">{t("dashboard.main.empty.subtitle")}</p>
 							</div>
 						) : filteredOrganizations.length === 0 ? (
 							<div className="mt-6 flex min-h-48 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
-								<p className="text-lg font-semibold text-[#475F83]">{t("dashboard.main.searchEmpty.title")}</p>
+								<p className="text-lg font-semibold text-brand-muted">{t("dashboard.main.searchEmpty.title")}</p>
 								<p className="mt-2 text-sm text-slate-400">{t("dashboard.main.searchEmpty.subtitle")}</p>
 							</div>
 						) : (
@@ -381,16 +381,16 @@ export default function MainDashClient() {
 						)}
 					</section>
 
-					<section className="rounded-3xl bg-white dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)] dark:ring-slate-800 p-5 shadow-sm ring-1 ring-slate-200 sm:p-6">
+					<section className="rounded-3xl bg-white dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.16),transparent_32%),linear-gradient(to_bottom,#0f172a,#020617)] dark:ring-slate-800 p-5 shadow-sm ring-1 ring-slate-200 sm:p-6">
 						<div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
 							<div>
-								<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
+								<p className="text-xs font-semibold uppercase tracking-wide text-accent-orange">
 									{t("dashboard.main.explore.searchCta")}
 								</p>
-								<h3 className="mt-1 text-2xl font-bold text-[#002045] dark:text-slate-50">
+								<h3 className="mt-1 text-2xl font-bold text-brand-primary dark:text-slate-50">
 									{t("dashboard.main.explore.title", { count: filteredAvailableChurches.length })}
 								</h3>
-								<p className="mt-2 max-w-2xl text-sm leading-6 text-[#475F83] dark:text-slate-400 sm:text-base">
+								<p className="mt-2 max-w-2xl text-sm leading-6 text-brand-muted dark:text-slate-400 sm:text-base">
 									{t("dashboard.main.explore.subtitle")}
 								</p>
 							</div>
@@ -403,7 +403,7 @@ export default function MainDashClient() {
 										placeholder={t("dashboard.main.explore.searchPlaceholder")}
 										value={searchTerm}
 										onChange={(event) => setSearchTerm(event.target.value)}
-										className="h-10 min-w-0 flex-1 bg-transparent text-sm text-[#002045] dark:text-slate-50 placeholder:text-slate-400 focus:outline-none"
+										className="h-10 min-w-0 flex-1 bg-transparent text-sm text-brand-primary dark:text-slate-50 placeholder:text-slate-400 focus:outline-none"
 									/>
 								</div>
 								{searchTerm ? (
@@ -411,7 +411,7 @@ export default function MainDashClient() {
 										type="button"
 										onClick={() => setSearchTerm("")}
 										aria-label={t("dashboard.main.explore.clearSearch")}
-										className="mr-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-color dark:hover:bg-slate-800 hover:bg-slate-100 dark:hover:text-slate-400 hover:text-[#002045]"
+										className="mr-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-color dark:hover:bg-slate-800 hover:bg-slate-100 dark:hover:text-slate-400 hover:text-brand-primary"
 									>
 										<X size={16} />
 									</button>
@@ -425,7 +425,7 @@ export default function MainDashClient() {
 
 						<div className="mt-6 grid gap-4 lg:grid-cols-2">
 							{filteredAvailableChurches.length === 0 ? (
-								<div className="rounded-2xl border border-dashed dark:border-slate-800 border-slate-300 dark:bg-slate-900 bg-slate-50 px-6 py-10 text-center text-[#475F83] dark:text-slate-300">
+								<div className="rounded-2xl border border-dashed dark:border-slate-800 border-slate-300 dark:bg-slate-900 bg-slate-50 px-6 py-10 text-center text-brand-muted dark:text-slate-300">
 									{t("dashboard.main.explore.empty")}
 								</div>
 							) : (

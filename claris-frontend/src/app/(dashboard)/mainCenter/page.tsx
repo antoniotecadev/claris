@@ -1304,7 +1304,7 @@ function DashboardPageContent() {
 
 	if (loading) {
 		return (
-			<div className="flex min-h-screen items-center justify-center dark:text-slate-50 dark:bg-slate-900 bg-white text-[#002045]">
+			<div className="flex min-h-screen items-center justify-center dark:text-slate-50 dark:bg-slate-900 bg-white text-brand-primary">
 				<Loader2 className="mr-2 animate-spin" size={20} />
 				<span>{t("organization.center.loading")}</span>
 			</div>
@@ -1313,10 +1313,10 @@ function DashboardPageContent() {
 
 	if (error || !organization) {
 		return (
-			<div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-center text-[#002045] dark:bg-slate-900 dark:text-slate-50">
-				<Building2 size={34} className="text-[#D97706]" />
+			<div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-center text-brand-primary dark:bg-slate-900 dark:text-slate-50">
+				<Building2 size={34} className="text-accent-orange" />
 				<p className="text-lg font-semibold">{error ?? t("errors.organizationDataNotFound")}</p>
-				<Link href={backHref} className="rounded-xl bg-[#002045] px-5 py-2.5 text-sm font-semibold text-white">
+				<Link href={backHref} className="rounded-xl bg-brand-primary px-5 py-2.5 text-sm font-semibold text-white">
 					{t("organization.center.backToChurches")}
 				</Link>
 			</div>
@@ -1324,7 +1324,7 @@ function DashboardPageContent() {
 	}
 
 	return (
-		<div className="min-h-screen bg-[#F7F9FC] text-[#002045]  dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)]">
+		<div className="min-h-screen bg-brand-bg text-brand-primary  dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.16),transparent_32%),linear-gradient(to_bottom,#0f172a,#020617)]">
 			<FeedbackToast
 				open={Boolean(toast)}
 				title={toast?.title ?? ""}
@@ -1332,7 +1332,7 @@ function DashboardPageContent() {
 				variant={toast?.variant}
 				onClose={() => setToast(null)}
 			/>
-			<header className="sticky top-0 z-40 border-b dark:bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.16),_transparent_32%),linear-gradient(to_bottom,_#0f172a,_#020617)] dark:border-slate-800 border-white/70 bg-[#F7F9FC]/85 px-4 py-3 backdrop-blur-md sm:px-6 lg:px-8">
+			<header className="sticky top-0 z-40 border-b dark:bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.16),transparent_32%),linear-gradient(to_bottom,#0f172a,#020617)] dark:border-slate-800 border-white/70 bg-brand-bg/85 px-4 py-3 backdrop-blur-md sm:px-6 lg:px-8">
 				<div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 					<Link href={backHref} className="flex items-center justify-center gap-3">
 						<span className="flex h-11 w-11 items-center justify-center rounded-2xl dark:ring-slate-800 dark:bg-slate-900  bg-white shadow-sm ring-1 ring-slate-200">
@@ -1343,7 +1343,7 @@ function DashboardPageContent() {
 					<div className="flex items-center gap-3">
 						<Link
 							href={backHref}
-							className="flex h-10 items-center justify-center gap-2 rounded-2xl border dark:border-slate-800  border-slate-200 dark:bg-slate-900  bg-white px-4 text-sm font-semibold dark:text-slate-50  text-[#002045] shadow-sm transition-colors hover:border-[#1E3A8A]/30 hover:text-[#1E3A8A]"
+							className="flex h-10 items-center justify-center gap-2 rounded-2xl border dark:border-slate-800  border-slate-200 dark:bg-slate-900  bg-white px-4 text-sm font-semibold dark:text-slate-50  text-brand-primary shadow-sm transition-colors hover:border-[#1E3A8A]/30 hover:text-[#1E3A8A]"
 						>
 							<ChevronLeft size={16} />
 							{t("common.back")}
@@ -1353,7 +1353,7 @@ function DashboardPageContent() {
 			</header>
 
 			<main className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
-				<section className="side3 relative overflow-hidden rounded-3xl bg-[#002045] shadow-sm">
+				<section className="side3 relative overflow-hidden rounded-3xl bg-brand-primary shadow-sm">
 					<div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,32,69,0.96)_0%,rgba(30,58,138,0.84)_54%,rgba(217,119,6,0.38)_100%)]" />
 					<div className="relative grid min-h-90 gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:p-10">
 						<div className="flex flex-col justify-between gap-8">
@@ -1399,7 +1399,7 @@ function DashboardPageContent() {
 						</div>
 
 						<div className="flex flex-col justify-end gap-4 min-w-0">
-							<div className="w-full rounded-3xl bg-white/94 dark:bg-slate-900/100  p-5 shadow-xl shadow-slate-950/10 ring-1 dark:ring-slate-800  ring-white/70 backdrop-blur min-w-0">
+							<div className="w-full rounded-3xl bg-white/94 dark:bg-slate-900  p-5 shadow-xl shadow-slate-950/10 ring-1 dark:ring-slate-800  ring-white/70 backdrop-blur min-w-0">
 								<div className="flex items-center gap-4">
 
 									{organization.logoUrl ? (
@@ -1413,15 +1413,15 @@ function DashboardPageContent() {
 											className="h-18 w-18 shrink-0 rounded-2xl object-contain ring-1 dark:ring-slate-800  ring-slate-200"
 										/>
 									) : (
-										<div className="flex shrink-0 h-18 w-18 items-center justify-center rounded-2xl  bg-[#002045] text-2xl font-bold text-white">
+										<div className="flex shrink-0 h-18 w-18 items-center justify-center rounded-2xl  bg-brand-primary text-2xl font-bold text-white">
 											{organizationInitial}
 										</div>
 									)}
 									<div className="min-w-0 flex-1">
-										<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
+										<p className="text-xs font-semibold uppercase tracking-wide text-accent-orange">
 											{t("organization.center.label")}
 										</p>
-										<p className="mt-1 truncate text-xl font-bold dark:text-slate-50  text-[#002045]">
+										<p className="mt-1 truncate text-xl font-bold dark:text-slate-50  text-brand-primary">
 											{organization.name}
 										</p>
 									</div>
@@ -1432,12 +1432,12 @@ function DashboardPageContent() {
 										const Icon = stat.icon;
 
 										return (
-											<div key={stat.label} className="rounded-2xl dark:bg-slate-900  dark:ring-slate-800  bg-[#F7F9FC] p-3 ring-1 ring-slate-200">
-												<div className="flex items-center gap-1.5 text-xs font-semibold dark:text-slate-50  text-[#475F83]">
+											<div key={stat.label} className="rounded-2xl dark:bg-slate-900  dark:ring-slate-800  bg-brand-bg p-3 ring-1 ring-slate-200">
+												<div className="flex items-center gap-1.5 text-xs font-semibold dark:text-slate-50  text-brand-muted">
 													<Icon size={14} className="text-[#1E3A8A] dark:text-slate-50 " />
 													<span className="truncate">{stat.label}</span>
 												</div>
-												<p className="mt-2 text-2xl font-bold dark:text-slate-50  text-[#002045]">{stat.value}</p>
+												<p className="mt-2 text-2xl font-bold dark:text-slate-50  text-brand-primary">{stat.value}</p>
 											</div>
 										);
 									})}
@@ -1450,13 +1450,13 @@ function DashboardPageContent() {
 				<section className="flex flex-col gap-4">
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
 						<div>
-							<p className="text-xs font-semibold uppercase tracking-wide text-[#D97706]">
+							<p className="text-xs font-semibold uppercase tracking-wide text-accent-orange">
 								{t("organization.center.communityAgenda")}
 							</p>
-							<h2 className="mt-1 text-3xl font-bold tracking-tight dark:text-slate-50  text-[#002045] sm:text-4xl">
+							<h2 className="mt-1 text-3xl font-bold tracking-tight dark:text-slate-50  text-brand-primary sm:text-4xl">
 								{t("organization.center.upcomingEvents")}
 							</h2>
-							<p className="mt-3 max-w-2xl text-base leading-7 dark:text-slate-500  text-[#475F83]">
+							<p className="mt-3 max-w-2xl text-base leading-7 dark:text-slate-500  text-brand-muted">
 								{t("organization.center.joinDescription", { name: organization.name })}
 							</p>
 						</div>
@@ -1475,7 +1475,7 @@ function DashboardPageContent() {
 					) : (
 						<div className="flex min-h-48 flex-col items-center justify-center rounded-3xl border border-dashed dark:border-slate-800  border-slate-300 bg-white dark:bg-slate-900  dark:text-slate-50 px-6 py-12 text-center shadow-sm">
 							<CalendarDays size={32} className="text-[#1E3A8A]/50 dark:text-slate-50/50" />
-							<p className="mt-4 text-lg font-semibold text-[#475F83] dark:text-slate-50">
+							<p className="mt-4 text-lg font-semibold text-brand-muted dark:text-slate-50">
 								{t("organization.center.noEvents")}
 							</p>
 						</div>
@@ -1562,7 +1562,7 @@ function DashboardPageContent() {
 function DashboardFallback() {
 	const { t } = useMessages();
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-[#F7F9FC] text-[#002045]">
+		<div className="flex min-h-screen items-center justify-center bg-brand-bg text-brand-primary">
 			<Loader2 className="mr-2 animate-spin" size={20} />
 			<span>{t("organization.center.loadingPage")}</span>
 		</div>

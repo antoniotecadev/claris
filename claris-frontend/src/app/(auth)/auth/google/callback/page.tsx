@@ -28,8 +28,7 @@ export default function GoogleCallbackPage() {
 				await setAuthToken(token);
 
 				router.push(addLocaleToPathname("/mainDash", locale));
-			} catch (error) {
-				console.error(error);
+			} catch {
 				router.push(addLocaleToPathname("/login", locale));
 			} finally {
 				setLoading(false);
@@ -37,7 +36,7 @@ export default function GoogleCallbackPage() {
 		}
 
 		authenticate();
-	}, [router]);
+	}, [locale, router]);
 
 	if (loading) {
 		return (

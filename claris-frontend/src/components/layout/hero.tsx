@@ -1,6 +1,4 @@
 "use client";
-import Image from "next/image";
-import igreja from "@/assets/images/unnamed.png";
 import Conf from "./conf";
 import heroImg from "@/assets/images/hero.png";
 import { useMessages } from "@/i18n/messages";

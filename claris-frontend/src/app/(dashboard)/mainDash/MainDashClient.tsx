@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import icon from "@/assets/images/logoSem.png";
 import iconDark from "@/assets/images/lobo-SE.png";

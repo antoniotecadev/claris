@@ -18,7 +18,6 @@ export async function sendCodeAction(
 	let redirecionarUrl: string | null = null;
 
 	try {
-		//console.log("Enviando código para verificação -> ", { email, code });
 		const res = await api.post<{ result?: VerifyCodeResponse } & VerifyCodeResponse>("/auth/email/verify-login", { email, code });
 		const data = res?.result ?? res;
 

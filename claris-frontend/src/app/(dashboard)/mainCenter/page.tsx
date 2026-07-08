@@ -685,7 +685,8 @@ function DashboardPageContent() {
 					setFriends(friendsList);
 					setFriendIds(new Set(friendsList.map((f) => f.id)));
 				} else {
-					console.warn("Não foi possível carregar os amigos:", friendsResult.reason);
+					setFriends([]);
+					setFriendIds(new Set());
 				}
 
 				if (eventsResult.status === "fulfilled") {
@@ -706,8 +707,7 @@ function DashboardPageContent() {
 						),
 					);
 				}
-			} catch (err) {
-				console.error(err);
+			} catch {
 				setError(t("errors.generic"));
 			} finally {
 				setLoading(false);
@@ -818,14 +818,19 @@ function DashboardPageContent() {
 					});
 				});
 
-				socket.on("connect_error", (error) => {
-					console.warn("Erro ao conectar socket do chat:", error.message);
+				socket.on("connect_error", () => {
+					setToast({
+						title: t("chat.errorTitle"),
+						description: t("errors.generic"),
+						variant: "error",
+					});
 				});
-			} catch (error) {
-				console.warn(
-					"Não foi possível iniciar o socket do chat:",
-					error instanceof Error ? error.message : error,
-				);
+			} catch {
+				setToast({
+					title: t("chat.errorTitle"),
+					description: t("errors.generic"),
+					variant: "error",
+				});
 			}
 		}
 
@@ -985,7 +990,9 @@ function DashboardPageContent() {
 			const freshEvents = await loadOrganizationEvents(organization.organizationId);
 			setOrganizationEvents(freshEvents);
 		} catch (error) {
-			console.error("Erro ao atualizar eventos:", error);
+			setEventsError(
+				error instanceof Error ? error.message : t("errors.eventsLoad"),
+			);
 		}
 	}, [loadOrganizationEvents, organization]);
 

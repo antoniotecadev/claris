@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Logo from "@/assets/images/lobo-SE.png";
 import { ArrowRight, Eye, EyeOff, Loader2, AlertCircle, Sparkles } from "lucide-react";
 import { GoogleAuthButton } from "@/components/ui/google-auth-button";

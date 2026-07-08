@@ -116,7 +116,7 @@ async function networkFirstNavigation(request, pathname) {
 		const response = await fetch(request);
 		if (response.ok && isCacheableNavigation(pathname)) {
 			const cache = await caches.open(RUNTIME_CACHE);
-			cache.put(request, response.clone());
+			cache.put(request, response.clone()).catch(() => undefined);
 		}
 		return response;
 	} catch {
@@ -137,7 +137,7 @@ async function staleWhileRevalidate(request) {
 	const networkResponsePromise = fetch(request)
 		.then((networkResponse) => {
 			if (networkResponse.ok) {
-				cache.put(request, networkResponse.clone());
+				cache.put(request, networkResponse.clone()).catch(() => undefined);
 			}
 			return networkResponse;
 		})

@@ -16,8 +16,8 @@ export function PwaRegister() {
 				if (registration.waiting) {
 					registration.waiting.postMessage({ type: "SKIP_WAITING" });
 				}
-			} catch (error) {
-				console.warn("Service worker registration failed", error);
+			} catch {
+				// Browsers may block service workers in unsupported contexts.
 			}
 		};
 

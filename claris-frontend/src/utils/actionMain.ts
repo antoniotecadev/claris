@@ -33,8 +33,7 @@ export async function getOrganizations(selectionToken: string) {
   try {
     const res = await api.post<{ result?: OrganizationOptionsResponse } & OrganizationOptionsResponse>("/auth/organization/options", { selectionToken });
     return res?.result ?? res;
-  } catch (error: unknown) {
-    console.error("Erro:", error instanceof Error ? error.message : error);
+  } catch {
     return null;
   }
 }
@@ -50,8 +49,7 @@ export async function selectOrganization(selectionToken: string, organizationId:
     }
 
     return data;
-  } catch (error: unknown) {
-    console.error("Erro:", error instanceof Error ? error.message : error);
+  } catch {
     return null;
   }
 }
@@ -62,8 +60,7 @@ export async function getMyOrganizations() {
     // backend likely returns an array of organizations
     if (Array.isArray(res)) return res;
     return res?.organizations ?? res?.result ?? [];
-  } catch (error: unknown) {
-    console.error("Erro ao buscar minhas organizações:", error instanceof Error ? error.message : error);
+  } catch {
     return null;
   }
 }
@@ -81,8 +78,7 @@ export async function switchOrganization(organizationId: string) {
     }
 
     return data;
-  } catch (error: unknown) {
-    console.error("Erro ao trocar organização:", error instanceof Error ? error.message : error);
+  } catch {
     return null;
   }
 }
@@ -92,8 +88,7 @@ export async function getCurrentUser() {
     const res = await api.get<({ result?: CurrentUserResponse } & CurrentUserResponse)>("/user/me");
     const data = res?.result ?? res;
     return data?.profile ?? data?.user ?? null;
-  } catch (error: unknown) {
-    console.error("Erro ao buscar usuário atual:", error instanceof Error ? error.message : error);
+  } catch {
     return null;
   }
 }

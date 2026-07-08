@@ -119,8 +119,6 @@ export default function SettingsPanel({
       // redirect
       window.location.href = addLocaleToPathname("/login", locale);
     } catch (err) {
-      console.error(err);
-
       alert(
         err instanceof Error
           ? err.message
@@ -134,7 +132,6 @@ export default function SettingsPanel({
 
   const handleLogout = async () => {
     try {
-      //console.log("Initiating logout...");
       // 1. apagar cookie no servidor
       await fetch("/api/logout", {
         method: "POST",
@@ -143,8 +140,8 @@ export default function SettingsPanel({
       // 2. limpar estado do frontend (Zustand)
       logout();
       window.location.href = addLocaleToPathname("/login", locale);
-    } catch (err) {
-      console.error("Erro no logout", err);
+    } catch {
+      setError(t("errors.generic"));
     }
   };
 
@@ -184,7 +181,6 @@ export default function SettingsPanel({
       try {
         setLoadingUser(true);
         const { profile } = await api.get<MeResponse>("/user/me");
-       // console.log("Loaded user profile:", profile);
         setUser(profile);
         setFields({
           displayName: profile.displayName ?? "",
@@ -194,8 +190,7 @@ export default function SettingsPanel({
             : "",
         });
         setAvatarPreview(normalizeMediaUrl(profile.avatarUrl) ?? null);
-      } catch (err) {
-        console.error(err);
+      } catch {
         setError(t("settings.errors.loadUser"));
       } finally {
         setLoadingUser(false);

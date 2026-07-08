@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Suspense, useRef, useState, useEffect } from "react";
 import Logo from "@/assets/images/lobo-SE.png"
 import { useSearchParams, useRouter } from "next/navigation";

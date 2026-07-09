@@ -67,6 +67,17 @@ Its main features include:
    make down
    ```
 
+### Useful Makefile commands
+
+- `make logs` to follow all service logs.
+- `make logs-frontend` to inspect frontend logs only.
+- `make logs-backend` to inspect backend logs only.
+- `make psql` to open a PostgreSQL shell inside the database container.
+- `make migrate` to force Prisma migrations inside the backend container.
+- `make seed` to populate the database with seed data.
+- `make down-volumes` to stop the stack and remove the database volume.
+
+
 ## Database Schema
 
 The database is centered on organizations and the people who belong to them.

@@ -71,7 +71,7 @@ model Organization {
   church      Church       @relation(fields: [churchId], references: [id])
 }
 
-// Membership (Filiação / Associação): representa a associação de um usuário a uma organização, com campos para o papel do membro e a data de adesão. Inclui relacionamentos com User e Organization.
+// Membership: It represents the association of a user with an organization, indicating their role and the date of joining. It is related to User, which represents the member, and to Organization, to which that member belongs.
 model Membership {
   id             String       @id @default(cuid())
   userId         String

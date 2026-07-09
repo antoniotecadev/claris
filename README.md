@@ -235,6 +235,13 @@ Classic references used for the project:
 - Cloudinary documentation: https://cloudinary.com/documentation
 - Resend documentation: https://resend.com/docs
 
+AI usage:
+
+- AI was used to structure the README into the sections required by the 42 curriculum.
+- AI was used to translate and refine the wording into English.
+- AI was used to map the implementation notes from the codebase into readable team, feature, module, and contribution summaries.
+- AI was not used to invent features or claim work that is not present in the repository; the final text was aligned with the existing codebase and team notes.
+
 ## License and Credits
 
 This project was developed for educational purposes as part of the 42 curriculum.

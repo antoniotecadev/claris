@@ -8,15 +8,6 @@ _This project has been created as part of the 42 curriculum by txavier._
 
 The goal of the project is to design, build, and deploy a complete application that combines frontend development, backend services, database design, authentication, security considerations, and team-based project organization.
 
-Key features:
-
-- Browser-based Pong game experience.
-- User account management.
-- Authentication and protected application areas.
-- Player profiles and persistent user data.
-- Match history and game-related statistics.
-- Modular frontend and backend structure.
-- Containerized execution for a reproducible local environment.
 
 ## Database Schema
 

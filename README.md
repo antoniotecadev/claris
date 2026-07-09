@@ -153,7 +153,7 @@ model Message {
   @@index([organizationId, recipientId, senderId, createdAt])
 }
 
-// EmailLoginCode: representa um código de login enviado por email, com expiração e uso único.
+// EmailLoginCode: Represents a temporary authentication code sent to a user via email. It is associated with the User to whom the code belongs and for whom it was generated.
 model EmailLoginCode {
   id        String    @id @default(cuid())
   userId    String

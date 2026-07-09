@@ -69,7 +69,31 @@ Its main features include:
 
 ## Database Schema
 
+The database is centered on organizations and the people who belong to them.
+The main relationships are:
 
+- One Church has many Organizations.
+- One Organization has many Memberships, Events, Messages, and Friendships.
+- One User can belong to many Organizations through Membership.
+- One User can attend many Events through EventInterest.
+- One User can send and receive Messages.
+- One User can receive temporary EmailLoginCode records for authentication.
+- One Friendship links two Users inside a specific Organization.
+
+```mermaid
+erDiagram
+  CHURCH ||--o{ ORGANIZATION : owns
+  ORGANIZATION ||--o{ MEMBERSHIP : has
+  USER ||--o{ MEMBERSHIP : joins
+  ORGANIZATION ||--o{ EVENT : schedules
+  EVENT ||--o{ EVENT_INTEREST : receives
+  USER ||--o{ EVENT_INTEREST : marks
+  ORGANIZATION ||--o{ MESSAGE : contains
+  USER ||--o{ MESSAGE : sends
+  USER ||--o{ EMAIL_LOGIN_CODE : receives
+  ORGANIZATION ||--o{ FRIENDSHIP : scopes
+  USER ||--o{ FRIENDSHIP : participates
+```
 
 ## Resources
 

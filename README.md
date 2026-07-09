@@ -136,7 +136,7 @@ model EventInterest {
   @@index([userId])
 }
 
-// Message: representa as mensagens enviadas pelos membros, com campos para o conteúdo, data de criação e relacionamentos com o remetente e a organização.
+// Message: It represents a message sent within an organization, storing its content as well as the dates it was sent and read. It is related to a User—acting as the sender and, optionally, as the recipient—and to an Organization, where the message was sent.
 model Message {
   id             String       @id @default(cuid())
   senderId       String

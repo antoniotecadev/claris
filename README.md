@@ -123,7 +123,7 @@ model Event {
   interests      EventInterest[]
 }
 
-// EventInterest: representa o interesse de um membro em participar de um evento.
+// EventInterest: It represents a user's interest in participating in an event. It is related to the User, who expresses the interest, and to the Event, where that interest is recorded.
 model EventInterest {
   id        String   @id @default(cuid())
   eventId   String

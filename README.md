@@ -46,7 +46,7 @@ model User {
 }
 
 
-// Church: representa igrejas padrão que podem ter várias organizações.
+// Church: It represents an event organized by an organization, containing information such as title, description, date, location, and a photograph. It is linked to the Organization responsible for organizing the event and to EventInterest, which records users interested in participating.
 model Church {
   id            String         @id @default(cuid())
   name          String

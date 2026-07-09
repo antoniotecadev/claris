@@ -20,6 +20,35 @@ Its main features include:
 - A Swagger-documented public API protected by an API key.
 
 
+## Instructions
+
+### Prerequisites
+
+- Docker 24+ and Docker Compose v2.
+- Node.js 22+ if you want to run the apps without Docker.
+- A root `.env` file based on `.env.example`.
+- Valid credentials for the external services used by the project when you want the full authentication and media flow:
+  - Google OAuth client ID and secret.
+  - Resend API key and sender email.
+  - Cloudinary account credentials.
+
+### Recommended setup with Docker
+
+1. Copy the example environment file to the repository root.
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Review the values in `.env` and adjust them if you are deploying outside the local development environment.
+3. Start the full stack.
+
+   ```bash
+   make up
+   # or
+   docker compose up -d --build
+   ```
+
 ## Database Schema
 
 The database stores User, Church, Organization, Membership,Friendship, Event, EventInterest, Message and EmailLoginCode. A typical structure is:

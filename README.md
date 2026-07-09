@@ -90,7 +90,7 @@ enum Role {
   MEMBER
 }
 
-// Friendship (Amizade): representa uma amizade entre dois membros dentro de uma organização.
+// Friendship: It represents a friendship between two users within an organization. It is linked to the Organization where the friendship exists, and to the User, identifying the two participants in the friendship and the user responsible for creating it.
 model Friendship {
   id             String       @id @default(cuid())
   organizationId String

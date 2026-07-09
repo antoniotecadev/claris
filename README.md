@@ -218,20 +218,22 @@ model EmailLoginCode {
 
 ## Resources
 
-Classic references used for the project topic:
+Classic references used for the project:
 
 - 42 ft_transcendence subject.
+- Next.js documentation: https://nextjs.org/docs
+- React documentation: https://react.dev/
+- NestJS documentation: https://docs.nestjs.com/
+- Prisma documentation: https://www.prisma.io/docs
+- PostgreSQL documentation: https://www.postgresql.org/docs/
 - Docker documentation: https://docs.docker.com/
 - Docker Compose documentation: https://docs.docker.com/compose/
+- Socket.IO documentation: https://socket.io/docs/
+- Passport documentation: https://www.passportjs.org/
 - MDN Web Docs: https://developer.mozilla.org/
-- PostgreSQL documentation: https://www.postgresql.org/docs/
-
-AI usage:
-
-- AI was used to help structure this README according to the requested 42 curriculum requirements.
-- AI was used to improve wording, organize sections, and ensure that required topics such as team information, project management, technical stack, modules, database schema, and individual contributions were covered.
-- AI was not used as a replacement for understanding or validating the project implementation.
-- Any AI-generated documentation must be reviewed and adjusted to match the final code, selected modules, and team member responsibilities.
+- WCAG 2.1 overview: https://www.w3.org/TR/WCAG21/
+- Cloudinary documentation: https://cloudinary.com/documentation
+- Resend documentation: https://resend.com/docs
 
 ## License and Credits
 

@@ -54,7 +54,7 @@ model Church {
   organizations Organization[]
 }
 
-// Organization: 
+// Organization: It represents an organization (church) within the system, storing information such as name, identifier, address, description, and logo. It is related to Church (the entity to which it belongs), Membership (for managing its members), Event (for organized events), Message (for messages exchanged within its context), and Friendship (for friendships existing among its members).
 model Organization {
   id          String       @id @default(cuid())
   churchId    String

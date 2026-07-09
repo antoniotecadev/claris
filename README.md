@@ -77,6 +77,25 @@ Its main features include:
 - `make seed` to populate the database with seed data.
 - `make down-volumes` to stop the stack and remove the database volume.
 
+### Local development without Docker
+
+If you prefer to run each app manually, use Node.js 22+.
+
+Backend:
+
+```bash
+cd claris-backend
+npm install
+npm run start:dev
+```
+
+Frontend:
+
+```bash
+cd claris-frontend
+npm install
+npm run dev
+```
 
 ## Database Schema
 

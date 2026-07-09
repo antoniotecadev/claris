@@ -1,12 +1,23 @@
 _This project has been created as part of the 42 curriculum by txavier._
 
-# ft_transcendence
+# Claris
 
 ## Description
 
-**ft_transcendence** is a full-stack web application developed for the 42 curriculum. The project recreates and extends the classic Pong experience with a modern web interface, user accounts, multiplayer-oriented features, persistent data, and a modular architecture.
+Claris is a full-stack community and church management platform created for the 42 curriculum.
+It combines a public-facing site with a private dashboard so organizations can manage users, memberships, events, chat, and authentication in one place.
 
-The goal of the project is to design, build, and deploy a complete application that combines frontend development, backend services, database design, authentication, security considerations, and team-based project organization.
+The project focuses on a production-style architecture with a modern frontend, a modular backend, a relational database, secure authentication, and real-time communication.
+Its main features include:
+
+- Multi-tenant organization and membership management.
+- Email/password authentication and Google OAuth 2.0 login.
+- Two-factor authentication using temporary email codes.
+- Real-time chat and activity updates.
+- Event creation, editing, and media uploads.
+- Multilingual support, accessibility improvements, and PWA support.
+- Dark/light theme support and reusable design-system components.
+- A Swagger-documented public API protected by an API key.
 
 
 ## Database Schema

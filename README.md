@@ -84,7 +84,7 @@ model Membership {
   @@unique([userId, organizationId])
 }
 
-// Role: enumeração para os diferentes papéis que um membro pode ter dentro de uma organização, como ADMIN e MEMBER.
+// Role: enumeration of the different roles a member can have within an organization, such as ADMIN and MEMBER.
 enum Role {
   ADMIN
   MEMBER
@@ -109,7 +109,7 @@ model Friendship {
   @@index([createdById])
 }
 
-// Event: representa os eventos organizados pelas igrejas, com campos para título, descrição, data, local, foto e relacionamentos com a organização, interessados.
+// Event: It represents an event organized by an organization, containing information such as title, description, date, location, and a photograph. It is linked to the Organization responsible for organizing the event and to EventInterest, which records users interested in participating.
 model Event {
   id             String          @id @default(cuid())
   organizationId String

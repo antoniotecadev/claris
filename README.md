@@ -1,42 +1,188 @@
-*This project has been created as part of the 42 curriculum by ateca, cgouveia, dcaliqui, mchingi, txavier*
+_This project has been created as part of the 42 curriculum by txavier._
 
-DESCRIPTION
+# ft_transcendence
 
-INSTRUCTIONS
+## Description
 
-RESOURCES
+**ft_transcendence** is a full-stack web application developed for the 42 curriculum. The project recreates and extends the classic Pong experience with a modern web interface, user accounts, multiplayer-oriented features, persistent data, and a modular architecture.
 
-i should include some brief description of all team members, mentioning the role of each one;
+The goal of the project is to design, build, and deploy a complete application that combines frontend development, backend services, database design, authentication, security considerations, and team-based project organization.
 
-# i should describe how was the project management done
- - how the time organized the work 
- - Used tools 
- - comunication channels used 
+Key features:
 
- # techinical stack
- - frontend techonoloies and frameworks used
- - backend technolofgies and frameworks used
- - database system and why it was chosen
- - others
+- Browser-based Pong game experience.
+- User account management.
+- Authentication and protected application areas.
+- Player profiles and persistent user data.
+- Match history and game-related statistics.
+- Modular frontend and backend structure.
+- Containerized execution for a reproducible local environment.
 
- # database schema
- -  vvisual representation or description of the database structure.
- - tables and their relationships
- - key filds and data types
+## Database Schema
 
- # features list
- - complete list of implemented features
- - which team members  worked on each feature
- - brief description of each features's functionality
+The database stores users, authentication-related data, game matches, and statistics. A typical structure is:
 
- # modules
- - list of all chosen modules (major and Minor)
- - point calculation 
- - justification for each module choice
- - how each module was implemented
- - wich team member worked on each module
+```text
+// User: representa os usuários do sistema, com campos para email, senha, nome de exibição, genero, data de nascimento, avatar e relacionamentos com organizações e mensagens.
+model User {
+  id                 String           @id @default(cuid())
+  email              String           @unique
+  passwordHash       String?
+  displayName        String
+  gender             String?
+  birthDate          DateTime?
+  avatarUrl          String?
+  googleId           String?          @unique
+  lastSeen           DateTime?
+  createdAt          DateTime         @default(now())
+  memberships        Membership[]
+  sentMessages       Message[]        @relation("SentMessages")
+  receivedMessages   Message[]        @relation("ReceivedMessages")
+  friendshipsA       Friendship[]     @relation("FriendshipUserA")
+  friendshipsB       Friendship[]     @relation("FriendshipUserB")
+  createdFriendships Friendship[]     @relation("FriendshipCreator")
+  eventInterests     EventInterest[]
+  emailLoginCodes    EmailLoginCode[]
+}
 
- # individual contribuitions
- - detailed break down of what each team member contributed
- - especif features, modukes or components implemented by each person
- - any challengs faced and how they were overcome
+// Church: representa igrejas padrão que podem ter várias organizações.
+model Church {
+  id            String         @id @default(cuid())
+  name          String
+  createdAt     DateTime       @default(now())
+  organizations Organization[]
+}
+
+// Organization: representa as organizações (igrejas) no sistema, com campos para nome, slug, logo e relacionamentos com membros, eventos e mensagens.
+model Organization {
+  id          String       @id @default(cuid())
+  churchId    String
+  name        String
+  slug        String       @unique
+  address     String?
+  description String?
+  logoUrl     String?
+  createdAt   DateTime     @default(now())
+  memberships Membership[]
+  events      Event[]
+  messages    Message[]
+  friendships Friendship[]
+  church      Church       @relation(fields: [churchId], references: [id])
+}
+
+// Membership (Filiação / Associação): representa a associação de um usuário a uma organização, com campos para o papel do membro e a data de adesão. Inclui relacionamentos com User e Organization.
+model Membership {
+  id             String       @id @default(cuid())
+  userId         String
+  organizationId String
+  role           Role         @default(MEMBER)
+  joinedAt       DateTime     @default(now())
+  user           User         @relation(fields: [userId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([userId, organizationId])
+}
+
+// Role: enumeração para os diferentes papéis que um membro pode ter dentro de uma organização, como ADMIN e MEMBER.
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+// Friendship (Amizade): representa uma amizade entre dois membros dentro de uma organização.
+model Friendship {
+  id             String       @id @default(cuid())
+  organizationId String
+  userAId        String
+  userBId        String
+  createdById    String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  userA          User         @relation("FriendshipUserA", fields: [userAId], references: [id])
+  userB          User         @relation("FriendshipUserB", fields: [userBId], references: [id])
+  createdBy      User         @relation("FriendshipCreator", fields: [createdById], references: [id])
+
+  @@unique([organizationId, userAId, userBId])
+  @@index([organizationId, userAId])
+  @@index([organizationId, userBId])
+  @@index([createdById])
+}
+
+// Event: representa os eventos organizados pelas igrejas, com campos para título, descrição, data, local, foto e relacionamentos com a organização, interessados.
+model Event {
+  id             String          @id @default(cuid())
+  organizationId String
+  title          String
+  description    String?
+  date           DateTime
+  location       String?
+  photoUrl       String?
+  createdAt      DateTime        @default(now())
+  organization   Organization    @relation(fields: [organizationId], references: [id])
+  interests      EventInterest[]
+}
+
+// EventInterest: representa o interesse de um membro em participar de um evento.
+model EventInterest {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([eventId, userId])
+  @@index([userId])
+}
+
+// Message: representa as mensagens enviadas pelos membros, com campos para o conteúdo, data de criação e relacionamentos com o remetente e a organização.
+model Message {
+  id             String       @id @default(cuid())
+  senderId       String
+  recipientId    String?
+  organizationId String
+  content        String
+  readAt         DateTime?
+  createdAt      DateTime     @default(now())
+  sender         User         @relation("SentMessages", fields: [senderId], references: [id])
+  recipient      User?        @relation("ReceivedMessages", fields: [recipientId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([organizationId, senderId, recipientId, createdAt])
+  @@index([organizationId, recipientId, senderId, createdAt])
+}
+
+// EmailLoginCode: representa um código de login enviado por email, com expiração e uso único.
+model EmailLoginCode {
+  id        String    @id @default(cuid())
+  userId    String
+  codeHash  String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+```
+
+## Resources
+
+Classic references used for the project topic:
+
+- 42 ft_transcendence subject.
+- Docker documentation: https://docs.docker.com/
+- Docker Compose documentation: https://docs.docker.com/compose/
+- MDN Web Docs: https://developer.mozilla.org/
+- PostgreSQL documentation: https://www.postgresql.org/docs/
+
+AI usage:
+
+- AI was used to help structure this README according to the requested 42 curriculum requirements.
+- AI was used to improve wording, organize sections, and ensure that required topics such as team information, project management, technical stack, modules, database schema, and individual contributions were covered.
+- AI was not used as a replacement for understanding or validating the project implementation.
+- Any AI-generated documentation must be reviewed and adjusted to match the final code, selected modules, and team member responsibilities.
+
+## License and Credits
+
+This project was developed for educational purposes as part of the 42 curriculum.

@@ -97,6 +97,22 @@ npm install
 npm run dev
 ```
 
+## Project Management
+
+The team organized the work by ownership area and integrated the pieces through short syncs and shared reviews.
+Each member took primary responsibility for one domain while still reviewing adjacent work to keep the experience consistent across frontend, backend, and database layers.
+
+Tools and coordination:
+
+- GitHub was used for source control and task coordination.
+- The repository-level Makefile and Docker Compose setup were used to keep the development workflow reproducible.
+- Swagger and Prisma Studio were used during implementation to validate the API and inspect the data model.
+
+Communication:
+
+- Day-to-day coordination happened through direct team communication and regular check-ins.
+- Technical decisions were aligned before implementation to avoid duplicated work and conflicting patterns.
+
 ## Database Schema
 
 The database is centered on organizations and the people who belong to them.

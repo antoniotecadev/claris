@@ -49,6 +49,24 @@ Its main features include:
    docker compose up -d --build
    ```
 
+4. Open the frontend in your browser:
+   - `http://localhost:3000`
+5. Access the backend API:
+   - `http://localhost:3001/api/v1`
+6. Open the public Swagger documentation:
+   - `http://localhost:3001/public/docs`
+7. Open Prisma Studio if you need to inspect the database:
+
+   ```bash
+   make studio
+   ```
+
+8. Stop the stack when you are done:
+
+   ```bash
+   make down
+   ```
+
 ## Database Schema
 
 The database stores User, Church, Organization, Membership,Friendship, Event, EventInterest, Message and EmailLoginCode. A typical structure is:

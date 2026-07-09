@@ -20,10 +20,10 @@ Key features:
 
 ## Database Schema
 
-The database stores users, authentication-related data, game matches, and statistics. A typical structure is:
+The database stores User, Church, Organization, Membership,Friendship, Event, EventInterest, Message and EmailLoginCode. A typical structure is:
 
 ```text
-// User: representa os usuários do sistema, com campos para email, senha, nome de exibição, genero, data de nascimento, avatar e relacionamentos com organizações e mensagens.
+// User: It represents system users, storing authentication information, personal data, and activity details. It is linked to Membership to represent the organizations the user belongs to; to Message as the sender and recipient of messages; to Friendship to represent friendships and the user who created them; to EventInterest to record events the user has shown interest in; and to EmailLoginCode to manage temporary authentication codes sent via email. 
 model User {
   id                 String           @id @default(cuid())
   email              String           @unique
@@ -44,6 +44,7 @@ model User {
   eventInterests     EventInterest[]
   emailLoginCodes    EmailLoginCode[]
 }
+
 
 // Church: representa igrejas padrão que podem ter várias organizações.
 model Church {

@@ -7,4 +7,11 @@ const dictionaries = {
 	fr: () => import("../messages/fr.json").then((module) => module.default),
 };
 
-export const getDictionary = async (locale: Locale) => dictionaries[locale]();
+export const getDictionary = async (locale: Locale) => {
+	try {
+		const loadDictionary = dictionaries[locale] || dictionaries["pt"];
+		return await loadDictionary();
+	} catch (error) {
+		return {};
+	}
+};

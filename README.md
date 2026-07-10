@@ -113,6 +113,16 @@ Communication:
 - Day-to-day coordination happened through direct team communication and regular check-ins.
 - Technical decisions were aligned before implementation to avoid duplicated work and conflicting patterns.
 
+## Team Information
+
+| Member | Login | Role(s) | Responsibilities |
+| --- | --- | --- | --- |
+| Damásio Caliqui | dcaliqui | Product Owner | Frontend ownership, real-time UX, user communication, activity notifications, SSR, reusable UI building blocks, and user-management flows. |
+| Chingi | mchingi | Project Manager / Scrum Master | Accessibility (WCAG 2.1 AA), keyboard navigation, assistive-technology support, i18n, additional browser support, and PWA delivery. |
+| António Teca | ateca | Technical Lead | NestJS/Prisma project configuration, private API design, business rules, and CRUD implementation. |
+| Tchiadi Xavier | txavier | Developer | Google OAuth 2.0 authentication and two-factor authentication. |
+| Costantino Gouveia | cgouveia | Developer | Prisma schema design, dark/light theme support, and public API implementation. |
+
 ## Database Schema
 
 The database is centered on organizations and the people who belong to them.

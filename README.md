@@ -181,6 +181,31 @@ erDiagram
 | Accessibility and PWA | Keyboard-friendly UI, assistive-technology support, manifest, offline support, and installability. | mchingi |
 | Public API | API-key-protected public endpoints documented with Swagger. | cgouveia, ateca |
 
+## Individual Contributions
+
+### Tchiadi Xavier (txavier)
+
+- Implemented Google OAuth 2.0 authentication.
+- Implemented two-factor authentication using email verification codes.
+- Helped connect the login flow between the frontend and backend.
+
+Challenges and approach:
+
+- Handling partial login states required a staged authentication flow with temporary tokens and code verification.
+- The final login logic was kept secure by separating the temporary code step from the final JWT issuance.
+
+### Costantino Gouveia (cgouveia)
+
+- Designed the Prisma schema and the relational model.
+- Implemented dark/light mode support.
+- Helped build the public API.
+
+Challenges and approach:
+
+- The schema had to support organizations, memberships, chat, events, and authentication without becoming brittle; this was solved with explicit relations, constraints, and indexes.
+- Theme handling was kept simple by centralizing the theme switch in a shared provider and toggle component.
+
+
 ## Resources
 
 Classic references used for the project:

@@ -183,6 +183,43 @@ erDiagram
 
 ## Individual Contributions
 
+### Damásio Caliqui (dcaliqui)
+
+- Led the frontend experience and helped shape the public-facing interface.
+- Built or integrated real-time UI behaviors, user communication surfaces, and activity notifications.
+- Worked on SSR-driven pages, reusable components, palette consistency, typography, and icon usage.
+- Contributed to user-management flows on the frontend.
+
+Challenges and approach:
+
+- Keeping the UI consistent across many pages was handled by reusing layout components and shared design tokens.
+- Real-time feedback required careful state synchronization so the dashboard stayed responsive without overcomplicating the component tree.
+
+### Chingi (mchingi)
+
+- Managed the project workflow as Scrum Master.
+- Implemented accessibility improvements aligned with WCAG 2.1 AA.
+- Ensured keyboard navigation and assistive-technology support across the interface.
+- Added multilingual support for the system and helped extend browser compatibility.
+- Contributed to the PWA implementation.
+
+Challenges and approach:
+
+- Accessibility was addressed by using semantic HTML, correct focus handling, and ARIA-friendly patterns.
+- Locale switching was kept predictable by centralizing message dictionaries and locale-aware routing.
+
+### António Teca (ateca)
+
+- Acted as Technical Lead and configured the NestJS/Prisma backend foundation.
+- Built the private API layer and the core business rules.
+- Implemented CRUD flows across the backend modules.
+- Helped align authentication, tenancy, and domain constraints.
+
+Challenges and approach:
+
+- Multi-tenant data isolation was handled through middleware, guards, and query scoping.
+- Validation and maintainability were improved with DTOs, service boundaries, and Prisma relations.
+
 ### Tchiadi Xavier (txavier)
 
 - Implemented Google OAuth 2.0 authentication.

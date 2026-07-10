@@ -21,7 +21,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   @Post('register')
   async register(@Body() dto: RegisterDto) {
@@ -39,6 +39,28 @@ export class AuthController {
     // Este método não precisa de corpo, o Passport redireciona automaticamente para a página de login do Google
   }
 
+  // @Get('google/callback')
+  // @UseGuards(AuthGuard('google'))
+  // async googleCallback(@Req() req: any, @Res() res: Response) {
+  //   const loginResponse = await this.authService.loginWithGoogle(req.user);
+  //   const accessToken = loginResponse?.user?.token?.access_token as string | undefined;
+
+  //   const redirectBase = this.configService.get<string>(
+  //     'FRONTEND_URL',
+  //     'http://localhost:3000',
+  //   );
+
+  //   if (!accessToken) {
+  //     return res.redirect(`${redirectBase}/auth/google/error`);
+  //   }
+
+  //   const redirectUrl = `${redirectBase}/auth/google/callback#token=${encodeURIComponent(
+  //     accessToken,
+  //   )}`;
+
+  //   return res.redirect(redirectUrl);
+  // }
+
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleCallback(@Req() req: any, @Res() res: Response) {
@@ -50,15 +72,41 @@ export class AuthController {
       'http://localhost:3000',
     );
 
+    res.setHeader('Content-Type', 'text/html');
+
+    // Se falhar, avisa a janela principal e fecha
     if (!accessToken) {
-      return res.redirect(`${redirectBase}/auth/google/error`);
+      return res.send(`
+        <!DOCTYPE html>
+          <html>
+            <head><title>Autenticando...</title></head>
+            <body>
+              <script>
+                if (window.opener) {
+                  window.opener.postMessage({ type: 'GOOGLE_AUTH_ERROR' }, '${redirectBase}');
+                }
+                window.close();
+              </script>
+            </body>
+          </html>
+      `);
     }
 
-    const redirectUrl = `${redirectBase}/auth/google/callback#token=${encodeURIComponent(
-      accessToken,
-    )}`;
-
-    return res.redirect(redirectUrl);
+    // Se tiver sucesso, envia o token via postMessage para o seu frontend e fecha o popup
+    return res.send(`
+      <!DOCTYPE html>
+        <html>
+          <head><title>Autenticando...</title></head>
+          <body>
+            <script>
+              if (window.opener) {
+                window.opener.postMessage({ type: 'GOOGLE_AUTH_SUCCESS', token: '${accessToken}' }, '${redirectBase}');
+              }
+              window.close();
+            </script>
+           </body>
+        </html>
+      `);
   }
 
   @Post('email/verify-login')

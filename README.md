@@ -123,6 +123,51 @@ Communication:
 | Tchiadi Xavier | txavier | Developer | Google OAuth 2.0 authentication and two-factor authentication. |
 | Costantino Gouveia | cgouveia | Developer | Prisma schema design, dark/light theme support, and public API implementation. |
 
+## Technical Stack
+
+### Frontend
+
+- Next.js 16 with the App Router.
+- React 19 and TypeScript.
+- Tailwind CSS 4 for styling.
+- next-themes for theme switching.
+- Zustand for client-side state.
+- Socket.IO client for real-time communication.
+- Radix UI and Lucide for accessible and consistent UI primitives and icons.
+- Zod and react-phone-number-input for form validation and input handling.
+
+Why these choices:
+
+- Next.js gives server-side rendering, routing, metadata, and a clean production deployment model.
+- React and TypeScript keep the UI predictable and maintainable.
+- Tailwind and Radix UI make it easier to build reusable, accessible components quickly.
+- Zustand and Socket.IO fit the dashboard-style, real-time workflows used in the project.
+
+### Backend
+
+- NestJS 11 with TypeScript.
+- Prisma ORM with PostgreSQL 16.
+- Socket.IO for WebSockets.
+- Passport with JWT, local, and Google strategies.
+- bcrypt for password hashing.
+- Cloudinary for media uploads.
+- Resend for email delivery.
+- Swagger for API documentation.
+
+Why these choices:
+
+- NestJS provides a modular backend architecture that matches the project size and team structure.
+- Prisma makes the database layer type-safe and easier to evolve.
+- PostgreSQL is a good fit for the relational data model: users, memberships, organizations, events, friendships, messages, and verification codes.
+- Socket.IO is used where low-latency live updates matter.
+- Cloudinary and Resend keep media and email concerns isolated from the core business logic.
+
+### Infrastructure
+
+- Docker and Docker Compose for a reproducible local environment.
+- Node.js 22 in both Docker images.
+- PostgreSQL as the persistence layer.
+
 ## Database Schema
 
 The database is centered on organizations and the people who belong to them.
@@ -241,7 +286,6 @@ Challenges and approach:
 
 - The schema had to support organizations, memberships, chat, events, and authentication without becoming brittle; this was solved with explicit relations, constraints, and indexes.
 - Theme handling was kept simple by centralizing the theme switch in a shared provider and toggle component.
-
 
 ## Resources
 

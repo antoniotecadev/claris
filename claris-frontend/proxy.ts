@@ -9,14 +9,13 @@ import {
 const PUBLIC_ROUTES = [
 	"/",
 	"/login",
-
 	"/registerUser",
 	"/auth/google/callback",
 	"/callback",
 	"/termos-condicoes",
 	"/politica-privacidade",
 	"/contacto-suporte",
-	
+
 ];
 const API_PREFIX = "/api";
 
@@ -38,7 +37,17 @@ const getPreferredLocale = (request: NextRequest) => {
 
 export function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
-	//console.log("Pathname: ", pathname);
+	// console.log("Pathname: ", pathname);
+
+	// IGNORAR EXPLÍCITAMENTE O MANIFESTO E ARQUIVOS ESTÁTICOS
+	if (
+		pathname.includes("manifest.webmanifest") ||
+		pathname.includes("site.webmanifest") ||
+		pathname.startsWith("/_next") ||
+		pathname.includes(".") // Ignora qualquer arquivo com extensão (.png, .ico, .js)
+	) {
+		return NextResponse.next();
+	}
 
 	const localeInPath = getLocaleFromPathname(pathname);
 	if (!localeInPath) {
@@ -86,6 +95,6 @@ export function proxy(request: NextRequest) {
 
 export const config = {
 	matcher: [
-		'/((?!api|_next/static|_next/image|favicon.ico|assets|.*\\.(?:png|jpg|jpeg|gif|svg|webp)$).*)',
+		"/((?!api|_next/static|_next/image|favicon.ico|manifest.webmanifest|site.webmanifest.json|robots.txt|sitemap.xml|assets|.*\\.(?:png|jpg|jpeg|gif|svg|webp)$).*)",
 	],
-}
+};

@@ -37,7 +37,11 @@ const getPreferredLocale = (request: NextRequest) => {
 
 export function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
-	// console.log("Pathname: ", pathname);
+	console.log("Pathname: ", pathname);
+
+	const token = request.cookies.get("auth_token")?.value;
+
+	console.log("\n\nToken: ", token);
 
 	// IGNORAR EXPLÍCITAMENTE O MANIFESTO E ARQUIVOS ESTÁTICOS
 	if (
@@ -61,14 +65,12 @@ export function proxy(request: NextRequest) {
 		(route) => pathWithoutLocale === route || pathWithoutLocale.startsWith(`${route}/`)
 	);
 
+	console.log("Is Public Route2: ", isPublicRoute);
+
 	if (pathname.startsWith(API_PREFIX)) {
 		return NextResponse.next();
 	}
 
-	const token = request.cookies.get("auth_token")?.value;
-
-	//console.log("Token: ", token);
-	//console.log("Is Public Route2: ", isPublicRoute);
 
 	if (!token && !isPublicRoute) {
 		return NextResponse.redirect(

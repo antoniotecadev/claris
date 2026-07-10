@@ -1,4 +1,4 @@
-_This project has been created as part of the 42 curriculum by txavier._
+_This project has been created as part of the 42 curriculum by ateca, cgouveia, dcaliqui, txavier._
 
 # Claris
 

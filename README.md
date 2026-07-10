@@ -151,6 +151,20 @@ erDiagram
   USER ||--o{ FRIENDSHIP : participates
 ```
 
+### Key tables
+
+| Table | Key fields | Purpose |
+| --- | --- | --- |
+| User | `email`, `displayName`, `passwordHash`, `googleId`, `avatarUrl`, `lastSeen` | Stores account and profile information. |
+| Church | `name`, `createdAt` | Represents the top-level church entity. |
+| Organization | `churchId`, `name`, `slug`, `address`, `description`, `logoUrl` | Stores each organization inside a church. |
+| Membership | `userId`, `organizationId`, `role`, `joinedAt` | Links a user to an organization and stores the member role. |
+| Event | `organizationId`, `title`, `description`, `date`, `location`, `photoUrl` | Stores organization events. |
+| EventInterest | `eventId`, `userId`, `createdAt` | Tracks interest in an event. |
+| Message | `senderId`, `recipientId`, `organizationId`, `content`, `readAt` | Stores chat messages and read state. |
+| Friendship | `organizationId`, `userAId`, `userBId`, `createdById` | Stores member-to-member relationships inside an organization. |
+| EmailLoginCode | `userId`, `codeHash`, `expiresAt`, `usedAt` | Stores temporary login verification codes. |
+
 ## Resources
 
 Classic references used for the project:

@@ -165,6 +165,22 @@ erDiagram
 | Friendship | `organizationId`, `userAId`, `userBId`, `createdById` | Stores member-to-member relationships inside an organization. |
 | EmailLoginCode | `userId`, `codeHash`, `expiresAt`, `usedAt` | Stores temporary login verification codes. |
 
+## Features List
+
+| Feature | Description | Main contributors |
+| --- | --- | --- |
+| Public landing page and marketing site | Responsive homepage, support pages, legal pages, and SEO metadata. | dcaliqui, mchingi |
+| Authentication flow | Email/password login, Google OAuth, token-based access, and organization selection. | txavier, ateca |
+| Two-factor authentication | Temporary email codes for login verification. | txavier, ateca |
+| Organization and membership management | Organization creation, member roles, tenant scoping, and membership handling. | ateca, cgouveia |
+| Real-time chat | Live messaging, unread counts, and WebSocket synchronization. | dcaliqui, ateca |
+| Event management | Create, edit, list, and delete events, including image uploads and interest tracking. | ateca, cgouveia |
+| User management | Profile updates, password changes, avatar handling, and account cleanup. | dcaliqui, ateca |
+| Theme system | Dark/light mode with reusable design tokens. | cgouveia |
+| Internationalization | Three-language support with locale-aware routing and translated content. | mchingi |
+| Accessibility and PWA | Keyboard-friendly UI, assistive-technology support, manifest, offline support, and installability. | mchingi |
+| Public API | API-key-protected public endpoints documented with Swagger. | cgouveia, ateca |
+
 ## Resources
 
 Classic references used for the project:

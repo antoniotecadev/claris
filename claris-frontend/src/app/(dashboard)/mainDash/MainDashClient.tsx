@@ -97,11 +97,10 @@ export default function MainDashClient() {
 
 	const filteredOrganizations = organizations;
 
-	const filteredAvailableChurches = availableChurches.filter((church) => {
+	const filteredAvailableChurches = availableChurches.filter((organization) => {
 		return (
-			matchesSearchTerm(church.name) ||
-			matchesSearchTerm(church.slug) ||
-			matchesSearchTerm(church.description)
+			matchesSearchTerm(organization.name) ||
+			matchesSearchTerm(organization.church.name)
 		);
 	});
 
@@ -457,20 +456,20 @@ export default function MainDashClient() {
 									{t("dashboard.main.explore.empty")}
 								</div>
 							) : (
-								filteredAvailableChurches.map((church) => (
+								filteredAvailableChurches.map((organization) => (
 									<CommunityJoin
-										key={church.id}
-										name={church.name}
-										slug={church.slug}
-										address={church.address}
-										description={church.description}
-										logoUrl={church.logoUrl}
-										createdAt={church.createdAt}
-										church={{ id: church.churchId ?? church.id, name: church.name }}
-										membersCount={church.memberCount}
+										key={organization.id}
+										name={organization.name}
+										slug={organization.slug}
+										address={organization.address}
+										description={organization.description}
+										logoUrl={organization.logoUrl}
+										createdAt={organization.createdAt}
+										church={{ id: organization.churchId ?? organization.id, name: organization.church.name }}
+										membersCount={organization.memberCount}
 										onClick={() => {
 											setJoinError(null);
-											setPendingJoinChurch(church);
+											setPendingJoinChurch(organization);
 										}}
 										className="max-w-none"
 									/>

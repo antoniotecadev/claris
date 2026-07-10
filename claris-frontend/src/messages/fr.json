@@ -376,16 +376,6 @@
 		"enter": "Entrer",
 		"communityLabel": "Communauté",
 		"member": "membre",
-		"members": "membres",
-		"requestJoin": "Demander à rejoindre",
-		"logoAlt": "Logo de {{name}}",
-		"announcements": {
-			"title": "Annonces",
-			"description": "Envoyez instantanément des messages inspirants à toute la congrégation.",
-			"placeholder": "Composer un nouveau message...",
-			"deviceCount": "Envoyer à {{count}} appareils",
-			"send": "ENVOYER MAINTENANT"
-		},
 		"members": {
 			"title": "Cœurs en Communion",
 			"subtitle": "Des personnes qui marchent à vos côtés dans ce voyage spirituel.",
@@ -399,6 +389,15 @@
 			"noFriends": "Vous n'avez pas encore d'amis dans cette organisation.",
 			"noFriendsHelp": "Allez dans l'onglet \"Membres\" et cliquez sur \"Ami\" pour ajouter des personnes.",
 			"noMembersFound": "Aucun membre trouvé."
+		},
+		"requestJoin": "Demander à rejoindre",
+		"logoAlt": "Logo de {{name}}",
+		"announcements": {
+			"title": "Annonces",
+			"description": "Envoyez instantanément des messages inspirants à toute la congrégation.",
+			"placeholder": "Composer un nouveau message...",
+			"deviceCount": "Envoyer à {{count}} appareils",
+			"send": "ENVOYER MAINTENANT"
 		}
 	},
 	"church": {
@@ -616,5 +615,10 @@
 		"memberRemoved": "Membre retiré avec succès.",
 		"memberRemoveError": "Impossible de retirer le membre de l'organisation.",
 		"memberRemoveErrorTitle": "Erreur lors du retrait du membre"
+	},
+	"notFound": {
+		"title": "Oups !",
+		"description": "La page que vous recherchez est introuvable sur Claris.",
+		"backHome": "Retour à l'accueil"
 	}
 }

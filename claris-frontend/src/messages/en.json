@@ -376,16 +376,6 @@
 		"enter": "Enter",
 		"communityLabel": "Community",
 		"member": "member",
-		"members": "members",
-		"requestJoin": "Request to join",
-		"logoAlt": "{{name}} logo",
-		"announcements": {
-			"title": "Announcements",
-			"description": "Send inspiring messages to the entire congregation instantly.",
-			"placeholder": "Compose new message...",
-			"deviceCount": "Sends to {{count}} devices",
-			"send": "SEND NOW"
-		},
 		"members": {
 			"title": "Hearts in Communion",
 			"subtitle": "People walking alongside you on this spiritual journey.",
@@ -399,6 +389,15 @@
 			"noFriends": "You don't have any friends in this organization yet.",
 			"noFriendsHelp": "Go to the \"Members\" tab and click \"Friend\" to add people.",
 			"noMembersFound": "No members found."
+		},
+		"requestJoin": "Request to join",
+		"logoAlt": "{{name}} logo",
+		"announcements": {
+			"title": "Announcements",
+			"description": "Send inspiring messages to the entire congregation instantly.",
+			"placeholder": "Compose new message...",
+			"deviceCount": "Sends to {{count}} devices",
+			"send": "SEND NOW"
 		}
 	},
 	"church": {
@@ -616,5 +615,10 @@
 		"memberRemoved": "Member removed successfully.",
 		"memberRemoveError": "Could not remove member from organization.",
 		"memberRemoveErrorTitle": "Error removing member"
+	},
+	"notFound": {
+		"title": "Oops!",
+		"description": "The page you are looking for was not found on Claris.",
+		"backHome": "Back to Home"
 	}
 }

@@ -19,7 +19,6 @@ Its main features include:
 - Dark/light theme support and reusable design-system components.
 - A Swagger-documented public API protected by an API key.
 
-
 ## Instructions
 
 ### Prerequisites
@@ -225,6 +224,25 @@ erDiagram
 | Internationalization | Three-language support with locale-aware routing and translated content. | mchingi |
 | Accessibility and PWA | Keyboard-friendly UI, assistive-technology support, manifest, offline support, and installability. | mchingi |
 | Public API | API-key-protected public endpoints documented with Swagger. | cgouveia, ateca |
+
+## Modules
+
+The table below groups the implemented work into Major and Minor modules for clarity.
+Major modules are counted as 2 points each and Minor modules as 1 point each.
+
+| Module | Type | Points | Implementation | Main contributors |
+| --- | --- | --- | --- | --- |
+| Google OAuth 2.0 login | Major | 2 | Implemented with Passport GoogleStrategy, callback handling, and JWT handoff after successful authentication. | txavier, ateca |
+| Two-factor authentication | Major | 2 | Implemented with temporary login codes stored in Prisma and validated before the final session is issued. | txavier, ateca |
+| Real-time chat | Major | 2 | Implemented with a NestJS WebSocket gateway and a Socket.IO client in the dashboard. | dcaliqui, ateca |
+| Multi-tenant organization access | Major | 2 | Implemented with tenant-aware middleware, organization selection, and membership-scoped queries. | ateca |
+| Dark/light theme | Minor | 1 | Implemented with next-themes and a client-side theme toggle. | cgouveia |
+| Internationalization | Minor | 1 | Implemented with locale routing and translated dictionaries for the public and private UI. | mchingi |
+| PWA support | Minor | 1 | Implemented with a web manifest, service worker, and client-side registration. | mchingi |
+| Accessibility | Minor | 1 | Implemented with semantic markup, keyboard navigation, ARIA-friendly controls, and visible focus states. | mchingi |
+| Public API and Swagger docs | Minor | 1 | Implemented with API-key protection and generated documentation for public endpoints. | cgouveia, ateca |
+
+Total: 13 points.
 
 ## Individual Contributions
 

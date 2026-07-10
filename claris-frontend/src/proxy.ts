@@ -37,11 +37,9 @@ const getPreferredLocale = (request: NextRequest) => {
 
 export function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
-	console.log("Pathname: ", pathname);
+	// console.log("Pathname: ", pathname);
 
 	const token = request.cookies.get("auth_token")?.value;
-
-	console.log("\n\nToken: ", token);
 
 	// IGNORAR EXPLÍCITAMENTE O MANIFESTO E ARQUIVOS ESTÁTICOS
 	if (

@@ -42,3 +42,21 @@ export async function sendCodeAction(
 
 	return { success: true };
 }
+
+export async function resendCodeAction(email: string): Promise<ActionResult> {
+	if (!email) {
+		return { success: false, error: "errors.emailRequired" };
+	}
+
+	try {
+		const res = await api.post<{ success: boolean; message?: string }>("/auth/email/resend-login", { email });
+		if (!res?.success) {
+			return { success: false, error: "errors.unexpectedResponse" };
+		}
+	} catch (error: unknown) {
+		const errorMessage = error instanceof Error ? error.message : "errors.unexpected";
+		return { success: false, error: errorMessage };
+	}
+
+	return { success: true };
+}

@@ -1,5 +1,4 @@
 "use server";
-import { redirect } from "next/navigation";
 import { api } from "@/lib/api";
 import { setAuthToken } from "@/lib/auth-cookies";
 

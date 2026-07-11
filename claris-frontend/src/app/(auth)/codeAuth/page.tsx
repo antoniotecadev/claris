@@ -3,7 +3,7 @@
 import { Suspense, useRef, useState, useEffect } from "react";
 import Logo from "@/assets/images/lobo-SE.png"
 import { useSearchParams, useRouter } from "next/navigation";
-import { sendCodeAction } from "@/utils/actionSendCode";
+import { sendCodeAction, resendCodeAction } from "@/utils/actionSendCode";
 import { Loader2, AlertCircle, Sparkles, ArrowRight } from "lucide-react";
 import  Link  from "next/link"
 import { addLocaleToPathname } from "@/i18n/routing";
@@ -90,9 +90,17 @@ function CodeAuthContent() {
 		}
 	};
 
-	const handleResend = () => {
+	const handleResend = async () => {
 		if (countdown > 0) return;
-		setCountdown(300);
+		setPending(true);
+		setError(undefined);
+		const result = await resendCodeAction(email);
+		setPending(false);
+		if (result?.error) {
+			setError(result.error);
+		} else {
+			setCountdown(300);
+		}
 	};
 
 	return (

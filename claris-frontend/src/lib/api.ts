@@ -1,6 +1,10 @@
 import { redirect } from "next/navigation";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
+// Se estamos a rodar no Servidor (Server Action), chamamos o contentor 'backend'. 
+// Se estamos a rodar no Browser, chamamos o 'localhost' como de costume.
+const BASE_URL = typeof window === "undefined"
+  ? "http://backend:3001/api/v1"
+  : (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1");
 
 async function getApiAuthToken() {
   if (typeof window === "undefined") {
@@ -37,7 +41,8 @@ export async function apiFetch<T>(
   });
 
   if (!res.ok) {
-    if (res.status === 401 || (res.status === 404 && endpoint === "/user/me")) {
+    const isAuthEndpoint = endpoint.startsWith("/auth/");
+    if (!isAuthEndpoint && (res.status === 401 || (res.status === 404 && endpoint === "/user/me"))) {
       if (typeof window !== "undefined") {
         window.location.href = "/api/logout";
         await new Promise(() => { });

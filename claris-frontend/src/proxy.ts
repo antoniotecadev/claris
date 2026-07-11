@@ -15,6 +15,8 @@ const PUBLIC_ROUTES = [
 	"/termos-condicoes",
 	"/politica-privacidade",
 	"/contacto-suporte",
+	"/codeAuth",
+	"/select-organization",
 
 ];
 const API_PREFIX = "/api";
@@ -62,8 +64,6 @@ export function proxy(request: NextRequest) {
 	const isPublicRoute = PUBLIC_ROUTES.some(
 		(route) => pathWithoutLocale === route || pathWithoutLocale.startsWith(`${route}/`)
 	);
-
-	console.log("Is Public Route2: ", isPublicRoute);
 
 	if (pathname.startsWith(API_PREFIX)) {
 		return NextResponse.next();

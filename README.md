@@ -227,55 +227,22 @@ erDiagram
 
 ## Modules
 
-This section lists all major and minor modules implemented in the project, aligned with the 42 curriculum (ft_transcendence Surprise).
-Major modules earn 2 points each; Minor modules earn 1 point each.
+The table below groups the implemented work into Major and Minor modules for clarity.
+Major modules are counted as 2 points each and Minor modules as 1 point each.
 
-### IV.1 Web
+| Module | Type | Points | Implementation | Main contributors |
+| --- | --- | --- | --- | --- |
+| Google OAuth 2.0 login | Major | 2 | Implemented with Passport GoogleStrategy, callback handling, and JWT handoff after successful authentication. | txavier, ateca |
+| Two-factor authentication | Major | 2 | Implemented with temporary login codes stored in Prisma and validated before the final session is issued. | txavier, ateca |
+| Real-time chat | Major | 2 | Implemented with a NestJS WebSocket gateway and a Socket.IO client in the dashboard. | dcaliqui, ateca |
+| Multi-tenant organization access | Major | 2 | Implemented with tenant-aware middleware, organization selection, and membership-scoped queries. | ateca |
+| Dark/light theme | Minor | 1 | Implemented with next-themes and a client-side theme toggle. | cgouveia |
+| Internationalization | Minor | 1 | Implemented with locale routing and translated dictionaries for the public and private UI. | mchingi |
+| PWA support | Minor | 1 | Implemented with a web manifest, service worker, and client-side registration. | mchingi |
+| Accessibility | Minor | 1 | Implemented with semantic markup, keyboard navigation, ARIA-friendly controls, and visible focus states. | mchingi |
+| Public API and Swagger docs | Minor | 1 | Implemented with API-key protection and generated documentation for public endpoints. | cgouveia, ateca |
 
-| Module | Type | Points | Justification | Implementation | Contributors |
-| --- | --- | --- | --- | --- | --- |
-| **Use a framework for both frontend and backend** | Major | 2 | Full-stack framework adoption improves code reusability and consistency across tiers. | Next.js 16 combines frontend and backend capabilities with App Router, SSR, and API routes. NestJS provides a modular, TypeScript-first backend architecture. | dcaliqui, ateca, cgouveia |
-| **Use a frontend framework** | Minor | 1 | React 19 with TypeScript ensures maintainable, component-driven UI development. | React 19 with Next.js App Router, Tailwind CSS 4, and Radix UI components. | dcaliqui, mchingi, cgouveia |
-| **Use a backend framework** | Minor | 1 | NestJS provides dependency injection, guard patterns, and module organization essential for scalability. | NestJS 11 with TypeScript, modular services, DTOs, and validation pipes. | ateca, txavier, cgouveia |
-| **Implement real-time features using WebSockets** | Major | 2 | Live chat and activity notifications require efficient, bidirectional communication to reduce latency and provide seamless user experience. | NestJS WebSocket gateway using Socket.IO with connection pooling, room-based messaging, and graceful disconnect handling. Frontend uses Socket.IO client with reconnection logic and state synchronization. | dcaliqui, ateca |
-| **Allow users to interact with other users** | Major | 2 | User interaction creates community engagement through messaging, profiles, and social connections. Minimum requirements: chat system, profiles, friends list. | Implemented chat module with real-time messages, unread counts, and WebSocket sync. User profile pages display displayName, avatar, online status, and joined organizations. Friendship system allows users to connect within organizations. | dcaliqui, ateca, cgouveia |
-| **Public API with secured API key, rate limiting, documentation, and 5+ endpoints** | Major | 2 | A public API enables third-party integrations and demonstrates API design skills. Documentation and authentication are production-standard practices. | Implemented with 2 major public endpoints (Organizations, Users). API-key protection via custom guard (`ApiKeyGuard`). Rate-limit guard using in-memory tracking. Swagger auto-generated documentation at `/public/docs`. All endpoints include proper response DTOs and error handling. | cgouveia, ateca |
-| **ORM** | Minor | 1 | Prisma abstracts database complexity, ensures type safety, and provides automatic migrations. | Prisma ORM with PostgreSQL 16, auto-generated client, schema-first approach, and built-in query optimization through indexes. | ateca, cgouveia |
-| **Server-Side Rendering (SSR)** | Minor | 1 | SSR improves SEO, initial page load performance, and accessibility for crawlers. Next.js handles metadata generation and server-side layouts. | Next.js App Router with native SSR, automatic metadata generation, dynamic Open Graph tags, SEO-friendly sitemap and robots.txt. Layout caching and streaming responses for performance. | dcaliqui, mchingi |
-| **Progressive Web App (PWA)** | Minor | 1 | PWA enables offline access, installability, and native app-like experience on mobile devices. Improves user engagement and accessibility. | Web manifest with app icon, theme color, and orientation settings. Service worker (`sw.js`) for offline support. Client-side registration (`PwaRegister` component). Installable on iOS, Android, and desktop browsers. | mchingi |
-| **Custom-made design system** | Minor | 1 | A cohesive design system ensures consistency, scalability, and faster component development. Minimum 10 reusable components with palette, typography, and icons. | 15+ reusable components (Button, Card, Dialog, Input, etc.) from Radix UI with custom Tailwind styling. Centralized color palette (#002045 primary, #FFDEA5 accent, slate grays). Consistent typography with Inter font. 100+ Lucide icons. Dark/light theme variants. | dcaliqui, cgouveia |
-
-### IV.2 Accessibility and Internationalization
-
-| Module | Type | Points | Justification | Implementation | Contributors |
-| --- | --- | --- | --- | --- | --- |
-| **Complete accessibility compliance (WCAG 2.1 AA)** | Major | 2 | WCAG 2.1 AA is the industry standard for accessible web applications. Screen reader support and keyboard navigation are essential for inclusive design. | Semantic HTML throughout (`nav`, `main`, `section`, `button`, labels on inputs). ARIA labels, roles, and live regions. Keyboard-only navigation with visible focus states. High contrast mode compatible (7:1 ratio). Form error announcements. Screen reader tested. | mchingi |
-| **Support for multiple languages (3+ languages)** | Minor | 1 | Multilingual support expands reach and demonstrates i18n expertise. Implemented with 3 complete language translations. | i18n system using Next.js locale routing (`/pt`, `/en`, `/fr`). Centralized message dictionaries in JSON. Language switcher in header and settings. All user-facing text extracted and translatable. Locale-aware date and number formatting. | mchingi |
-
-### IV.3 User Management
-
-| Module | Type | Points | Justification | Implementation | Contributors |
-| --- | --- | --- | --- | --- | --- |
-| **Standard user management and authentication** | Major | 2 | Core user system enables platform functionality. Profile updates, avatar uploads, and friend management are essential for community features. | User registration with email/password validation. Profile pages showing displayName, avatar, online status, joined organizations. Avatar upload via Cloudinary with fallback to default. Online status tracking via `lastSeen` timestamp. Friend requests and online-status indicators. | dcaliqui, ateca, txavier |
-| **Remote authentication with OAuth 2.0** | Minor | 1 | OAuth 2.0 reduces password burden and integrates with popular identity providers for enhanced security and user convenience. | Google OAuth 2.0 via Passport strategy. Callback handling at `/api/v1/auth/google/callback`. Automatic user creation on first login. Email and avatar from Google profile. JWT issuance after successful authentication. | txavier, ateca |
-| **Advanced permissions system** | Major | 2 | Role-based access control (RBAC) ensures data isolation and enforces business rules at the application level. | Roles: `ADMIN` and `MEMBER` stored in Membership model. Guards and middleware enforce role checks (`@UseGuards(JwtAuthGuard)`). Organization-specific permissions: only ADMINs can edit organization, manage memberships, delete organizations. Different UI views based on role. | ateca, cgouveia |
-| **Organization system** | Major | 2 | Multi-tenant organizations enable community management, allow users to belong to multiple groups, and isolate data per tenant. | Organization CRUD endpoints (create, read, update, delete). Organization as tenant scope. Users join organizations through Membership. Role assignment per organization. Organization slug for routing. Logo and address storage. Organization-scoped queries via middleware. | ateca, cgouveia |
-| **Implement a complete 2FA system** | Minor | 1 | Two-factor authentication adds security for user accounts, particularly important for sensitive operations and organizational administration. | Email-based 2FA using temporary login codes. EmailLoginCode model stores hashed codes with expiration. Code sent via Resend email service. Verification during login flow before JWT issuance. Codes are single-use and time-limited (10 minutes). | txavier, ateca |
-
-### Summary
-
-**Major Modules: 9** × 2 points = **18 points**  
-**Minor Modules: 9** × 1 point = **9 points**  
-**Total Points: 27 points**
-
-#### Modules not implemented
-
-The following modules were considered but not implemented due to project scope and team capacity:
-- Gaming modules (web-based games, matchmaking, tournaments) — not a core requirement for a community platform.
-- AI modules (RAG, LLM, recommendation systems) — out of scope for this community management use case.
-- DevOps modules (ELK, Prometheus/Grafana, microservices) — not required for this project size; Docker Compose is sufficient.
-- Data analytics (advanced dashboards) — community platform focuses on core management features.
-- Blockchain modules — not applicable to the project's domain.
+Total: 13 points.
 
 ## Individual Contributions
 

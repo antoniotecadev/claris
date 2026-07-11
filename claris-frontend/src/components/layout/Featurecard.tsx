@@ -59,6 +59,7 @@ export function FeatureCard({
           src={image.src}
           alt={image.alt}
           fill
+          loading="eager"
           sizes={image.sizes ?? "(max-width: 1024px) 100vw, 50vw"}
           className="object-cover object-center transition duration-500 group-hover:scale-105"
         />

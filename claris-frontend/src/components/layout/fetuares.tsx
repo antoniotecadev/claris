@@ -4,17 +4,15 @@ import { Church, CalendarDays, MessageSquare, MousePointerClick } from "lucide-r
 
 
 import { useMessages } from "@/i18n/messages";
-import Igreja from "@/assets/images/photo-church.webp";
-import Igreja1 from "@/assets/images/photo-church1.webp";
 import { FeatureCard } from "./Featurecard";
 
 const featureImages = {
 	members:
-		Igreja,
+		"/assets/photo-church.webp",
 	calendar:
 		"/assets/photo-hand.avif",
 	donations:
-		Igreja1,
+		"/assets/photo-church1.webp",
 	communication:
 		"/assets/photo-fone.avif",
 };

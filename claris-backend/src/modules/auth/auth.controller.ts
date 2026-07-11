@@ -39,28 +39,6 @@ export class AuthController {
     // Este método não precisa de corpo, o Passport redireciona automaticamente para a página de login do Google
   }
 
-  // @Get('google/callback')
-  // @UseGuards(AuthGuard('google'))
-  // async googleCallback(@Req() req: any, @Res() res: Response) {
-  //   const loginResponse = await this.authService.loginWithGoogle(req.user);
-  //   const accessToken = loginResponse?.user?.token?.access_token as string | undefined;
-
-  //   const redirectBase = this.configService.get<string>(
-  //     'FRONTEND_URL',
-  //     'http://localhost:3000',
-  //   );
-
-  //   if (!accessToken) {
-  //     return res.redirect(`${redirectBase}/auth/google/error`);
-  //   }
-
-  //   const redirectUrl = `${redirectBase}/auth/google/callback#token=${encodeURIComponent(
-  //     accessToken,
-  //   )}`;
-
-  //   return res.redirect(redirectUrl);
-  // }
-
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleCallback(@Req() req: any, @Res() res: Response) {

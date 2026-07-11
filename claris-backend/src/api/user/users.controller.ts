@@ -14,6 +14,7 @@ import { CreateUserDto } from './dto/user.dto';
 import { ApiKeyGuard } from '../api-key.guard';
 import { RateLimitGuard } from '../rate-limit.guard';
 import { ApiOperation, ApiSecurity } from '@nestjs/swagger';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('Users')
 @Controller('public')
@@ -51,7 +52,7 @@ export class UsersController {
   @ApiSecurity('api_key')
   updateMyProfile(
     @Param('userId') userId: string,
-    @Body() dto: CreateUserDto,
+    @Body() dto: UpdateUserDto,
   ) {
     return this.usersService.updateMe(dto, userId);
   }

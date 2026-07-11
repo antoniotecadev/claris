@@ -6,6 +6,7 @@ import {
 import { PrismaService } from '../../modules/prisma/prisma.service';
 import { CreateUserDto } from './dto/user.dto';
 import { hash } from 'bcrypt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -74,15 +75,35 @@ export class UsersService {
   }
 
   async updateMe(
-    dto: CreateUserDto,
+    dto: UpdateUserDto,
     UserId: string
   ) {
 
     const updatedUser = await this.prisma.user.update({
       where: { id: UserId },
       data: {
+        ...(dto.email !== undefined
+          ? { email: dto.email }
+          : {}),
+
+        ...(dto.password !== undefined
+          ? { passwordHash: await hash(dto.password, 10) }
+          : {}),
+
         ...(dto.displayName !== undefined
           ? { displayName: dto.displayName }
+          : {}),
+
+        ...(dto.gender !== undefined
+          ? { gender: dto.gender }
+          : {}),
+
+        ...(dto.birthDate !== undefined
+          ? { birthDate: new Date(dto.birthDate) }
+          : {}),
+
+        ...(dto.avatarUrl !== undefined
+          ? { avatarUrl: dto.avatarUrl }
           : {}),
         lastSeen: new Date(),
       },
@@ -105,7 +126,7 @@ export class UsersService {
 
   async deleteMyAccount(userId: string) {
     const user = await this.prisma.user.findUnique({
-      where: { id: userId},
+      where: { id: userId },
       select: { id: true },
     });
 

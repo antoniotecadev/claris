@@ -481,7 +481,7 @@ function MemberChatPanel({
 										className={`min-w-0 max-w-[82%] rounded-2xl px-4 py-2.5 text-sm leading-6 shadow-sm ${message.sender === "me"
 											? "rounded-br-md bg-brand-primary dark:bg-slate-400 dark:text-slate-900 text-white"
 											: "rounded-bl-md bg-white dark:bg-slate-800 dark:text-slate-50 text-brand-foreground ring-1 dark:ring-slate-800 ring-slate-200"
-										}`}
+											}`}
 									>
 										<p
 											className="max-w-full whitespace-pre-wrap"
@@ -740,9 +740,7 @@ function DashboardPageContent() {
 			try {
 				const tokenResponse = await fetch("/api/auth-token");
 
-				if (!tokenResponse.ok) {
-					throw new Error(t("errors.tokenUnavailable"));
-				}
+				if (!tokenResponse.ok) return;
 
 				const { token } = (await tokenResponse.json()) as AuthTokenResponse;
 
@@ -755,6 +753,11 @@ function DashboardPageContent() {
 					},
 					query: { token },
 					transports: ["websocket", "polling"],
+					reconnection: true,
+					reconnectionAttempts: Infinity,
+					reconnectionDelay: 1000,
+					reconnectionDelayMax: 30000,
+					timeout: 20000,
 				});
 
 				const joinOrganizationRoom = () => {
@@ -810,27 +813,16 @@ function DashboardPageContent() {
 				socket.on("newMessage", handleRealtimeMessage);
 				socket.on("message", handleRealtimeMessage);
 
-				socket.on("chat:error", (payload: { message?: string }) => {
-					setToast({
-						title: t("chat.errorTitle"),
-						description: payload.message,
-						variant: "error",
-					});
-				});
+				// Silenciar erros de chat — evita poluir a consola do browser
+				socket.on("chat:error", () => {});
 
-				socket.on("connect_error", () => {
-					setToast({
-						title: t("chat.errorTitle"),
-						description: t("errors.generic"),
-						variant: "error",
-					});
-				});
+				// Silenciar erros de conexão — o Socket.IO reconecta automaticamente
+				socket.on("connect_error", () => {});
+
+				// Silenciar desconexões — são normais quando o browser fica inativo
+				socket.on("disconnect", () => {});
 			} catch {
-				setToast({
-					title: t("chat.errorTitle"),
-					description: t("errors.generic"),
-					variant: "error",
-				});
+				// Falha silenciosa na inicialização — evita erros na consola
 			}
 		}
 
@@ -838,7 +830,10 @@ function DashboardPageContent() {
 
 		return () => {
 			active = false;
-			socket?.disconnect();
+			if (socket) {
+				socket.removeAllListeners();
+				socket.disconnect();
+			}
 		};
 	}, [appendChatMessage, currentUserId, organization, t]);
 

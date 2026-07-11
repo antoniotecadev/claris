@@ -520,7 +520,7 @@ function MemberChatPanel({
 							placeholder={t("chat.messagePlaceholder", { name: member.name.split(" ")[0] })}
 							rows={1}
 							disabled={isSendingMessage}
-							className="max-h-28 min-h-11 flex-1 resize-none overflow-y-auto rounded-2xl border dark:bg-slate-800 dark:border-slate-800 dark:text-slate-50 border-slate-200 bg-slate-50 px-4 py-3 text-sm text-brand-foreground outline-none transition-colors placeholder:text-slate-400 focus:border-brand-primary focus:bg-white"
+							className="max-h-28 min-h-11 flex-1 resize-none no-scrollbar overflow-hidden rounded-2xl border dark:bg-slate-800 dark:border-slate-800 dark:text-slate-50 border-slate-200 bg-slate-50 px-4 py-3 text-sm text-brand-foreground outline-none transition-colors placeholder:text-slate-400 focus:border-brand-primary focus:bg-white"
 							style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}
 						/>
 						<IconButton
@@ -752,7 +752,7 @@ function DashboardPageContent() {
 						authorization: `Bearer ${token}`,
 					},
 					query: { token },
-					transports: ["websocket", "polling"],
+					transports: ["websocket"],
 					reconnection: true,
 					reconnectionAttempts: Infinity,
 					reconnectionDelay: 1000,
@@ -814,13 +814,13 @@ function DashboardPageContent() {
 				socket.on("message", handleRealtimeMessage);
 
 				// Silenciar erros de chat — evita poluir a consola do browser
-				socket.on("chat:error", () => {});
+				socket.on("chat:error", () => { });
 
 				// Silenciar erros de conexão — o Socket.IO reconecta automaticamente
-				socket.on("connect_error", () => {});
+				socket.on("connect_error", () => { });
 
 				// Silenciar desconexões — são normais quando o browser fica inativo
-				socket.on("disconnect", () => {});
+				socket.on("disconnect", () => { });
 			} catch {
 				// Falha silenciosa na inicialização — evita erros na consola
 			}

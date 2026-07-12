@@ -44,8 +44,6 @@ Its main features include:
 
    ```bash
    make up
-   # or
-   docker compose up -d --build
    ```
 
 4. Open the frontend in your browser:
@@ -133,7 +131,6 @@ Communication:
 - Zustand for client-side state.
 - Socket.IO client for real-time communication.
 - Radix UI and Lucide for accessible and consistent UI primitives and icons.
-- Zod and react-phone-number-input for form validation and input handling.
 
 Why these choices:
 
@@ -223,7 +220,7 @@ erDiagram
 | Theme system | Dark/light mode with reusable design tokens. | cgouveia |
 | Internationalization | Three-language support with locale-aware routing and translated content. | mchingi |
 | Accessibility and PWA | Keyboard-friendly UI, assistive-technology support, manifest, offline support, and installability. | mchingi |
-| Public API | API-key-protected public endpoints documented with Swagger. | cgouveia, ateca |
+| Public API | API-key-protected public endpoints documented with Swagger. | cgouveia |
 
 ## Modules
 
@@ -242,6 +239,7 @@ Major modules earn 2 points each; Minor modules earn 1 point each.
 | **ORM** | Minor | 1 | Prisma abstracts database complexity, ensures type safety, and provides automatic migrations. | Prisma ORM with PostgreSQL 16, auto-generated client, schema-first approach, and built-in query optimization through indexes. | ateca, cgouveia |
 | **Server-Side Rendering (SSR)** | Minor | 1 | SSR improves SEO, initial page load performance, and accessibility for crawlers. Next.js handles metadata generation and server-side layouts. | Next.js App Router with native SSR, automatic metadata generation, dynamic Open Graph tags, SEO-friendly sitemap and robots.txt. Layout caching and streaming responses for performance. | dcaliqui, mchingi |
 | **Progressive Web App (PWA)** | Minor | 1 | PWA enables offline access, installability, and native app-like experience on mobile devices. Improves user engagement and accessibility. | Web manifest with app icon, theme color, and orientation settings. Service worker (`sw.js`) for offline support. Client-side registration (`PwaRegister` component). Installable on iOS, Android, and desktop browsers. | mchingi |
+| **Dark/light theme support** |  |  | A theme switch improves usability, reduces eye strain, and gives the interface a more polished, user-controlled visual experience. | Implemented with next-themes, a shared ThemeProvider, and a ModeToggle component that persists the selected theme and applies it across the application. | cgouveia |
 | **Custom-made design system** | Minor | 1 | A cohesive design system ensures consistency, scalability, and faster component development. Minimum 10 reusable components with palette, typography, and icons. | reusable components (commityCard.tsx, CommunityJoin, EditEventDialog, NavLink, EventCard, FeatureCard, DashboardStatCard, ModeToggle, GoogleAuthButtonProps, Avatar) | dcaliqui, cgouveia |
 
 ### IV.2 Accessibility and Internationalization
@@ -264,17 +262,9 @@ Major modules earn 2 points each; Minor modules earn 1 point each.
 ### Summary
 
 **Major Modules: 8** × 2 points = **16 points**  
-**Minor Modules: 9** × 1 point = **9 points**  
-**Total Points: 25 points**
+**Minor Modules: 10** × 1 point = **10 points**  
+**Total Points: 26 points**
 
-#### Modules not implemented
-
-The following modules were considered but not implemented due to project scope and team capacity:
-- Gaming modules (web-based games, matchmaking, tournaments) — not a core requirement for a community platform.
-- AI modules (RAG, LLM, recommendation systems) — out of scope for this community management use case.
-- DevOps modules (ELK, Prometheus/Grafana, microservices) — not required for this project size; Docker Compose is sufficient.
-- Data analytics (advanced dashboards) — community platform focuses on core management features.
-- Blockchain modules — not applicable to the project's domain.
 
 ## Individual Contributions
 

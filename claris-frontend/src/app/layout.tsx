@@ -6,7 +6,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { defaultLocale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/layout/theme-provider";
-import { PwaRegister } from "@/components/pwa-register";
+// import { PwaRegister } from "@/components/pwa-register";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 const metadataBase = new URL(siteUrl);
@@ -102,7 +102,7 @@ export default async function RootLayout({
 						{children}
 					</MessagesProvider>
 				</ThemeProvider>
-				<PwaRegister />
+				{/* <PwaRegister /> */}
 			</body>
 		</html>
 	);

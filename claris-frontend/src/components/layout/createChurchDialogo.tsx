@@ -25,11 +25,11 @@ type DialogDemoProps = {
 	loadingChurches?: boolean
 	onOpen?: () => void
 	onSuccess?: () => void  // ← novo: para recarregar lista após criação
-	setOrganizations?: React.Dispatch<React.SetStateAction<OrganizationRef[]>>
+	setOrganizations?: React.Dispatch<React.SetStateAction<OrganizationRef3[]>>
 	onToast?: (payload: { title: string; description?: string; variant: "success" | "error" | "info" }) => void
 }
 
-type OrganizationRef = {
+type OrganizationRef3 = {
 	id: string
 	churchId: string
 	organizationId: string
@@ -140,7 +140,7 @@ export function DialogDemo({
 				throw new Error(errorText || t("church.create.errors.create"))
 			}
 
-			const createdOrganization: OrganizationRef = {
+			const createdOrganization: OrganizationRef3 = {
 				id: churchId,
 				churchId,
 				organizationId: churchId,

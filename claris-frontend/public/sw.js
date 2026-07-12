@@ -88,6 +88,16 @@ self.addEventListener("fetch", (event) => {
 		return;
 	}
 
+	// Ignorar recursos internos do Next.js
+	// Não deixar o Service Worker controlar imagens optimizadas,
+	// chunks JS, CSS e Hot Reload do Next
+	if (
+		requestUrl.pathname.startsWith("/_next/") ||
+		requestUrl.pathname.startsWith("/webpack-hmr")
+	) {
+		return;
+	}
+
 	// Para pedidos de navegação, usar a estratégia "network first"
 	// request.mode === "navigate": Indica que o pedido é para uma navegação de página (por exemplo, quando o usuário clica em um link ou digita uma URL no navegador).
 	// networkFirstNavigation: Serve o recurso da rede se estiver disponível, caso contrário, serve o recurso do cache. Se ambos falharem, serve a página offline.
@@ -134,14 +144,22 @@ function isCacheableNavigation(pathname) {
 async function staleWhileRevalidate(request) {
 	const cache = await caches.open(RUNTIME_CACHE);
 	const cachedResponse = await cache.match(request);
-	const networkResponsePromise = fetch(request)
-		.then((networkResponse) => {
-			if (networkResponse.ok) {
-				cache.put(request, networkResponse.clone()).catch(() => undefined);
-			}
-			return networkResponse;
-		})
-		.catch(() => undefined);
+	try {
+		const networkResponse = await fetch(request);
 
-	return cachedResponse || networkResponsePromise || caches.match("/offline");
+		if (networkResponse.ok) {
+			await cache.put(request, networkResponse.clone());
+		}
+
+		return cachedResponse || networkResponse;
+	} catch {
+		return (
+			cachedResponse ||
+			(await caches.match("/offline")) ||
+			new Response("", {
+				status: 503,
+				statusText: "Service Unavailable",
+			})
+		);
+	}
 }

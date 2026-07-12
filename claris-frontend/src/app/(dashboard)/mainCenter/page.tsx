@@ -39,7 +39,7 @@ import { EditEventDialog } from "@/components/layout/editEvent";
 import type { EditEventData } from "@/components/layout/editEvent";
 import { boolean } from "zod";
 
-interface OrganizationRef {
+interface OrganizationRef1 {
 	id?: string;
 	churchId?: string;
 	organizationId: string;
@@ -545,7 +545,7 @@ function DashboardPageContent() {
 	const searchParams = useSearchParams();
 	const selectedOrganizationId = searchParams.get("org");
 	const setUser = useUserStore((state) => state.setUser);
-	const [organization, setOrganization] = useState<OrganizationRef | null>(null);
+	const [organization, setOrganization] = useState<OrganizationRef1 | null>(null);
 	const [organizationMembers, setOrganizationMembers] = useState<Member[]>([]);
 	const [membersError, setMembersError] = useState<string | null>(null);
 	const [organizationEvents, setOrganizationEvents] = useState<EventCardProps[]>([]);
@@ -616,7 +616,7 @@ function DashboardPageContent() {
 				if (!active) return;
 
 				const organizations = Array.isArray(organizationsResult)
-					? (organizationsResult as OrganizationRef[])
+					? (organizationsResult as OrganizationRef1[])
 					: [];
 				const nextUser =
 					(userResult as CurrentUser | null) ?? useUserStore.getState().user;

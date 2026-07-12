@@ -20,7 +20,7 @@ import { switchOrganization } from "@/utils/actionMain";
 import { FeedbackToast } from "@/components/ui/feedback-toast";
 import { DashboardStatCard } from "@/components/layout/DashboardStatCard";
 
-interface OrganizationRef {
+interface OrganizationRef2 {
 	id: string;
 	churchId: string;
 	organizationId: string;
@@ -32,6 +32,10 @@ interface OrganizationRef {
 	address: string;
 	memberCount: number;
 	createdAt: string | Date;
+	church: {
+		id: string;
+		name: string;
+	};
 }
 
 type ToastState = {
@@ -43,12 +47,12 @@ type ToastState = {
 export default function MainDashClient() {
 	const { locale, t } = useMessages();
 	const router = useRouter();
-	const [organizations, setOrganizations] = useState<OrganizationRef[]>([]);
+	const [organizations, setOrganizations] = useState<OrganizationRef2[]>([]);
 	const [churchOptions, setChurchOptions] = useState<ChurchOption[]>([]);
-	const [churches, setChurches] = useState<OrganizationRef[]>([]);
+	const [churches, setChurches] = useState<OrganizationRef2[]>([]);
 	const [loadingChurches, setLoadingChurches] = useState(false);
 	const [switchingOrganizationId, setSwitchingOrganizationId] = useState<string | null>(null);
-	const [pendingJoinChurch, setPendingJoinChurch] = useState<OrganizationRef | null>(null);
+	const [pendingJoinChurch, setPendingJoinChurch] = useState<OrganizationRef2 | null>(null);
 	const [joiningChurch, setJoiningChurch] = useState(false);
 	const [joinError, setJoinError] = useState<string | null>(null);
 	const [toast, setToast] = useState<ToastState>(null);
@@ -118,9 +122,9 @@ export default function MainDashClient() {
 	const loadOrganizations = useCallback(async () => {
 		setLoadingChurches(true);
 		try {
-			const res = await api.get<{ organizations: OrganizationRef[] }>("/organizations/my");
+			const res = await api.get<{ organizations: OrganizationRef2[] }>("/organizations/my");
 			setOrganizations(res.organizations ?? []);
-			const res2 = await api.get<{ organizations: OrganizationRef[]; organizationLength?: number }>("/organizations");
+			const res2 = await api.get<{ organizations: OrganizationRef2[]; organizationLength?: number }>("/organizations");
 			const orgs = res2.organizations ?? [];
 			setChurches(orgs);
 		} catch (error) {
@@ -356,7 +360,7 @@ export default function MainDashClient() {
 								onOpen={loadChurches}
 								onSuccess={() => loadOrganizations()}
 								onToast={(p) => setToast(p)}
-								setOrganizations={setOrganizations}
+								setOrganizations={setOrganizations as unknown as any}
 							/>
 						</section>
 					</section>

@@ -373,6 +373,7 @@ export function CreateEventDialog({
 			</DialogContent>
 		</Dialog>
 		<FeedbackToast
+			onClose={() => setToastOpen(false)}
 			open={toastOpen}
 			title={toastTitle}
 			description={toastDescription}

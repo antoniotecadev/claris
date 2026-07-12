@@ -29,8 +29,9 @@ RUN npm install --omit=dev
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/generated ./generated
 COPY --from=builder /usr/src/app/prisma ./prisma
+COPY --from=builder /usr/src/app/prisma/seed.ts ./prisma/seed.ts
 COPY --from=builder /usr/src/app/prisma.config.ts ./prisma.config.ts
 
 EXPOSE 3001
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/src/main.js"]
+CMD ["sh", "-c", "npx prisma generate && npx prisma migrate deploy && npx prisma db seed &&  node dist/src/main.js"]

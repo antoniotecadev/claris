@@ -153,12 +153,14 @@ export function DialogDemo({
 				memberCount: 0,
 				createdAt: new Date().toISOString(),
 			}
-
-			resetForm()
-			setOpen(false)
-			onSuccess?.()  // ← notifica o pai para atualizar a lista
-			onToast?.({ title: t("church.create.success"), variant: "success" })
 			setOrganizations?.((prev) => [...prev, createdOrganization])
+			setOpen(false)
+			onSuccess?.()
+			onToast?.({ title: t("church.create.success"), variant: "success" })
+
+			setTimeout(() => {
+				resetForm();
+			}, 100);
 		} catch (error) {
 			onToast?.({ title: error instanceof Error ? error.message : t("church.create.errors.create"), variant: "error" })
 		} finally {

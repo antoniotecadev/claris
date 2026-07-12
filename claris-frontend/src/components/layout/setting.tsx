@@ -253,7 +253,7 @@ export default function SettingsPanel({
 
       // Não passar Content-Type — o browser define multipart/form-data + boundary sozinho
       const token = await getClientAuthToken();
-      const res = await fetch("/api/user/me", {
+      const res = await fetch("http://localhost:3001/api/v1/user/me", {
         method: "PATCH",
         body: formData,
         headers: {
